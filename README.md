@@ -24,6 +24,21 @@ Modern C++
 - **实践**：当天需要完成的编码或实验；
 - **产出**：代码、测试、IR、性能数据或复盘笔记。
 
+## 每日图文教程 Skill
+
+仓库包含 `ai-compiler-daily-tutorial` Skill 源文件，用于把每日学习任务展开为通俗易懂、图文并茂的完整教程：
+
+- [SKILL.md](./skills/ai-compiler-daily-tutorial/SKILL.md)：触发方式、生成流程和质量底线；
+- [教程模板](./skills/ai-compiler-daily-tutorial/references/tutorial-template.md)：讲解、实践、图片、练习和验收结构；
+- [质量清单](./skills/ai-compiler-daily-tutorial/references/quality-checklist.md)：通俗性、图片、代码和学习闭环检查；
+- [计划提取与教程校验工具](./skills/ai-compiler-daily-tutorial/scripts/tutorial_tools.py)：提取指定日期，检查真实图片、占位内容和必要章节。
+
+生成示例：
+
+```text
+使用 ai-compiler-daily-tutorial，根据学习计划生成第 45 天教程。
+```
+
 ## 最终项目
 
 以 `MatMul + Bias + ReLU` 为起点，完成一个端到端编译器：
