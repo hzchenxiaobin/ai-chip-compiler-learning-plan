@@ -87,12 +87,13 @@ def page_template(
     back_link=None,
     prev_link=None,
     next_link=None,
+    home=False,
 ):
     escaped_title = html.escape(title)
     escaped_markdown = escape_for_template_string(markdown)
 
     pills_html = ""
-    body_class = "vp-page"
+    body_class = "vp-page vp-home" if home else "vp-page"
     if pills:
         def pill_link(item, css_class="vp-pill"):
             active = " active" if item.get("active") else ""
@@ -152,52 +153,11 @@ def page_template(
             + "</div>"
         )
 
-    return f"""<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escaped_title} · AI 芯片编译器学习计划</title>
-    <script>
-    (function() {{
-        try {{
-            var t = localStorage.getItem('vp-theme') || 'auto';
-            var dark = t === 'dark' ||
-                (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            if (dark) document.documentElement.classList.add('dark');
-        }} catch (e) {{}}
-    }})();
-    </script>
-    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=5">
-    <script src="{root_prefix}js/marked.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="{root_prefix}js/markdown-math.js"></script>
-    <script src="{root_prefix}js/prism.min.js"></script>
-    <script src="{root_prefix}js/prism-c.min.js"></script>
-    <script src="{root_prefix}js/prism-cpp.min.js"></script>
-    <script src="{root_prefix}js/prism-bash.min.js"></script>
-    <script src="{root_prefix}js/prism-python.min.js"></script>
-</head>
-<body class="{body_class}">
-    <header class="vp-navbar">
-        <div class="vp-navbar-inner">
-            <a class="vp-brand" href="{root_prefix}index.html">AI Chip <span>Compiler</span></a>
-            {pills_html}
-            <div class="vp-navbar-spacer"></div>
-            <nav class="vp-menu">
-                <a href="{root_prefix}plan.html">168 天计划</a>
-                <a href="{root_prefix}index.html#tutorials">每日教程</a>
-                <a href="{GITHUB_REPO_URL}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-            </nav>
-            <div class="vp-appearance">
-                <button class="vp-switch" type="button" aria-label="切换深色/浅色外观">
-                    <span class="check"><span class="icon sun">☀</span><span class="icon moon">☾</span></span>
-                </button>
-            </div>
-        </div>
-    </header>
-    <div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+    if home:
+        main_html = f'<main class="home-main">{markdown}</main>'
+        render_call = "VPPage.init();"
+    else:
+        main_html = f"""<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
         <div class="vp-content"><div class="vp-content-container">
             {back_html}
             <main class="main"><article class="vp-doc">
@@ -214,19 +174,68 @@ def page_template(
                 </div>
             </nav>
         </div></div></div>
-    </div></div></div>
+    </div></div></div>"""
+        render_call = "VPPage.render(pageMarkdown);"
+
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="24 周、168 天 AI 芯片编译器实战学习计划：Modern C++、MLIR、图优化、Lowering、Tiling、LLVM 与 Runtime。">
+    <title>{escaped_title} · AI 芯片编译器学习计划</title>
+    <script>
+    (function() {{
+        try {{
+            var t = localStorage.getItem('vp-theme') || 'dark';
+            if (t === 'dark') document.documentElement.classList.add('dark');
+        }} catch (e) {{ document.documentElement.classList.add('dark'); }}
+    }})();
+    </script>
+    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=6">
+    <script src="{root_prefix}js/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="{root_prefix}js/markdown-math.js"></script>
+    <script src="{root_prefix}js/prism.min.js"></script>
+    <script src="{root_prefix}js/prism-c.min.js"></script>
+    <script src="{root_prefix}js/prism-cpp.min.js"></script>
+    <script src="{root_prefix}js/prism-bash.min.js"></script>
+    <script src="{root_prefix}js/prism-python.min.js"></script>
+</head>
+<body class="{body_class}">
+    <header class="vp-navbar">
+        <div class="vp-navbar-inner">
+            <a class="vp-brand" href="{root_prefix}index.html">AI Chip <span>Compiler</span></a>
+            {pills_html}
+            <div class="vp-navbar-spacer"></div>
+            <nav class="vp-menu" aria-label="站点导航">
+                <a href="{root_prefix}plan.html">168 天计划</a>
+                <a class="vp-roadmap-link" href="{root_prefix}index.html#roadmap">学习路线</a>
+                <a href="{root_prefix}index.html#tutorials">每日教程</a>
+                <a class="vp-github-link" href="{GITHUB_REPO_URL}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            </nav>
+            <div class="vp-appearance">
+                <button class="vp-switch" type="button" aria-label="切换深色/浅色外观">
+                    <span class="check"><span class="icon sun">☀</span><span class="icon moon">☾</span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    {main_html}
     <footer class="vp-footer"><span>AI 芯片编译器学习计划 · Deployed on GitHub Pages</span></footer>
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
-    <script src="{root_prefix}js/vp-solution.js?v=4"></script>
+    <script src="{root_prefix}js/vp-solution.js?v=5"></script>
     <script>
         const pageMarkdown = `{escaped_markdown}`;
         try {{
             if (typeof marked === 'undefined' || !window.VPPage) {{
                 throw new Error('页面脚本加载失败。');
             }}
-            VPPage.render(pageMarkdown);
+            {render_call}
         }} catch (err) {{
-            document.getElementById('doc-content').textContent = '页面渲染失败：' + err.message;
+            const content = document.getElementById('doc-content');
+            if (content) content.textContent = '页面渲染失败：' + err.message;
             console.error('Markdown render error:', err);
         }}
     </script>
@@ -235,34 +244,151 @@ def page_template(
 """
 
 
+ROADMAP = [
+    (
+        "阶段一",
+        "C++ 与编译器基础",
+        "Modern C++ → 计算图 IR → SSA → 优化 Pass",
+        [
+            "搭建 CMake 工程，实现最小 Tensor",
+            "Graph / Node / Value 与 Use-Def",
+            "CFG、支配关系与活跃变量分析",
+            "常量折叠、DCE、CSE 与 PassManager",
+        ],
+    ),
+    (
+        "阶段二",
+        "MLIR 核心能力",
+        "IR 结构 → mini Dialect → Shape 推导 → 算子融合",
+        [
+            "Operation / Region / Block 与类型系统",
+            "ODS 定义 mini Dialect 与 Verifier",
+            "Shape Inference / Canonicalization / Fold",
+            "算子融合与多使用者约束",
+        ],
+    ),
+    (
+        "阶段三",
+        "AI 计算图与图优化",
+        "Layout → 冗余消除 → Cost Model → 数值验证",
+        [
+            "Shape、Stride、Broadcast 与动态 Shape",
+            "Layout 转换与冗余算子消除",
+            "融合流量、资源代价与 Cost Model",
+            "浮点误差、INT8 量化与数值验证",
+        ],
+    ),
+    (
+        "阶段四",
+        "Lowering、Tiling 与性能",
+        "循环 IR → Tiling → 内存规划 → 自动调优",
+        [
+            "DialectConversion 与三重循环生成",
+            "循环顺序、Tiling、Unroll 与实验",
+            "生命周期、内存复用与 Double Buffering",
+            "Auto-tuning、GFLOPS 与 Roofline",
+        ],
+    ),
+    (
+        "阶段五",
+        "端到端编译与 Runtime",
+        "LLVM → 统一编译入口 → Runtime → 回归体系",
+        [
+            "LLVM Dialect、LLVM IR 与 JIT / AOT",
+            "统一 CLI、IR Dump 与端到端项目",
+            "动态 Shape、特化、内存与异步模型",
+            "随机测试、Pass 定位与性能回归",
+        ],
+    ),
+    (
+        "阶段六",
+        "项目收口与面试转化",
+        "扩展方向 → 性能归因 → 项目材料 → 最终验收",
+        [
+            "扩展方向设计、实现与验收",
+            "性能基线、瓶颈分析与优化验证",
+            "架构、Pass、Lowering 与复现材料",
+            "面试标准回答与最终项目验收",
+        ],
+    ),
+]
+
+
+def plan_heading_slug(text):
+    slug = re.sub(r"[^\w\s-]", "", text.lower(), flags=re.UNICODE)
+    return re.sub(r"-+", "-", re.sub(r"\s+", "-", slug.strip())).strip("-")
+
+
 def build_home(tutorials):
-    cards = ['<div class="day-cards">']
-    for day in tutorials:
-        cards.append(
-            f'<a class="day-card" href="tutorials/{day["slug"]}/">'
-            f'<div class="day-card-number">Day {day["number"]}</div>'
-            f'<div class="day-card-title">{html.escape(day["title"])}</div></a>'
+    plan_text = PLAN_PATH.read_text(encoding="utf-8")
+    week_titles = {
+        int(number): title.strip()
+        for number, title in re.findall(r"^## 第 (\d+) 周：(.+)$", plan_text, re.MULTILINE)
+    }
+
+    phases = []
+    for phase_index, (label, title, description, summaries) in enumerate(ROADMAP):
+        week_cards = []
+        for offset, summary in enumerate(summaries):
+            number = phase_index * 4 + offset + 1
+            week_title = week_titles[number]
+            anchor = plan_heading_slug(f"第 {number} 周：{week_title}")
+            week_cards.append(
+                f'<a class="week-card" href="plan.html#{anchor}">'
+                f'<div class="week-card-top"><span class="week-number">W{number}</span>'
+                '<span class="week-arrow" aria-hidden="true">→</span></div>'
+                f'<h4>{html.escape(week_title)}</h4><p>{html.escape(summary)}</p></a>'
+            )
+        phases.append(
+            '<section class="phase-block">'
+            f'<div class="phase-heading"><span class="phase-badge">{label}</span>'
+            f'<h3>{html.escape(title)}</h3><p>{html.escape(description)}</p></div>'
+            f'<div class="week-cards">{"".join(week_cards)}</div></section>'
         )
-    cards.append("</div>")
-    markdown = f"""从 Modern C++ 和编译器 IR 出发，经过 MLIR、计算图优化、Lowering、Tiling、LLVM 与 Runtime，最终完成一个端到端 AI 芯片编译器。
 
-- **学习周期**：24 周，共 168 天
-- **当前发布**：{len(tutorials)} 天图文教程
-- **学习主线**：概念讲解 → 技术图解 → 动手实现 → 结果验证 → 练习验收
+    tutorial_cards = []
+    for day in tutorials:
+        title = re.sub(r"^第\s*\d+\s*天[：:]\s*", "", day["title"])
+        goal = re.search(r"^> \*\*今日目标\*\*：(.+)$", day["markdown"], re.MULTILINE)
+        summary = re.sub(r"[`*_]", "", goal.group(1)) if goal else "概念讲解、技术图解、动手实现与结果验证。"
+        tutorial_cards.append(
+            f'<a class="tutorial-card" href="tutorials/{day["slug"]}/">'
+            f'<div class="week-card-top"><span class="week-number">Day {day["number"]}</span>'
+            '<span class="week-arrow" aria-hidden="true">→</span></div>'
+            f'<h3>{html.escape(title)}</h3><p>{html.escape(summary)}</p>'
+            '<span class="tutorial-card-link">开始阅读 <span aria-hidden="true">↗</span></span></a>'
+        )
 
-[查看完整学习计划](plan.html) · [在 GitHub 阅读源码]({GITHUB_REPO_URL})
-
-<div id="tutorials"></div>
-
-## 每日教程
-
-{"".join(cards)}
+    first_day = tutorials[0]
+    content = f"""
+<section class="home-hero">
+    <div class="home-hero-inner">
+        <div class="hero-badge">工程实战 · 24 周渐进式路线</div>
+        <h1>AI 芯片编译器 <span>168 天学习计划</span></h1>
+        <p class="hero-subtitle">从「写好 Modern C++」进阶到「交付端到端编译器」</p>
+        <p class="hero-description">贯通编译器 IR、MLIR、图优化、Lowering、Tiling、LLVM 与 Runtime<br> 每天 1～1.5 小时，每周集成与复盘</p>
+        <div class="hero-actions">
+            <a class="hero-button hero-button-primary" href="tutorials/{first_day["slug"]}/">开始 Day {first_day["number"]} <span aria-hidden="true">→</span></a>
+            <a class="hero-button hero-button-secondary" href="plan.html">查看完整计划</a>
+        </div>
+        <div class="hero-stats" aria-label="学习计划概览">
+            <div><strong>24</strong><span>周学习路线</span></div>
+            <div><strong>168</strong><span>每日实战任务</span></div>
+            <div><strong>6</strong><span>阶段能力进阶</span></div>
+            <div><strong>1</strong><span>端到端编译器</span></div>
+        </div>
+    </div>
+</section>
+<section class="home-section roadmap-section" id="roadmap">
+    <div class="section-heading"><h2>学习路线</h2><p>六个阶段、24 个主题，从 Modern C++ 一路走到端到端 AI 芯片编译器。</p></div>
+    {"".join(phases)}
+</section>
+<section class="home-section tutorials-section" id="tutorials">
+    <div class="section-heading section-heading-row"><div><h2>每日教程</h2><p>已发布 {len(tutorials)} 篇图文教程，每篇都包含讲解、实践、练习与验收。</p></div><span class="section-status">持续更新</span></div>
+    <div class="tutorial-cards">{"".join(tutorial_cards)}</div>
+</section>
 """
-    output = page_template(
-        "AI 芯片编译器学习计划",
-        markdown,
-        pills=day_pills(tutorials),
-    )
+    output = page_template("AI 芯片编译器学习计划", content, home=True)
     (PUBLIC_DIR / "index.html").write_text(output, encoding="utf-8")
 
 

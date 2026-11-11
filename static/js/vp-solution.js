@@ -445,8 +445,7 @@ window.VPPage = (function () {
     /* ------------------------------------------------------------------
      * 入口
      * ------------------------------------------------------------------ */
-    function render(markdownText) {
-        renderMarkdown(markdownText);
+    function init() {
         /* 各增强步骤相互隔离：单个组件异常不影响页面其余部分 */
         [
             enhanceCodeBlocks,
@@ -468,5 +467,10 @@ window.VPPage = (function () {
         });
     }
 
-    return { render: render };
+    function render(markdownText) {
+        renderMarkdown(markdownText);
+        init();
+    }
+
+    return { render: render, init: init };
 })();
