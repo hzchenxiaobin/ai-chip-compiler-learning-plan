@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720">
+<rect x="0" y="0" width="1000" height="720" fill="#fdfaf4"/>
+<text x="500" y="42" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="25" fill="#3a4657" text-anchor="middle" font-weight="600">真实运行结果：说明书决定取数顺序，改一个数字就换一种读法</text>
+<text x="500" y="70" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#6b7686" text-anchor="middle" font-weight="500">以下均为本机实际执行的输出摘录：Linux aarch64 · Ubuntu 20.04 · g++ 9.4.0 · CMake 3.20 · Ninja 1.10</text>
+<rect x="40" y="100" width="460" height="240" fill="#e7f0f9" stroke="none" opacity="0.5" transform="rotate(-0.3 270.0 220.0)"/>
+<g transform="rotate(-0.3 270.0 220.0)">
+<path d="M 40.5 100.3 C 194.8 101.1, 347.8 101.2, 499.9 100.6 C 499.3 180.1, 498.7 260.0, 500.3 340.0 C 345.8 339.2, 192.5 338.5, 40.1 339.6 C 40.2 259.7, 39.0 180.7, 40.5 100.3" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="270" y="128" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#3a4657" text-anchor="middle" font-weight="600">观察程序：三个视图逐元素打卡</text>
+<text x="76" y="162" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#5b8db8" text-anchor="start" font-weight="700">A(1,2) → 元素 5 → 值 6   （序列 0 1 2 3 4 5）</text>
+<text x="76" y="185" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6aa673" text-anchor="start" font-weight="700">B(2,1) → 元素 5 → 值 6   （序列 0 3 1 4 2 5）</text>
+<text x="76" y="208" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">E(0)   → 元素 3 → 值 4   （offset=3 切片）</text>
+<text x="76" y="231" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">D3(1,1,2) → 元素 11 ＝ 1×6＋1×3＋2×1</text>
+<text x="76" y="254" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500"></text>
+<text x="76" y="277" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="700">连续性：A yes   B no   E yes   D3 yes</text>
+<text x="270" y="316" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">转置 B 与原视图 A 读到同一个值——只是坐标不同</text>
+<rect x="520" y="100" width="440" height="240" fill="#e9f4ea" stroke="none" opacity="0.55" transform="rotate(0.3 740.0 220.0)"/>
+<g transform="rotate(0.3 740.0 220.0)">
+<path d="M 520.0 99.7 C 667.1 100.8, 814.3 98.3, 960.0 99.7 C 959.7 179.9, 960.6 258.7, 960.4 339.6 C 813.2 339.8, 667.3 339.9, 520.6 339.6 C 519.6 258.6, 519.1 178.5, 520.0 99.7" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="740" y="128" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#3a4657" text-anchor="middle" font-weight="600">对照实验：同一 shape，换一套 strides</text>
+<text x="552" y="162" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="700">strides=(3,1)：0 1 2 3 4 5</text>
+<text x="552" y="186" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6aa673" text-anchor="start" font-weight="500">  读出 [1 2 3; 4 5 6]   连续？ yes</text>
+<text x="552" y="210" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="700">strides=(1,2)：0 2 4 1 3 5</text>
+<text x="552" y="234" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="500">  读出 [1 3 5; 2 4 6]   连续？ no</text>
+<text x="740" y="276" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">数据、shape 都没动，只换了“跳格规则”，</text>
+<text x="740" y="298" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">读出的矩阵就完全不同——stride 是语义，不是装饰</text>
+<rect x="40" y="368" width="460" height="262" fill="#f7e7e7" stroke="none" opacity="0.5" transform="rotate(0.3 270.0 499.0)"/>
+<g transform="rotate(0.3 270.0 499.0)">
+<path d="M 40.5 368.5 C 194.8 367.5, 345.8 368.3, 500.3 367.7 C 501.2 454.1, 499.1 542.1, 499.5 630.1 C 346.2 629.7, 192.3 628.7, 39.8 629.6 C 41.2 542.6, 40.0 455.1, 40.5 368.5" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="270" y="396" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#3a4657" text-anchor="middle" font-weight="600">三个真实翻车现场（均已复现）</text>
+<text x="70" y="426" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#cc6b6b" text-anchor="start" font-weight="700">错误一｜字节当元素</text>
+<text x="70" y="446" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">把 NumPy 的字节步长 (12,4) 抄进来：</text>
+<text x="70" y="464" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">(0,1) 就错位，(0,2) 起全部越界</text>
+<text x="70" y="492" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#cc6b6b" text-anchor="start" font-weight="700">错误二｜只查最后一维</text>
+<text x="70" y="512" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">切片 (2,3)/(4,1) 被误判“连续”，</text>
+<text x="70" y="530" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">行与行之间的洞被无视 → 读错数据</text>
+<text x="70" y="558" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#cc6b6b" text-anchor="start" font-weight="700">错误三｜漏 storage_offset</text>
+<text x="70" y="578" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">E(0) 读到值 1，正确是 4——</text>
+<text x="70" y="596" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">整段数据错了一行的起点</text>
+<rect x="520" y="368" width="440" height="262" fill="#fffdf8" stroke="none" opacity="1.0" transform="rotate(-0.3 740.0 499.0)"/>
+<g transform="rotate(-0.3 740.0 499.0)">
+<path d="M 520.5 367.5 C 666.3 366.8, 812.9 368.5, 959.9 367.7 C 961.4 453.7, 958.7 542.0, 960.3 629.8 C 814.6 630.7, 666.3 629.4, 519.5 630.4 C 519.0 542.9, 521.3 454.0, 520.5 367.5" fill="none" stroke="#6b7686" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="740" y="396" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#3a4657" text-anchor="middle" font-weight="600">测试与验收（ctest 真实输出）</text>
+<text x="552" y="430" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">1/1 Test #1: tensor_desc</text>
+<text x="552" y="453" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6aa673" text-anchor="start" font-weight="500">   ......   Passed    0.00 sec</text>
+<text x="552" y="476" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6aa673" text-anchor="start" font-weight="700">100% tests passed, 0 tests failed out of 1</text>
+<text x="552" y="499" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="700">all 50 assertions passed</text>
+<text x="740" y="546" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">覆盖：一维 / 二维 / 三维、转置、切片、</text>
+<text x="740" y="568" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">size-1 维、四种 Dtype、越界与非法构造</text>
+<rect x="140" y="662" width="720" height="24" fill="#e9f4ea" stroke="none" opacity="0.35"/>
+<text x="500" y="679" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#6b7686" text-anchor="middle" font-weight="500">一句话：换 shape 是换观点，换 stride 是换走法，换 dtype 是换格子大小——底层那 24 字节始终没动</text>
+<text x="982" y="706" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 4 · 03-run-results</text>
+</svg>

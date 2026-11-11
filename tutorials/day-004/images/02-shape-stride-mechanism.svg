@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800">
+<rect x="0" y="0" width="1000" height="800" fill="#fdfaf4"/>
+<text x="500" y="42" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="26" fill="#3a4657" text-anchor="middle" font-weight="600">核心机制：同一块存储，三张不同的取数说明书</text>
+<text x="500" y="70" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#6b7686" text-anchor="middle" font-weight="500">6 个 int32 ＝ 24 字节，一比特不动；变的是「多维下标 → 元素位置」的换算规则（本图数字与 5.3 节真实输出一致）</text>
+<rect x="40" y="96" width="300" height="268" fill="#fffdf8" stroke="none" opacity="1.0" transform="rotate(-0.4 190.0 230.0)"/>
+<g transform="rotate(-0.4 190.0 230.0)">
+<path d="M 40.0 95.9 C 138.7 95.2, 238.8 97.4, 339.6 96.3 C 338.3 184.2, 339.5 273.8, 339.5 364.4 C 240.7 364.4, 138.0 364.1, 39.4 364.5 C 39.3 274.2, 40.9 184.4, 40.0 95.9" fill="none" stroke="#5b8db8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="190" y="122" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">视图 A：行主序</text>
+<text x="190" y="144" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#5b8db8" text-anchor="middle" font-weight="600">shape=(2,3)  strides=(3,1)  offset=0</text>
+<g transform="rotate(0.07782796457766583 116.0 190.0)">
+<path d="M 83.7 162.0 C 105.7 160.8, 125.4 162.5, 147.6 161.6 C 146.7 180.9, 148.4 200.0, 148.0 218.0 C 125.7 217.2, 106.1 218.1, 83.9 218.1 C 83.5 200.1, 84.6 180.8, 83.7 162.0" fill="none" stroke="#5b8db8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="143" y="175" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(0,0)</text>
+<text x="116.0" y="195.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">1</text>
+<g transform="rotate(0.4964905293065467 180.0 190.0)">
+<path d="M 148.4 162.3 C 169.3 162.6, 191.0 162.5, 212.1 162.0 C 212.7 181.7, 212.7 200.4, 211.9 218.3 C 190.7 218.0, 170.3 217.6, 148.4 217.8 C 148.4 200.4, 148.2 180.1, 148.4 162.3" fill="none" stroke="#5b8db8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="207" y="175" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(0,1)</text>
+<text x="180.0" y="195.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">2</text>
+<g transform="rotate(-0.10116813392874136 244.0 190.0)">
+<path d="M 211.9 161.8 C 234.3 162.8, 254.0 161.9, 276.2 161.7 C 276.8 180.3, 276.0 198.4, 276.2 217.7 C 254.3 218.3, 233.9 217.1, 211.8 218.3 C 212.1 198.5, 212.3 181.6, 211.9 161.8" fill="none" stroke="#5b8db8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="271" y="175" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(0,2)</text>
+<text x="244.0" y="195.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">3</text>
+<g transform="rotate(0.033474954267253665 116.0 246.0)">
+<path d="M 84.1 218.4 C 105.8 219.2, 126.9 217.5, 147.7 218.1 C 147.0 237.1, 147.9 255.8, 147.9 274.1 C 126.5 273.5, 106.7 273.8, 84.4 273.9 C 84.7 255.4, 84.4 237.6, 84.1 218.4" fill="none" stroke="#5b8db8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="143" y="231" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(1,0)</text>
+<text x="116.0" y="251.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">4</text>
+<g transform="rotate(-0.0740346277180739 180.0 246.0)">
+<path d="M 147.7 217.8 C 168.4 217.5, 190.2 218.0, 212.4 218.4 C 211.6 236.1, 211.8 256.1, 212.2 273.8 C 191.6 273.5, 170.1 273.2, 148.2 274.1 C 148.1 255.4, 146.9 237.1, 147.7 217.8" fill="none" stroke="#5b8db8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="207" y="231" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(1,1)</text>
+<text x="180.0" y="251.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">5</text>
+<rect x="212" y="218" width="64" height="56" fill="#fbeadd" stroke="none" opacity="0.9" transform="rotate(0.25285917636951505 244.0 246.0)"/>
+<g transform="rotate(0.16975315702269944 244.0 246.0)">
+<path d="M 211.6 217.6 C 234.3 217.0, 253.8 218.2, 276.4 218.0 C 277.0 237.7, 276.0 255.7, 275.7 274.1 C 253.5 274.4, 233.3 274.5, 211.6 274.0 C 212.7 254.5, 211.3 235.6, 211.6 217.6" fill="none" stroke="#e0884f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="244.0" y="251.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#e0884f" text-anchor="middle" font-weight="600">6</text>
+<text x="244.0" y="210" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#e0884f" text-anchor="middle" font-weight="700">A(1,2)</text>
+<text x="70" y="190.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">i=0</text>
+<text x="70" y="246.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">i=1</text>
+<text x="116.0" y="154" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">j=0</text>
+<text x="180.0" y="154" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">j=1</text>
+<text x="244.0" y="154" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">j=2</text>
+<text x="190" y="312" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">逐行挨着放：换一行跳 3 个元素</text>
+<text x="190" y="336" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="600">连续？ yes</text>
+<rect x="352" y="96" width="300" height="268" fill="#fffdf8" stroke="none" opacity="1.0" transform="rotate(0.3 502.0 230.0)"/>
+<g transform="rotate(0.3 502.0 230.0)">
+<path d="M 351.4 96.6 C 452.6 95.9, 550.5 96.1, 651.7 95.5 C 651.1 184.2, 653.3 275.5, 652.5 363.4 C 552.5 363.5, 453.0 362.9, 352.2 364.1 C 352.8 274.2, 350.8 184.7, 351.4 96.6" fill="none" stroke="#6aa673" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="502" y="122" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">视图 B ＝ Aᵀ：转置</text>
+<text x="502" y="144" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6aa673" text-anchor="middle" font-weight="600">shape=(3,2)  strides=(1,3)  offset=0</text>
+<g transform="rotate(0.19909390940400618 455.0 185.0)">
+<path d="M 418.3 162.2 C 443.5 162.4, 467.9 163.3, 492.0 162.3 C 493.0 177.1, 491.2 193.6, 492.0 208.2 C 467.2 207.2, 441.9 208.3, 417.7 208.4 C 418.8 193.0, 417.6 178.2, 418.3 162.2" fill="none" stroke="#6aa673" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="487" y="175" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(0,0)</text>
+<text x="455.0" y="190.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">1</text>
+<g transform="rotate(-0.4842502263080829 529.0 185.0)">
+<path d="M 492.2 162.4 C 515.8 162.4, 540.7 162.5, 565.7 161.8 C 565.0 176.6, 566.2 192.0, 566.4 207.6 C 541.9 207.2, 516.3 208.6, 491.8 207.8 C 491.5 192.1, 492.9 177.9, 492.2 162.4" fill="none" stroke="#6aa673" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="561" y="175" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(0,1)</text>
+<text x="529.0" y="190.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">4</text>
+<g transform="rotate(-0.33883116797806645 455.0 231.0)">
+<path d="M 418.1 208.1 C 441.9 207.7, 466.9 207.6, 492.4 207.7 C 493.0 223.3, 490.7 238.1, 491.6 254.4 C 466.4 254.1, 443.6 253.7, 418.4 253.7 C 417.8 239.5, 417.7 222.9, 418.1 208.1" fill="none" stroke="#6aa673" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="487" y="221" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(1,0)</text>
+<text x="455.0" y="236.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">2</text>
+<g transform="rotate(0.0050532639405536095 529.0 231.0)">
+<path d="M 491.9 207.6 C 516.3 208.7, 540.4 208.6, 566.2 208.2 C 567.1 224.6, 564.8 238.8, 565.7 254.2 C 540.3 253.6, 517.4 254.7, 492.4 253.9 C 491.9 238.2, 491.5 223.7, 491.9 207.6" fill="none" stroke="#6aa673" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="561" y="221" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(1,1)</text>
+<text x="529.0" y="236.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">5</text>
+<g transform="rotate(-0.16501126908918973 455.0 277.0)">
+<path d="M 418.0 254.4 C 441.6 253.7, 467.0 253.1, 491.9 253.7 C 492.9 269.3, 491.1 283.6, 492.2 300.2 C 467.6 300.7, 443.3 300.7, 418.2 300.3 C 418.1 284.8, 417.2 269.9, 418.0 254.4" fill="none" stroke="#6aa673" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="487" y="267" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#b9b0a0" text-anchor="end" font-weight="600">(2,0)</text>
+<text x="455.0" y="282.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#3a4657" text-anchor="middle" font-weight="600">3</text>
+<rect x="492" y="254" width="74" height="46" fill="#fbeadd" stroke="none" opacity="0.9" transform="rotate(0.2650755243585602 529.0 277.0)"/>
+<g transform="rotate(0.13274087459898698 529.0 277.0)">
+<path d="M 491.6 253.9 C 516.5 253.4, 541.1 254.6, 566.2 253.8 C 565.3 269.0, 566.6 283.9, 566.2 300.1 C 541.6 299.2, 515.6 300.2, 491.9 300.2 C 490.8 285.8, 492.1 269.5, 491.6 253.9" fill="none" stroke="#e0884f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="529.0" y="282.4" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="15" fill="#e0884f" text-anchor="middle" font-weight="600">6</text>
+<text x="529.0" y="246" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#e0884f" text-anchor="middle" font-weight="700">B(2,1)</text>
+<text x="502" y="316" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6b7686" text-anchor="middle" font-weight="500">数据一比特没搬</text>
+<text x="502" y="342" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">连续？ no</text>
+<rect x="664" y="96" width="296" height="268" fill="#fbeadd" stroke="none" opacity="0.45" transform="rotate(0.4 812.0 230.0)"/>
+<g transform="rotate(0.4 812.0 230.0)">
+<path d="M 664.4 96.1 C 762.1 97.0, 860.3 95.3, 960.5 95.5 C 961.3 183.9, 959.5 272.8, 960.2 363.5 C 859.7 363.8, 762.9 363.2, 663.5 364.6 C 664.8 276.2, 663.2 186.3, 664.4 96.1" fill="none" stroke="#e0884f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="812" y="122" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#3a4657" text-anchor="middle" font-weight="600">取数公式（Lowering 的地址计算）</text>
+<path d="M 691.8 139.9 C 770.5 140.4, 850.5 139.8, 931.6 139.8 C 931.4 153.7, 933.0 169.2, 932.4 184.5 C 851.4 184.5, 772.3 183.0, 692.5 184.0 C 691.7 169.4, 691.6 154.9, 691.8 139.9" fill="none" stroke="#e0884f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="812" y="161" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">元素位置 ＝ storage_offset</text>
+<text x="812" y="177" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">＋ Σ idx₍d₎ × stride₍d₎</text>
+<text x="812" y="214" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12.5" fill="#5b8db8" text-anchor="middle" font-weight="600">A(1,2) ＝ 0 ＋ 1×3 ＋ 2×1 ＝ 5</text>
+<text x="812" y="240" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="600">B(2,1) ＝ 0 ＋ 2×1 ＋ 1×3 ＝ 5</text>
+<text x="812" y="266" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#e0884f" text-anchor="middle" font-weight="700">同一个格子，两种坐标！</text>
+<text x="812" y="298" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">切片 E ＝ A[1,:] 是 (3,)/(1,) offset=3：</text>
+<text x="812" y="320" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12.5" fill="#6b7686" text-anchor="middle" font-weight="600">E(0) ＝ 3 ＋ 0×1 ＝ 3</text>
+<text x="812" y="344" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">offset 是视图的“起点”，不参与连续性判断</text>
+<rect x="40" y="420" width="612" height="150" fill="#fffdf8" stroke="none" opacity="1.0" transform="rotate(-0.2 346.0 495.0)"/>
+<g transform="rotate(-0.2 346.0 495.0)">
+<path d="M 40.5 419.6 C 243.0 420.8, 448.3 418.6, 651.6 420.5 C 650.4 471.6, 650.6 519.0, 651.7 569.9 C 448.0 569.5, 244.3 568.8, 39.5 569.5 C 40.9 518.7, 40.3 470.1, 40.5 419.6" fill="none" stroke="#6b7686" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="346" y="446" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#3a4657" text-anchor="middle" font-weight="600">底层存储（唯一的真数据）：6 × int32 ＝ 24 字节</text>
+<g transform="rotate(-0.10099605756159535 117.0 492.0)">
+<path d="M 73.9 463.9 C 102.1 463.2, 130.9 464.4, 159.9 463.6 C 158.9 481.5, 159.1 501.7, 159.7 520.2 C 131.2 519.9, 102.2 521.0, 74.3 519.9 C 74.2 500.8, 73.5 483.2, 73.9 463.9" fill="none" stroke="#6b7686" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="117.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">1</text>
+<text x="117.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">元素 0</text>
+<text x="117.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">0–3 字节</text>
+<g transform="rotate(0.04858427283133959 203.0 492.0)">
+<path d="M 159.9 463.8 C 187.8 465.0, 217.5 464.9, 246.0 464.2 C 246.7 482.6, 246.6 501.3, 245.6 519.9 C 217.3 520.8, 188.3 519.4, 160.3 520.1 C 159.8 500.9, 160.7 482.1, 159.9 463.8" fill="none" stroke="#6b7686" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="203.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">2</text>
+<text x="203.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">元素 1</text>
+<text x="203.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">4–7 字节</text>
+<g transform="rotate(-0.06082613627750666 289.0 492.0)">
+<path d="M 246.2 463.6 C 274.3 464.6, 302.9 463.9, 332.4 464.2 C 333.4 482.0, 332.8 501.4, 332.3 520.1 C 302.9 518.9, 273.9 519.5, 245.9 519.7 C 246.0 501.7, 247.1 481.7, 246.2 463.6" fill="none" stroke="#6b7686" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="289.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">3</text>
+<text x="289.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">元素 2</text>
+<text x="289.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">8–11 字节</text>
+<g transform="rotate(0.2726376257748878 375.0 492.0)">
+<path d="M 332.2 463.8 C 361.8 463.6, 390.0 464.4, 417.9 463.9 C 419.0 482.3, 418.4 500.6, 418.4 519.9 C 390.0 520.2, 360.7 520.6, 331.6 520.4 C 330.9 501.2, 331.7 483.2, 332.2 463.8" fill="none" stroke="#6b7686" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="375.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">4</text>
+<text x="375.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">元素 3</text>
+<text x="375.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">12–15 字节</text>
+<g transform="rotate(0.3687812014827916 461.0 492.0)">
+<path d="M 418.3 464.2 C 446.6 464.9, 476.1 463.8, 504.4 463.8 C 504.5 481.5, 504.8 500.6, 504.2 520.2 C 476.5 521.2, 447.5 520.8, 417.8 520.1 C 418.5 501.7, 417.1 483.4, 418.3 464.2" fill="none" stroke="#6b7686" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="461.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">5</text>
+<text x="461.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="600">元素 4</text>
+<text x="461.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">16–19 字节</text>
+<rect x="504" y="464" width="86" height="56" fill="#fbeadd" stroke="none" opacity="0.9" transform="rotate(0.32919012212172727 547.0 492.0)"/>
+<g transform="rotate(-0.20753116877862732 547.0 492.0)">
+<path d="M 503.9 464.1 C 531.6 464.1, 561.7 464.4, 589.9 464.1 C 590.0 481.9, 590.3 501.5, 589.7 520.3 C 560.0 520.3, 531.7 519.0, 503.7 520.0 C 503.4 502.3, 503.7 483.3, 503.9 464.1" fill="none" stroke="#e0884f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="547.0" y="497.76" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#e0884f" text-anchor="middle" font-weight="600">6</text>
+<text x="547.0" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#e0884f" text-anchor="middle" font-weight="600">元素 5</text>
+<text x="547.0" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#b9b0a0" text-anchor="middle" font-weight="500">20–23 字节</text>
+<rect x="664" y="420" width="296" height="150" fill="#e7f0f9" stroke="none" opacity="0.5" transform="rotate(0.3 812.0 495.0)"/>
+<g transform="rotate(0.3 812.0 495.0)">
+<path d="M 663.6 419.8 C 763.6 418.6, 861.9 421.4, 960.2 419.9 C 959.7 470.8, 961.1 518.4, 960.4 569.6 C 860.6 571.1, 764.3 568.7, 663.9 570.2 C 663.2 519.0, 662.7 470.3, 663.6 419.8" fill="none" stroke="#5b8db8" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="812" y="446" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#3a4657" text-anchor="middle" font-weight="600">Dtype：每个格子多大</text>
+<text x="704" y="476" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12" fill="#3a4657" text-anchor="start" font-weight="600">float32 / int32</text>
+<text x="874" y="476" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6b7686" text-anchor="start" font-weight="500">4 字节</text>
+<text x="704" y="500" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12" fill="#3a4657" text-anchor="start" font-weight="600">float16</text>
+<text x="874" y="500" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6b7686" text-anchor="start" font-weight="500">2 字节</text>
+<text x="704" y="524" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="12" fill="#3a4657" text-anchor="start" font-weight="600">int8</text>
+<text x="874" y="524" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6b7686" text-anchor="start" font-weight="500">1 字节</text>
+<text x="812" y="552" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#5b8db8" text-anchor="middle" font-weight="600">nbytes ＝ numel × itemsize</text>
+<path d="M 244 280 Q 376.0 383.5 528 456" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M 528 456 L 520.0 455.3" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M 528 456 L 523.5 449.4" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M 566 277 Q 596.8 365.6 562 456" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M 562 456 L 558.8 448.7" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M 562 456 L 565.7 448.9" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round"/>
+<text x="295" y="392" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#e0884f" text-anchor="middle" font-weight="700" transform="rotate(-6 295 392)">A(1,2) → 元素 5</text>
+<text x="655" y="398" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#e0884f" text-anchor="middle" font-weight="700" transform="rotate(5 655 398)">B(2,1) → 元素 5</text>
+<rect x="40" y="610" width="920" height="158" fill="#fffdf8" stroke="none" opacity="1.0" transform="rotate(-0.2 500.0 689.0)"/>
+<g transform="rotate(-0.2 500.0 689.0)">
+<path d="M 40.6 610.6 C 348.0 611.3, 652.7 610.2, 960.5 609.8 C 960.3 662.3, 961.0 716.2, 960.1 767.5 C 651.9 767.9, 347.4 766.7, 39.9 768.6 C 41.5 715.5, 40.9 663.7, 40.6 610.6" fill="none" stroke="#6b7686" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="500" y="636" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#3a4657" text-anchor="middle" font-weight="600">连续性判断：从最后一维倒着累乘「期望步长」，逐维比对（尺寸为 1 的维度跳过——PyTorch 规则）</text>
+<path d="M 70.2 651.8 C 154.0 652.9, 236.4 652.7, 319.5 651.6 C 318.9 683.4, 320.6 714.6, 320.0 744.2 C 237.8 743.0, 152.4 745.1, 69.6 743.7 C 70.2 712.7, 70.9 681.6, 70.2 651.8" fill="none" stroke="#5b8db8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="195" y="672" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#5b8db8" text-anchor="middle" font-weight="600">(2,3)/(3,1)  行主序</text>
+<text x="195" y="694" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=1：期望 1，实际 1 ✓</text>
+<text x="195" y="714" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=0：期望 1×3=3，实际 3 ✓</text>
+<text x="195" y="736" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="700">连续 ✓</text>
+<path d="M 380.5 652.2 C 462.7 651.0, 546.6 651.4, 629.9 651.8 C 630.8 682.3, 629.1 712.2, 630.2 743.6 C 546.2 744.8, 464.4 742.7, 379.7 744.1 C 379.9 713.4, 381.2 681.9, 380.5 652.2" fill="none" stroke="#6aa673" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="505" y="672" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6aa673" text-anchor="middle" font-weight="600">(3,2)/(1,3)  转置</text>
+<text x="505" y="694" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=1：期望 1，实际 1 ✓</text>
+<text x="505" y="714" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=0：期望 1×2=2，实际 1 ✗</text>
+<text x="505" y="736" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="700">不连续 ✗</text>
+<path d="M 690.0 651.7 C 773.9 651.2, 856.8 651.5, 939.7 651.5 C 940.1 683.4, 939.2 712.4, 939.7 744.3 C 856.5 744.9, 773.7 743.5, 689.9 744.0 C 690.9 713.0, 690.7 682.2, 690.0 651.7" fill="none" stroke="#e0884f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="815" y="672" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#e0884f" text-anchor="middle" font-weight="600">(2,3)/(4,1)  (2,4)切前3列</text>
+<text x="815" y="694" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=1：期望 1，实际 1 ✓</text>
+<text x="815" y="714" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">d=0：期望 3，实际 4 ✗（有洞）</text>
+<text x="815" y="736" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="700">不连续 ✗</text>
+<text x="982" y="786" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 4 · 02-shape-stride-mechanism</text>
+</svg>
