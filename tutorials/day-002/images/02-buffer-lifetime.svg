@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="710" viewBox="0 0 1000 710">
+<rect x="0" y="0" width="1000" height="710" fill="#fdfaf4"/>
+<text x="500" y="44" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="27" fill="#3a4657" text-anchor="middle" font-weight="600">Buffer 的生与死：作用域、栈、堆与日志时间线</text>
+<text x="500" y="74" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#6b7686" text-anchor="middle" font-weight="500">左：main.cpp 的作用域嵌套 ｜ 右上：对象在栈上、数据在堆上 ｜ 右下：真实日志顺序</text>
+<rect x="46.7" y="100.1" width="472" height="352" fill="#fffdf8" stroke="none"/>
+<path d="M 48.1 99.1 C 204.8 100.4, 361.3 99.2, 520.0 99.5" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 519.6 100.7 C 517.8 218.4, 520.6 332.7, 519.3 452.1" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 519.9 451.5 C 364.4 452.9, 206.5 453.0, 48.3 452.0" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 48.2 452.1 C 48.1 336.7, 46.5 216.1, 48.6 99.8" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="126" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">src/main.cpp（节选，底色＝作用域）</text>
+<rect x="62.8" y="157.8" width="440" height="86.5" fill="#e7f0f9" opacity="0.45" stroke="none"/>
+<rect x="61.2" y="244.1" width="440" height="129.5" fill="#e9f4ea" opacity="0.4" stroke="none"/>
+<rect x="86.8" y="288.5" width="414" height="65.0" fill="#d9eedb" opacity="0.9" stroke="none"/>
+<rect x="60.6" y="373.2" width="440" height="43.5" fill="#fbeadd" opacity="0.55" stroke="none"/>
+<text x="72" y="152.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">int main() {</text>
+<text x="72" y="173.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  {</text>
+<text x="320" y="173.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// 作用域 A</text>
+<text x="72" y="195.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    Buffer a(16, "a");</text>
+<text x="72" y="216.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    Buffer b(32, "b");</text>
+<text x="72" y="238.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  }</text>
+<text x="320" y="238.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// b 先死，a 后死</text>
+<text x="72" y="259.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  {</text>
+<text x="320" y="259.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// 作用域 B</text>
+<text x="72" y="281.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    Buffer outer(8, "outer");</text>
+<text x="72" y="302.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    {</text>
+<text x="320" y="302.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// 作用域 C</text>
+<text x="72" y="324.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">      Buffer inner(8, "inner");</text>
+<text x="72" y="345.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    }</text>
+<text x="320" y="345.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// inner 先死</text>
+<text x="72" y="367.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  }</text>
+<text x="320" y="367.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// outer 后死</text>
+<text x="72" y="388.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  Buffer* p = new Buffer(64, "heap");</text>
+<text x="72" y="410.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">  delete p;</text>
+<text x="320" y="410.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">// 手动配对</text>
+<text x="72" y="431.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">}</text>
+<path d="M 492.0 195.4 L 497.2 197.7 L 501.9 201.2 L 500.8 207.0 L 499.8 212.5 L 495.1 216.3 L 489.3 215.0 L 484.0 212.7 L 483.1 207.0 L 483.7 201.9 L 487.1 198.2 L 492.0 195.0 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="492" y="209.71" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#5b8db8" text-anchor="middle" font-weight="600">A</text>
+<path d="M 492.0 302.4 L 497.2 305.1 L 501.6 308.9 L 502.6 314.8 L 499.2 319.5 L 494.7 322.5 L 489.1 323.1 L 483.7 320.4 L 482.2 314.7 L 483.5 309.4 L 487.1 305.7 L 492.0 302.5 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="492" y="317.21" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6aa673" text-anchor="middle" font-weight="600">B</text>
+<path d="M 492.0 314.6 L 497.4 315.6 L 500.8 320.0 L 501.0 325.3 L 499.0 330.1 L 495.0 334.1 L 489.3 333.3 L 485.0 330.1 L 482.5 325.4 L 483.1 319.9 L 487.0 316.3 L 492.0 312.9 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="492" y="327.96" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#6aa673" text-anchor="middle" font-weight="600">C</text>
+<path d="M 492.0 389.8 L 496.8 391.7 L 502.0 394.7 L 502.7 400.8 L 499.2 405.5 L 494.8 408.9 L 489.1 409.1 L 484.2 406.0 L 482.7 400.6 L 483.6 395.4 L 486.6 390.8 L 492.0 388.9 Z" fill="#fffdf8" stroke="#e0884f" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="492" y="403.21" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#e0884f" text-anchor="middle" font-weight="600">堆</text>
+<rect x="48.8" y="475.3" width="472" height="94" fill="#fffdf8" stroke="none"/>
+<path d="M 48.2 475.1 C 204.9 477.8, 362.8 477.1, 519.9 476.0" fill="none" stroke="#3a4657" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 520.7 476.7 C 522.0 508.0, 521.7 539.0, 519.6 570.1" fill="none" stroke="#3a4657" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 519.7 569.7 C 361.2 568.7, 205.7 571.8, 47.6 570.1" fill="none" stroke="#3a4657" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 47.4 569.8 C 47.0 540.0, 49.4 507.3, 48.3 476.9" fill="none" stroke="#3a4657" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="500" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">读代码的三个问题</text>
+<path d="M 76.0 513.9 L 79.4 514.6 L 82.4 517.1 L 82.3 520.9 L 81.6 524.8 L 78.0 526.8 L 74.4 525.6 L 70.5 524.8 L 69.9 520.9 L 70.2 517.4 L 73.0 515.4 L 76.0 514.5 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="76" y="523.42" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="9.5" fill="#5b8db8" text-anchor="middle" font-weight="600">1</text>
+<text x="92" y="524" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">每个 } 都触发一次自动析构：内层先，外层后</text>
+<path d="M 76.0 533.1 L 79.4 533.8 L 81.8 536.4 L 81.7 539.8 L 80.6 543.0 L 78.1 546.2 L 74.3 544.6 L 70.3 544.0 L 68.8 540.0 L 69.4 536.0 L 72.9 534.2 L 76.0 532.2 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="76" y="542.42" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="9.5" fill="#6aa673" text-anchor="middle" font-weight="600">2</text>
+<text x="92" y="543" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">a、b、outer、inner 的释放代码一行都没写</text>
+<path d="M 76.0 551.6 L 78.9 553.4 L 82.5 555.0 L 82.1 558.9 L 80.5 561.9 L 77.6 563.3 L 74.1 564.4 L 71.6 561.8 L 69.9 558.9 L 70.6 555.6 L 72.6 552.7 L 76.0 551.6 Z" fill="#fffdf8" stroke="#e0884f" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="76" y="561.42" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="9.5" fill="#e0884f" text-anchor="middle" font-weight="600">3</text>
+<text x="92" y="562" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">全图唯一要人记住的释放：delete p（橙色）</text>
+<rect x="553.9" y="101.1" width="168" height="208" fill="#fffdf8" stroke="none"/>
+<path d="M 556.1 99.8 C 610.6 97.9, 668.6 100.6, 723.9 99.3" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 723.7 100.3 C 724.6 170.6, 724.8 240.5, 724.6 308.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 724.5 308.3 C 665.9 305.8, 611.6 307.5, 555.2 308.6" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 556.2 308.3 C 558.0 238.9, 556.5 167.9, 555.3 100.1" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="122" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#3a4657" text-anchor="middle" font-weight="600">栈：对象本体</text>
+<text x="640" y="136" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">（作用域结束自动弹掉）</text>
+<rect x="784.8" y="101.0" width="176" height="208" fill="#fffdf8" stroke="none"/>
+<path d="M 785.4 100.5 C 844.9 101.0, 904.9 100.9, 962.4 99.8" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 961.8 99.2 C 962.5 171.3, 963.8 239.1, 962.1 308.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 961.3 307.2 C 902.6 308.3, 844.4 308.3, 785.4 307.6" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.1 307.4 C 786.2 237.5, 788.0 170.6, 785.8 100.6" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="874" y="122" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#3a4657" text-anchor="middle" font-weight="600">堆：new 出来的内存</text>
+<text x="874" y="136" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">（由对象的析构归还）</text>
+<rect x="568.0" y="135.0" width="140" height="28" fill="#e7f0f9" stroke="none"/>
+<path d="M 569.1 135.3 C 617.7 136.8, 664.2 136.4, 709.6 135.7" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 709.4 135.4 C 709.0 145.1, 709.3 155.8, 709.6 163.4" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 709.5 164.4 C 663.1 163.3, 616.7 165.4, 570.2 163.1" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 570.3 163.3 C 569.7 153.9, 569.5 145.8, 569.9 136.6" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="154.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">a · data_ →</text>
+<rect x="796.4" y="135.2" width="150" height="28" fill="#e7f0f9" stroke="none"/>
+<path d="M 797.5 135.9 C 847.4 136.1, 899.3 137.6, 948.7 135.9" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.7 135.9 C 948.0 145.5, 948.3 153.6, 948.1 163.4" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.6 164.1 C 898.8 163.8, 847.1 165.0, 798.3 163.5" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 798.6 164.0 C 798.6 155.5, 798.4 146.8, 798.8 136.5" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="873" y="154.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">a 的数据 · 16B</text>
+<path d="M 712.7 149.7 C 737.2 150.0, 770.8 150.0, 796.0 150.0" fill="none" stroke="#5b8db8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.8 153.9 C 788.4 153.5, 793.0 151.0, 795.6 150.0" fill="none" stroke="#5b8db8" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.6 145.4 C 788.0 147.4, 792.0 148.9, 795.5 149.4" fill="none" stroke="#5b8db8" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="567.8" y="170.2" width="140" height="28" fill="#e7f0f9" stroke="none"/>
+<path d="M 569.8 170.0 C 618.0 169.2, 663.2 168.5, 709.2 169.2" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.9 169.5 C 708.8 180.2, 710.6 188.0, 710.1 198.8" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 709.5 198.9 C 663.7 197.3, 616.4 198.0, 569.8 198.0" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 570.2 198.9 C 570.1 189.7, 571.4 179.8, 570.2 170.5" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="188.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">b · data_ →</text>
+<rect x="796.6" y="168.4" width="150" height="28" fill="#e7f0f9" stroke="none"/>
+<path d="M 798.9 170.5 C 848.8 169.3, 897.6 171.4, 948.4 169.3" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 947.8 169.5 C 948.7 178.6, 949.1 188.3, 947.2 198.2" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.6 197.5 C 898.2 198.3, 846.4 198.7, 798.0 197.8" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 798.7 198.5 C 799.0 189.2, 799.3 178.5, 798.3 169.9" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="873" y="188.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">b 的数据 · 32B</text>
+<path d="M 712.5 183.4 C 737.2 184.0, 770.8 184.0, 796.0 184.0" fill="none" stroke="#5b8db8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 784.4 189.2 C 789.3 186.1, 791.5 186.5, 796.0 183.7" fill="none" stroke="#5b8db8" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 784.9 179.2 C 787.8 181.6, 793.1 183.4, 796.8 184.3" fill="none" stroke="#5b8db8" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="570.7" y="203.1" width="140" height="28" fill="#e9f4ea" stroke="none"/>
+<path d="M 569.6 204.4 C 615.1 202.6, 662.6 203.1, 710.7 204.4" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.1 203.7 C 711.1 214.2, 708.7 222.3, 710.2 231.3" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.8 232.9 C 664.9 233.6, 618.2 233.4, 569.6 231.9" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 569.2 231.2 C 570.7 223.6, 571.2 213.4, 569.9 203.5" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="222.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">outer · data_ →</text>
+<rect x="797.8" y="203.5" width="150" height="28" fill="#e9f4ea" stroke="none"/>
+<path d="M 797.8 203.6 C 846.9 205.6, 898.1 202.6, 947.6 204.9" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 947.1 204.0 C 949.3 214.1, 947.7 224.2, 947.6 231.4" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 947.1 232.8 C 896.5 231.0, 847.6 230.9, 798.0 231.9" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 797.5 231.6 C 799.4 221.8, 799.3 213.7, 797.9 204.8" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="873" y="222.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">outer 的数据 · 8B</text>
+<path d="M 712.7 218.1 C 737.2 218.0, 770.8 218.0, 796.0 218.0" fill="none" stroke="#6aa673" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.0 222.9 C 788.3 221.8, 792.0 219.8, 796.7 218.8" fill="none" stroke="#6aa673" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.5 213.0 C 789.0 215.5, 791.6 216.7, 796.1 217.4" fill="none" stroke="#6aa673" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="569.5" y="237.3" width="140" height="28" fill="#e9f4ea" stroke="none"/>
+<path d="M 570.6 237.2 C 618.0 237.3, 664.0 237.7, 710.0 237.3" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 709.2 237.2 C 710.8 246.3, 709.7 256.7, 710.1 266.5" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 709.2 265.5 C 663.9 266.0, 615.3 265.3, 570.4 266.0" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 570.5 265.7 C 570.0 258.2, 571.2 245.8, 570.0 237.5" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="256.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">inner · data_ →</text>
+<rect x="795.9" y="237.2" width="150" height="28" fill="#e9f4ea" stroke="none"/>
+<path d="M 798.8 238.8 C 848.5 239.0, 899.1 237.6, 947.4 237.7" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.8 237.2 C 948.3 247.4, 949.3 255.9, 948.4 265.3" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 947.7 265.2 C 899.4 267.4, 847.1 265.6, 798.1 266.4" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 797.2 266.7 C 798.6 257.2, 796.9 246.0, 798.8 238.8" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="873" y="256.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">inner 的数据 · 8B</text>
+<path d="M 712.7 252.1 C 737.2 252.0, 770.8 252.0, 796.0 252.0" fill="none" stroke="#6aa673" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.0 255.7 C 788.8 254.6, 792.7 253.7, 796.5 252.4" fill="none" stroke="#6aa673" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.8 247.4 C 788.9 248.8, 793.2 250.7, 795.6 251.2" fill="none" stroke="#6aa673" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="569.9" y="271.1" width="140" height="28" fill="#fbeadd" stroke="none"/>
+<path d="M 570.7 271.4 C 617.8 271.3, 664.4 272.6, 709.4 271.3" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.7 272.3 C 709.6 282.0, 708.9 290.5, 709.7 299.8" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.9 299.2 C 661.8 301.1, 616.6 298.6, 569.8 300.3" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 570.1 299.2 C 569.1 291.4, 569.7 282.9, 570.3 272.5" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="640" y="290.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">p（只是指针）</text>
+<rect x="796.0" y="270.6" width="150" height="28" fill="#fbeadd" stroke="none"/>
+<path d="M 797.3 271.4 C 846.9 270.7, 899.4 271.7, 947.6 271.5" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.4 271.5 C 948.6 280.7, 948.1 290.2, 948.4 299.7" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 948.6 299.9 C 899.1 300.4, 849.0 300.4, 797.3 300.5" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 797.3 299.8 C 798.7 291.2, 797.4 282.0, 798.7 272.5" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="873" y="290.5" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">heap 对象＋64B</text>
+<path d="M 711.9 285.9 C 737.2 286.0, 770.8 286.0, 796.0 286.0" fill="none" stroke="#e0884f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.6 289.9 C 788.0 289.0, 791.5 287.7, 796.3 285.6" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.6 282.0 C 789.4 283.1, 792.3 285.0, 796.3 286.6" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="754" y="130" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#6b7686" text-anchor="middle" font-weight="500">data_</text>
+<text x="754" y="288" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#6b7686" text-anchor="middle" font-weight="500">new</text>
+<rect x="550.1" y="321.9" width="415" height="246" fill="#fffdf8" stroke="none"/>
+<path d="M 549.9 323.8 C 690.5 322.1, 825.8 324.7, 965.5 323.6" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 965.5 323.5 C 966.4 405.2, 966.3 488.4, 965.0 569.9" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 965.6 569.7 C 827.0 572.2, 690.0 570.4, 550.7 569.9" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 550.6 570.9 C 550.9 487.4, 548.3 405.7, 549.9 324.7" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="566" y="348" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">控制台日志（真实执行顺序）</text>
+<text x="949" y="348" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="end" font-weight="600">②后出生，③先销毁：倒序</text>
+<path d="M 582.0 360.2 L 586.2 361.4 L 589.2 364.7 L 590.1 369.2 L 588.5 373.6 L 584.3 376.0 L 579.9 375.1 L 575.6 373.5 L 574.3 369.1 L 574.7 364.6 L 577.2 360.5 L 582.0 359.7 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="371.6" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#5b8db8" text-anchor="middle" font-weight="600">1</text>
+<text x="598" y="372.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] a 出生 · 16 字节</text>
+<path d="M 582.0 380.0 L 586.8 380.1 L 588.5 384.5 L 589.0 388.5 L 588.6 393.2 L 584.5 395.9 L 579.9 394.6 L 575.5 393.1 L 573.2 388.8 L 574.4 384.0 L 578.1 381.4 L 582.0 379.8 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="391.1" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#5b8db8" text-anchor="middle" font-weight="600">2</text>
+<text x="598" y="391.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] b 出生 · 32 字节</text>
+<path d="M 582.0 398.8 L 586.5 400.0 L 589.0 403.8 L 590.2 408.2 L 588.1 412.2 L 584.1 414.3 L 579.8 414.5 L 576.4 411.8 L 573.9 408.2 L 575.2 403.9 L 578.2 401.1 L 582.0 398.7 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="410.6" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#5b8db8" text-anchor="middle" font-weight="600">3</text>
+<text x="598" y="411.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] b 销毁 · 32 字节</text>
+<path d="M 582.0 419.5 L 586.4 419.6 L 589.1 423.3 L 591.0 427.8 L 588.3 432.0 L 584.1 433.6 L 579.4 435.2 L 576.0 431.7 L 573.5 427.7 L 574.7 423.2 L 577.8 419.9 L 582.0 417.8 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="430.1" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#5b8db8" text-anchor="middle" font-weight="600">4</text>
+<text x="598" y="430.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] a 销毁 · 16 字节</text>
+<path d="M 582.0 437.4 L 586.6 438.8 L 588.4 443.1 L 590.6 447.2 L 587.4 450.7 L 584.3 453.9 L 580.0 452.7 L 576.6 450.7 L 574.5 447.1 L 573.9 442.3 L 577.3 438.6 L 582.0 438.1 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="449.6" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="600">5</text>
+<text x="598" y="450.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] outer 出生 · 8 字节</text>
+<path d="M 582.0 457.8 L 586.5 458.5 L 590.1 461.8 L 590.3 466.7 L 588.0 470.7 L 584.5 473.9 L 579.7 473.5 L 576.5 470.3 L 574.5 466.6 L 574.8 462.2 L 577.1 457.9 L 582.0 458.5 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="469.1" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="600">6</text>
+<text x="598" y="469.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] inner 出生 · 8 字节</text>
+<path d="M 582.0 476.5 L 586.6 477.8 L 588.9 481.8 L 589.1 486.0 L 587.5 489.8 L 584.3 492.8 L 579.5 493.6 L 575.9 490.3 L 573.5 486.2 L 574.1 481.4 L 578.3 479.2 L 582.0 477.3 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="488.6" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="600">7</text>
+<text x="598" y="489.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] inner 销毁 · 8 字节</text>
+<path d="M 582.0 496.3 L 586.0 498.3 L 588.3 501.6 L 590.5 505.7 L 587.5 509.3 L 584.1 511.6 L 579.5 512.9 L 575.7 509.9 L 574.7 505.6 L 573.8 500.8 L 577.2 497.1 L 582.0 497.5 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="508.1" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="600">8</text>
+<text x="598" y="508.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] outer 销毁 · 8 字节</text>
+<path d="M 582.0 517.0 L 585.9 518.0 L 590.0 520.3 L 589.7 525.1 L 587.9 529.1 L 584.3 531.8 L 579.5 532.7 L 576.2 529.0 L 574.2 525.1 L 574.7 520.7 L 577.7 517.3 L 582.0 515.7 Z" fill="#fffdf8" stroke="#e0884f" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="527.6" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#e0884f" text-anchor="middle" font-weight="600">9</text>
+<text x="598" y="528.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] heap 出生 · 64 字节</text>
+<path d="M 582.0 536.1 L 586.3 536.7 L 589.0 540.3 L 590.8 544.8 L 588.7 549.3 L 584.5 552.1 L 579.9 550.6 L 575.8 548.9 L 573.4 544.7 L 574.3 540.0 L 577.9 537.1 L 582.0 534.6 Z" fill="#fffdf8" stroke="#e0884f" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="582" y="547.1" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#e0884f" text-anchor="middle" font-weight="600">10</text>
+<text x="598" y="547.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] heap 销毁 · 64 字节</text>
+<path d="M 886.0 362.0 C 886.3 384.8, 884.6 412.6, 886.4 436.3" fill="none" stroke="#5b8db8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<text x="896" y="403.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#5b8db8" text-anchor="start" font-weight="600">作用域 A</text>
+<path d="M 885.8 441.6 C 885.5 468.5, 887.9 494.1, 886.7 520.3" fill="none" stroke="#6aa673" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<text x="896" y="485.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6aa673" text-anchor="start" font-weight="600">作用域 B</text>
+<path d="M 886.4 522.6 C 884.8 534.1, 884.7 546.3, 885.7 556.2" fill="none" stroke="#e0884f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<text x="896" y="543.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#e0884f" text-anchor="start" font-weight="600">堆 · 手动</text>
+<rect x="58.2" y="589.0" width="290" height="58" fill="#e7f0f9" stroke="none"/>
+<path d="M 59.2 589.5 C 158.5 588.0, 252.0 590.8, 350.0 589.4" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 350.6 589.2 C 350.6 610.1, 351.4 630.2, 350.3 648.2" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 350.4 648.6 C 255.4 646.4, 156.1 648.2, 60.1 647.1" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 59.2 647.4 C 58.9 628.6, 60.7 608.4, 60.0 590.3" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="205" y="613" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#3a4657" text-anchor="middle" font-weight="600">栈对象：作用域结束，析构自动运行</text>
+<text x="205" y="636" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">释放代码一行都不用写</text>
+<rect x="358.9" y="587.9" width="290" height="58" fill="#fbeadd" stroke="none"/>
+<path d="M 359.9 589.8 C 455.4 590.6, 554.5 591.7, 650.1 590.6" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 650.6 589.5 C 649.0 609.5, 650.9 630.2, 649.6 647.1" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 649.7 648.0 C 553.8 647.4, 457.6 646.7, 359.9 648.7" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 360.2 648.3 C 359.3 626.6, 359.3 610.0, 359.5 589.3" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="505" y="613" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#3a4657" text-anchor="middle" font-weight="600">堆对象：new / delete 全靠人配对</text>
+<text x="505" y="636" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">忘了是泄漏，多删是崩溃</text>
+<rect x="660.5" y="590.4" width="290" height="58" fill="#e9f4ea" stroke="none"/>
+<path d="M 659.8 590.6 C 756.4 590.6, 851.2 588.4, 949.1 589.6" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 949.6 589.3 C 951.1 608.1, 951.6 628.1, 949.5 648.0" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 949.3 648.6 C 852.4 646.2, 754.7 647.8, 660.7 647.7" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 659.3 648.6 C 658.2 627.4, 657.9 611.2, 660.8 590.0" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="805" y="613" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#3a4657" text-anchor="middle" font-weight="600">RAII：把『归还』写进析构函数</text>
+<text x="805" y="636" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="500">让作用域替你记住释放时机</text>
+<text x="980" y="696" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 2 · 02-buffer-lifetime</text>
+</svg>

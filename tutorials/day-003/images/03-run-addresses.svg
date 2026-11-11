@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+<rect x="0" y="0" width="1000" height="760" fill="#fdfaf4"/>
+<text x="500.0" y="44.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="27" fill="#3a4657" text-anchor="middle" font-weight="600">移动前后的资源地址：一次真实运行的完整证据链</text>
+<text x="500.0" y="74.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#6b7686" text-anchor="middle" font-weight="500">以下日志全部来自本机真实运行（Linux aarch64 · g++ 9.4.0）——堆地址自始至终没变，变的只有主人</text>
+<rect x="46.0" y="100.0" width="440.0" height="244.0" fill="#e7f0f9" stroke="none" transform="rotate(-0.3 266.0 222.0)"/>
+<g transform="rotate(-0.3 266.0 222.0)">
+<path d="M 46.1 100.7 C 192.7 100.7, 340.0 100.0, 264.8 99.5 S 339.4 101.3, 486.6 100.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 485.4 100.7 C 485.0 182.3, 486.3 262.3, 487.3 221.2 S 486.6 262.3, 486.0 343.9" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 485.5 343.6 C 339.8 343.3, 192.5 344.7, 267.6 342.6 S 193.1 345.5, 46.8 344.5" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 45.6 343.9 C 46.6 261.9, 45.7 181.8, 45.0 222.4 S 45.0 181.8, 46.8 99.7" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="266.0" y="126.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#5b8db8" text-anchor="middle" font-weight="600">接力第 1 棒：a → b（移动构造）</text>
+<text x="66.0" y="152.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor]      "a" 出生：64 字节 @ 0xaaaae41f5ee0</text>
+<text x="66.0" y="169.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- 移动前：a.data() = 0xaaaae41f5ee0 --</text>
+<text x="66.0" y="186.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[move-ctor] "a" 接管 64 字节 @ 0xaaaae41f5ee0</text>
+<text x="66.0" y="203.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#5b8db8" text-anchor="start" font-weight="500">-- 移动后：b.data() = 0xaaaae41f5ee0 --  ← 同一地址！</text>
+<text x="66.0" y="220.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- 移动后：a.data() = (nil), a.size() = 0 --</text>
+<text x="66.0" y="237.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- b.at(0) = 0xAB（数据跟着内存一起过来了）--</text>
+<text x="66.0" y="254.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- 此时 alive = 2（a、b 两个对象都活着）--</text>
+<text x="266.0" y="322.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#5b8db8" text-anchor="middle" font-weight="600">移动＝地址不变、主人更换：堆上 64 字节一比特都没搬</text>
+<rect x="514.0" y="100.0" width="440.0" height="244.0" fill="#e9f4ea" stroke="none" transform="rotate(-0.3 734.0 222.0)"/>
+<g transform="rotate(-0.3 734.0 222.0)">
+<path d="M 513.8 100.6 C 661.1 99.9, 807.1 100.7, 733.8 101.4 S 806.3 100.8, 954.4 100.0" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.1 99.8 C 954.2 180.7, 953.2 262.6, 952.7 222.6 S 953.2 264.0, 953.3 343.5" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.6 344.4 C 807.8 343.9, 660.6 343.8, 735.1 345.3 S 659.7 342.7, 513.8 343.3" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 514.8 344.4 C 513.7 263.9, 515.1 180.9, 514.5 223.0 S 515.4 179.9, 514.0 100.4" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="734.0" y="126.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#6aa673" text-anchor="middle" font-weight="600">接力第 2 棒：b → c（移动赋值）</text>
+<text x="534.0" y="152.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[ctor]      "c" 出生：32 字节 @ 0xaaaae41f5f30</text>
+<text x="534.0" y="169.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[move-assign] "c" 先归还旧资源 32 字节，</text>
+<text x="534.0" y="186.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">              再接管新资源 64 字节 @ 0xaaaae41f5ee0</text>
+<text x="534.0" y="203.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- c 旧地址 0xaaaae41f5f30 已归还 --</text>
+<text x="534.0" y="220.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6aa673" text-anchor="start" font-weight="500">-- c 新地址 = 0xaaaae41f5ee0（＝ b 原来的地址）--</text>
+<text x="534.0" y="237.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- 移动后：b.data() = (nil), b.size() = 0 --</text>
+<text x="734.0" y="322.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6aa673" text-anchor="middle" font-weight="600">资源接力 a→b→c，堆地址始终 0x…ee0；c 的旧 32 字节先归还，没有泄漏</text>
+<rect x="46.0" y="360.0" width="440.0" height="244.0" fill="#fbeadd" stroke="none" transform="rotate(-0.3 266.0 482.0)"/>
+<g transform="rotate(-0.3 266.0 482.0)">
+<path d="M 45.4 360.2 C 191.3 361.1, 340.7 358.5, 264.5 360.8 S 340.4 358.4, 486.6 359.4" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 486.8 360.2 C 485.2 442.8, 487.2 521.7, 485.4 483.0 S 486.2 520.3, 485.6 604.3" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 486.0 603.7 C 340.3 602.9, 192.5 604.2, 266.0 604.6 S 192.3 604.7, 46.8 603.4" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 45.7 603.6 C 45.4 522.9, 46.2 441.1, 44.9 481.7 S 45.0 440.6, 45.9 360.5" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="266.0" y="386.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#e0884f" text-anchor="middle" font-weight="600">收尾的账本：三份析构日志（倒序：c、b、a）</text>
+<text x="66.0" y="412.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] Buffer "a" 销毁：归还堆上 64 字节</text>
+<text x="66.0" y="429.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">[dtor] Buffer ""  销毁：归还堆上 0 字节（本来就是空的，没事）</text>
+<text x="66.0" y="446.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">[dtor] Buffer ""  销毁：归还堆上 0 字节（本来就是空的，没事）</text>
+<text x="66.0" y="463.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">-- 全部析构完，alive = 0 --</text>
+<text x="66.0" y="500.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#e0884f" text-anchor="start" font-weight="600">64 字节只归还一次，两个空壳归还 0 字节。第一行的名字是 “a”——</text>
+<text x="66.0" y="518.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#e0884f" text-anchor="start" font-weight="600">因为 name_ 也跟着资源一起移走了：归还者其实是 c！</text>
+<rect x="514.0" y="360.0" width="440.0" height="244.0" fill="#f7e7e7" stroke="none" transform="rotate(-0.3 734.0 482.0)"/>
+<g transform="rotate(-0.3 734.0 482.0)">
+<path d="M 514.1 360.1 C 659.7 361.1, 808.6 358.7, 732.4 359.3 S 807.7 358.9, 954.2 359.7" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 953.6 360.4 C 954.4 441.1, 953.4 523.5, 954.0 482.1 S 952.8 522.2, 954.2 604.3" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.5 604.0 C 807.6 604.0, 660.2 604.7, 734.4 604.1 S 659.1 606.2, 513.4 604.7" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 513.5 603.8 C 513.9 522.3, 514.4 440.9, 514.1 480.7 S 515.6 440.6, 514.8 359.4" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="734.0" y="386.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">编译期拦截：想拷贝？编译器直接拦下</text>
+<text x="534.0" y="412.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer b = a;   // 少写了 std::move</text>
+<text x="534.0" y="429.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500"> </text>
+<text x="534.0" y="446.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">error: use of deleted function</text>
+<text x="534.0" y="463.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">       'Buffer::Buffer(const Buffer&amp;)'</text>
+<text x="534.0" y="480.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">note: declared here</text>
+<text x="534.0" y="497.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">      Buffer(const Buffer&amp;) = delete;</text>
+<text x="534.0" y="530.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="600">exit 1——程序一行都没运行。删除拷贝后，double free 从“运行期崩溃”</text>
+<text x="534.0" y="548.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="600">降级为“编译期一行报错”，这是所有权设计换来的保护</text>
+<rect x="150.0" y="624.0" width="700.0" height="44.0" fill="#e9f4ea" stroke="none"/>
+<g>
+<path d="M 149.2 624.0 C 383.4 623.2, 615.0 625.1, 500.7 622.5 S 615.5 624.5, 849.2 624.3" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 850.0 623.7 C 850.2 638.0, 849.5 653.1, 848.3 647.2 S 848.1 654.5, 849.7 667.4" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 849.5 667.3 C 617.1 666.9, 382.8 668.5, 500.0 668.2 S 381.5 669.0, 150.4 668.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 150.0 668.7 C 150.2 653.2, 149.1 638.9, 151.1 645.7 S 149.7 639.1, 149.2 623.3" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="500.0" y="643.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">结果汇总：demo 正常结束（exit 0）· 19 条断言全部通过</text>
+<text x="500.0" y="660.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6aa673" text-anchor="middle" font-weight="600">ctest 100% tests passed（1/1）· free/double/泄漏：一次都没有发生</text>
+<text x="980.0" y="746.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 3 · 03-run-addresses</text>
+</svg>

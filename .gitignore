@@ -1,0 +1,5 @@
+.claude/
+.opencode/
+public/
+__pycache__/
+**/build/

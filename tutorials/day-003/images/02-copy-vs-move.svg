@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="790" viewBox="0 0 1000 790">
+<rect x="0" y="0" width="1000" height="790" fill="#fdfaf4"/>
+<text x="500.0" y="44.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="27" fill="#3a4657" text-anchor="middle" font-weight="600">拷贝 vs 移动：同一块堆内存的两种命运</text>
+<text x="500.0" y="74.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#6b7686" text-anchor="middle" font-weight="500">左：隐式拷贝只抄指针，是昨天 double free 的根源 ｜ 右：移动＝指针换主人＋原主人清空，一比特都不搬</text>
+<rect x="46.0" y="100.0" width="444.0" height="370.0" fill="#f7e7e7" stroke="none" opacity="0.35"/>
+<g>
+<path d="M 46.2 100.2 C 193.9 100.7, 342.7 100.1, 268.7 100.2 S 341.5 101.1, 490.4 100.6" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 490.2 100.5 C 489.9 223.8, 489.8 346.8, 490.7 283.8 S 489.4 346.7, 489.5 470.1" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 489.3 470.1 C 342.0 469.7, 193.7 470.3, 268.2 469.0 S 193.2 471.8, 46.4 469.9" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 45.7 469.9 C 44.8 347.2, 46.3 222.2, 47.1 285.5 S 47.4 223.7, 45.3 99.5" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="268.0" y="126.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">路线 A：隐式拷贝（浅拷贝）——编译器的危险默认</text>
+<text x="66.0" y="152.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer a(16, "a");</text>
+<text x="66.0" y="168.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer copy = a;   // 没写 =delete 时的隐式拷贝构造</text>
+<g>
+<path d="M 66.2 188.7 C 125.9 187.3, 182.4 189.2, 155.6 189.9 S 182.3 190.0, 242.1 187.9" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 241.9 188.8 C 243.2 219.4, 241.4 253.1, 241.1 234.8 S 242.0 252.5, 242.7 283.7" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 242.0 284.2 C 182.6 284.8, 124.7 283.8, 153.4 283.7 S 125.5 284.5, 65.3 284.4" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 65.7 283.4 C 64.7 252.5, 66.7 218.7, 64.4 236.6 S 67.3 220.1, 65.7 187.9" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="154.0" y="208.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">栈上的 a</text>
+<text x="80.0" y="228.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">data_ ──▶</text>
+<text x="80.0" y="244.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">size_ = 16</text>
+<text x="80.0" y="260.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">name_ = "a"</text>
+<g>
+<path d="M 300.8 188.6 C 358.7 188.7, 417.9 187.4, 388.1 188.1 S 418.0 187.0, 475.8 187.5" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 476.6 187.7 C 477.1 219.2, 475.4 253.0, 475.5 235.2 S 476.3 251.6, 475.9 284.6" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 475.4 284.0 C 415.9 284.9, 359.6 282.6, 386.7 284.7 S 359.5 284.0, 300.1 283.5" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 300.5 284.8 C 298.9 253.5, 300.8 218.8, 299.6 235.5 S 299.5 218.9, 299.3 187.5" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="388.0" y="208.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">栈上的 copy</text>
+<text x="314.0" y="228.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">data_ ──▶</text>
+<text x="314.0" y="244.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">size_ = 16</text>
+<text x="314.0" y="260.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">name_ = "a"</text>
+<rect x="176.0" y="336.0" width="180.0" height="46.0" fill="#f7e7e7" stroke="none"/>
+<g>
+<path d="M 175.4 335.7 C 235.2 336.2, 295.7 336.0, 264.6 334.4 S 295.5 336.4, 355.6 336.5" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 356.3 336.7 C 355.5 352.5, 357.3 365.7, 357.3 360.2 S 357.3 366.7, 356.5 381.6" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 356.1 381.6 C 296.2 381.2, 235.3 381.7, 267.2 382.9 S 235.2 382.2, 175.5 381.2" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 176.7 382.5 C 176.6 366.9, 176.3 351.5, 175.2 358.0 S 176.8 352.9, 176.2 335.9" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="266.0" y="356.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">堆：16 字节 @ 0x…ee0</text>
+<text x="266.0" y="374.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#cc6b6b" text-anchor="middle" font-weight="500">（只有这一块！）</text>
+<path d="M 154.0 286.0 C 181.4 302.6, 208.6 319.4, 194.7 310.5 S 208.4 320.4, 236.0 336.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 236.0 336.0 C 238.9 336.2, 242.1 336.1, 242.2 334.9 S 241.6 336.1, 245.0 336.2" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 236.0 336.0 C 237.2 338.8, 239.1 341.0, 239.4 341.1 S 240.4 341.4, 240.3 343.9" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 388.0 286.0 C 356.2 303.8, 327.8 318.2, 342.3 311.2 S 327.8 317.5, 296.0 336.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 296.0 336.0 C 294.9 338.1, 292.3 341.6, 295.1 338.4 S 292.9 341.2, 291.3 343.7" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 296.0 336.0 C 293.0 335.9, 290.0 335.9, 292.9 337.6 S 290.4 335.0, 287.0 335.8" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="140.0" y="318.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">指向同一块！</text>
+<text x="392.0" y="318.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">也指向它！</text>
+<text x="66.0" y="402.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">~a：    delete[] 0x…ee0   ← 第一次</text>
+<text x="66.0" y="418.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">~copy： delete[] 0x…ee0   ← 同一块，第二次！</text>
+<text x="66.0" y="444.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="600">free(): double free detected in tcache 2</text>
+<text x="66.0" y="460.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="600">Aborted (core dumped) · exit 134（昨天错误二）</text>
+<rect x="510.0" y="100.0" width="444.0" height="370.0" fill="#e9f4ea" stroke="none" opacity="0.45"/>
+<g>
+<path d="M 510.7 99.5 C 657.9 100.3, 806.5 99.7, 731.4 101.6 S 807.9 99.2, 953.8 100.5" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 953.8 99.7 C 954.8 221.8, 952.4 347.4, 952.1 283.7 S 951.5 346.2, 953.4 469.6" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.0 470.4 C 807.0 469.6, 657.6 471.0, 730.5 469.5 S 659.0 469.7, 510.5 470.2" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 509.6 470.0 C 508.5 347.8, 510.7 222.3, 508.7 286.7 S 509.6 223.5, 509.6 100.1" fill="none" stroke="#6aa673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="732.0" y="126.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#6aa673" text-anchor="middle" font-weight="600">路线 B：移动——指针交接，堆内存原地不动</text>
+<text x="530.0" y="152.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer(const Buffer&amp;) = delete;   // 拷贝：禁止</text>
+<text x="530.0" y="168.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer(Buffer&amp;&amp; other) noexcept;  // 移动：交接</text>
+<text x="530.0" y="184.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer b = std::move(a);           // 触发移动构造</text>
+<g>
+<path d="M 743.5 208.8 C 804.9 209.5, 868.9 207.6, 835.3 209.4 S 867.9 206.6, 930.3 208.2" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 930.5 208.6 C 930.2 241.9, 929.6 275.4, 929.5 257.3 S 929.3 276.9, 929.3 308.7" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 929.6 307.4 C 867.2 307.8, 805.9 307.1, 838.0 305.9 S 804.9 308.4, 743.4 307.4" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 744.8 308.8 C 745.5 274.0, 742.9 242.5, 744.1 259.0 S 742.4 241.1, 743.6 207.8" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="837.0" y="228.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6aa673" text-anchor="middle" font-weight="600">栈上的 b（新主人）</text>
+<text x="758.0" y="248.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">data_ ──▶ 0x…ee0</text>
+<text x="758.0" y="264.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">size_ = 16</text>
+<text x="758.0" y="280.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">name_ = "a"（名字也搬走了）</text>
+<text x="758.0" y="298.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="600"></text>
+<rect x="530.0" y="208.0" width="186.0" height="100.0" fill="#fffdf8" stroke="none" opacity="0.55"/>
+<g>
+<path d="M 529.8 208.4 C 591.9 208.4, 654.3 208.1, 623.2 208.0 S 654.4 209.1, 716.5 208.1" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 715.5 208.2 C 715.1 242.4, 717.1 274.3, 717.8 259.6 S 716.1 273.6, 716.7 308.6" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 715.5 307.3 C 654.8 306.6, 591.5 308.6, 621.8 305.8 S 592.6 309.4, 530.8 307.9" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 530.8 308.3 C 529.6 276.0, 531.3 240.7, 530.6 258.1 S 530.2 241.0, 530.0 208.4" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="623.0" y="228.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#6b7686" text-anchor="middle" font-weight="600">移空后的 a（空壳）</text>
+<text x="544.0" y="248.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">data_ = nullptr</text>
+<text x="544.0" y="264.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">size_ = 0</text>
+<text x="544.0" y="280.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6b7686" text-anchor="start" font-weight="500">name_ = ""</text>
+<text x="544.0" y="298.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">可以再赋新资源</text>
+<rect x="640.0" y="336.0" width="180.0" height="46.0" fill="#e9f4ea" stroke="none"/>
+<g>
+<path d="M 639.7 336.0 C 699.4 336.2, 760.1 335.5, 730.1 337.6 S 761.4 336.6, 819.8 335.7" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 820.5 335.7 C 819.7 351.9, 821.6 365.4, 820.7 359.5 S 821.1 365.8, 820.8 381.6" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 819.7 382.7 C 759.8 382.4, 699.8 382.3, 731.1 384.1 S 699.8 382.1, 639.9 382.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.2 381.3 C 640.8 365.7, 639.3 352.1, 638.4 360.2 S 639.0 353.6, 639.9 336.6" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="730.0" y="356.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">堆：16 字节 @ 0x…ee0</text>
+<text x="730.0" y="374.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="500">（还是原来那一块）</text>
+<path d="M 837.0 310.0 C 811.0 319.0, 786.0 327.0, 797.5 323.2 S 787.1 326.8, 760.0 336.0" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 760.0 336.0 C 758.9 337.4, 755.1 341.4, 757.8 338.9 S 754.5 341.4, 754.0 342.7" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 760.0 336.0 C 756.8 335.7, 754.4 334.6, 755.1 335.7 S 755.5 334.9, 751.2 334.3" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="848.0" y="322.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6aa673" text-anchor="middle" font-weight="600">唯一的主人</text>
+<path d="M 623.0 310.0 C 634.5 319.5, 648.5 326.5, 640.5 322.5 S 648.9 325.4, 660.0 336.0" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<path d="M 660.0 336.0 C 657.0 334.3, 657.0 329.7, 656.4 331.2 S 655.6 329.8, 654.0 328.0" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 660.0 336.0 C 663.7 332.0, 664.3 331.0, 664.1 332.4 S 665.3 332.0, 668.0 327.0" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600.0" y="322.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">指向已断开</text>
+<text x="530.0" y="402.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">① 接管：data_ = other.data_（地址不变）</text>
+<text x="530.0" y="418.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">② 清空：other.data_ = nullptr, other.size_ = 0</text>
+<text x="530.0" y="434.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11" fill="#3a4657" text-anchor="start" font-weight="500">③ 收尾：只有 b delete 一次；a delete nullptr（安全）</text>
+<text x="530.0" y="460.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="600">一块内存，始终只有一个主人——账永远对得上</text>
+<text x="500.0" y="514.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="16" fill="#3a4657" text-anchor="middle" font-weight="600">Rule of Five：动了其中一个，五个都要有交代</text>
+<rect x="60.0" y="530.0" width="170.0" height="158.0" fill="#fffdf8" stroke="none" opacity="0.85"/>
+<g>
+<path d="M 60.7 529.9 C 118.1 528.8, 172.8 530.5, 145.0 529.6 S 174.0 529.8, 230.3 529.4" fill="none" stroke="#6b7686" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 229.5 530.5 C 228.6 583.9, 231.1 633.9, 229.3 607.2 S 232.1 633.0, 230.2 687.3" fill="none" stroke="#6b7686" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 229.6 687.8 C 173.4 687.5, 116.2 688.2, 145.4 687.6 S 115.0 689.6, 60.0 687.9" fill="none" stroke="#6b7686" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 60.3 687.3 C 61.4 633.8, 58.9 583.9, 58.5 607.1 S 58.8 583.7, 59.9 530.4" fill="none" stroke="#6b7686" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="145.0" y="556.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="600">~Buffer()</text>
+<text x="145.0" y="576.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">析构函数</text>
+<text x="145.0" y="600.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6b7686" text-anchor="middle" font-weight="600">昨天已写</text>
+<text x="145.0" y="626.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">delete[] data_</text>
+<rect x="245.0" y="530.0" width="170.0" height="158.0" fill="#f7e7e7" stroke="none"/>
+<g>
+<path d="M 245.6 530.5 C 302.2 530.1, 358.2 530.3, 331.6 529.1 S 357.8 529.1, 414.7 529.9" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 415.2 529.2 C 415.6 582.0, 415.4 635.3, 414.0 607.7 S 415.3 636.4, 415.7 688.0" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 415.1 687.7 C 358.7 687.8, 302.1 688.1, 329.3 687.2 S 303.3 687.0, 245.8 688.3" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 245.1 688.2 C 245.9 634.6, 243.9 584.0, 246.2 610.2 S 243.0 582.7, 244.8 530.4" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="330.0" y="556.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">Buffer(const Buffer&amp;)</text>
+<text x="330.0" y="576.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">拷贝构造</text>
+<text x="330.0" y="600.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">＝ delete</text>
+<text x="330.0" y="626.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">本类禁止拷贝</text>
+<rect x="430.0" y="530.0" width="170.0" height="158.0" fill="#f7e7e7" stroke="none"/>
+<g>
+<path d="M 429.9 529.7 C 485.8 530.7, 543.7 529.6, 515.9 531.7 S 542.5 530.9, 599.5 530.6" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 599.8 529.5 C 599.7 582.1, 599.6 634.7, 599.3 609.7 S 600.6 633.4, 599.5 687.3" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 599.8 687.8 C 542.5 688.3, 486.8 687.1, 515.4 687.1 S 485.7 686.3, 429.5 687.6" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 429.9 688.1 C 429.1 636.2, 430.4 582.2, 430.4 609.6 S 429.4 583.0, 429.6 530.3" fill="none" stroke="#cc6b6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="515.0" y="556.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">operator=(const Buffer&amp;)</text>
+<text x="515.0" y="576.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">拷贝赋值</text>
+<text x="515.0" y="600.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">＝ delete</text>
+<text x="515.0" y="626.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">同上，禁止</text>
+<rect x="615.0" y="530.0" width="170.0" height="158.0" fill="#e9f4ea" stroke="none"/>
+<g>
+<path d="M 614.8 530.1 C 671.5 530.2, 728.5 530.0, 698.4 531.2 S 729.6 530.0, 785.2 530.2" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.1 529.6 C 784.6 583.2, 786.1 634.7, 786.5 610.7 S 785.7 636.2, 785.6 688.3" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 785.0 687.5 C 729.0 687.0, 671.3 688.2, 700.5 686.2 S 671.4 689.3, 615.3 687.7" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 615.0 688.1 C 615.2 635.4, 615.4 582.6, 615.6 610.2 S 614.5 581.4, 615.6 529.9" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="700.0" y="556.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6aa673" text-anchor="middle" font-weight="600">Buffer(Buffer&amp;&amp;)</text>
+<text x="700.0" y="576.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">移动构造</text>
+<text x="700.0" y="600.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="600">今天写</text>
+<text x="700.0" y="626.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">接管＋清空</text>
+<rect x="800.0" y="530.0" width="170.0" height="158.0" fill="#e9f4ea" stroke="none"/>
+<g>
+<path d="M 800.4 530.1 C 857.8 529.3, 912.3 531.4, 885.2 532.1 S 913.3 532.1, 969.7 530.6" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 969.7 529.2 C 969.5 582.6, 970.4 635.0, 969.9 609.0 S 969.7 635.6, 970.3 688.4" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 970.1 687.8 C 912.8 688.3, 856.7 687.6, 885.5 686.8 S 856.4 686.7, 799.4 688.1" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 799.9 688.1 C 799.6 635.2, 799.6 582.2, 798.5 608.7 S 798.6 581.0, 799.4 529.3" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="885.0" y="556.0" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#6aa673" text-anchor="middle" font-weight="600">operator=(Buffer&amp;&amp;)</text>
+<text x="885.0" y="576.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">移动赋值</text>
+<text x="885.0" y="600.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#6aa673" text-anchor="middle" font-weight="600">今天写</text>
+<text x="885.0" y="626.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">先归还自己，再接管</text>
+<text x="500.0" y="712.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#6b7686" text-anchor="middle" font-weight="500">“交代”不等于“都自己动手”——＝ delete 也是一种交代；往后写新类，先过这五关</text>
+<rect x="180.0" y="698.0" width="640.0" height="24.0" fill="#fbeadd" stroke="none" opacity="0.25"/>
+<text x="980.0" y="776.0" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 3 · 02-copy-vs-move</text>
+</svg>
