@@ -1,5 +1,7 @@
 .claude/
 .opencode/
+.arts/.env
 public/
 __pycache__/
 **/build/
+tutorials/day-054/code/mlir-mini/outputs/oscillate_hang.err

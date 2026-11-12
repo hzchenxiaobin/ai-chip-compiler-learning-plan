@@ -1,0 +1,20 @@
+===== 融合前 =====
+module {
+  func.func @graph_both_matmul(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x4xf32>, %arg3: tensor<4x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.matmul %arg2, %arg3 : tensor<2x4xf32>, tensor<4x2xf32> -> tensor<2x2xf32>
+    %2 = mini.add %0, %1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    return %2 : tensor<2x2xf32>
+  }
+}
+
+===== 融合后 =====
+module {
+  func.func @graph_both_matmul(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x4xf32>, %arg3: tensor<4x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.matmul %arg2, %arg3 : tensor<2x4xf32>, tensor<4x2xf32> -> tensor<2x2xf32>
+    %2 = mini.add %0, %1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    return %2 : tensor<2x2xf32>
+  }
+}
+

@@ -1,0 +1,4 @@
+Pattern 集: P51g FuseAddRelu(让位版, benefit 1, root relu) + P3(benefit 2, root add)
+决策日志（贪心驱动，遍历 = bottom-up）：
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

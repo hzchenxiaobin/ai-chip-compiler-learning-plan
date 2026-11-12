@@ -1,0 +1,15 @@
+combo.mlir:11:1: remark: 3 ops in @combo (func.func=1, func.return=1, mini.relu=1)
+func.func @combo(%x: tensor<2x2xf32>) -> tensor<2x2xf32> {
+^
+combo.mlir:11:1: note: see current operation: 
+func.func @combo(%arg0: tensor<2x2xf32>) -> tensor<2x2xf32> {
+  %0 = mini.relu %arg0 : tensor<2x2xf32> -> tensor<2x2xf32>
+  return %0 : tensor<2x2xf32>
+}
+module {
+  func.func @combo(%arg0: tensor<2x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.relu %arg0 : tensor<2x2xf32> -> tensor<2x2xf32>
+    return %0 : tensor<2x2xf32>
+  }
+}
+

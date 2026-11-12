@@ -1,0 +1,4 @@
+决策日志（策略 = keep）：
+  [fuse3] 匹配 MatMul + Add + Relu（乘积使用者 2）-> fused_matmul_bias_relu，Relu 直接吸收
+  [keep] 乘积还有 2 个使用者，保留 mini.matmul —— 整次 matmul 将在融合算子里重算（2·M·N·K 次乘加，比 Day 52 重算一次加法贵得多）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

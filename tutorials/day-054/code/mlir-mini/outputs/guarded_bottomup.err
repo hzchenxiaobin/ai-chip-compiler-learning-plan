@@ -1,0 +1,5 @@
+Pattern 集: P51g FuseAddRelu(让位版, benefit 1, root relu) + P3(benefit 2, root add)
+决策日志（贪心驱动，遍历 = bottom-up）：
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

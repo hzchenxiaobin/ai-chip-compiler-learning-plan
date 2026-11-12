@@ -1,0 +1,3 @@
+决策日志（策略 = reject）：
+  [fuse3] 匹配 MatMul + Add + Relu（乘积使用者 1）-> fused_matmul_bias_relu，Relu 直接吸收
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

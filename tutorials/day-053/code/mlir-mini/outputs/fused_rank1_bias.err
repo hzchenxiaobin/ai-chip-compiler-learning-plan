@@ -1,0 +1,2 @@
+loc("inputs/fused_rank1_bias.mlir":6:10): error: 'mini.fused_matmul_bias' op bias 需要广播到结果形状（第 40 天起故意不支持，第 60 天放行）
+解析/验证失败: inputs/fused_rank1_bias.mlir

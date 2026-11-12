@@ -1,0 +1,7 @@
+Pattern 集: P1 FuseMatmulBias(benefit 1, root add) + P2 AbsorbRelu(benefit 1, root relu)
+决策日志（贪心驱动，遍历 = bottom-up）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P1] 匹配 MatMul + Add -> fused_matmul_bias（两阶段·第一步，Relu 原地不动）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

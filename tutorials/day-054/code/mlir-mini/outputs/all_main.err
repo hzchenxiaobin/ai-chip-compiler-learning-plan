@@ -1,0 +1,5 @@
+Pattern 集: P1(benefit 1) + P2(benefit 1) + P3(benefit 2)——同 root(add) 上 P3 领先
+决策日志（贪心驱动，遍历 = bottom-up）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

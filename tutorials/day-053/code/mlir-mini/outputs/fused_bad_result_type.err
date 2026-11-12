@@ -1,0 +1,2 @@
+loc("inputs/fused_bad_result_type.mlir":6:10): error: 'mini.fused_matmul_bias' op 结果 shape 应为 [2,2]（跟 matmul 走），实际 [2,3]
+解析/验证失败: inputs/fused_bad_result_type.mlir

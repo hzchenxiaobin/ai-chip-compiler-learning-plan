@@ -1,0 +1,5 @@
+Pattern 管道: 第 1 轮 {P3}，第 2 轮 {P51}
+决策日志（第 1 轮 {P3}，遍历 = bottom-up）：
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+决策日志（第 2 轮 {P51}，遍历 = bottom-up）：
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

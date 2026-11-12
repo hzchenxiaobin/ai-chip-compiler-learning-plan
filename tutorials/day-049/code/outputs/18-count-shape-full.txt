@@ -1,0 +1,17 @@
+combo_shape.mlir:17:1: remark: 4 ops in @combo_shape (func.func=1, func.return=1, mini.matmul=1, mini.relu=1)
+func.func @combo_shape(%a: tensor<2x3xf32>, %b: tensor<3x2xf32>) -> tensor<2x2xf32> {
+^
+combo_shape.mlir:17:1: note: see current operation: 
+func.func @combo_shape(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>) -> tensor<2x2xf32> {
+  %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+  %1 = mini.relu %0 : tensor<2x2xf32> -> tensor<2x2xf32>
+  return %1 : tensor<2x2xf32>
+}
+module {
+  func.func @combo_shape(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.relu %0 : tensor<2x2xf32> -> tensor<2x2xf32>
+    return %1 : tensor<2x2xf32>
+  }
+}
+

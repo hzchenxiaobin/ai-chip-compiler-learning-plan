@@ -1,0 +1,4 @@
+Pattern 集: P51 FuseAddRelu(benefit 1, root relu) + P3(benefit 2, root add)——root 不同，benefit 管不到先后
+决策日志（贪心驱动，遍历 = bottom-up）：
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（直接两算子，%s 还有别的使用者时不吸收 Relu）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

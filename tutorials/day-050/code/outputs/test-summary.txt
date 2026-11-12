@@ -1,0 +1,29 @@
+mini-opt: /tmp/opencode/day050-build/bin/mini-opt
+
+PASS  rc=0  fused_add_relu_ok
+PASS  rc=0  fused_add_relu_dynamic_ok
+PASS  rc=0  fused_matmul_bias_relu_ok
+PASS  rc=0  fused_matmul_bias_relu_ok_batched
+PASS  rc=0  fused_matmul_bias_relu_dynamic_ok
+PASS  rc=0  target_graph_unfused
+PASS  rc=0  integration_chain
+PASS  rc=1  fused_add_relu_mismatch
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_add_relu_mismatch.mlir:6:8: error: 'mini.fused_add_relu' op requires identical operand shapes, but got 'tensor<2x2xf32>' and 'tensor<2x3xf32>', which do not match dimension by dimension and are not broadcast-compatible either
+PASS  rc=1  fused_add_relu_broadcast
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_add_relu_broadcast.mlir:8:8: error: 'mini.fused_add_relu' op requires identical operand shapes, but got 'tensor<2x2xf32>' and 'tensor<1x2xf32>', which would broadcast; broadcasting is not supported yet (see Day 60) -- expand the smaller operand to the exact shape for now
+PASS  rc=1  fused_add_relu_bad_result
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_add_relu_bad_result.mlir:8:8: error: 'mini.fused_add_relu' op result shape must equal the operand shape: operands are 'tensor<2x2xf32>' and 'tensor<2x2xf32>', but result is 'tensor<3x3xf32>'
+PASS  rc=1  fused_matmul_bias_relu_inner_dim
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_inner_dim.mlir:9:8: error: 'mini.fused_matmul_bias_relu' op requires matching inner dimensions: lhs 'tensor<2x3xf32>' ends in 3, but rhs 'tensor<2x2xf32>' has second-to-last dim 2 (expected lhs [..., M, K] times rhs [..., K, N])
+PASS  rc=1  fused_matmul_bias_relu_bad_result
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_bad_result.mlir:8:8: error: 'mini.fused_matmul_bias_relu' op result shape must be [M, N] derived from the operands: expected [..., 2, 2] from lhs 'tensor<2x3xf32>' and rhs 'tensor<3x2xf32>', but got 'tensor<3x3xf32>'
+PASS  rc=1  fused_matmul_bias_relu_bias_mismatch
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_bias_mismatch.mlir:7:8: error: 'mini.fused_matmul_bias_relu' op requires bias to have exactly the result shape: bias is 'tensor<3x2xf32>', but result is 'tensor<2x2xf32>', which do not match dimension by dimension
+PASS  rc=1  fused_matmul_bias_relu_bias_broadcast
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_bias_broadcast.mlir:12:8: error: 'mini.fused_matmul_bias_relu' op requires bias to have exactly the result shape: bias is 'tensor<2xf32>', result is 'tensor<2x2xf32>', which would broadcast; broadcasting is not supported yet (see Day 60) -- tile the bias to the full result shape for now
+PASS  rc=1  fused_matmul_bias_relu_dynamic_bad_inner
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_dynamic_bad_inner.mlir:7:8: error: 'mini.fused_matmul_bias_relu' op requires matching inner dimensions: lhs 'tensor<?x3xf32>' ends in 3, but rhs 'tensor<4x2xf32>' has second-to-last dim 4 (expected lhs [..., M, K] times rhs [..., K, N])
+
+op 计数（mini-count-ops）：
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/target_graph_unfused.mlir:6:1: remark: 6 ops in @target_graph (func.func=1, func.return=1, mini.add=1, mini.constant=1, mini.matmul=1, mini.relu=1)
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_ok.mlir:8:1: remark: 4 ops in @fused_matmul_bias_relu_ok (func.func=1, func.return=1, mini.constant=1, mini.fused_matmul_bias_relu=1)

@@ -1,0 +1,2 @@
+loc("inputs/bad_bias_shape.mlir":6:10): error: 'mini.add' op 两个操作数 shape 不匹配
+解析/验证失败: inputs/bad_bias_shape.mlir

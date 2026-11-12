@@ -1,0 +1,1 @@
+/mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-050/code/fused_matmul_bias_relu_ok.mlir:8:1: remark: 4 ops in @fused_matmul_bias_relu_ok (func.func=1, func.return=1, mini.constant=1, mini.fused_matmul_bias_relu=1)

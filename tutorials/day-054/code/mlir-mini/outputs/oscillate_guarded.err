@@ -1,0 +1,65 @@
+Pattern 集: P1(benefit 1) + P2(benefit 1) + Unfuse(benefit 3)——P2 与 Unfuse 互为逆变换，先融起来再拉锯，不会收敛
+决策日志（贪心驱动，遍历 = bottom-up，本轮改写上限 = 6）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P1] 匹配 MatMul + Add -> fused_matmul_bias（两阶段·第一步，Relu 原地不动）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+  [Unfuse] fused_matmul_bias_relu 拆回 fused_matmul_bias + relu（语义不变，P2 会再融回去……）
+  [P2] fused_matmul_bias + relu -> fused_matmul_bias_relu（两阶段·第二步，epilogue 吸收）
+!! 驱动未收敛：Pattern 互相打架，超过迭代/改写上限（护栏止损，见教程错误 4）
+verify: 通过（注意：这只代表结构合法，不代表语义没变）

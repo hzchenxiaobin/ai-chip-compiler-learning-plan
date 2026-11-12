@@ -1,0 +1,22 @@
+第 53 天实验汇总 —— 2026-11-12 11:37
+工具: ./build/mini-fuse-bias；环境: g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0，MLIR Ubuntu LLVM version 18.1.8
+
+== 正例（期望 rc=0）==
+bias_relu  ->  rc=0  (期望 0)  通过
+bias_only  ->  rc=0  (期望 0)  通过
+bias_on_left  ->  rc=0  (期望 0)  通过
+multi_user_reject  ->  rc=0  (期望 0)  通过
+multi_user_keep  ->  rc=0  (期望 0)  通过
+shared_result  ->  rc=0  (期望 0)  通过
+both_matmul  ->  rc=0  (期望 0)  通过
+
+== 负例（期望 rc=1：Verifier 拦截，轮不到 Pattern）==
+rank1_bias  ->  rc=1  (期望 1)  通过
+bad_bias_shape  ->  rc=1  (期望 1)  通过
+fused_bad_result_type  ->  rc=1  (期望 1)  通过
+fused_rank1_bias  ->  rc=1  (期望 1)  通过
+
+== 上游 linalg 对照 ==
+linalg 对照 rc=0，结果见 linalg_fused.out
+
+== 汇总: 11 通过 / 0 失败 ==

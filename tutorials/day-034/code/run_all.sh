@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 第 34 天一键重放：构建 Standalone 示例并重放全部实验
 # 环境：Ubuntu 20.04 (arm64)、LLVM/MLIR 18.1.8（mlir-18-tools + libmlir-18-dev + llvm-18-dev）
-# 用法：bash run_all.sh          # 完整重放（构建 + 7 组实验 + 修改验证闭环）
+# 用法：bash run_all.sh          # 完整重放（构建 + 8 组实验 + 修改验证闭环）
 #       DAY034_BUILD=... 指定构建目录（默认 /tmp/day034-build）
 set -uo pipefail
 
@@ -42,8 +42,15 @@ banner "2/8 工具的方言注册表：--show-dialects"
 banner "3/8 算子 round-trip：standalone.foo"
 "$OPT" "$HERE/foo_demo.mlir"
 
-banner "4/8 Verifier 报错探针：类型不匹配"
-if "$OPT" "$HERE/foo_bad_type.mlir" 2>&1 | grep -m1 "error:"; then :; else echo "(预期 error 未出现)"; fi
+banner "4/8 报错探针：解析器拦截 vs op 自己的 Verifier"
+err=$("$OPT" "$HERE/foo_bad_type.mlir" 2>&1 || true)
+echo "(4a) foo_bad_type.mlir：块参数声明 i32 却按 i64 用 —— 解析器当场拦下："
+first=$(printf '%s\n' "$err" | grep "error:" | head -n1)
+[ -n "$first" ] && printf '%s\n' "$first" || echo "(预期 error 未出现)"
+err=$("$OPT" "$HERE/foo_bad_verifier.mlir" 2>&1 || true)
+echo "(4b) foo_bad_verifier.mlir：参数本来就是 i64，语法自洽 —— 这次由 op 的 Verifier 报错："
+first=$(printf '%s\n' "$err" | grep "error:" | head -n1)
+[ -n "$first" ] && printf '%s\n' "$first" || echo "(预期 error 未出现)"
 
 banner "5/8 运行示例自带 Pass：standalone-switch-bar-foo"
 "$OPT" "$HERE/bar_to_foo.mlir" --pass-pipeline="builtin.module(standalone-switch-bar-foo)"

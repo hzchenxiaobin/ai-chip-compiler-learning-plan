@@ -1,0 +1,53 @@
+第 54 天实验汇总 —— 2026-11-12 11:58
+工具: ./build/mini-fuse3；环境: g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0，
+      Ubuntu LLVM version 18.1.8，aarch64 Linux
+
+== A. 三算子融合的三条路线（主线图 bias_relu，期望都到 fused_matmul_bias_relu）==
+two_stage_main  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+direct_main  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+all_main  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+all_main_topdn  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+
+== B. 抢跑事故（同一集合 [P51,P3]，只换访问顺序）==
+steal_bottomup  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_add_relu mini.matmul 
+steal_topdown  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+
+== C. 两种修法：让位规则 / Pass 管道顺序（两种遍历都试）==
+guarded_bottomup  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+guarded_topdown  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+pipeline_main  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+
+== D. 修法不误伤纯 Add+Relu 图（小融合的正确主场）==
+steal_small  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_add_relu 
+guarded_small  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_add_relu 
+pipeline_small  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_add_relu 
+
+== E. %s 共用的半融合不动点 + 乘积多使用者的恒等拒绝 ==
+two_stage_shared  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias mini.relu 
+direct_shared  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias mini.relu 
+steal_shared  ->  rc=0  (期望 0)  通过
+    最终形态: mini.fused_matmul_bias mini.relu 
+all_multi  ->  rc=0  (期望 0)  通过
+    最终形态: mini.add mini.matmul mini.relu 
+
+== F. 互相打架的 Pattern：护栏止损 / 无护栏拉锯 ==
+oscillate_guarded  ->  rc=2  (期望 2)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+oscillate_hang  ->  rc=124 (期望 124)  通过（10 秒内未返回，被 timeout 杀掉；
+    Unfuse 执行 2384709 次仍在拉锯）
+
+== 汇总: 18 通过 / 0 失败 ==
