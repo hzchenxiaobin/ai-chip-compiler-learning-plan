@@ -1,0 +1,7 @@
+module {
+  func.func @reshape_wrong_count(%arg0: memref<3x4xf32>, %arg1: memref<2xindex>) -> memref<5x3xf32> {
+    %reshape = memref.reshape %arg0(%arg1) : (memref<3x4xf32>, memref<2xindex>) -> memref<5x3xf32>
+    return %reshape : memref<5x3xf32>
+  }
+}
+

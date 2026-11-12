@@ -1,0 +1,52 @@
+=== 1. 底层存储 store ===
+store: shape=(6,)  itemsize=4 字节  strides=(4,) 字节
+值：[0.0, 1.0, 2.0, 3.0, 4.0, 5.0]（元素值 ＝ 它的物理位置，方便核对）
+
+=== 2. 视图 A = store.reshape(2, 3)：连续 Tensor ===
+A: shape=(2, 3)  strides=(3, 1) 元素（(12, 4) 字节）  storage_offset=0
+  C-contiguous=True  F-contiguous=False  与 store 共享内存=True
+  A[0,0]=0 @ 偏移0   A[0,1]=1 @ 偏移1   A[0,2]=2 @ 偏移2
+  A[1,0]=3 @ 偏移3   A[1,1]=4 @ 偏移4   A[1,2]=5 @ 偏移5
+
+=== 3. 视图 T = A.T：转置视图（同一存储，零拷贝） ===
+T: shape=(3, 2)  strides=(1, 3) 元素（(4, 12) 字节）  storage_offset=0
+  C-contiguous=False  F-contiguous=True  与 store 共享内存=True
+  T[0,0]=0 @ 偏移0   T[0,1]=3 @ 偏移3
+  T[1,0]=1 @ 偏移1   T[1,1]=4 @ 偏移4
+  T[2,0]=2 @ 偏移2   T[2,1]=5 @ 偏移5
+
+=== 4. 视图 B = store[1:5].reshape(2, 2)：storage_offset = 1 ===
+B: shape=(2, 2)  strides=(2, 1) 元素（(8, 4) 字节）  storage_offset=1
+  C-contiguous=True  F-contiguous=False  与 store 共享内存=True
+  B[0,0]=1 @ 偏移1   B[0,1]=2 @ 偏移2
+  B[1,0]=3 @ 偏移3   B[1,1]=4 @ 偏移4
+
+=== 5. 对照实验：同一句 reshape，两种代价 ===
+A.reshape(6) 与 store 共享内存: True  → 元信息操作，零拷贝
+T.reshape(6) 与 store 共享内存: False  → 必须拷贝出新的连续数组
+T.reshape(6) 值: [0.0, 3.0, 1.0, 4.0, 2.0, 5.0]
+显式拷贝 ascontiguousarray(T): strides=(8, 4) 字节，C-contiguous=True，与 store 共享内存=False
+写回验证：T2 内容 == T 内容 → True
+
+=== 6. 断言结果 ===
+[PASS] A 的 storage_offset == 0
+[PASS] A 的元素 strides == (3, 1)
+[PASS] A 每个元素满足 偏移 = off + i*3 + j*1
+[PASS] A 的值 == store 中该偏移处的值
+[PASS] T 的 storage_offset == 0
+[PASS] T 的元素 strides == (1, 3)
+[PASS] T 每个元素满足 偏移 = off + i*1 + j*3
+[PASS] T 的值 == store 中该偏移处的值
+[PASS] B 的 storage_offset == 1
+[PASS] B 的元素 strides == (2, 1)
+[PASS] B 每个元素满足 偏移 = off + i*2 + j*1
+[PASS] B 的值 == store 中该偏移处的值
+[PASS] A 是 C-contiguous
+[PASS] T 不是 C-contiguous 但 F-contiguous
+[PASS] B 虽有偏移 1 但仍 C-contiguous（偏移与连续性无关）
+[PASS] T[i,j] == A[j,i]
+[PASS] A.reshape(6) 是视图（共享内存）
+[PASS] T.reshape(6) 是拷贝（不共享内存）
+[PASS] T.reshape(6) 值顺序 == 按列读 A
+
+layout_lab: 19/19 checks passed

@@ -1,0 +1,41 @@
+=== A. 替换与产物 ===
+  [PASS] A1 参数类型替换
+  [PASS] A2 输出类型重推（M=2 跟随 %a，N=2 跟随 %b）
+  [PASS] A3 静态参数 %b 不动
+  [PASS] A4 注释与结构保留（还是同一个函数）
+  [PASS] A5 产物通过 mlir-opt parse+verify
+  [PASS] A6 CLI 位置参数写法（arg0=…）也能用
+
+=== B. spec 非法输入被拒 ===
+  [PASS] B1 改静态维
+  [PASS] B2 rank 不符
+  [PASS] B3 未知名字
+  [PASS] B4 重复指定
+  [PASS] B5 负数维度
+  [PASS] B6 越界位置参数
+
+=== C. K 对账与 --force（重新验证的两层）===
+  [PASS] C1 k_blind 特化被 mini K 对账拒绝（不写出）
+  [PASS] C2 --force 写出后 mlir-opt 拦下（静态检查重新生效）
+  [PASS] C3 CLI 退出码=4（外部验证失败）且诊断可见
+  [PASS] C4 不带 --force 时拒绝写出文件
+
+=== D. outs 一致性 ===
+  [PASS] D1 outs spec 与推导冲突被拒
+  [PASS] D2 只特化输出、不动输入 → 无根据被拒
+  [PASS] D3 冗余但一致的 outs spec 放行
+
+=== E. 产物质量（IR 指标）===
+  [PASS] E1 动态版有 1 个 memref.dim，特化版 0 个
+  [PASS] E2 三次 full-unroll 后：动态版剩 1 个 affine.for（M 卡在 %dim），特化版 0 个（全部直码化）
+  [PASS] E3 特化产物里 K 维可静态检查（类型全静态）
+
+=== F. dispatch.mlir 真实执行（与 numpy 对拍）===
+  [PASS] F1 场景 1 命中特化版（hit=1, M=2）
+  [PASS] F2 场景 1 结果与 numpy 一致
+  [PASS] F3 场景 2 回退通用版（hit=0, M=4）
+  [PASS] F4 场景 2 通用版结果与 numpy 一致
+  [PASS] F5 场景 3 缓存长出第二份特化后再命中（hit=1, M=4）
+  [PASS] F6 特化版与通用版输出逐位一致（语义保持）
+
+=== 汇总：28/28 ===

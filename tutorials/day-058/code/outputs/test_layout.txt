@@ -1,0 +1,21 @@
+[PASS] NCHW strides == (C·H·W, H·W, W, 1) = (32, 8, 4, 1)
+[PASS] NHWC strides == (H·W·C, W·C, C, 1) = (32, 16, 4, 1)
+[PASS] N=2 一般化：NCHW strides == (32, 8, 4, 1)（批维不改变其余维步长）
+[PASS] N=2 一般化：NHWC strides == (32, 16, 4, 1)
+[PASS] 地址反查 == stride 公式（两种布局 × 64 元素逐个对拍）
+[PASS] P1 读一行像素：NCHW 偏移 == [0,1,2,3]（沿 W 连续）
+[PASS] P1 读一行像素：NHWC 偏移 == [0,4,8,12]（w 步长 = C = 4）
+[PASS] P2 取像素全部通道：NCHW 偏移 == [0,8,16,24]（c 步长 = H·W = 8）
+[PASS] P2 取像素全部通道：NHWC 偏移 == [0,1,2,3]（沿 C 连续）
+[PASS] P3 逐通道空间平面：NCHW 偏移 == [8..15]（连续 8 格）
+[PASS] P3 逐通道空间平面：NHWC 偏移 == [1,5,9,13,17,21,25,29]（步长 C=4）
+[PASS] 向量化判定：沿 W（P1）NCHW 最长连续段 = 4 ≥ 128 位向量
+[PASS] 向量化判定：沿 C（P2）NHWC 最长连续段 = 4，NCHW 只有 1
+[PASS] 缓存行：P3 触碰 64B 行数 NCHW=1 < NHWC=2
+[PASS] 逻辑相等：nhwc[n,h,w,c] == nchw[n,c,h,w]（逐逻辑下标，N=2）
+[PASS] 视图：transpose(0,2,3,1) 与原存储共享内存 且 非 C-contiguous
+[PASS] 重排：ascontiguousarray 不共享内存 且 C-contiguous
+[PASS] 视图零收益：P2 经 nhwc_view 的偏移 == 经 nchw 的偏移
+[PASS] NHWC 平铺顺序 == 逻辑读序搬家：nhwc.ravel() 前 8 项 == [0,8,16,24,1,9,17,25]
+[PASS] MLIR Verifier 拒绝把重排布局谎报成转置视图（exit != 0 且报 strided 错误）
+test_layout: 20/20 checks passed

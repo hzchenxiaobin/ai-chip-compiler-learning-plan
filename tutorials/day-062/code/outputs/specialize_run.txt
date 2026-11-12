@@ -1,0 +1,9 @@
+== specialize-shape：matmul_dyn.mlir → outputs/matmul_spec.mlir ==
+函数 @matmul（3 个参数）
+替换清单（MLIR 的 ? 没有名字，按「参数.维」对号——第 61 天 bindings 表的 MLIR 版）：
+  %a : memref<?x3xf32> → memref<2x3xf32>   （spec）
+  %b : memref<3x2xf32>   [3x2] 全静态，未改动
+  %o : memref<?x2xf32> → memref<2x2xf32>   （输出重推）
+共替换 4 处类型串（2 种类型）
+重新验证（/usr/lib/llvm-18/bin/mlir-opt parse+verify）：exit=0 通过
+写出 outputs/matmul_spec.mlir

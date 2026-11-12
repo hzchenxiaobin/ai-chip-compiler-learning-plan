@@ -1,0 +1,4 @@
+bad_reshape.mlir:16:8: error: 'memref.collapse_shape' op invalid source layout map or collapsing non-contiguous dims
+  %0 = memref.collapse_shape %t [[0, 1]]
+       ^
+bad_reshape.mlir:16:8: note: see current operation: %1 = "memref.collapse_shape"(%0) <{reassociation = [[0, 1]]}> : (memref<4x3xf32, strided<[1, 4]>>) -> memref<12xf32>

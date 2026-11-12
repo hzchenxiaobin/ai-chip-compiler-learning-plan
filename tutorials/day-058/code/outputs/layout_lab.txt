@@ -1,0 +1,89 @@
+=== 0. 环境 ===
+python 3.11.4 · numpy 1.26.4 · aarch64 · Linux
+
+=== 1. 数据准备：同一个逻辑张量，两种物理摆放 ===
+形状 N=1, C=4, H=2, W=4，共 32 个 f32
+逻辑内容 v(n,c,h,w) = c*8 + h*4 + w   （即每个元素的 NCHW 编号）
+nchw      = arange(32).reshape(1,4,2,4)
+nhwc_view = nchw.transpose(0,2,3,1)      # NHWC 逻辑顺序，物理没动
+nhwc      = ascontiguousarray(nhwc_view) # NHWC 物理摆放（重排）
+三者是同一个逻辑张量：np.array_equal(nhwc, nhwc_view) = True
+
+=== 2. Layout 对照表（元信息） ===
+对象         逻辑形状         元素strides         最内维         C连续    与nchw同存储    
+nchw      (1, 4, 2, 4)(32, 8, 4, 1)     W (stride 1)True   True        
+nhwc_view (1, 2, 4, 4)(32, 4, 1, 8)     c (stride 8)False  True        
+nhwc      (1, 2, 4, 4)(32, 16, 4, 1)    C (stride 1)True   False       
+注：strides 单位是元素；numpy 的 a.strides 是字节（各 ×4）。
+
+=== 3. 访存序列：同一访问模式，两种布局的物理偏移 ===
+--- P1 读一行像素：固定 c=0,h=0，w=0..3（空间方向扫描） ---
+  NCHW: 偏移 [0, 1, 2, 3]
+        连续段 [0..3]×4 · 触碰缓存行 1 个 · 128位向量(4×f32)一次装载: 可以
+  NHWC: 偏移 [0, 4, 8, 12]
+        连续段 [0] [4] [8] [12] · 触碰缓存行 1 个 · 128位向量(4×f32)一次装载: 不行
+
+--- P2 取一个像素的全部通道：固定 h=0,w=0，c=0..3（通道归约） ---
+  NCHW: 偏移 [0, 8, 16, 24]
+        连续段 [0] [8] [16] [24] · 触碰缓存行 2 个 · 128位向量(4×f32)一次装载: 不行
+  NHWC: 偏移 [0, 1, 2, 3]
+        连续段 [0..3]×4 · 触碰缓存行 1 个 · 128位向量(4×f32)一次装载: 可以
+
+--- P3 取 c=1 的整幅空间平面：(h,w) 行优先（逐通道 pooling） ---
+  NCHW: 偏移 [8, 9, 10, 11, 12, 13, 14, 15]
+        连续段 [8..15]×8 · 触碰缓存行 1 个 · 128位向量(4×f32)一次装载: 可以
+  NHWC: 偏移 [1, 5, 9, 13, 17, 21, 25, 29]
+        连续段 [1] [5] [9] [13] [17] [21] [25] [29] · 触碰缓存行 2 个 · 128位向量(4×f32)一次装载: 不行
+
+--- P4 整体搬运（memcpy 一口气）：两种布局各自整体连续 ---
+  NCHW: 全量偏移 0..31 连续 = True
+  NHWC: 全量偏移 0..31 连续 = True
+
+=== 4. 视图零成本，但也零收益 ===
+同一个 P2（取像素 (h=0,w=0) 的全部通道），三种走法：
+  经 nchw       （下标 (n,c,h,w)）: [0, 8, 16, 24]
+  经 nhwc_view  （下标 (n,h,w,c)）: [0, 8, 16, 24]
+  经 nhwc 重排  （下标 (n,h,w,c)）: [0, 1, 2, 3]
+→ 转置视图只换「索引习惯」，物理访存一格没变；只有重排才改变访存序列
+
+=== 5. 重排有成本，才有收益（真实计时） ===
+输入: 1x3x224x224 f32 = 602112 字节（约 588 KiB）
+创建零拷贝视图 transpose(0,2,3,1)   :      0.4 µs/次（最优）
+真实重排 ascontiguousarray(同一句)  :    0.215 ms/次（最优）
+差距约 615 倍——「换登记表」与「搬家」的代价从来不在一个量级
+
+=== 6. torch 对照：channels_last 就是官方版 NHWC 重排 ===
+torch 2.7.1+cpu（本机 CPU 版，真实运行）
+tx.stride() = (32, 8, 4, 1)            # NCHW：(H*W*C, H*W, W, 1)
+ty.stride() = (32, 1, 16, 4)     # channels_last：(H*W*C, 1, W*C, C)
+注意：torch 的逻辑维仍是 (N,C,H,W)，只是 strides 变了——
+  同一块 NHWC 物理摆放，逻辑标签可以是 (N,H,W,C)（我们的 nhwc）
+  也可以是 (N,C,H,W)+channels_last（torch 的 ty）——物理布局才是本质
+numpy 侧等价视图 nhwc.transpose(0,3,1,2) 的元素 strides = (32, 1, 16, 4)  # 与 ty.stride() 一致
+torch.equal(tx, ty) = True · ty 与 tx 不同内存 = True
+ty.is_contiguous(memory_format=channels_last) = True
+（说明：torch_npu 已安装但本机无 NPU 硬件，此实验在 CPU 上完成；
+  在昇腾/GPU 上，channels_last 正是卷积类算子偏好的摆放。）
+
+=== 7. 断言收尾 ===
+[PASS] nchw 的值 == 逻辑编号 v(c,h,w)（逐元素）
+[PASS] nhwc 与 nhwc_view 逻辑相等（同一逻辑张量）
+[PASS] nchw 元素 strides == (32, 8, 4, 1)
+[PASS] nhwc_view 元素 strides == (32, 4, 1, 8)
+[PASS] nhwc 元素 strides == (32, 16, 4, 1)
+[PASS] nchw 是 C-contiguous
+[PASS] nhwc_view 不是 C-contiguous（只是个视图）
+[PASS] nhwc 是 C-contiguous（重排后恢复连续）
+[PASS] nhwc_view 与 nchw 共享内存（零拷贝）
+[PASS] nhwc 与 nchw 不共享内存（重排=搬家）
+[PASS] P1 NCHW 序列 == [0,1,2,3]（空间行连续）
+[PASS] P1 NHWC 序列 == [0,4,8,12]（隔 4 跳格）
+[PASS] P2 NCHW 序列 == [0,8,16,24]（通道隔 8 跳格）
+[PASS] P2 NHWC 序列 == [0,1,2,3]（通道连续→1 次向量装载）
+[PASS] P3 NCHW 序列 == [8..15]（通道平面连续）
+[PASS] P3 NHWC 序列 == [1,5,9,13,17,21,25,29]（隔 4 跳格）
+[PASS] 视图零收益：经 nhwc_view 的 P2 序列 == 经 nchw 的 P2 序列
+[PASS] 两种布局各自整体连续（memcpy 一口气可搬）
+[PASS] torch channels_last strides == numpy 同物理布局视图的 strides
+[PASS] torch channels_last 的物理平铺顺序 == numpy 重排 nhwc 的平铺顺序
+layout_lab: 20/20 checks passed

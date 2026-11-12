@@ -1,0 +1,5 @@
+函数 @matmul（3 个参数）：
+  %a : memref<?x3xf32>          维度 [?x3]
+  %b : memref<3x2xf32>          维度 [3x2]
+  %o : memref<?x2xf32>          维度 [?x2]   ← outs（输出，由推导重推）
+  spec 写法示例：--specialize-shape "a=?x3,b=3x2,o=?x2"

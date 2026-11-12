@@ -1,0 +1,4 @@
+bad_load.mlir:10:10: error: 'memref.load' op incorrect number of indices for load, expected 2 but got 1
+    %v = memref.load %s[%i] : memref<2x3xf32>
+         ^
+bad_load.mlir:10:10: note: see current operation: %1 = "memref.load"(%0, %arg0) : (memref<2x3xf32>, index) -> f32

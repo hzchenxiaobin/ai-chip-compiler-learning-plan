@@ -1,0 +1,86 @@
+=== 0. 环境 ===
+python 3.11.4 · numpy 1.26.4
+
+=== 1. 贯穿例子：同一批数据的四种身份 ===
+对象           逻辑形状    元素strides   连续    线性读序的前几个物理偏移
+x   连续基座       (3, 4)        (4, 1)   True   [0, 1, 2, 3, 4, 5] ...
+xT  转置视图       (4, 3)        (1, 4)  False   [0, 4, 8, 1, 5, 9] ...
+col 列切片        (3, 2)        (4, 1)  False   [0, 1, 4, 5, 8, 9] ...
+z   跨步切片       (2, 6)       (12, 2)  False   [0, 2, 4, 6, 8, 10] ...
+
+=== 2. mini.reshape Verifier：infer_shape + try_view ===
+    (3, 4) ->    (12,)  ['拍扁'连续源]
+    mini.reshape:   view · (1,)
+    (4, 3) ->    (12,)  ['拍扁'转置视图]
+    mini.reshape: reject · 目标读序无法用仿射 strides 表达，需要真实重排（mini.reshape 拒绝，要求显式 repack）
+    (2, 6) ->    (12,)  ['拍扁'跨步切片]
+    mini.reshape:   view · (2,)
+    (3, 4) ->  (-1, 2)  [-1 推断]
+    mini.reshape:   view · (2, 1)
+    (3, 4) ->   (5, 3)  [元素数不守恒]
+    mini.reshape:  error · cannot reshape array of size 12 into shape (5, 3)
+    (3, 4) ->  (-1, 5)  [-1 推不出来]
+    mini.reshape:  error · cannot reshape array of size 12 into shape (-1, 5)
+    (3, 4) -> (-1, -1)  [两个 -1]
+    mini.reshape:  error · can only specify one unknown dimension
+
+=== 3. 判定表：mini.reshape 预测 vs numpy 实测 ===
+用例                 源(strides)          目标        mini预测        numpy实测        对拍
+C1  连续源拍扁           (3, 4)     (4, 1)      (12,)   view (1,)      view (1,)      ok
+C2  连续源换块           (3, 4)     (4, 1)     (2, 6)   view (6, 1)    view (6, 1)    ok
+C3  连续源拆维           (3, 4)     (4, 1)   (3, 2, 2)   view (4, 2, 1) view (4, 2, 1) ok
+C4  连续源加壳           (3, 4)     (4, 1)    (1, 12)   view (0, 1)    view (12, 1)   ok
+C5  -1 推断           (3, 4)     (4, 1)      (-1,)   view (1,)      view (1,)      ok
+C6  转置视图拍扁          (4, 3)     (1, 4)      (12,)   reject         copy           ok
+C7  转置视图换块          (4, 3)     (1, 4)     (2, 6)   reject         copy           ok
+C8  转置视图尾部加1        (4, 3)     (1, 4)   (4, 3, 1)   view (1, 4, 0) view (1, 4, 4) ok
+C9  转置视图中部加1        (4, 3)     (1, 4)   (4, 1, 3)   view (1, 0, 4) view (1, 12, 4) ok
+C10 转置视图整回(3,4)     (4, 3)     (1, 4)     (3, 4)   reject         copy           ok
+C11 列切片拍扁           (3, 2)     (4, 1)       (6,)   reject         copy           ok
+C12 跨步切片拍扁          (2, 6)    (12, 2)      (12,)   view (2,)      view (2,)      ok
+C13 跨步切片换块          (2, 6)    (12, 2)     (3, 4)   view (8, 2)    view (8, 2)    ok
+C14 元素数不守恒          (3, 4)     (4, 1)     (5, 3)   error          error          ok
+C15 -1 整除失败         (3, 4)     (4, 1)    (-1, 5)   error          error          ok
+[PASS] 15/15 组用例：mini.reshape 的判定与 numpy 实测完全一致（reject 对应 numpy 的静默 copy）
+
+=== 4. 偏移序列证据：视图改元信息，拷贝改数据 ===
+x   的线性读序偏移: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]   等差(步长1): True
+xT  的线性读序偏移: [0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11]   等差: False
+z   的线性读序偏移: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]   等差(步长2): True
+
+x.reshape(2,6)  是视图: 读序偏移 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  == x 的读序偏移（数据一格未动）
+xT.reshape(12)  是拷贝: 读序偏移 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  被规整成 0..11（数据搬了家）
+z.reshape(12)   是视图: 读序偏移 [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]  == z 的读序偏移（步长2的等差序列，strided<[2]> 装得下）
+[PASS] 视图语义：reshape 结果的逻辑内容与源逐元素相等
+[PASS] xT 的读序偏移确实不是等差数列（一维化必须搬家）
+[PASS] z 的读序偏移是步长 2 的等差数列（一维化只需 strided<[2]>）
+[PASS] 视图的读序偏移 == 源的读序偏移（r_x 与 r_z）
+[PASS] 拷贝的读序偏移被规整成连续（r_xT）
+
+=== 5. 同一条 reshape，两种命运（真实计时，best-of-30） ===
+输入: 2048x2048 f32 = 16777216 字节（约 16 MiB）
+连续源  big.reshape(1,-1)   （视图，改元信息）:      0.34 µs/次
+非连续源 bigT.reshape(-1)    （numpy 静默拷贝）:    41.897 ms/次
+显式重排 ascontiguousarray(bigT)（对照）      :    41.819 ms/次
+视图与拷贝差距约 123588 倍——同一条 reshape 语句，输入连续性不同，代价差 4~5 个数量级
+[PASS] reshape 视图零拷贝、静默拷贝语义正确且代价差 >100 倍
+
+=== 6. Verifier 关键行为断言 ===
+[PASS] infer_shape: (3,4)+(-1,) -> (12,)
+[PASS] infer_shape: (3,4)+(-1,2) -> (6,2)
+[PASS] infer_shape: (3,4)+(2,-1) -> (2,6)
+[PASS] infer_shape: numel=15 != 12 报错
+[PASS] infer_shape: 12 不能被 5 整除报错
+[PASS] infer_shape: 两个 -1 报错
+[PASS] try_view: x(3,4)/(4,1) -> (2,6) 给出 (6,1)
+[PASS] try_view: x(3,4)/(4,1) -> (3,2,2) 给出 (4,2,1)
+[PASS] try_view: xT(4,3)/(1,4) -> (12,) 不可表达
+[PASS] try_view: z(2,6)/(12,2) -> (12,) 给出 (2,)
+[PASS] try_view: z(2,6)/(12,2) -> (3,4) 给出 (8,2)
+[PASS] try_view: col(3,2)/(4,1) -> (6,) 不可表达
+[PASS] try_view: 拆任何维都行——xT(4,3)/(1,4) -> (4,3,1) 可表达
+[PASS] try_view: 元素数不同直接不可表达
+[PASS] mini_reshape: 转置视图整回 (3,4) 判 reject
+[PASS] mini_reshape 与 numpy 对 numel 违规的判定一致（都报 error）
+
+reshape_lab: 23/23 checks passed

@@ -1,0 +1,74 @@
+=== 1. 贯穿例子：a(2,3) 遇上三种对手 ===
+  a (2, 3)  b (3,)  c (2, 1)  d (4,)
+  a + b → 形状 (2, 3)，值 =
+  [[11. 22. 33.]
+   [14. 25. 36.]]
+  a + c → 形状 (2, 3)，值 =
+  [[101. 102. 103.]
+   [204. 205. 206.]]
+  a + d → error：shape mismatch: objects cannot be broadcast to a single shape.  Mismatch is between arg 0 with shape (2, 3) and arg 1 with shape (4,).
+
+  numpy 的实测报错（逐字）：
+    ValueError('operands could not be broadcast together with shapes (2,3) (4,) ')
+
+  stride-0 证据（b 被当作 (2,3) 用，一行数据两行用，不搬家）：
+    b 的 strides = (8,) bytes，广播视图的 strides = (0, 8) bytes（元素单位 (0, 1)）
+    shares_memory = True，两行的第 2 列都是 30.0 / 30.0（同一格读两遍）
+  [PASS] 贯穿例子三种结局与 numpy 一致
+  [PASS] a+b / a+c 数值正确
+  [PASS] 广播视图 stride 0 且共享存储
+
+=== 2. 判定表：mini.broadcast 预测 vs numpy 实测 ===
+  用例                输入                            mini            numpy           对拍
+  C1 同形相加          (2, 3) + (2, 3)               (2, 3)          (2, 3)          ok
+  C2 标量 vs 矩阵      (2, 3) + ()                   (2, 3)          (2, 3)          ok
+  C3 行向量（贯穿例子）     (2, 3) + (3,)                 (2, 3)          (2, 3)          ok
+  C4 列向量右对齐        (2, 3) + (2, 1)               (2, 3)          (2, 3)          ok
+  C5 bias 相加       (8, 1000, 256) + (256,)       (8, 1000, 256)  (8, 1000, 256)  ok
+  C6 经典翻车 (256,1)  (8, 1000, 256) + (256, 1)     error           error           ok
+  C7 两边都补 1        (5, 1) + (1, 4)               (5, 4)          (5, 4)          ok
+  C8 双 1           (1,) + (1,)                   (1,)            (1,)            ok
+  C9 0 尺寸维         (0,) + (1,)                   (0,)            (0,)            ok
+  C10 rank 差 2      (3, 4) + (1,)                 (3, 4)          (3, 4)          ok
+  C11 三形状连播         (8, 1000, 256) + (256,) + (1, 1)(8, 1000, 256)  (8, 1000, 256)  ok
+  C12 -1 不是未知维度     (2, 3) + (-1,)                error           error           ok
+  C13 维度 1 不豁免他维    (3, 1) + (2, 3)               error           error           ok
+  C14 完全失配          (2, 3) + (4,)                 error           error           ok
+  C15 标量对           () + ()                       ()              ()              ok
+  C16 1×n 对 n×1     (1, 3) + (3, 1)               (3, 3)          (3, 3)          ok
+  [PASS] 判定表 16 组全部一致（含 4 组错误消息逐字相同）
+
+=== 3. stride-0 视图：broadcast_strides vs np.broadcast_to 实测 ===
+  用例      源         目标              mini strides  numpy         对拍
+  S1      (3,)      (2, 3)          (0, 1)        (0, 1)        ok
+  S2      (3, 1)    (2, 3, 4)       (0, 1, 0)     (0, 1, 0)     ok
+  S3      (2, 1)    (2, 3)          (1, 0)        (1, 0)        ok
+  S4      (1, 3)    (2, 3)          (0, 1)        (0, 1)        ok
+  S5      (2, 3)    (2, 3)          (3, 1)        (3, 1)        ok
+  S6      ()        (2, 3)          (0, 0)        (0, 0)        ok
+  S7      (2, 3)    (1, 2, 3)       (0, 3, 1)     (0, 3, 1)     ok
+  S8      (3,)      (4, 1, 2, 3)    (0, 0, 0, 1)  (0, 0, 0, 1)  ok
+  S9      (256,)    (8, 1000, 256)  (0, 0, 1)     (0, 0, 1)     ok
+  S10     (2, 3)    (4, 1, 2, 3)    (0, 0, 3, 1)  (0, 0, 3, 1)  ok
+  [PASS] stride-0 视图 10 组逐位一致
+  [PASS] 大输出不搬数据：100000x3 广播视图与 3 元素源共享存储
+
+=== 4. 未知维度：None 的 meet 规则（numpy 没有对应物，期望手算）===
+  用例      输入                          meet 结果       说明
+  U1      (None, 3) + (3,)            (None, 3)     最右维 3==3；None 对补 1 → 未知
+  U2      (None, 3) + (5, 3)          (5, 3)        None 对已知 5 → 5（运行期须为 5 或 1）
+  U3      (None, 3) + (1,)            (None, 3)     1 不改变未知：结果维跟随未知方
+  U4      (None, 1) + (5, 3)          (5, 3)        第 1 维 1 扩展成 3；None 对 5 → 5
+  U5      (None,) + (3,)              (3,)          None 对已知 3 → 3
+  U6      (None, 1) + (1,)            (None, 1)     第 0 维 None 对补 1 → 未知；第 1 维 1==1
+  U7      (None, None) + (None, 4)    (None, 4)     未知对未知仍是未知；4 对 4 → 4
+  U8      (None, 4) + (3,)            error         最右维 4 vs 3，都不是 1 → 失配
+  U9      (None,) + (5,)              (5,)          None 对已知 5 → 5
+  U10     () + (None, 3)              (None, 3)     标量对任何形状 → 原样
+  [PASS] 未知维度 10 组与手算期望一致
+
+=== 5. 随机对拍：mini vs numpy（种子 60，可复现）===
+  [PASS] 300 组随机形状推导全部一致
+  [PASS] 随机 broadcast_to strides 对拍 71 组全部一致
+
+broadcast_lab: 9/9 checks passed

@@ -1,0 +1,12 @@
+Day    测试文件           结果       退出码
+-------------------------------------------------------------
+057    test_layout.py         14 PASS      0       
+058    test_layout.py         20 PASS      0       
+059    test_reshape.py        26 PASS      0       
+060    test_broadcast.py      48 PASS      0       
+061    test_dynamic.py        41 PASS      0       
+062    test_specialize.py     28 PASS      0       
+063    test_review.py         29 PASS      0       
+-------------------------------------------------------------
+合计：206 PASS / 0 FAIL / 0 SKIP（共 206 个测试点，7 套）
+第 9 周测试状态：全部通过 ✓

@@ -1,0 +1,16 @@
+[PASS] 偏移公式对「连续 3x4」成立（值与位置逐元素核对）
+[PASS] 偏移公式对「转置 4x3」成立（值与位置逐元素核对）
+[PASS] 偏移公式对「带偏移 2x3」成立（值与位置逐元素核对）
+[PASS] 偏移公式对「跨步列切片 3x2」成立（值与位置逐元素核对）
+[PASS] 偏移公式对「三维 2x2x3」成立（值与位置逐元素核对）
+[PASS] 形状 (1,4) 的行切片仍判 C-contiguous（大小 1 的维度不约束 stride）
+[PASS] 形状 (3,1) 的列切片不连续（stride0=4 元素跨过整行）
+[PASS] 转置后 strides 顺序对调（元素口径）
+[PASS] 负 stride 切片不是 C-contiguous
+[PASS] 带偏移的连续窗口仍判 C-contiguous（偏移不破坏连续性）
+[PASS] 连续视图 reshape 是零拷贝视图
+[PASS] 非连续视图 reshape 静默拷贝
+[PASS] 拷贝后数值不变
+[PASS] reshape 拷贝值顺序 == 按行读转置（即按列读原数组）
+
+test_layout: 14/14 tests passed

@@ -1,0 +1,48 @@
+=== A. 表示基础 ===
+  [PASS] A1 Sym 同名相等
+  [PASS] A2 Sym 可哈希（能当 dict 键）
+  [PASS] A3 Sym 无名字报错
+  [PASS] A4 -1 是非法维度不是未知
+  [PASS] A5 布尔维度被拒
+  [PASS] A6 字符串维度被拒
+  [PASS] A7 None/Sym/自然数都合法
+=== B. MatMul 推导判定 ===
+  [PASS] B1  全静态
+  [PASS] B2  M 未知
+  [PASS] B3  N 未知
+  [PASS] B4  K 未知对静态
+  [PASS] B5  K 双未知
+  [PASS] B6  M 符号
+  [PASS] B7  N 符号
+  [PASS] B8  K 符号绑定
+  [PASS] B9  K 符号绑定（对侧）
+  [PASS] B10 K 双符号同名
+  [PASS] B11 K 双符号异名
+  [PASS] B12 K 未知对符号
+  [PASS] B13 M 符号 + K 未知
+  [PASS] B14 秩错误：一维 × 二维
+  [PASS] B15 静态 K 失配被拒
+=== C. 约束三档与特化 ===
+  [PASS] C1 绑定可特化
+  [PASS] C2 改名保留未绑定符号
+  [PASS] C3 图级绑定：先 3 后 4 冲突
+  [PASS] C4 图级绑定：同值不冲突
+  [PASS] C5 链式推导：符号沿图传播
+  [PASS] C6 renames 解析到底
+=== D. 运行期模拟 ===
+  [PASS] D1 合法动态输入放行且输出 (2,2)
+  [PASS] D2 K 失配被运行期拦下
+  [PASS] D3 无检查时同样数据静默算完
+  [PASS] D4 M/N 动态维运行期回填
+  [PASS] D5 numpy 对拍 5 组逐位一致
+  [PASS] D6 同名符号同一值
+=== E. 压力与 IR ===
+  [PASS] E1 300 组零崩溃
+  [PASS] E2 ok + error = 300
+  [PASS] E3 8 房间
+  [PASS] E4 函数名不含 ?
+  [PASS] E5 K 全静态房间无 ?
+  [PASS] E6 全动态房间输出 ?x?xf32
+  [PASS] E7 mlir-opt 解析+验证 8 房间通过
+
+test_dynamic: 41/41

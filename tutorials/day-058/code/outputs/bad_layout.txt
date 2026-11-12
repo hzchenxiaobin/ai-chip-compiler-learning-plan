@@ -1,0 +1,4 @@
+bad_layout.mlir:12:10: error: 'memref.transpose' op result type 'memref<1x2x4x4xf32, strided<[32, 16, 4, 1]>>' is not equivalent to the canonical transposed input type 'memref<1x2x4x4xf32, affine_map<(d0, d1, d2, d3) -> (d0 * 32 + d1 * 4 + d2 + d3 * 8)>>'
+    %t = memref.transpose %x (n, c, h, w) -> (n, h, w, c)
+         ^
+bad_layout.mlir:12:10: note: see current operation: %0 = "memref.transpose"(%arg0) <{permutation = affine_map<(d0, d1, d2, d3) -> (d0, d2, d3, d1)>}> : (memref<1x4x2x4xf32>) -> memref<1x2x4x4xf32, strided<[32, 16, 4, 1]>>
