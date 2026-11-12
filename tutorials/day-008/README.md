@@ -50,7 +50,7 @@
 
 ### 3.2 Node：一次运算，只借用不拥有
 
-**Node**（节点）表示一次运算。它身上有三样东西：
+**Node**（节点）表示一次运算。它身上的成员一共四个：
 
 ```cpp
 class Node {
@@ -61,9 +61,9 @@ class Node {
 };
 ```
 
-重点在最后两行：`inputs_` 和 `result_` 都是裸指针，但**不构成所有权**——节点析构时对它们什么都不做。节点像一个只会记门牌号的施工队：它知道从哪几个地址取料、把成品放到哪个地址，但那些地址的房子都归 Graph。
+重点在后两行：`inputs_` 和 `result_` 都是裸指针，但**不构成所有权**——节点析构时对它们什么都不做。节点像一个只会记门牌号的施工队：它知道从哪几个地址取料、把成品放到哪个地址，但那些地址的房子都归 Graph。
 
-`kind_` 是有意的偷懒：今天它只是字符串。为什么不做 `AddNode`、`ReluNode` 的继承体系？因为第 9 天的题目就是"算子类型、属性怎么表达"，第 11 天还会比较继承和 Visitor 两种分发方式的修改范围——现在提前设计继承树，就是在替明天做决定。
+`kind_` 是有意的偷懒：今天它只是字符串。为什么不做 `AddNode`、`ReluNode` 的继承体系？因为第 9 天的题目就是"算子类型、属性怎么表达"，第 11 天再比较 Visitor 和 switch 两种分发方式的修改范围——现在提前设计继承树，就是在替明天做决定。
 
 ### 3.3 Value：值即边
 
@@ -79,7 +79,7 @@ class Value {
 
 `producer_` 是一条回指的借用指针：值知道自己是谁生产的。图输入（`a`、`b`）没有生产者，`producer_` 为空——这正是"输入"和"计算结果"在数据上的区别。
 
-那**学习目标里的 Edge（边）呢**？我们的答案是：**边不是独立对象，值本身就是边**。`n1` 的输入里出现 `%t`，就等于画了一条从 `n0` 出发到 `n1` 的边——"谁消费这个值，生产者到谁就有一条边"。这不是偷懒的发明：MLIR 里 Operation 的 operand 就是对 SSA Value 的引用，没有独立 Edge 实体；ONNX 的 `NodeProto.input` 也只是字符串名字。反例是 Sea of Nodes 风格的 IR（如 V8 的 TurboFan），边是一等对象、还带"控制／数据／效果"类型标签——那是为调度器服务的复杂度。今天只要 DAG（有向无环图）＋打印，值即边够用。
+那**学习目标里的 Edge（边）呢**？我们的答案是：**边不是独立对象，值本身就是边**。`n1` 的输入里出现 `%t`，就等于画了一条从 `n0` 出发到 `n1` 的边——"谁消费这个值，生产者到谁就有一条边"。这不是偷懒的发明：MLIR 里 Operation 的 operand（操作数）就是对 Value 的引用，没有独立 Edge 实体；ONNX 的 `NodeProto.input` 也只是字符串名字。反例是 Sea of Nodes 风格的 IR（如 V8 的 TurboFan），边是一等对象、还带"控制／数据／效果"类型标签——那是为调度器服务的复杂度。今天只要 DAG（有向无环图）＋打印，值即边够用。
 
 ### 3.4 数据依赖 vs 节点所有权：两种箭头不能画混
 
@@ -139,7 +139,7 @@ tutorials/day-008/examples/mini-graph/
 
 `Value.h` 和 `Node.h` 的完整内容就是 3.2／3.3 节那两个类，外加一条：构造函数放进 private，只让 `friend class Graph` 调用——**除了图，谁也不许造节点和值**，这是"唯一所有人"的类型化表达。
 
-`Graph.h` 的公开接口一共五个方法，每个都对应今天的学习目标：
+`Graph.h` 的公开接口按学习目标分三件事——构造（`add_input`／`add_node`／`mark_output`）、观察（`name`／`num_values`／`num_nodes`／`inputs`／`outputs`）、遍历（`topological_order`／`to_string`）：
 
 ```cpp
 class Graph {
@@ -177,7 +177,8 @@ private:
 ```cpp
 Node* Graph::add_node(std::string kind, std::vector<const Value*> inputs,
                       std::string result_name) {
-    // 今天的廉价检查：只拒绝空指针。值是否真属于本图，第 12 天 Verifier 再管。
+    // 今天的廉价检查：只拒绝空指针。值是否真属于本图，
+    // 第 12 天的 Verifier（合法性检查器）再管。
     for (std::size_t i = 0; i < inputs.size(); ++i) {
         if (inputs[i] == nullptr) {
             throw std::invalid_argument("add_node: 第 " + std::to_string(i) +
@@ -247,7 +248,7 @@ cmake -S . -B build-asan -G Ninja -DENABLE_ASAN=ON && cmake --build build-asan
 ctest --test-dir build-asan --output-on-failure
 ```
 
-真实输出（Debug 与 ASan 各跑一遍）：
+真实输出（Debug 与 ASan 各跑一遍；行尾的 `# Debug`／`# ASan` 为笔者标注）：
 
 ```text
 1/1 Test #1: graph ............................   Passed    0.00 sec      # Debug
@@ -269,7 +270,7 @@ g++ -std=c++17 -g -fsanitize=address -static-libasan err_values_by_value.cpp -o 
 ./err_values_by_value; echo "exit code: $?"
 ```
 
-真实输出（帧的十六进制地址列略；`←` 为笔者标注）：
+真实输出（每行的十六进制地址列与本仓库绝对路径略；`←` 为笔者标注）：
 
 ```text
 第 2 次入库后：first -> 0xffff83301ad0, id = 0
@@ -298,7 +299,7 @@ Node* neg = g.add_node("neg", {add->result()}, "w");   // %t 的第二个消费�
 g.mark_output(neg->result());
 ```
 
-真实输出：
+真实输出（首行标题与中间"数据依赖的三个事实"段同 5.3，此处略）：
 
 ```text
 graph "add-relu" (2 inputs, 2 outputs) {
@@ -377,7 +378,7 @@ const Node* leaked = nullptr;
 leaked->kind();              // 悬空
 ```
 
-编译运行：`g++ -std=c++17 -g -fsanitize=address -static-libasan -I ../src ../src/Graph.cpp err_outlive.cpp -o err_outlive && ./err_outlive`，真实输出的关键行：
+编译运行：`g++ -std=c++17 -g -fsanitize=address -static-libasan -I ../src ../src/Graph.cpp err_outlive.cpp -o err_outlive && ./err_outlive`，真实输出的关键行（地址列与中间模板参数略）：
 
 ```text
 ==717722==ERROR: AddressSanitizer: heap-use-after-free on address 0xffff8b501ae8

@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 730" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .card { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .chip { fill:#D5E8D4; stroke:#82B366; stroke-width:1.8; stroke-linejoin:round; }
+      .hl { fill:#FBEEA9; opacity:0.75; }
+      .ok { fill:#4C7A43; font-weight:bold; }
+      .bad { fill:#A0433F; font-weight:bold; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1000" height="730"/>
+  <text class="t-title" x="30" y="42">实测收据：15 行规则表测试 ＋ 6 个 mini-opt 探针（本机真实运行）</text>
+
+  <!-- ===== 左卡：规则表测试 ===== -->
+  <g filter="url(#wob)">
+    <rect class="card" x="25" y="80" width="480" height="560" rx="14" stroke="#5B8DB8" stroke-width="2.4" transform="rotate(-0.2 265 360)"/>
+  </g>
+  <text class="code" x="45" y="112" font-size="13" font-weight="bold">$ python3 test_matmul_infer.py</text>
+  <g filter="url(#wob2)">
+    <rect class="chip" x="345" y="92" width="140" height="26" rx="8"/>
+  </g>
+  <text class="t-b ok" x="415" y="110" text-anchor="middle">15/15 PASS · rc=0</text>
+
+  <g class="code" font-size="12">
+    <text x="45" y="146">T01  2x3·3x2 → 2x2</text>
+    <text x="45" y="170">T02  2x2x3·2x3x2 → 2x2x2</text>
+    <text x="45" y="194">T03  2x2x2x3·2x2x3x2 → 2x2x2x2</text>
+    <text x="45" y="218">T04  3x1·1x3 → 3x3</text>
+    <text x="45" y="242">T05  1x3·3x1 → 1x1</text>
+    <text x="45" y="266">T06  ?x3·3x2 → ?x2</text>
+    <text x="45" y="290">T07  2x3·3x? → 2x?</text>
+    <text x="45" y="314">T08  2x?·?x2 → 2x2</text>
+    <text x="45" y="338">T09  ?x3·3x? → ?x?</text>
+    <text x="45" y="362">T10  ?x?·?x? → ?x?</text>
+    <text x="45" y="386">T11  ?x2x3·2x3x2 → 2x2x2</text>
+    <text x="45" y="410">T12  3x?x3·?x3x2 → 3x?x2</text>
+    <text x="45" y="434">T13  2x3·2x2 → FAIL(K mismatch)</text>
+    <text x="45" y="458">T14  2x3·2x3x2 → FAIL(rank mismatch)</text>
+    <text x="45" y="482">T15  3·3 → FAIL(rank&lt;2)</text>
+  </g>
+  <g class="ok" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive" font-size="12.5">
+    <text x="425" y="146" text-anchor="end">PASS</text>
+    <text x="425" y="170" text-anchor="end">PASS</text>
+    <text x="425" y="194" text-anchor="end">PASS</text>
+    <text x="425" y="218" text-anchor="end">PASS</text>
+    <text x="425" y="242" text-anchor="end">PASS</text>
+    <text x="425" y="266" text-anchor="end">PASS</text>
+    <text x="425" y="290" text-anchor="end">PASS</text>
+    <text x="425" y="314" text-anchor="end">PASS</text>
+    <text x="425" y="338" text-anchor="end">PASS</text>
+    <text x="425" y="362" text-anchor="end">PASS</text>
+    <text x="425" y="386" text-anchor="end">PASS</text>
+    <text x="425" y="410" text-anchor="end">PASS</text>
+    <text x="425" y="434" text-anchor="end">PASS</text>
+    <text x="425" y="458" text-anchor="end">PASS</text>
+    <text x="425" y="482" text-anchor="end">PASS</text>
+  </g>
+  <path d="M45 500 Q265 506 485 500" fill="none" stroke="#CBD5DF" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <g filter="url(#wob2)">
+    <rect x="42" y="516" width="446" height="104" rx="10" fill="#FBF3DF" stroke="#E6C34A" stroke-width="1.6"/>
+  </g>
+  <text class="t-b" x="58" y="544" font-weight="bold">TDD 轨迹（三步都是真跑出来的）：</text>
+  <text class="code" x="58" y="570" font-size="12">v0 stub 0/15 → v1 直觉版 12/15 → v2 最终 15/15</text>
+  <text class="t-s" x="58" y="596">v1 的 3 行真实红（T11/T14/T15）＝第 6 节错误 1、2 的证据</text>
+
+  <!-- ===== 右上卡：mini-opt 探针 ===== -->
+  <g filter="url(#wob)">
+    <rect class="card" x="530" y="80" width="445" height="340" rx="14" transform="rotate(0.2 752 250)"/>
+  </g>
+  <text class="t-h" x="550" y="112">mini-opt 现状探针（Day 42 工具 · 未改一行）</text>
+  <rect class="hl" x="542" y="126" width="421" height="22"/>
+  <rect class="hl" x="542" y="170" width="421" height="22"/>
+  <g class="code" font-size="12">
+    <text x="548" y="142">static_ok      2x3·3x2 → 2x2</text>
+    <text x="548" y="186">dynamic_m      ?x3·3x2 → ?x2</text>
+    <text x="548" y="230">dynamic_refine ?x3·3x2 → 2x2</text>
+    <text x="548" y="274">result_all_dyn 2x3·3x2 → ?x?</text>
+    <text x="548" y="318">batch_ok       2x2x3·2x3x2 → 2x2x2</text>
+    <text x="548" y="362">k_mismatch     2x3·2x2 → 被 Verifier 拦下</text>
+  </g>
+  <text class="ok code" x="922" y="142" text-anchor="end" font-size="12">rc=0</text>
+  <text class="ok code" x="922" y="186" text-anchor="end" font-size="12">rc=0</text>
+  <text class="ok code" x="922" y="230" text-anchor="end" font-size="12">rc=0</text>
+  <text class="ok code" x="922" y="274" text-anchor="end" font-size="12">rc=0</text>
+  <text class="ok code" x="922" y="318" text-anchor="end" font-size="12">rc=0</text>
+  <text class="bad code" x="922" y="362" text-anchor="end" font-size="12">rc=1</text>
+  <text class="t-s" x="548" y="158">结果类型手写，round-trip 原样打印</text>
+  <text class="t-s" x="548" y="202">M 动态：?x2 也是人肉算出来的</text>
+  <text class="t-s" x="548" y="246" fill="#8A5A00">手写『超承诺』：Verifier 无法反驳 2</text>
+  <text class="t-s" x="548" y="290" fill="#8A5A00">信息丢失现场：输入全静态，输出全 ?</text>
+  <text class="t-s" x="548" y="334">batch 维静态对齐（Day 39 规则 2）</text>
+  <text class="t-s" x="548" y="378" fill="#A0433F">K 不等 = Verifier 规则 3 的活，轮不到推导</text>
+
+  <!-- ===== 右下卡：CLI 对照实验 ===== -->
+  <g filter="url(#wob)">
+    <rect class="card" x="530" y="440" width="445" height="200" rx="14" stroke="#82B366" stroke-width="2.4" transform="rotate(-0.2 752 540)"/>
+  </g>
+  <text class="t-h" x="550" y="472">CLI 对照实验：同样两个 ?，打在哪一维？</text>
+  <text class="code" x="548" y="494" font-size="11" fill="#5A544C">$ python3 matmul_infer.py &lt;lhs&gt; &lt;rhs&gt;</text>
+  <text class="code" x="548" y="522" font-size="13">2x? ?x2 → 2x2</text>
+  <text class="t-s" x="740" y="522">K 上的 ? 被消费，输出纹丝不动</text>
+  <text class="code" x="548" y="550" font-size="13">?x3 3x2 → ?x2</text>
+  <text class="t-s" x="740" y="550">M 传播到输出</text>
+  <text class="code" x="548" y="578" font-size="13">2x3 3x? → 2x?</text>
+  <text class="t-s" x="740" y="578">N 传播到输出</text>
+  <text class="t-b" x="550" y="612" fill="#4C7A43">把 ? 从 K 挪到 M/N，输出立刻跟着变——传播按维独立决定</text>
+
+  <text class="t-s" x="500" y="706" text-anchor="middle" fill="#8A8378">环境：Ubuntu 20.04.5 · LLVM/MLIR 18.1.8 · Python 3.11.4 · 2026-11-12 本机运行</text>
+</svg>

@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660">
+<rect width="1000" height="660" fill="#fdfaf2"/>
+<text x="46" y="50" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="25" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">真实运行结果：峰值曲线、复用池子与对照实验</text>
+<text x="46" y="78" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#84796a" text-anchor="start" opacity="1.0">三个面板的数据全部来自 live_range_playground.py 在本环境的真实输出（Python 3.11.4，Linux）</text>
+<path d="M 40.0,96.0 Q 55.1,95.6 70.1,96.0 Q 85.2,97.6 100.3,96.0 Q 115.3,95.7 130.4,96.0 Q 145.5,97.0 160.5,96.0 Q 175.6,97.1 190.7,96.0 Q 205.7,95.1 220.8,96.0 Q 235.9,94.9 250.9,96.0 Q 266.0,95.6 281.1,96.0 Q 296.1,96.4 311.2,96.0 Q 326.3,94.4 341.3,96.0 Q 356.4,95.8 371.5,96.0 Q 386.5,95.6 401.6,96.0 Q 416.7,95.5 431.7,96.0 Q 446.8,94.5 461.9,96.0 Q 476.9,97.5 492.0,96.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 492.0,96.0 Q 494.0,111.0 492.0,126.0 Q 489.3,141.0 492.0,156.0 Q 497.1,171.0 492.0,186.0 Q 486.7,201.0 492.0,216.0 Q 488.4,231.0 492.0,246.0 Q 488.3,261.0 492.0,276.0 Q 492.7,291.0 492.0,306.0 Q 494.5,321.0 492.0,336.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 492.0,336.0 Q 476.9,335.2 461.9,336.0 Q 446.8,336.7 431.7,336.0 Q 416.7,335.9 401.6,336.0 Q 386.5,335.9 371.5,336.0 Q 356.4,336.5 341.3,336.0 Q 326.3,335.8 311.2,336.0 Q 296.1,335.1 281.1,336.0 Q 266.0,336.9 250.9,336.0 Q 235.9,334.8 220.8,336.0 Q 205.7,336.3 190.7,336.0 Q 175.6,334.8 160.5,336.0 Q 145.5,336.3 130.4,336.0 Q 115.3,336.9 100.3,336.0 Q 85.2,334.5 70.1,336.0 Q 55.1,337.2 40.0,336.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0,336.0 Q 41.0,321.0 40.0,306.0 Q 43.3,291.0 40.0,276.0 Q 44.6,261.0 40.0,246.0 Q 42.2,231.0 40.0,216.0 Q 42.2,201.0 40.0,186.0 Q 35.9,171.0 40.0,156.0 Q 39.9,141.0 40.0,126.0 Q 44.1,111.0 40.0,96.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="122" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">① 每条语句执行时的活跃内存</text>
+<rect x="70" y="258.0" width="24" height="38.0" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 70.0,258.0 Q 76.0,270.2 82.0,258.0 Q 88.0,247.6 94.0,258.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 94.0,258.0 Q 101.5,267.5 94.0,277.0 Q 119.0,286.5 94.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 94.0,296.0 Q 88.0,297.7 82.0,296.0 Q 76.0,289.1 70.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 70.0,296.0 Q 103.5,286.5 70.0,277.0 Q 40.1,267.5 70.0,258.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="82.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S1</text>
+<text x="82.0" y="252.0" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#84796a" text-anchor="middle" opacity="1.0">24</text>
+<rect x="105" y="220.0" width="24" height="76.0" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 105.0,220.0 Q 111.0,209.2 117.0,220.0 Q 123.0,204.0 129.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 129.0,220.0 Q 102.9,239.0 129.0,258.0 Q 92.0,277.0 129.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 129.0,296.0 Q 123.0,313.0 117.0,296.0 Q 111.0,274.6 105.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 105.0,296.0 Q 66.3,277.0 105.0,258.0 Q 41.4,239.0 105.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="117.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S2</text>
+<rect x="140" y="194.66666666666669" width="24" height="101.33333333333333" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 140.0,194.7 Q 146.0,207.9 152.0,194.7 Q 158.0,183.3 164.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 164.0,194.7 Q 145.2,211.6 164.0,228.4 Q 180.0,245.3 164.0,262.2 Q 147.3,279.1 164.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 164.0,296.0 Q 158.0,294.5 152.0,296.0 Q 146.0,301.3 140.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 140.0,296.0 Q 160.2,279.1 140.0,262.2 Q 164.1,245.3 140.0,228.4 Q 129.9,211.6 140.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="152.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S3</text>
+<rect x="175" y="169.33333333333331" width="24" height="126.66666666666667" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 175.0,169.3 Q 181.0,150.5 187.0,169.3 Q 193.0,187.5 199.0,169.3" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 199.0,169.3 Q 200.0,185.2 199.0,201.0 Q 191.6,216.8 199.0,232.7 Q 197.0,248.5 199.0,264.3 Q 187.0,280.2 199.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 199.0,296.0 Q 193.0,294.7 187.0,296.0 Q 181.0,287.9 175.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 175.0,296.0 Q 183.7,280.2 175.0,264.3 Q 170.7,248.5 175.0,232.7 Q 171.8,216.8 175.0,201.0 Q 176.7,185.2 175.0,169.3" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="187.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S4</text>
+<rect x="210" y="144.0" width="24" height="152.0" rx="3" fill="#f6ecd9" opacity="0.85"/>
+<path d="M 210.0,144.0 Q 216.0,127.5 222.0,144.0 Q 228.0,122.7 234.0,144.0" fill="none" stroke="#c98f3d" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 234.0,144.0 Q 230.5,159.2 234.0,174.4 Q 232.5,189.6 234.0,204.8 Q 230.4,220.0 234.0,235.2 Q 232.6,250.4 234.0,265.6 Q 239.8,280.8 234.0,296.0" fill="none" stroke="#c98f3d" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 234.0,296.0 Q 228.0,288.7 222.0,296.0 Q 216.0,290.4 210.0,296.0" fill="none" stroke="#c98f3d" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 210.0,296.0 Q 214.9,280.8 210.0,265.6 Q 203.8,250.4 210.0,235.2 Q 212.3,220.0 210.0,204.8 Q 212.1,189.6 210.0,174.4 Q 218.6,159.2 210.0,144.0" fill="none" stroke="#c98f3d" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="222.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S5</text>
+<text x="222.0" y="138.0" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#d17b7b" text-anchor="middle" font-weight="bold" opacity="1.0">96</text>
+<rect x="245" y="194.66666666666669" width="24" height="101.33333333333333" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 245.0,194.7 Q 251.0,180.3 257.0,194.7 Q 263.0,207.2 269.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 269.0,194.7 Q 288.8,211.6 269.0,228.4 Q 243.7,245.3 269.0,262.2 Q 287.3,279.1 269.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 269.0,296.0 Q 263.0,282.2 257.0,296.0 Q 251.0,285.4 245.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 245.0,296.0 Q 247.9,279.1 245.0,262.2 Q 255.9,245.3 245.0,228.4 Q 248.8,211.6 245.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="257.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S6</text>
+<rect x="280" y="220.0" width="24" height="76.0" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 280.0,220.0 Q 286.0,226.0 292.0,220.0 Q 298.0,207.6 304.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 304.0,220.0 Q 265.0,239.0 304.0,258.0 Q 291.7,277.0 304.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 304.0,296.0 Q 298.0,312.4 292.0,296.0 Q 286.0,313.9 280.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 280.0,296.0 Q 289.5,277.0 280.0,258.0 Q 263.1,239.0 280.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="292.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S7</text>
+<rect x="315" y="220.0" width="24" height="76.0" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 315.0,220.0 Q 321.0,225.2 327.0,220.0 Q 333.0,206.2 339.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 339.0,220.0 Q 275.7,239.0 339.0,258.0 Q 321.4,277.0 339.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 339.0,296.0 Q 333.0,302.9 327.0,296.0 Q 321.0,313.8 315.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 315.0,296.0 Q 372.7,277.0 315.0,258.0 Q 328.7,239.0 315.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="327.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S8</text>
+<rect x="350" y="194.66666666666669" width="24" height="101.33333333333333" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 350.0,194.7 Q 356.0,177.4 362.0,194.7 Q 368.0,176.4 374.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 374.0,194.7 Q 375.8,211.6 374.0,228.4 Q 362.6,245.3 374.0,262.2 Q 388.2,279.1 374.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 374.0,296.0 Q 368.0,311.7 362.0,296.0 Q 356.0,282.9 350.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 350.0,296.0 Q 362.6,279.1 350.0,262.2 Q 375.6,245.3 350.0,228.4 Q 346.1,211.6 350.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="362.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S9</text>
+<rect x="385" y="194.66666666666669" width="24" height="101.33333333333333" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 385.0,194.7 Q 391.0,201.0 397.0,194.7 Q 403.0,208.4 409.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 409.0,194.7 Q 405.9,211.6 409.0,228.4 Q 391.8,245.3 409.0,262.2 Q 432.3,279.1 409.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 409.0,296.0 Q 403.0,278.1 397.0,296.0 Q 391.0,279.1 385.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 385.0,296.0 Q 385.6,279.1 385.0,262.2 Q 374.2,245.3 385.0,228.4 Q 395.7,211.6 385.0,194.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="397.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S10</text>
+<rect x="420" y="220.0" width="24" height="76.0" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 420.0,220.0 Q 426.0,204.0 432.0,220.0 Q 438.0,210.9 444.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 444.0,220.0 Q 438.3,239.0 444.0,258.0 Q 493.8,277.0 444.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 444.0,296.0 Q 438.0,292.9 432.0,296.0 Q 426.0,286.5 420.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 420.0,296.0 Q 405.5,277.0 420.0,258.0 Q 448.5,239.0 420.0,220.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="432.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S11</text>
+<rect x="455" y="270.6666666666667" width="24" height="25.333333333333332" rx="3" fill="#dce7f6" opacity="0.85"/>
+<path d="M 455.0,270.7 Q 461.0,277.0 467.0,270.7 Q 473.0,272.0 479.0,270.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 479.0,270.7 Q 483.8,277.0 479.0,283.3 Q 481.5,289.7 479.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 479.0,296.0 Q 473.0,298.4 467.0,296.0 Q 461.0,314.4 455.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 455.0,296.0 Q 466.9,289.7 455.0,283.3 Q 451.3,277.0 455.0,270.7" fill="none" stroke="#5d8fc9" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="467.0" y="312" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11" fill="#84796a" text-anchor="middle" opacity="1.0">S12</text>
+<text x="467.0" y="264.6666666666667" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#84796a" text-anchor="middle" opacity="1.0">16</text>
+<text x="330" y="330" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#d17b7b" text-anchor="middle" font-weight="bold" opacity="1.0" transform="rotate(-0.5 330 330)">峰值 96 B 在 S5（matmul）：a+b+w+s+c</text>
+<path d="M 512.0,96.0 Q 528.0,95.4 544.0,96.0 Q 560.0,94.7 576.0,96.0 Q 592.0,95.9 608.0,96.0 Q 624.0,94.9 640.0,96.0 Q 656.0,96.6 672.0,96.0 Q 688.0,98.0 704.0,96.0 Q 720.0,95.5 736.0,96.0 Q 752.0,96.7 768.0,96.0 Q 784.0,95.5 800.0,96.0 Q 816.0,96.7 832.0,96.0 Q 848.0,95.1 864.0,96.0 Q 880.0,96.7 896.0,96.0 Q 912.0,96.6 928.0,96.0 Q 944.0,97.5 960.0,96.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 960.0,96.0 Q 959.4,111.0 960.0,126.0 Q 955.3,141.0 960.0,156.0 Q 958.9,171.0 960.0,186.0 Q 965.0,201.0 960.0,216.0 Q 959.9,231.0 960.0,246.0 Q 959.1,261.0 960.0,276.0 Q 962.9,291.0 960.0,306.0 Q 964.7,321.0 960.0,336.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 960.0,336.0 Q 944.0,336.4 928.0,336.0 Q 912.0,337.2 896.0,336.0 Q 880.0,337.0 864.0,336.0 Q 848.0,334.6 832.0,336.0 Q 816.0,334.2 800.0,336.0 Q 784.0,337.2 768.0,336.0 Q 752.0,336.0 736.0,336.0 Q 720.0,336.3 704.0,336.0 Q 688.0,337.6 672.0,336.0 Q 656.0,335.7 640.0,336.0 Q 624.0,336.3 608.0,336.0 Q 592.0,335.7 576.0,336.0 Q 560.0,335.6 544.0,336.0 Q 528.0,335.7 512.0,336.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 512.0,336.0 Q 510.5,321.0 512.0,306.0 Q 507.5,291.0 512.0,276.0 Q 509.4,261.0 512.0,246.0 Q 509.7,231.0 512.0,216.0 Q 507.1,201.0 512.0,186.0 Q 506.8,171.0 512.0,156.0 Q 507.1,141.0 512.0,126.0 Q 508.0,111.0 512.0,96.0" fill="none" stroke="#84796a" stroke-width="1.80" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="530" y="122" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">② 保守复用的缓冲区池子</text>
+<text x="638.8333333333334" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S1</text>
+<text x="664.5" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="690.1666666666666" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S3</text>
+<text x="715.8333333333334" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="741.5" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S5</text>
+<text x="767.1666666666666" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="792.8333333333334" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S7</text>
+<text x="818.5" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="844.1666666666666" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S9</text>
+<text x="869.8333333333334" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="895.5" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0">S11</text>
+<text x="921.1666666666667" y="132" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="middle" opacity="1.0"></text>
+<text x="616" y="154" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="end" font-weight="bold" opacity="1.0">buf1·24B</text>
+<rect x="628.0" y="138" width="124.33333333333337" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 628.0,138.0 Q 643.5,127.3 659.1,138.0 Q 674.6,148.8 690.2,138.0 Q 705.7,145.7 721.2,138.0 Q 736.8,132.2 752.3,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 752.3,138.0 Q 759.6,144.0 752.3,150.0 Q 755.3,156.0 752.3,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 752.3,162.0 Q 736.8,149.0 721.2,162.0 Q 705.7,173.5 690.2,162.0 Q 674.6,159.7 659.1,162.0 Q 643.5,155.5 628.0,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 628.0,162.0 Q 638.8,156.0 628.0,150.0 Q 636.3,144.0 628.0,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="690.1666666666667" y="154" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%a</text>
+<rect x="756.3333333333334" y="138" width="47.33333333333326" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 756.3,138.0 Q 768.2,178.7 780.0,138.0 Q 791.8,138.7 803.7,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 803.7,138.0 Q 809.3,144.0 803.7,150.0 Q 793.6,156.0 803.7,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 803.7,162.0 Q 791.8,197.7 780.0,162.0 Q 768.2,189.4 756.3,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 756.3,162.0 Q 769.8,156.0 756.3,150.0 Q 772.6,144.0 756.3,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="780.0" y="154" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%d</text>
+<rect x="807.6666666666666" y="138" width="98.66666666666663" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 807.7,138.0 Q 824.1,145.1 840.6,138.0 Q 857.0,143.4 873.4,138.0 Q 889.9,116.8 906.3,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 906.3,138.0 Q 888.5,144.0 906.3,150.0 Q 919.6,156.0 906.3,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 906.3,162.0 Q 889.9,180.8 873.4,162.0 Q 857.0,156.2 840.6,162.0 Q 824.1,153.4 807.7,162.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 807.7,162.0 Q 807.3,156.0 807.7,150.0 Q 823.3,144.0 807.7,138.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="857.0" y="154" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%f</text>
+<text x="616" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="end" font-weight="bold" opacity="1.0">buf2·24B</text>
+<rect x="653.6666666666666" y="176" width="98.66666666666674" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 653.7,176.0 Q 670.1,176.9 686.6,176.0 Q 703.0,171.7 719.4,176.0 Q 735.9,178.4 752.3,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 752.3,176.0 Q 748.1,182.0 752.3,188.0 Q 743.7,194.0 752.3,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 752.3,200.0 Q 735.9,212.5 719.4,200.0 Q 703.0,178.5 686.6,200.0 Q 670.1,179.5 653.7,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 653.7,200.0 Q 668.3,194.0 653.7,188.0 Q 658.7,182.0 653.7,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="703.0" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%b</text>
+<rect x="782.0" y="176" width="98.66666666666674" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 782.0,176.0 Q 798.4,166.6 814.9,176.0 Q 831.3,153.3 847.8,176.0 Q 864.2,189.6 880.7,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 880.7,176.0 Q 896.6,182.0 880.7,188.0 Q 860.0,194.0 880.7,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 880.7,200.0 Q 864.2,197.3 847.8,200.0 Q 831.3,220.5 814.9,200.0 Q 798.4,213.4 782.0,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 782.0,200.0 Q 778.0,194.0 782.0,188.0 Q 769.5,182.0 782.0,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="831.3333333333334" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%e</text>
+<rect x="884.6666666666667" y="176" width="47.33333333333326" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 884.7,176.0 Q 896.5,168.1 908.3,176.0 Q 920.2,158.0 932.0,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 932.0,176.0 Q 943.5,182.0 932.0,188.0 Q 915.8,194.0 932.0,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 932.0,200.0 Q 920.2,234.2 908.3,200.0 Q 896.5,189.5 884.7,200.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 884.7,200.0 Q 904.3,194.0 884.7,188.0 Q 870.7,182.0 884.7,176.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="908.3333333333334" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%out</text>
+<text x="616" y="230" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="end" font-weight="bold" opacity="1.0">buf3·16B</text>
+<rect x="679.3333333333334" y="214" width="98.66666666666663" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 679.3,214.0 Q 695.8,218.1 712.2,214.0 Q 728.7,208.1 745.1,214.0 Q 761.6,190.6 778.0,214.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778.0,214.0 Q 760.3,220.0 778.0,226.0 Q 785.7,232.0 778.0,238.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778.0,238.0 Q 761.6,246.4 745.1,238.0 Q 728.7,218.2 712.2,238.0 Q 695.8,225.0 679.3,238.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 679.3,238.0 Q 685.8,232.0 679.3,226.0 Q 669.0,220.0 679.3,214.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="728.6666666666667" y="230" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%w</text>
+<rect x="833.3333333333334" y="214" width="72.99999999999989" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 833.3,214.0 Q 851.6,233.4 869.8,214.0 Q 888.1,165.1 906.3,214.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 906.3,214.0 Q 908.9,220.0 906.3,226.0 Q 887.1,232.0 906.3,238.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 906.3,238.0 Q 888.1,288.3 869.8,238.0 Q 851.6,240.4 833.3,238.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 833.3,238.0 Q 847.7,232.0 833.3,226.0 Q 819.1,220.0 833.3,214.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="869.8333333333333" y="230" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%h</text>
+<text x="616" y="268" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="end" font-weight="bold" opacity="1.0">buf4·16B</text>
+<rect x="705.0" y="252" width="150.0" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 705.0,252.0 Q 720.0,254.8 735.0,252.0 Q 750.0,255.2 765.0,252.0 Q 780.0,249.8 795.0,252.0 Q 810.0,244.6 825.0,252.0 Q 840.0,253.2 855.0,252.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 855.0,252.0 Q 843.0,258.0 855.0,264.0 Q 874.7,270.0 855.0,276.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 855.0,276.0 Q 840.0,279.4 825.0,276.0 Q 810.0,268.1 795.0,276.0 Q 780.0,272.9 765.0,276.0 Q 750.0,283.7 735.0,276.0 Q 720.0,282.9 705.0,276.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 705.0,276.0 Q 703.7,270.0 705.0,264.0 Q 724.8,258.0 705.0,252.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="780.0" y="268" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%s</text>
+<rect x="859.0" y="252" width="21.666666666666742" height="24" rx="4" fill="#f6dcdc" opacity="0.8"/>
+<path d="M 859.0,252.0 Q 864.5,243.7 870.0,252.0 Q 875.5,247.2 881.0,252.0" fill="none" stroke="#d17b7b" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 881.0,252.0 Q 878.2,258.0 881.0,264.0 Q 901.6,270.0 881.0,276.0" fill="none" stroke="#d17b7b" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 881.0,276.0 Q 875.5,261.7 870.0,276.0 Q 864.5,284.0 859.0,276.0" fill="none" stroke="#d17b7b" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 859.0,276.0 Q 839.1,270.0 859.0,264.0 Q 847.4,258.0 859.0,252.0" fill="none" stroke="#d17b7b" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="869.8333333333334" y="268" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%z</text>
+<text x="616" y="306" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="end" font-weight="bold" opacity="1.0">buf5·16B</text>
+<rect x="730.6666666666666" y="290" width="47.33333333333337" height="24" rx="4" fill="#dbeadb" opacity="0.8"/>
+<path d="M 730.7,290.0 Q 742.5,289.6 754.3,290.0 Q 766.2,249.8 778.0,290.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778.0,290.0 Q 767.9,296.0 778.0,302.0 Q 774.0,308.0 778.0,314.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778.0,314.0 Q 766.2,302.5 754.3,314.0 Q 742.5,317.7 730.7,314.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 730.7,314.0 Q 743.0,308.0 730.7,302.0 Q 712.0,296.0 730.7,290.0" fill="none" stroke="#7db37f" stroke-width="1.90" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="754.3333333333333" y="306" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">%c</text>
+<text x="730" y="330" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#7db37f" text-anchor="middle" font-weight="bold" opacity="1.0" transform="rotate(-0.5 730 330)">池子 96 B 就装下了 11 个值（单独分配要 192 B）</text>
+<text x="46" y="384" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">③ 两个对照实验（均为真实运行结果）</text>
+<rect x="46" y="400" width="288" height="180" rx="8" fill="#dce7f6" opacity="0.5"/>
+<path d="M 46.0,400.0 Q 62.0,399.9 78.0,400.0 Q 94.0,403.0 110.0,400.0 Q 126.0,398.4 142.0,400.0 Q 158.0,398.2 174.0,400.0 Q 190.0,397.8 206.0,400.0 Q 222.0,398.8 238.0,400.0 Q 254.0,403.6 270.0,400.0 Q 286.0,404.4 302.0,400.0 Q 318.0,399.3 334.0,400.0" fill="none" stroke="#5d8fc9" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 334.0,400.0 Q 337.1,415.0 334.0,430.0 Q 334.3,445.0 334.0,460.0 Q 334.4,475.0 334.0,490.0 Q 331.8,505.0 334.0,520.0 Q 338.5,535.0 334.0,550.0 Q 326.9,565.0 334.0,580.0" fill="none" stroke="#5d8fc9" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 334.0,580.0 Q 318.0,575.4 302.0,580.0 Q 286.0,581.9 270.0,580.0 Q 254.0,575.9 238.0,580.0 Q 222.0,575.8 206.0,580.0 Q 190.0,583.2 174.0,580.0 Q 158.0,576.3 142.0,580.0 Q 126.0,583.3 110.0,580.0 Q 94.0,579.2 78.0,580.0 Q 62.0,580.9 46.0,580.0" fill="none" stroke="#5d8fc9" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 46.0,580.0 Q 42.8,565.0 46.0,550.0 Q 43.2,535.0 46.0,520.0 Q 56.0,505.0 46.0,490.0 Q 39.4,475.0 46.0,460.0 Q 54.8,445.0 46.0,430.0 Q 36.9,415.0 46.0,400.0" fill="none" stroke="#5d8fc9" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62" y="428" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#5d8fc9" text-anchor="start" font-weight="bold" opacity="1.0">默认</text>
+<text x="62" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">峰值 96 B @ S5</text>
+<text x="62" y="480" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" opacity="1.0">池子 96 B；单独 192 B</text>
+<text x="62" y="508" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start" opacity="1.0">11 个值按原顺序执行</text>
+<text x="62" y="556" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#5d8fc9" text-anchor="start" font-weight="bold" opacity="1.0" transform="rotate(-0.5 62 556)">① 基线</text>
+<rect x="358" y="400" width="288" height="180" rx="8" fill="#dbeadb" opacity="0.5"/>
+<path d="M 358.0,400.0 Q 374.0,399.3 390.0,400.0 Q 406.0,403.2 422.0,400.0 Q 438.0,402.1 454.0,400.0 Q 470.0,403.7 486.0,400.0 Q 502.0,400.0 518.0,400.0 Q 534.0,404.0 550.0,400.0 Q 566.0,397.7 582.0,400.0 Q 598.0,396.4 614.0,400.0 Q 630.0,403.8 646.0,400.0" fill="none" stroke="#7db37f" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 646.0,400.0 Q 642.7,415.0 646.0,430.0 Q 649.9,445.0 646.0,460.0 Q 645.4,475.0 646.0,490.0 Q 650.1,505.0 646.0,520.0 Q 642.1,535.0 646.0,550.0 Q 645.7,565.0 646.0,580.0" fill="none" stroke="#7db37f" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 646.0,580.0 Q 630.0,579.7 614.0,580.0 Q 598.0,579.7 582.0,580.0 Q 566.0,575.6 550.0,580.0 Q 534.0,581.5 518.0,580.0 Q 502.0,580.3 486.0,580.0 Q 470.0,581.3 454.0,580.0 Q 438.0,577.0 422.0,580.0 Q 406.0,583.0 390.0,580.0 Q 374.0,580.8 358.0,580.0" fill="none" stroke="#7db37f" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 358.0,580.0 Q 363.8,565.0 358.0,550.0 Q 355.3,535.0 358.0,520.0 Q 365.1,505.0 358.0,490.0 Q 348.5,475.0 358.0,460.0 Q 356.3,445.0 358.0,430.0 Q 367.9,415.0 358.0,400.0" fill="none" stroke="#7db37f" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="374" y="428" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#7db37f" text-anchor="start" font-weight="bold" opacity="1.0">--late-constant</text>
+<text x="374" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">峰值 80 B @ S4</text>
+<text x="374" y="480" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" opacity="1.0">池子 80 B；单独 192 B</text>
+<text x="374" y="508" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start" opacity="1.0">常量挪到首次使用前：</text>
+<text x="374" y="528" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start" opacity="1.0">区间变短，峰值降 16 B</text>
+<text x="374" y="556" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#7db37f" text-anchor="start" font-weight="bold" opacity="1.0" transform="rotate(-0.5 374 556)">② 执行顺序影响内存</text>
+<rect x="670" y="400" width="288" height="180" rx="8" fill="#f6dcdc" opacity="0.5"/>
+<path d="M 670.0,400.0 Q 686.0,402.2 702.0,400.0 Q 718.0,399.1 734.0,400.0 Q 750.0,397.1 766.0,400.0 Q 782.0,402.7 798.0,400.0 Q 814.0,396.6 830.0,400.0 Q 846.0,398.6 862.0,400.0 Q 878.0,402.1 894.0,400.0 Q 910.0,399.2 926.0,400.0 Q 942.0,401.0 958.0,400.0" fill="none" stroke="#d17b7b" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 958.0,400.0 Q 948.8,415.0 958.0,430.0 Q 954.9,445.0 958.0,460.0 Q 957.4,475.0 958.0,490.0 Q 962.1,505.0 958.0,520.0 Q 954.7,535.0 958.0,550.0 Q 952.0,565.0 958.0,580.0" fill="none" stroke="#d17b7b" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 958.0,580.0 Q 942.0,584.2 926.0,580.0 Q 910.0,583.0 894.0,580.0 Q 878.0,582.0 862.0,580.0 Q 846.0,575.9 830.0,580.0 Q 814.0,582.7 798.0,580.0 Q 782.0,577.3 766.0,580.0 Q 750.0,580.7 734.0,580.0 Q 718.0,578.1 702.0,580.0 Q 686.0,579.9 670.0,580.0" fill="none" stroke="#d17b7b" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 670.0,580.0 Q 661.3,565.0 670.0,550.0 Q 679.9,535.0 670.0,520.0 Q 664.4,505.0 670.0,490.0 Q 666.3,475.0 670.0,460.0 Q 676.6,445.0 670.0,430.0 Q 663.8,415.0 670.0,400.0" fill="none" stroke="#d17b7b" stroke-width="2.30" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="686" y="428" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#d17b7b" text-anchor="start" font-weight="bold" opacity="1.0">--no-dead</text>
+<text x="686" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">峰值 96 B @ S5</text>
+<text x="686" y="480" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start" opacity="1.0">池子 96 B；单独 176 B</text>
+<text x="686" y="508" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start" opacity="1.0">删掉死值 %z：S10 活跃</text>
+<text x="686" y="528" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start" opacity="1.0">64→48 B，但峰值没变</text>
+<text x="686" y="556" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#d17b7b" text-anchor="start" font-weight="bold" opacity="1.0" transform="rotate(-0.5 686 556)">③ 死值省总量，不省这次的峰值</text>
+<text x="500" y="626" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0" transform="rotate(-0.4 500 626)">同一张图，三种策略 → 三种内存账单；活跃区间把『谁在什么时候占内存』变成可计算的数据</text>
+</svg>

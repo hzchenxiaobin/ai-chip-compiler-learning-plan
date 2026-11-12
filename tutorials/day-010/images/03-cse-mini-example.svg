@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="810" viewBox="0 0 1000 810">
+<rect x="0" y="0" width="1000" height="810" fill="#FDFBF4"/>
+<text x="500" y="36" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="23" fill="#3A322A" text-anchor="middle" font-weight="bold">迷你 CSE 实战：账本搬家 ＋ 删除死代码，数字一字不差</text>
+<text x="500" y="61" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13.5" fill="#3A322A" text-anchor="middle">第二幕的真实输出：左＝替换前，右＝replace_all_uses_of(%C2, %C1) ＋ erase_node(mm2) 之后</text>
+<path d="M 160.0 74.0 L 200.0 72.7 L 240.0 74.5 L 280.0 73.0 L 320.0 73.9 L 360.0 74.5 L 400.0 74.8 L 440.0 73.9 L 480.0 74.0 L 520.0 72.7 L 560.0 73.8 L 600.0 73.6 L 640.0 75.0 L 680.0 74.1 L 720.0 74.7 L 760.0 73.8 L 800.0 73.1 L 840.0 74.0" fill="none" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 36.0 96.0 L 83.1 97.2 L 130.2 97.1 L 177.3 95.6 L 224.4 94.6 L 271.6 96.0 L 318.7 96.0 L 365.8 96.9 L 412.9 96.3 L 460.0 96.0 L 460.0 143.0 L 459.7 190.0 L 460.4 237.0 L 461.5 284.0 L 461.5 331.0 L 458.5 378.0 L 458.8 425.0 L 460.7 472.0 L 458.7 519.0 L 460.0 566.0 L 412.9 565.9 L 365.8 567.3 L 318.7 564.8 L 271.6 565.7 L 224.4 564.5 L 177.3 565.4 L 130.2 567.4 L 83.1 565.6 L 36.0 566.0 L 36.0 96.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 36.0 96.0 L 83.1 97.2 L 130.2 97.1 L 177.3 95.6 L 224.4 94.6 L 271.6 96.0 L 318.7 96.0 L 365.8 96.9 L 412.9 96.3 L 460.0 96.0 L 460.0 143.0 L 459.7 190.0 L 460.4 237.0 L 461.5 284.0 L 461.5 331.0 L 458.5 378.0 L 458.8 425.0 L 460.7 472.0 L 458.7 519.0 L 460.0 566.0 L 412.9 565.9 L 365.8 567.3 L 318.7 564.8 L 271.6 565.7 L 224.4 564.5 L 177.3 565.4 L 130.2 567.4 L 83.1 565.6 L 36.0 566.0 L 36.0 96.0" fill="none" stroke="#3A322A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 39.2 99.2 L 85.6 99.8 L 132.0 100.1 L 178.4 98.8 L 224.8 99.3 L 271.2 99.6 L 317.6 98.5 L 364.0 100.0 L 410.4 99.8 L 456.8 99.2 L 457.8 141.3 L 456.6 183.5 L 457.1 225.6 L 457.5 267.8 L 456.6 309.9 L 455.8 352.1 L 456.7 394.2 L 457.7 436.4 L 456.8 478.5 L 456.2 520.7 L 456.8 562.8 L 410.4 561.8 L 364.0 562.3 L 317.6 563.8 L 271.2 561.8 L 224.8 562.6 L 178.4 563.7 L 132.0 563.6 L 85.6 563.7 L 39.2 562.8 L 39.2 99.2" fill="none" stroke="#3A322A" stroke-width="1.87" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<text x="248" y="124" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle" font-weight="bold">替换前：4 个节点、6 个值</text>
+<path d="M 88.0 147.0 L 164.0 147.0 L 164.0 177.0 L 88.0 177.0 L 88.0 147.0" fill="#DCE9F5" stroke="none"/>
+<path d="M 88.0 147.0 L 164.0 147.0 L 164.0 177.0 L 88.0 177.0 L 88.0 147.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="126" y="166.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">%A</text>
+<path d="M 332.0 147.0 L 408.0 147.0 L 408.0 177.0 L 332.0 177.0 L 332.0 147.0" fill="#DCE9F5" stroke="none"/>
+<path d="M 332.0 147.0 L 408.0 147.0 L 408.0 177.0 L 332.0 177.0 L 332.0 147.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="370" y="166.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">%B</text>
+<path d="M 117.0 232.0 L 176.0 232.6 L 235.0 232.0 L 235.0 272.0 L 176.0 273.2 L 117.0 272.0 L 117.0 232.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 117.0 232.0 L 176.0 232.6 L 235.0 232.0 L 235.0 272.0 L 176.0 273.2 L 117.0 272.0 L 117.0 232.0" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="176" y="256.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">matmul%n0</text>
+<path d="M 283.0 232.0 L 342.0 233.0 L 401.0 232.0 L 401.0 272.0 L 342.0 273.3 L 283.0 272.0 L 283.0 232.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 283.0 232.0 L 342.0 233.0 L 401.0 232.0 L 401.0 272.0 L 342.0 273.3 L 283.0 272.0 L 283.0 232.0" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="342" y="256.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">matmul%n1</text>
+<path d="M 136.0 177.0 L 160.0 232.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 160.0 232.0 L 152.0 226.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 160.0 232.0 L 161.1 222.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 156.0 177.0 L 198.0 190.3 L 240.0 203.3 L 282.4 215.5 L 324.0 230.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 324.0 230.0 L 314.2 232.2" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 324.0 230.0 L 317.2 222.6" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 392.0 177.0 L 358.0 232.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 358.0 232.0 L 358.3 222.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 358.0 232.0 L 366.8 227.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 372.0 177.0 L 328.9 191.6 L 284.7 202.4 L 241.1 215.5 L 198.0 230.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 198.0 230.0 L 204.8 222.7" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 198.0 230.0 L 207.7 232.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 144.0 326.0 L 208.0 326.0 L 208.0 354.0 L 144.0 354.0 L 144.0 326.0" fill="#F8E7CC" stroke="none"/>
+<path d="M 144.0 326.0 L 208.0 326.0 L 208.0 354.0 L 144.0 354.0 L 144.0 326.0" fill="none" stroke="#D08A4E" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="176" y="344.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%C1</text>
+<path d="M 176.0 272.0 L 176.0 326.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 176.0 326.0 L 171.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 176.0 326.0 L 181.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 310.0 326.0 L 374.0 326.0 L 374.0 354.0 L 310.0 354.0 L 310.0 326.0" fill="#F8E7CC" stroke="none"/>
+<path d="M 310.0 326.0 L 374.0 326.0 L 374.0 354.0 L 310.0 354.0 L 310.0 326.0" fill="none" stroke="#D08A4E" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="342" y="344.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%C2</text>
+<path d="M 342.0 272.0 L 342.0 326.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 342.0 326.0 L 337.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 342.0 326.0 L 347.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 212.0 340.0 L 259.0 338.9 L 306.0 340.0" fill="none" stroke="#8A8378" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+<text x="259" y="330" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">输入+属性</text>
+<text x="259" y="357" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">完全相同</text>
+<path d="M 173.0 408.0 L 223.0 408.8 L 273.0 409.7 L 323.0 408.0 L 323.0 448.0 L 273.0 446.6 L 223.0 446.7 L 173.0 448.0 L 173.0 408.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 173.0 408.0 L 223.0 408.8 L 273.0 409.7 L 323.0 408.0 L 323.0 448.0 L 273.0 446.6 L 223.0 446.7 L 173.0 448.0 L 173.0 408.0" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="248" y="432.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">add%n2</text>
+<path d="M 176.0 354.0 L 218.0 408.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 218.0 408.0 L 208.7 404.2" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 218.0 408.0 L 216.6 398.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 342.0 354.0 L 311.3 381.3 L 280.0 408.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 280.0 408.0 L 283.2 398.5" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 280.0 408.0 L 289.8 406.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="164" y="392" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="middle">第0槽</text>
+<text x="336" y="392" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="middle">第1槽</text>
+<path d="M 84.0 478.0 L 148.0 478.0 L 148.0 506.0 L 84.0 506.0 L 84.0 478.0" fill="#F8E7CC" stroke="none"/>
+<path d="M 84.0 478.0 L 148.0 478.0 L 148.0 506.0 L 84.0 506.0 L 84.0 478.0" fill="none" stroke="#D08A4E" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="116" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%D</text>
+<path d="M 212.0 448.0 L 173.8 463.4 L 136.0 480.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 136.0 480.0 L 142.0 472.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 136.0 480.0 L 145.9 481.2" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 209.0 475.0 L 299.0 475.0 L 299.0 509.0 L 209.0 509.0 L 209.0 475.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 209.0 475.0 L 299.0 475.0 L 299.0 509.0 L 209.0 509.0 L 209.0 475.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="254" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n3</text>
+<path d="M 148.0 492.0 L 208.0 492.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 208.0 492.0 L 199.3 497.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 208.0 492.0 L 199.3 487.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 348.0 478.0 L 412.0 478.0 L 412.0 506.0 L 348.0 506.0 L 348.0 478.0" fill="#DFEEDD" stroke="none"/>
+<path d="M 348.0 478.0 L 412.0 478.0 L 412.0 506.0 L 348.0 506.0 L 348.0 478.0" fill="none" stroke="#6FA573" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="380" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%Y</text>
+<path d="M 300.0 492.0 L 346.0 492.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 346.0 492.0 L 337.3 497.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 346.0 492.0 L 337.3 487.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="248" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#8A8378" text-anchor="middle" font-weight="bold">use 计数</text>
+<text x="70" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%A：uses 2</text>
+<text x="200" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%B：uses 2</text>
+<text x="330" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%C1：uses 1</text>
+<text x="70" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%C2：uses 1</text>
+<text x="200" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%D：uses 1</text>
+<text x="330" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%Y：uses 0（输出）</text>
+<path d="M 540.0 96.0 L 587.1 96.0 L 634.2 97.5 L 681.3 96.7 L 728.4 97.2 L 775.6 97.2 L 822.7 95.6 L 869.8 96.7 L 916.9 94.6 L 964.0 96.0 L 965.0 143.0 L 962.5 190.0 L 964.3 237.0 L 963.4 284.0 L 963.7 331.0 L 964.8 378.0 L 963.7 425.0 L 962.6 472.0 L 964.6 519.0 L 964.0 566.0 L 916.9 566.5 L 869.8 567.1 L 822.7 567.1 L 775.6 564.9 L 728.4 565.3 L 681.3 564.4 L 634.2 565.4 L 587.1 564.4 L 540.0 566.0 L 540.0 96.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 540.0 96.0 L 587.1 96.0 L 634.2 97.5 L 681.3 96.7 L 728.4 97.2 L 775.6 97.2 L 822.7 95.6 L 869.8 96.7 L 916.9 94.6 L 964.0 96.0 L 965.0 143.0 L 962.5 190.0 L 964.3 237.0 L 963.4 284.0 L 963.7 331.0 L 964.8 378.0 L 963.7 425.0 L 962.6 472.0 L 964.6 519.0 L 964.0 566.0 L 916.9 566.5 L 869.8 567.1 L 822.7 567.1 L 775.6 564.9 L 728.4 565.3 L 681.3 564.4 L 634.2 565.4 L 587.1 564.4 L 540.0 566.0 L 540.0 96.0" fill="none" stroke="#3A322A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 543.2 99.2 L 589.6 98.6 L 636.0 98.5 L 682.4 98.6 L 728.8 98.9 L 775.2 100.3 L 821.6 98.6 L 868.0 99.1 L 914.4 98.2 L 960.8 99.2 L 961.8 141.3 L 960.7 183.5 L 960.6 225.6 L 960.8 267.8 L 959.9 309.9 L 960.0 352.1 L 959.8 394.2 L 960.6 436.4 L 961.3 478.5 L 961.6 520.7 L 960.8 562.8 L 914.4 562.2 L 868.0 563.6 L 821.6 563.9 L 775.2 562.4 L 728.8 563.6 L 682.4 562.5 L 636.0 563.5 L 589.6 563.0 L 543.2 562.8 L 543.2 99.2" fill="none" stroke="#3A322A" stroke-width="1.87" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<text x="752" y="124" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle" font-weight="bold">替换后：3 个节点、5 个值</text>
+<path d="M 592.0 147.0 L 668.0 147.0 L 668.0 177.0 L 592.0 177.0 L 592.0 147.0" fill="#DCE9F5" stroke="none"/>
+<path d="M 592.0 147.0 L 668.0 147.0 L 668.0 177.0 L 592.0 177.0 L 592.0 147.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="630" y="166.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">%A</text>
+<path d="M 836.0 147.0 L 912.0 147.0 L 912.0 177.0 L 836.0 177.0 L 836.0 147.0" fill="#DCE9F5" stroke="none"/>
+<path d="M 836.0 147.0 L 912.0 147.0 L 912.0 177.0 L 836.0 177.0 L 836.0 147.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="874" y="166.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">%B</text>
+<path d="M 621.0 232.0 L 680.0 230.4 L 739.0 232.0 L 739.0 272.0 L 680.0 272.4 L 621.0 272.0 L 621.0 232.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 621.0 232.0 L 680.0 230.4 L 739.0 232.0 L 739.0 272.0 L 680.0 272.4 L 621.0 272.0 L 621.0 232.0" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="680" y="256.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">matmul%n0</text>
+<path d="M 787.0 232.0 L 846.0 231.4 L 905.0 232.0 L 905.0 272.0 L 846.0 272.8 L 787.0 272.0 L 787.0 232.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 787.0 232.0 L 846.0 231.4 L 905.0 232.0 L 905.0 272.0 L 846.0 272.8 L 787.0 272.0 L 787.0 232.0" fill="none" stroke="#8A8378" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<text x="846" y="256.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#8A8378" text-anchor="middle" font-weight="bold">matmul%n1</text>
+<path d="M 879.0 227.0 L 897.0 245.0" fill="none" stroke="#C4574A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 879.0 245.0 L 897.0 227.0" fill="none" stroke="#C4574A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.0 177.0 L 664.0 232.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 664.0 232.0 L 656.0 226.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 664.0 232.0 L 665.1 222.1" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 896.0 177.0 L 857.5 188.6 L 818.3 198.0 L 779.5 208.3 L 741.0 220.2 L 702.0 230.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 702.0 230.0 L 709.0 222.9" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 702.0 230.0 L 711.7 232.5" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 648.0 326.0 L 712.0 326.0 L 712.0 354.0 L 648.0 354.0 L 648.0 326.0" fill="#F8E7CC" stroke="none"/>
+<path d="M 648.0 326.0 L 712.0 326.0 L 712.0 354.0 L 648.0 354.0 L 648.0 326.0" fill="none" stroke="#D08A4E" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="680" y="344.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%C1</text>
+<path d="M 680.0 272.0 L 680.0 326.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 680.0 326.0 L 675.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 680.0 326.0 L 685.0 317.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 814.0 326.0 L 878.0 326.0 L 878.0 354.0 L 814.0 354.0 L 814.0 326.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 814.0 326.0 L 878.0 326.0 L 878.0 354.0 L 814.0 354.0 L 814.0 326.0" fill="none" stroke="#8A8378" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<text x="846" y="344.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#8A8378" text-anchor="middle" font-weight="bold">%C2</text>
+<path d="M 870.0 332.0 L 886.0 348.0" fill="none" stroke="#C4574A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 870.0 348.0 L 886.0 332.0" fill="none" stroke="#C4574A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 677.0 408.0 L 727.0 406.4 L 777.0 407.2 L 827.0 408.0 L 827.0 448.0 L 777.0 447.3 L 727.0 448.8 L 677.0 448.0 L 677.0 408.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 677.0 408.0 L 727.0 406.4 L 777.0 407.2 L 827.0 408.0 L 827.0 448.0 L 777.0 447.3 L 727.0 448.8 L 677.0 448.0 L 677.0 408.0" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="752" y="432.32" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">add%n2</text>
+<path d="M 680.0 354.0 L 718.0 408.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 718.0 408.0 L 708.9 403.8" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 718.0 408.0 L 717.1 398.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 698.0 356.0 L 748.0 406.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 748.0 406.0 L 738.3 403.4" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 748.0 406.0 L 745.4 396.3" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="656" y="392" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="middle">第0槽</text>
+<text x="708" y="392" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="middle">第1槽</text>
+<text x="840" y="402" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#D08A4E" text-anchor="middle" font-weight="bold">两个槽</text>
+<text x="840" y="418" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#D08A4E" text-anchor="middle" font-weight="bold">都指 %C1</text>
+<path d="M 588.0 478.0 L 652.0 478.0 L 652.0 506.0 L 588.0 506.0 L 588.0 478.0" fill="#F8E7CC" stroke="none"/>
+<path d="M 588.0 478.0 L 652.0 478.0 L 652.0 506.0 L 588.0 506.0 L 588.0 478.0" fill="none" stroke="#D08A4E" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="620" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%D</text>
+<path d="M 716.0 448.0 L 677.8 463.6 L 640.0 480.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.0 480.0 L 646.0 472.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.0 480.0 L 649.9 481.2" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 713.0 475.0 L 803.0 475.0 L 803.0 509.0 L 713.0 509.0 L 713.0 475.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 713.0 475.0 L 803.0 475.0 L 803.0 509.0 L 713.0 509.0 L 713.0 475.0" fill="none" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="758" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n3</text>
+<path d="M 652.0 492.0 L 712.0 492.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 712.0 492.0 L 703.3 497.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 712.0 492.0 L 703.3 487.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 852.0 478.0 L 916.0 478.0 L 916.0 506.0 L 852.0 506.0 L 852.0 478.0" fill="#DFEEDD" stroke="none"/>
+<path d="M 852.0 478.0 L 916.0 478.0 L 916.0 506.0 L 852.0 506.0 L 852.0 478.0" fill="none" stroke="#6FA573" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="884" y="496.14" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">%Y</text>
+<path d="M 804.0 492.0 L 850.0 492.0" fill="none" stroke="#3A322A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 850.0 492.0 L 841.3 497.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 850.0 492.0 L 841.3 487.0" fill="none" stroke="#3A322A" stroke-width="1.71" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="752" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#8A8378" text-anchor="middle" font-weight="bold">use 计数</text>
+<text x="574" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%A：uses 1</text>
+<text x="704" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%B：uses 1</text>
+<text x="834" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%C1：uses 2</text>
+<text x="574" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%D：uses 1</text>
+<text x="704" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">%Y：uses 0（输出）</text>
+<text x="834" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">mm2／%C2：已删</text>
+<path d="M 466.0 250.0 L 534.0 250.0" fill="none" stroke="#D08A4E" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 534.0 250.0 L 523.6 256.0" fill="none" stroke="#D08A4E" stroke-width="2.8499999999999996" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 534.0 250.0 L 523.6 244.0" fill="none" stroke="#D08A4E" stroke-width="2.8499999999999996" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="232" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#D08A4E" text-anchor="middle" font-weight="bold">① replace</text>
+<text x="500" y="296" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#8A8378" text-anchor="middle">账本搬家</text>
+<path d="M 466.0 400.0 L 534.0 400.0" fill="none" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 534.0 400.0 L 523.6 406.0" fill="none" stroke="#6FA573" stroke-width="2.8499999999999996" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 534.0 400.0 L 523.6 394.0" fill="none" stroke="#6FA573" stroke-width="2.8499999999999996" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="382" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#6FA573" text-anchor="middle" font-weight="bold">② erase</text>
+<text x="500" y="446" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#8A8378" text-anchor="middle">删死代码</text>
+<path d="M 448.0 470.0 L 500.0 468.6 L 552.0 470.0 L 552.0 554.0 L 500.0 553.3 L 448.0 554.0 L 448.0 470.0" fill="#FFFFFF" stroke="none"/>
+<path d="M 448.0 470.0 L 500.0 468.6 L 552.0 470.0 L 552.0 554.0 L 500.0 553.3 L 448.0 554.0 L 448.0 470.0" fill="none" stroke="#C4574A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+<path d="M 451.2 473.2 L 500.0 472.4 L 548.8 473.2 L 548.8 550.8 L 500.0 551.4 L 451.2 550.8 L 451.2 473.2" fill="none" stroke="#C4574A" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" stroke-dasharray="6 5"/>
+<text x="500" y="494" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C4574A" text-anchor="middle" font-weight="bold">直接删 mm1？</text>
+<text x="500" y="510" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C4574A" text-anchor="middle">被拦下：</text>
+<text x="500" y="526" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C4574A" text-anchor="middle">仍有 2 个</text>
+<text x="500" y="541" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C4574A" text-anchor="middle">使用者</text>
+<path d="M 36.0 586.0 L 82.4 586.8 L 128.8 585.9 L 175.2 586.5 L 221.6 585.3 L 268.0 586.6 L 314.4 585.3 L 360.8 585.9 L 407.2 585.8 L 453.6 587.4 L 500.0 586.9 L 546.4 586.2 L 592.8 587.2 L 639.2 586.4 L 685.6 586.8 L 732.0 586.1 L 778.4 586.3 L 824.8 585.0 L 871.2 587.5 L 917.6 586.5 L 964.0 586.0 L 962.9 635.0 L 963.6 684.0 L 965.6 733.0 L 964.0 782.0 L 917.6 783.3 L 871.2 780.7 L 824.8 781.3 L 778.4 780.6 L 732.0 780.7 L 685.6 782.9 L 639.2 780.4 L 592.8 781.6 L 546.4 781.2 L 500.0 781.9 L 453.6 782.8 L 407.2 782.0 L 360.8 782.1 L 314.4 782.7 L 268.0 782.5 L 221.6 782.2 L 175.2 782.8 L 128.8 783.2 L 82.4 781.0 L 36.0 782.0 L 36.0 586.0" fill="#DFEEDD" stroke="none"/>
+<path d="M 36.0 586.0 L 82.4 586.8 L 128.8 585.9 L 175.2 586.5 L 221.6 585.3 L 268.0 586.6 L 314.4 585.3 L 360.8 585.9 L 407.2 585.8 L 453.6 587.4 L 500.0 586.9 L 546.4 586.2 L 592.8 587.2 L 639.2 586.4 L 685.6 586.8 L 732.0 586.1 L 778.4 586.3 L 824.8 585.0 L 871.2 587.5 L 917.6 586.5 L 964.0 586.0 L 962.9 635.0 L 963.6 684.0 L 965.6 733.0 L 964.0 782.0 L 917.6 783.3 L 871.2 780.7 L 824.8 781.3 L 778.4 780.6 L 732.0 780.7 L 685.6 782.9 L 639.2 780.4 L 592.8 781.6 L 546.4 781.2 L 500.0 781.9 L 453.6 782.8 L 407.2 782.0 L 360.8 782.1 L 314.4 782.7 L 268.0 782.5 L 221.6 782.2 L 175.2 782.8 L 128.8 783.2 L 82.4 781.0 L 36.0 782.0 L 36.0 586.0" fill="none" stroke="#6FA573" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 39.2 589.2 L 83.1 588.9 L 127.0 588.9 L 170.9 589.8 L 214.7 589.6 L 258.6 589.1 L 302.5 588.8 L 346.4 589.9 L 390.3 588.6 L 434.2 589.1 L 478.1 588.9 L 521.9 590.3 L 565.8 588.6 L 609.7 589.4 L 653.6 589.3 L 697.5 588.2 L 741.4 588.5 L 785.3 590.0 L 829.1 589.8 L 873.0 588.6 L 916.9 588.5 L 960.8 589.2 L 959.8 636.6 L 960.6 684.0 L 960.3 731.4 L 960.8 778.8 L 916.9 777.9 L 873.0 779.3 L 829.1 778.8 L 785.3 777.9 L 741.4 779.5 L 697.5 779.3 L 653.6 778.0 L 609.7 778.0 L 565.8 778.8 L 521.9 779.6 L 478.1 778.1 L 434.2 779.2 L 390.3 778.2 L 346.4 779.3 L 302.5 779.6 L 258.6 778.4 L 214.7 779.0 L 170.9 779.1 L 127.0 778.9 L 83.1 778.9 L 39.2 778.8 L 39.2 589.2" fill="none" stroke="#6FA573" stroke-width="2.03" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+<text x="500" y="616" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15" fill="#3A322A" text-anchor="middle" font-weight="bold">解释器验证（真实数字，替换前后一字不差）</text>
+<text x="76" y="648" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start" font-weight="bold">替换前：%D = %Y =</text>
+<text x="120" y="672" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">116  128</text>
+<text x="120" y="691" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">278  308</text>
+<text x="260" y="648" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start" font-weight="bold">替换后：%D = %Y =</text>
+<text x="304" y="672" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">116  128</text>
+<text x="304" y="691" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">278  308</text>
+<path d="M 202.0 661.5 L 209.5 670.0" fill="none" stroke="#6FA573" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 209.5 670.0 L 222.5 651.5" fill="none" stroke="#6FA573" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 386.0 661.5 L 393.5 670.0" fill="none" stroke="#6FA573" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 393.5 670.0 L 406.5 651.5" fill="none" stroke="#6FA573" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="648" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#6FA573" text-anchor="middle" font-weight="bold">语义不变 ✓</text>
+<path d="M 56.0 700.0 L 94.6 699.9 L 133.2 700.4 L 171.8 698.9 L 210.4 700.5 L 249.0 700.0 L 287.7 700.9 L 326.3 699.4 L 364.9 700.5 L 403.5 699.2 L 442.1 700.6 L 480.7 700.5 L 519.3 700.1 L 557.9 699.9 L 596.5 701.3 L 635.1 699.6 L 673.7 698.8 L 712.3 699.5 L 751.0 698.7 L 789.6 701.1 L 828.2 700.9 L 866.8 699.1 L 905.4 700.4 L 944.0 700.0" fill="none" stroke="#6FA573" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<text x="76" y="726" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="start">对照（第三幕）：把 %bias 的使用者改指数值不同的 %bias2 —— 类型一致、账本照搬、结构全对，</text>
+<text x="76" y="748" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="start">但 %Y 从 [58, 0; 0, 104] 变成 [68, 84; 169, 194]：结构合法 ≠ 语义等价，「该不该换」是 Pass 的判断</text>
+<text x="76" y="770" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#8A8378" text-anchor="start" font-style="italic">（第 26 天 CSE 会补上属性等价检查；今天先把底层工具做对）</text>
+</svg>

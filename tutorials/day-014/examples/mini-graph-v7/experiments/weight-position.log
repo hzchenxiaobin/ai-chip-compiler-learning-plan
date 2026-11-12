@@ -1,0 +1,77 @@
+第 13 天实验：权重放哪（2026-11-12 00:21:27）
+环境：g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0 · aarch64
+
+===== 编译 weight_position_ab.cpp =====
+----- 运行 ./weight_position_ab -----
+== 变体 A：bias 放 weights → Constant 节点（编译期数据） ==
+model "A-bias-as-weight" {
+  input A : f32<2x3>
+  input B : f32<3x2>
+  weight bias : f32<2x2> = [0, -100, -150, -50]
+  layer 1: MatMul(A, B) -> C
+  layer 2: Add(C, bias) -> D
+  layer 3: Relu(D) -> Y
+  output Y
+}
+graph "A-bias-as-weight" (2 inputs, 1 outputs) {
+  %A = input : f32<2x3>
+  %B = input : f32<3x2>
+  %n0 = constant() {data = [0, -100, -150, -50]} -> %bias : f32<2x2>
+  %n1 = matmul(%A, %B) -> %C : f32<2x2>
+  %n2 = add(%C, %bias) -> %D : f32<2x2>
+  %n3 = relu(%D) -> %Y : f32<2x2>
+  output %Y
+}
+verify: PASS
+
+Y =
+ 58 0
+ 0 104
+
+== 变体 B：bias 放 inputs → 运行期 bind（只改一个参数） ==
+model "B-bias-as-input" {
+  input A : f32<2x3>
+  input B : f32<3x2>
+  input bias : f32<2x2>
+  layer 1: MatMul(A, B) -> C
+  layer 2: Add(C, bias) -> D
+  layer 3: Relu(D) -> Y
+  output Y
+}
+graph "B-bias-as-input" (3 inputs, 1 outputs) {
+  %A = input : f32<2x3>
+  %B = input : f32<3x2>
+  %bias = input : f32<2x2>
+  %n0 = matmul(%A, %B) -> %C : f32<2x2>
+  %n1 = add(%C, %bias) -> %D : f32<2x2>
+  %n2 = relu(%D) -> %Y : f32<2x2>
+  output %Y
+}
+verify: PASS
+
+Y =
+ 58 0
+ 0 104
+
+== 对照结论 ==
+1) 语义相同：两份 Y 都是 58 0 / 0 104；verify 都 PASS。
+2) IR 不同一行：A 的 %bias 来自 constant 节点，B 的 %bias 是 input。
+3) 合同不同：A 的 bias 编译期就在图里（可参与常量折叠，第 24/47 天），
+   B 的 bias 运行期才存在，编译器永远看不到它的值。
+（退出码 0）
+
+===== 两种 IR 的逐行 diff（只该差 bias 的来历行） =====
+1c1
+< graph "A-bias-as-weight" (2 inputs, 1 outputs) {
+---
+> graph "B-bias-as-input" (3 inputs, 1 outputs) {
+4,7c4,7
+<   %n0 = constant() {data = [0, -100, -150, -50]} -> %bias : f32<2x2>
+<   %n1 = matmul(%A, %B) -> %C : f32<2x2>
+<   %n2 = add(%C, %bias) -> %D : f32<2x2>
+<   %n3 = relu(%D) -> %Y : f32<2x2>
+---
+>   %bias = input : f32<2x2>
+>   %n0 = matmul(%A, %B) -> %C : f32<2x2>
+>   %n1 = add(%C, %bias) -> %D : f32<2x2>
+>   %n2 = relu(%D) -> %Y : f32<2x2>

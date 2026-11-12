@@ -1,0 +1,50 @@
+== 环境 ==
+g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0 · aarch64
+
+== 变体 A：Y = relu(A×B + bias) ⊙ mask（Mul 在最后） ==
+graph "A-mask-last" (2 inputs, 1 outputs) {
+  %A = input : f32<2x3>
+  %B = input : f32<3x2>
+  %n0 = constant() {data = [0, -100, -150, -50]} -> %bias : f32<2x2>
+  %n1 = constant() {data = [1, 0, 0, 2]} -> %mask : f32<2x2>
+  %n2 = matmul(%A, %B) -> %C : f32<2x2>
+  %n3 = add(%C, %bias) -> %D : f32<2x2>
+  %n4 = relu(%D) -> %R : f32<2x2>
+  %n5 = mul(%R, %mask) -> %Y : f32<2x2>
+  output %Y
+}
+verify: PASS（6 个节点、8 个值）
+Y =
+  58 0
+  0 208
+
+== 变体 B：Y = relu((A×B ⊙ mask) + bias)（Mul 在最前） ==
+graph "B-mask-first" (2 inputs, 1 outputs) {
+  %A = input : f32<2x3>
+  %B = input : f32<3x2>
+  %n0 = constant() {data = [0, -100, -150, -50]} -> %bias : f32<2x2>
+  %n1 = constant() {data = [1, 0, 0, 2]} -> %mask : f32<2x2>
+  %n2 = matmul(%A, %B) -> %C : f32<2x2>
+  %n3 = mul(%C, %mask) -> %M : f32<2x2>
+  %n4 = add(%M, %bias) -> %D : f32<2x2>
+  %n5 = relu(%D) -> %Y : f32<2x2>
+  output %Y
+}
+verify: PASS（6 个节点、8 个值）
+Y =
+  58 0
+  0 258
+
+== 两个变体 IR 的逐行 diff（< 变体 A  > 变体 B）==
+1c1
+< graph "A-mask-last" (2 inputs, 1 outputs) {
+---
+> graph "B-mask-first" (2 inputs, 1 outputs) {
+7,9c7,9
+<   %n3 = add(%C, %bias) -> %D : f32<2x2>
+<   %n4 = relu(%D) -> %R : f32<2x2>
+<   %n5 = mul(%R, %mask) -> %Y : f32<2x2>
+---
+>   %n3 = mul(%C, %mask) -> %M : f32<2x2>
+>   %n4 = add(%M, %bias) -> %D : f32<2x2>
+>   %n5 = relu(%D) -> %Y : f32<2x2>

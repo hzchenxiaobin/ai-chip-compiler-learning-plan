@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600">
+<rect width="1000" height="600" fill="#fdfaf2"/>
+<text x="46" y="58" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="25" fill="#3b352d" text-anchor="start" font-weight="bold">SSA 在编译链路中的位置</text>
+<text x="46" y="88" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#84796a" text-anchor="start">第 17 天：把“一个名字被赋值多次”的程序，变成“每个值只定义一次”的 IR</text>
+<path d="M 37.0,148.4 Q 81.7,148.4 104.0,150.5 Q 126.3,152.5 148.7,151.2 Q 171.1,149.9 193.4,151.1 T 215.8,152.2" fill="none" stroke="#3b352d" stroke-width="2.36" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 210.4,149.7 Q 210.0,182.7 209.4,199.2 Q 208.7,215.7 208.2,232.2 T 207.7,248.7" fill="none" stroke="#3b352d" stroke-width="2.43" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 213.0,242.9 Q 168.4,243.3 146.1,242.6 Q 123.8,242.0 101.5,241.9 Q 79.2,241.8 56.9,241.2 T 34.6,240.6" fill="none" stroke="#3b352d" stroke-width="2.31" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 38.5,246.7 Q 39.8,212.2 40.6,194.9 Q 41.3,177.7 40.9,160.4 T 40.5,143.1" fill="none" stroke="#3b352d" stroke-width="2.47" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="124" y="186" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#3b352d" text-anchor="middle">源程序 / 计算图 IR</text>
+<text x="124" y="218" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 8–14  ✓</text>
+<path d="M 212.0,196.0 Q 215.8,196.5 216.7,198.5 Q 217.5,200.5 219.3,201.0 Q 221.0,201.5 222.4,200.5 Q 223.8,199.4 225.8,199.2 Q 227.7,199.0 228.9,197.5 T 230.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.27" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 230.0,196.0 Q 228.1,198.9 227.1,200.3 Q 226.0,201.7 224.9,203.0 T 223.7,204.3" fill="none" stroke="#3b352d" stroke-width="1.89" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 230.0,196.0 Q 227.4,197.0 226.1,197.6 Q 224.8,198.2 223.4,198.4 T 222.0,198.6" fill="none" stroke="#3b352d" stroke-width="2.17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 225.2,152.5 Q 270.0,152.4 292.4,153.2 Q 314.9,153.9 337.3,153.8 Q 359.7,153.6 382.1,152.8 T 404.5,152.0" fill="none" stroke="#3b352d" stroke-width="2.29" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 401.7,147.1 Q 400.4,179.7 400.7,196.0 Q 401.0,212.4 400.6,228.7 T 400.3,245.0" fill="none" stroke="#3b352d" stroke-width="2.70" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 405.7,240.3 Q 361.5,240.4 339.3,240.9 Q 317.2,241.4 295.1,241.3 Q 272.9,241.2 250.8,241.7 T 228.7,242.1" fill="none" stroke="#3b352d" stroke-width="2.63" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 233.9,248.7 Q 234.8,215.6 233.6,199.0 Q 232.4,182.5 231.9,166.0 T 231.4,149.5" fill="none" stroke="#3b352d" stroke-width="2.79" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="316" y="186" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16" fill="#3b352d" text-anchor="middle">CFG 与拓扑排序</text>
+<text x="316" y="218" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 15–16  ✓</text>
+<path d="M 404.0,196.0 Q 408.1,195.0 409.5,193.7 Q 410.9,192.4 412.0,190.6 Q 413.0,188.9 414.7,189.8 Q 416.4,190.8 418.2,191.6 Q 420.0,192.3 421.0,194.2 T 422.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.45" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 422.0,196.0 Q 419.0,196.0 417.7,195.3 Q 416.4,194.7 415.1,194.0 T 413.8,193.3" fill="none" stroke="#3b352d" stroke-width="2.20" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 422.0,196.0 Q 419.8,194.1 418.9,193.0 Q 417.9,191.9 417.3,190.6 T 416.6,189.3" fill="none" stroke="#3b352d" stroke-width="1.81" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="424" y="150" width="168" height="92" rx="9" fill="#dce7f6" opacity="0.55"/>
+<path d="M 421.7,149.1 Q 465.0,150.5 486.6,149.6 Q 508.3,148.7 529.9,149.2 Q 551.6,149.6 573.2,150.2 T 594.8,150.8" fill="none" stroke="#5d8fc9" stroke-width="3.31" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 589.8,146.0 Q 591.9,178.7 591.4,195.1 Q 590.9,211.6 592.5,227.9 T 594.1,244.2" fill="none" stroke="#5d8fc9" stroke-width="3.11" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 599.3,239.4 Q 554.1,240.9 531.4,242.3 Q 508.8,243.7 486.2,243.7 Q 463.5,243.7 440.8,243.8 T 418.2,243.9" fill="none" stroke="#5d8fc9" stroke-width="2.99" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 424.6,246.5 Q 424.5,213.2 424.8,196.5 Q 425.1,179.8 425.5,163.2 T 426.0,146.5" fill="none" stroke="#5d8fc9" stroke-width="3.20" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="508" y="186" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16" fill="#3b352d" text-anchor="middle" font-weight="bold">SSA 化</text>
+<text x="508" y="218" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#5d8fc9" text-anchor="middle">Day 17 · 今天</text>
+<path d="M 596.0,196.0 Q 599.0,198.1 600.3,199.4 Q 601.7,200.6 603.4,201.4 Q 605.0,202.3 606.2,200.8 Q 607.4,199.3 609.1,198.6 Q 610.9,198.0 612.5,197.0 T 614.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.46" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 614.0,196.0 Q 612.7,198.7 611.3,199.5 Q 609.9,200.3 609.3,201.7 T 608.8,203.1" fill="none" stroke="#3b352d" stroke-width="1.86" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 614.0,196.0 Q 611.7,197.3 610.4,197.4 Q 609.0,197.5 607.8,198.0 T 606.6,198.5" fill="none" stroke="#3b352d" stroke-width="1.94" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 612.8,149.7 Q 656.6,148.2 678.5,150.1 Q 700.4,151.9 722.3,151.3 Q 744.2,150.7 766.1,150.5 T 788.0,150.3" fill="none" stroke="#3b352d" stroke-width="2.67" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 781.7,143.5 Q 780.8,177.0 781.3,193.8 Q 781.7,210.6 782.1,227.3 T 782.6,244.1" fill="none" stroke="#3b352d" stroke-width="2.27" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 788.9,239.5 Q 744.9,242.0 723.0,242.9 Q 701.0,243.9 679.0,243.4 Q 656.9,242.9 635.0,243.7 T 613.0,244.5" fill="none" stroke="#3b352d" stroke-width="2.50" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 618.0,249.0 Q 617.8,215.1 618.8,198.2 Q 619.8,181.2 618.9,164.3 T 617.9,147.3" fill="none" stroke="#3b352d" stroke-width="2.31" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="700" y="186" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#3b352d" text-anchor="middle">SSA 上的分析与优化</text>
+<text x="700" y="218" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">常量传播 / DCE / CSE</text>
+<path d="M 788.0,196.0 Q 791.5,196.5 792.5,198.3 Q 793.5,200.0 795.2,200.3 Q 797.0,200.5 798.2,199.1 Q 799.3,197.6 800.9,197.1 Q 802.5,196.6 804.3,196.3 T 806.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.26" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 806.0,196.0 Q 803.6,198.4 802.4,199.7 Q 801.3,200.9 800.3,202.3 T 799.3,203.7" fill="none" stroke="#3b352d" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 806.0,196.0 Q 802.9,196.3 801.4,195.8 Q 799.9,195.3 798.4,195.2 T 796.9,195.0" fill="none" stroke="#3b352d" stroke-width="2.14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 805.2,150.0 Q 848.7,148.9 870.4,148.7 Q 892.1,148.5 913.9,148.7 Q 935.6,148.9 957.3,149.7 T 979.0,150.5" fill="none" stroke="#3b352d" stroke-width="2.59" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 974.4,144.9 Q 975.4,179.3 975.2,196.6 Q 975.1,213.8 976.8,231.0 T 978.4,248.1" fill="none" stroke="#3b352d" stroke-width="2.47" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 980.8,241.1 Q 937.6,242.5 916.0,242.5 Q 894.3,242.4 872.7,242.1 Q 851.1,241.7 829.5,242.9 T 807.9,244.1" fill="none" stroke="#3b352d" stroke-width="2.41" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 810.2,247.2 Q 809.7,212.9 810.0,195.8 Q 810.3,178.7 810.2,161.6 T 810.1,144.4" fill="none" stroke="#3b352d" stroke-width="2.33" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="892" y="186" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#3b352d" text-anchor="middle">Lowering / 更低层 IR</text>
+<text x="892" y="218" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 85+</text>
+<text x="508" y="126" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#5d8fc9" text-anchor="middle" font-weight="bold" transform="rotate(-2 508 126)">今天在这里</text>
+<path d="M 508.0,132.0 Q 506.5,133.9 507.0,135.3 Q 507.4,136.7 506.6,137.6 Q 505.7,138.5 506.3,139.5 Q 506.9,140.5 507.5,141.5 Q 508.2,142.5 508.1,143.8 T 508.0,145.0" fill="none" stroke="#5d8fc9" stroke-width="2.28" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 508.0,145.0 Q 506.1,143.2 505.1,142.2 Q 504.1,141.3 503.2,140.4 T 502.2,139.5" fill="none" stroke="#5d8fc9" stroke-width="1.86" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 508.0,145.0 Q 508.8,141.9 508.2,140.3 Q 507.6,138.7 507.8,137.2 T 508.0,135.6" fill="none" stroke="#5d8fc9" stroke-width="1.77" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="330" width="396" height="170" rx="6" fill="#f6dcdc" opacity="0.55"/>
+<path d="M 56.9,331.3 Q 102.4,331.0 125.1,331.5 Q 147.8,332.0 170.5,330.8 Q 193.3,329.5 216.0,330.9 Q 238.7,332.3 261.4,331.0 Q 284.1,329.7 306.8,329.2 Q 329.6,328.8 352.3,328.6 Q 375.0,328.3 397.7,328.3 Q 420.4,328.3 443.2,328.5 T 465.9,328.7" fill="none" stroke="#d17b7b" stroke-width="2.62" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 459.3,321.9 Q 460.1,359.0 460.5,377.6 Q 460.9,396.1 461.4,414.6 Q 461.9,433.2 461.7,451.7 Q 461.5,470.3 461.6,488.8 T 461.7,507.4" fill="none" stroke="#d17b7b" stroke-width="2.62" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 465.6,501.1 Q 420.9,500.7 398.6,501.0 Q 376.3,501.2 353.9,500.8 Q 331.6,500.3 309.3,500.0 Q 287.0,499.8 264.6,500.4 Q 242.3,501.1 220.0,501.2 Q 197.7,501.3 175.3,500.5 Q 153.0,499.7 130.7,500.4 Q 108.4,501.1 86.0,500.8 T 63.7,500.6" fill="none" stroke="#d17b7b" stroke-width="2.68" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 66.4,506.9 Q 64.4,462.3 64.8,440.0 Q 65.3,417.7 64.2,395.4 Q 63.0,373.2 62.9,350.9 T 62.8,328.6" fill="none" stroke="#d17b7b" stroke-width="2.48" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="84" y="366" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16.5" fill="#d17b7b" text-anchor="start" font-weight="bold" transform="rotate(-1 84 366)">问题：一个名字，多个值</text>
+<text x="84" y="402" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">a = 1；a = a + b；a = c - 1</text>
+<text x="84" y="432" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">名字 a 在不同时刻是不同的值，</text>
+<text x="84" y="462" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">每次分析用到 a，都要回看赋值历史；</text>
+<text x="84" y="492" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">常量传播、DCE 写起来又慢又容易错</text>
+<rect x="540" y="330" width="396" height="170" rx="9" fill="#dbeadb" opacity="0.55"/>
+<path d="M 536.7,327.7 Q 581.3,328.1 603.5,328.7 Q 625.8,329.3 648.1,329.6 Q 670.4,329.9 692.7,330.1 Q 715.0,330.3 737.3,329.7 Q 759.6,329.1 781.8,329.8 Q 804.1,330.4 826.4,330.4 Q 848.7,330.3 871.0,330.9 Q 893.3,331.5 915.6,331.3 T 937.9,331.1" fill="none" stroke="#7db37f" stroke-width="2.38" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 933.9,325.7 Q 935.3,370.1 935.7,392.3 Q 936.2,414.5 935.9,436.7 Q 935.6,458.9 936.5,481.1 T 937.3,503.3" fill="none" stroke="#7db37f" stroke-width="2.66" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 940.4,500.0 Q 895.3,499.1 872.7,499.4 Q 850.1,499.7 827.5,499.2 Q 805.0,498.7 782.4,499.4 Q 759.8,500.1 737.2,500.0 Q 714.6,500.0 692.1,500.4 Q 669.5,500.9 646.9,499.9 Q 624.3,498.9 601.7,499.3 Q 579.2,499.6 556.6,499.5 T 534.0,499.4" fill="none" stroke="#7db37f" stroke-width="2.81" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 539.8,501.9 Q 540.9,457.6 539.6,435.5 Q 538.4,413.4 538.6,391.3 Q 538.8,369.2 539.5,347.0 T 540.1,324.9" fill="none" stroke="#7db37f" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="560" y="366" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16.5" fill="#5f9a63" text-anchor="start" font-weight="bold" transform="rotate(-1 560 366)">SSA 之后：一个值，一个定义</text>
+<text x="560" y="402" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">a₁、a₂、a₃ 是三个互不相同的值；</text>
+<text x="560" y="432" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">每个使用直接指向唯一定义（Use-Def 表）；</text>
+<text x="560" y="462" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">常量传播 = 查一次定义；</text>
+<text x="560" y="492" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">DCE = 数一数有没有使用者。</text>
+<path d="M 464.0,415.0 Q 475.9,418.5 481.9,420.5 Q 487.8,422.4 493.9,423.7 Q 500.0,424.9 505.8,422.5 Q 511.6,420.1 517.6,418.5 Q 523.6,417.0 529.8,416.0 T 536.0,415.0" fill="none" stroke="#5d8fc9" stroke-width="2.86" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 536.0,415.0 Q 533.9,417.5 532.5,418.2 Q 531.0,418.9 529.7,419.9 T 528.5,420.8" fill="none" stroke="#5d8fc9" stroke-width="2.32" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 536.0,415.0 Q 532.0,414.3 530.1,413.4 Q 528.2,412.6 526.1,412.5 T 524.0,412.3" fill="none" stroke="#5d8fc9" stroke-width="2.24" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="400" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#5d8fc9" text-anchor="middle" font-weight="bold">SSA 化</text>
+<text x="46" y="546" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start" transform="rotate(-0.8 46 546)">MLIR 的 Operation / Value 生来就是 SSA——Day 29 之后你会天天和它打交道。</text>
+<text x="46" y="576" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start">✓ 表示已经完成的阶段；后续的分析（Day 19–20）与优化 Pass（Day 22–27）都建立在今天的 Use-Def 关系上。</text>
+</svg>

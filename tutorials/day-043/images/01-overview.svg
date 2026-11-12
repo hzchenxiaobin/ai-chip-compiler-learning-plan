@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob3" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="23" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:13px; fill:#2F2B27; }
+      .t-s { font-size:12px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; font-size:13px; fill:#1F3B57; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .bbox { fill:#DAE8FC; stroke:#5B8DB8; stroke-width:2.4; stroke-linejoin:round; }
+      .obox { fill:#FFE6CC; stroke:#D79B00; stroke-width:3; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1000" height="660"/>
+  <text class="t-title" x="30" y="44">第 43 天的位置：验证之后，第一个『往 IR 里填信息』的组件</text>
+
+  <!-- ===== 顶部流水线 ===== -->
+  <g filter="url(#wob)">
+    <rect class="box" x="22" y="78" width="138" height="66" rx="10" transform="rotate(-0.4 91 111)"/>
+    <rect class="box" x="182" y="78" width="138" height="66" rx="10" transform="rotate(0.5 251 111)"/>
+    <rect class="box" x="342" y="78" width="138" height="66" rx="10" transform="rotate(-0.3 411 111)"/>
+    <rect class="obox" x="502" y="78" width="138" height="66" rx="10" transform="rotate(0.6 571 111)"/>
+    <rect class="box" x="662" y="78" width="138" height="66" rx="10" transform="rotate(-0.5 731 111)"/>
+    <rect class="box" x="822" y="78" width="138" height="66" rx="10" transform="rotate(0.4 891 111)"/>
+  </g>
+  <g filter="url(#wob2)" stroke="#2F2B27" stroke-width="2.2" fill="none" stroke-linecap="round">
+    <path d="M162 111 Q173 106 181 110" marker-end="url(#arr)"/>
+    <path d="M322 110 Q333 115 341 111" marker-end="url(#arr)"/>
+    <path d="M482 112 Q493 106 501 110" marker-end="url(#arr)"/>
+    <path d="M642 110 Q653 114 661 111" marker-end="url(#arr)"/>
+    <path d="M802 111 Q813 106 821 110" marker-end="url(#arr)"/>
+  </g>
+  <text class="t-b" x="91" y="107" text-anchor="middle" font-weight="bold">解析</text>
+  <text class="t-s" x="91" y="128" text-anchor="middle">mini-opt</text>
+  <text class="t-b" x="251" y="107" text-anchor="middle" font-weight="bold">ODS 约束</text>
+  <text class="t-s" x="251" y="128" text-anchor="middle">单值自身</text>
+  <text class="t-b" x="411" y="107" text-anchor="middle" font-weight="bold">手写 Verifier</text>
+  <text class="t-s" x="411" y="128" text-anchor="middle">跨值关系</text>
+  <text class="t-b" x="571" y="107" text-anchor="middle" font-weight="bold" fill="#8A5A00">Shape 推导</text>
+  <text class="t-s" x="571" y="128" text-anchor="middle" fill="#8A5A00">今日新增 ★</text>
+  <text class="t-b" x="731" y="107" text-anchor="middle" font-weight="bold">图优化·融合</text>
+  <text class="t-s" x="731" y="128" text-anchor="middle">Day 45·50+</text>
+  <text class="t-b" x="891" y="107" text-anchor="middle" font-weight="bold">Lowering</text>
+  <text class="t-s" x="891" y="128" text-anchor="middle">Day 85+</text>
+
+  <path d="M40 158 Q250 167 462 157" fill="none" stroke="#5B8DB8" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+  <text class="t-s" x="251" y="184" text-anchor="middle" fill="#3F6E9F">信息只减不增：只拦『可证明非法』</text>
+  <text class="t-s" x="571" y="184" text-anchor="middle" fill="#B07800" font-weight="bold">第一个『产出信息』的组件</text>
+
+  <!-- ===== 黄色便签 ===== -->
+  <g filter="url(#wob)">
+    <rect x="70" y="202" width="860" height="42" rx="14" fill="#FBEEA9" opacity="0.7" stroke="#E6C34A" stroke-width="1.6"/>
+  </g>
+  <text class="t-b" x="90" y="229">★ Verifier 只拦『可证明非法』，从不新增信息——实测 2x3 · 3x2 → ?x? 也放行（rc=0，5.4 节探针 4）</text>
+
+  <!-- ===== 左卡：现状 ===== -->
+  <g filter="url(#wob)">
+    <rect x="25" y="268" width="460" height="352" rx="14" fill="#FFFFFF" stroke="#5B8DB8" stroke-width="2.4"/>
+  </g>
+  <text class="t-h" x="45" y="298">现状（到 Day 42 为止）：结果类型靠人手写</text>
+  <text class="code" x="48" y="332">%c = mini.matmul %a, %b :</text>
+  <text class="code" x="48" y="356">    tensor&lt;2x3xf32&gt;, tensor&lt;3x2xf32&gt;</text>
+  <text class="code" x="48" y="380">  -&gt; tensor&lt;2x2xf32&gt;</text>
+  <g filter="url(#wob3)">
+    <ellipse cx="152" cy="375" rx="126" ry="17" fill="none" stroke="#B85450" stroke-width="2.2"/>
+  </g>
+  <text class="t-s" x="45" y="420" fill="#A0433F">↑ 这一段是手写的：人算出 2×2；写错会被 Verifier 规则 4 拦下</text>
+  <path d="M45 438 Q255 444 465 438" fill="none" stroke="#CBD5DF" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text class="t-b" x="45" y="470">换成动态输入 ?x3 · 3x2，结果该写什么？</text>
+  <g filter="url(#wob2)">
+    <rect x="48" y="488" width="56" height="30" rx="8" fill="#FFFFFF" stroke="#2F2B27" stroke-width="2"/>
+    <rect x="114" y="488" width="56" height="30" rx="8" fill="#FFFFFF" stroke="#2F2B27" stroke-width="2"/>
+    <rect x="180" y="488" width="56" height="30" rx="8" fill="#FFFFFF" stroke="#2F2B27" stroke-width="2"/>
+  </g>
+  <text class="code" x="76" y="509" text-anchor="middle">?x2</text>
+  <text class="code" x="142" y="509" text-anchor="middle">2x2</text>
+  <text class="code" x="208" y="509" text-anchor="middle">?x?</text>
+  <text class="t-s" x="252" y="509" fill="#A0433F">← 实测三个都 rc=0</text>
+  <text class="t-s" x="45" y="560" fill="#3F6E9F">写 ?x2 是人肉推导；写 2x2 是『超承诺』（运行期才知道对不对）；</text>
+  <text class="t-s" x="45" y="584" fill="#3F6E9F">写 ?x? 是把已知信息扔掉——都合法，全靠人自觉。</text>
+
+  <!-- ===== 右卡：Day 44 之后 ===== -->
+  <g filter="url(#wob)">
+    <rect x="520" y="268" width="455" height="352" rx="14" fill="#FFFFFF" stroke="#82B366" stroke-width="2.4"/>
+  </g>
+  <text class="t-h" x="540" y="298">Day 44 之后：编译器补全</text>
+  <g filter="url(#wob2)">
+    <rect x="545" y="322" width="185" height="42" rx="9" fill="#FFFFFF" stroke="#2F2B27" stroke-width="2.2"/>
+    <rect x="555" y="390" width="165" height="36" rx="9" class="obox"/>
+    <rect x="545" y="458" width="185" height="42" rx="9" class="gbox"/>
+    <rect x="545" y="516" width="185" height="42" rx="9" class="gbox"/>
+  </g>
+  <text class="code" x="637" y="348" text-anchor="middle">-&gt; tensor&lt;?x?xf32&gt;</text>
+  <text class="t-s" x="745" y="340">前端随手写</text>
+  <text class="t-s" x="745" y="356">（不用人算）</text>
+  <path class="arrow" d="M637 366 Q637 378 637 388" filter="url(#wob2)"/>
+  <text class="t-b" x="637" y="413" text-anchor="middle" fill="#8A5A00" font-weight="bold">Shape 推导 Pass</text>
+  <path class="arrow" d="M637 428 Q637 442 637 456" filter="url(#wob2)"/>
+  <text class="code" x="637" y="484" text-anchor="middle">-&gt; tensor&lt;2x2xf32&gt;</text>
+  <text class="t-s" x="745" y="480">输入全静态时</text>
+  <text class="code" x="637" y="542" text-anchor="middle">-&gt; tensor&lt;?x2xf32&gt;</text>
+  <text class="t-s" x="745" y="538">M 未知时</text>
+  <text class="t-s" x="540" y="592" fill="#4C7A43">推导只承诺『输入蕴含的』信息：不知道就留 ?，绝不发明数字</text>
+
+  <text class="t-s" x="970" y="650" text-anchor="end" fill="#8A8378">Day 43 · mini 方言 · MLIR 18.1.8</text>
+</svg>

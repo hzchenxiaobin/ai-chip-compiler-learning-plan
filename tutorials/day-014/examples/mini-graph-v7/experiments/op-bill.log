@@ -1,0 +1,45 @@
+===== 第 14 天「算子账单」实验：一行枚举之后，编译器说了什么 =====
+环境：g++ 9.4.0 · aarch64 · CMake 3.20.5 · Ninja 1.10.0（-Wall -Wextra -Wpedantic）
+起点：第 13 天收尾的 mini-graph-v6 全树（干净构建 0 警告）
+
+----- 第 1 步：只在 OpKind 枚举里加一行 Mul，构建 -----
+结果：构建成功（exit 0），23 条警告，落在 5 个不同的 switch 上——
+      每个 switch 都是一次「按算子类型选动作」的分发点：
+      9 src/OpKind.h:36:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+      9 src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+      3 src/NodeVisitor.h:27:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+      1 tests/test_visitor.cpp:311:20: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+      1 src/Interpreter.cpp:37:16: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+      （警告是唯一防线：忽略它们，Mul 会打印成 "?"、被 Verifier 当野值、
+        被解释器算成全 0——构建却是绿的）
+
+----- 第 2 步：给 NodeVisitor 加纯虚 visit_mul ＋ apply_visitor 的 case，构建 -----
+结果：构建失败（exit 1），12 条错误点名 5 个漏实现的具体访问者类：
+src/Graph.cpp:310:21: error: cannot declare variable ‘printer’ to be of abstract type ‘{anonymous}::NodeLinePrinter’
+src/Verifier.cpp:148:18: error: cannot declare variable ‘semantics’ to be of abstract type ‘{anonymous}::NodeVerifier’
+tests/test_visitor.cpp:130:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+tests/test_visitor.cpp:144:26: error: cannot declare variable ‘rec2’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+tests/test_visitor.cpp:153:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+tests/test_visitor.cpp:225:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+tests/test_visitor.cpp:236:23: error: cannot declare variable ‘printer’ to be of abstract type ‘OpCardPrinter’
+tests/test_visitor.cpp:261:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+tests/test_visitor.cpp:263:23: error: cannot declare variable ‘printer’ to be of abstract type ‘OpCardPrinter’
+tests/test_visitor.cpp:264:24: error: cannot declare variable ‘counter’ to be of abstract type ‘{anonymous}::CounterVisitor’
+tests/test_visitor.cpp:301:24: error: cannot declare variable ‘counter’ to be of abstract type ‘{anonymous}::CounterVisitor’
+tests/test_visitor.cpp:326:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+
+完整错误链条的读法（节选，三层递进直到病根）：
+src/Graph.cpp:310:21: error: cannot declare variable ‘printer’ to be of abstract type ‘{anonymous}::NodeLinePrinter’
+  310 |     NodeLinePrinter printer(text);
+      |                     ^~~~~~~
+src/Graph.cpp:49:7: note:   because the following virtual functions are pure within ‘{anonymous}::NodeLinePrinter’:
+   49 | class NodeLinePrinter : public NodeVisitor {
+      |       ^~~~~~~~~~~~~~~
+src/NodeVisitor.h:17:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+
+----- 账单结论 -----
+必改点 = 5 个 switch（OpKind.h 两个、NodeVisitor.h 一个、Interpreter.cpp 一个、
+          test_visitor.cpp 手写对照组一个）＋ 5 个访问者类（NodeLinePrinter、
+          NodeVerifier、OpCardPrinter、RecordingVisitor、CounterVisitor）
+零改动 = Node.h、Value.h、Graph.h/.cpp 的工厂与账本、Attrs.h、Model.h——
+          「一个类 + kind + 属性」与 use-def 账本对算子种类完全不感知

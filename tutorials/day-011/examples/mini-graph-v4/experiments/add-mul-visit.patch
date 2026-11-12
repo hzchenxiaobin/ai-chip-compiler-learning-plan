@@ -1,0 +1,18 @@
+--- a/src/NodeVisitor.h	2026-11-11 23:32:59.019745239 +0800
++++ b/src/NodeVisitor.h	2026-11-11 23:32:59.031746164 +0800
+@@ -13,6 +13,7 @@
+     virtual void visit_constant(const Node& n) = 0;
+     virtual void visit_matmul(const Node& n) = 0;
+     virtual void visit_add(const Node& n) = 0;
++    virtual void visit_mul(const Node& n) = 0;
+     virtual void visit_relu(const Node& n) = 0;
+ };
+ 
+@@ -28,6 +29,7 @@
+         case OpKind::Constant: v.visit_constant(n); break;
+         case OpKind::MatMul:   v.visit_matmul(n);   break;
+         case OpKind::Add:      v.visit_add(n);      break;
++        case OpKind::Mul:      v.visit_mul(n);      break;
+         case OpKind::Relu:     v.visit_relu(n);     break;
+     }
+ }

@@ -1,7 +1,0 @@
-# ninja log v5
-0	463	1794408409182156710	src/CMakeFiles/mini-graph.dir/main.cpp.o	9105b814e6ce094e
-0	564	1794408409282164512	tests/CMakeFiles/test_graph.dir/test_graph.cpp.o	1c4cda1a7971e539
-0	812	1794408409530183860	src/CMakeFiles/mini_graph.dir/Graph.cpp.o	26aca23d58346ff6
-812	822	1794408409542184796	src/libmini_graph.a	d4fec377e7cd4a9
-823	917	1794408409634191974	src/mini-graph	4bd62f35cd4511a
-823	918	1794408409634191974	tests/test_graph	d1904804f584c1ef

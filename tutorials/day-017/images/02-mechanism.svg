@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="660" viewBox="0 0 1120 660">
+<rect width="1120" height="660" fill="#fdfaf2"/>
+<text x="46" y="56" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="24" fill="#3b352d" text-anchor="start" font-weight="bold">从多次赋值到 SSA：定义发新版本，使用查当前版本</text>
+<text x="46" y="86" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#84796a" text-anchor="start">同一个例子 S1~S7：左边是原程序，右边是 SSA 版本（右侧为脚本真实输出）</text>
+<path d="M 38.2,108.7 Q 83.3,109.1 105.8,108.4 Q 128.3,107.7 150.9,107.2 Q 173.4,106.8 195.9,108.5 Q 218.5,110.1 241.0,109.0 Q 263.5,108.0 286.1,107.9 Q 308.6,107.9 331.1,108.3 T 353.7,108.8" fill="none" stroke="#3b352d" stroke-width="2.66" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 348.8,102.5 Q 349.4,147.7 349.5,170.4 Q 349.5,193.0 349.6,215.6 Q 349.7,238.3 348.5,260.9 Q 347.3,283.5 348.9,306.2 Q 350.5,328.8 349.8,351.5 Q 349.1,374.1 349.0,396.7 Q 348.9,419.4 348.4,442.0 Q 347.9,464.6 348.3,487.3 Q 348.7,509.9 348.9,532.5 T 349.2,555.2" fill="none" stroke="#3b352d" stroke-width="2.68" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 354.5,548.8 Q 308.9,549.0 286.1,549.0 Q 263.3,548.9 240.5,549.6 Q 217.7,550.3 194.8,549.6 Q 172.0,548.9 149.2,550.7 Q 126.4,552.4 103.6,551.2 Q 80.8,550.0 58.0,550.7 T 35.2,551.4" fill="none" stroke="#3b352d" stroke-width="2.78" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 39.1,554.0 Q 39.2,509.3 39.4,486.9 Q 39.7,464.5 39.8,442.2 Q 40.0,419.8 39.9,397.4 Q 39.9,375.0 40.9,352.7 Q 41.9,330.3 41.7,307.9 Q 41.5,285.5 42.1,263.2 Q 42.8,240.8 42.5,218.4 Q 42.2,196.0 42.0,173.6 Q 41.7,151.3 42.0,128.9 T 42.3,106.5" fill="none" stroke="#3b352d" stroke-width="2.46" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="140" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="17" fill="#3b352d" text-anchor="start" font-weight="bold">原程序（7 条）</text>
+<text x="66" y="176" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S1  a = 1</text>
+<text x="66" y="232" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S2  b = 2</text>
+<text x="66" y="288" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S3  a = a + b</text>
+<text x="66" y="344" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S4  c = a * 3</text>
+<text x="66" y="400" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S5  e = a + 100</text>
+<text x="66" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S6  a = c - 1</text>
+<text x="66" y="512" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S7  d = a + b</text>
+<circle cx="102.9" cy="171.0" r="10.0" fill="#d17b7b" opacity="0.3"/>
+<circle cx="102.9" cy="283.0" r="10.0" fill="#d17b7b" opacity="0.3"/>
+<circle cx="135.7" cy="283.0" r="10.5" fill="none" stroke="#d17b7b" stroke-width="2.0"/>
+<circle cx="135.7" cy="339.0" r="10.5" fill="none" stroke="#d17b7b" stroke-width="2.0"/>
+<circle cx="135.7" cy="395.0" r="10.5" fill="none" stroke="#d17b7b" stroke-width="2.0"/>
+<circle cx="102.9" cy="451.0" r="10.0" fill="#d17b7b" opacity="0.3"/>
+<circle cx="135.7" cy="507.0" r="10.5" fill="none" stroke="#d17b7b" stroke-width="2.0"/>
+<text x="56" y="536" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#d17b7b" text-anchor="start">玫红 = a：3 个定义（涂色）＋ 4 个使用（圈）</text>
+<path d="M 362.0,296.0 Q 406.0,292.1 428.0,289.3 Q 449.9,286.6 472.0,284.8 Q 494.0,283.0 516.1,284.4 Q 538.1,285.9 560.1,288.3 Q 582.1,290.7 604.0,293.4 T 626.0,296.0" fill="none" stroke="#5d8fc9" stroke-width="3.01" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 626.0,296.0 Q 622.4,297.9 620.4,298.3 Q 618.4,298.7 616.5,299.4 T 614.6,300.1" fill="none" stroke="#5d8fc9" stroke-width="2.55" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 626.0,296.0 Q 622.6,292.8 620.7,291.5 Q 618.8,290.3 616.6,289.5 T 614.4,288.7" fill="none" stroke="#5d8fc9" stroke-width="2.40" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="494" y="280" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="18" fill="#5d8fc9" text-anchor="middle" font-weight="bold" transform="rotate(-1.5 494 280)">SSA 化</text>
+<rect x="366" y="356" width="262" height="158" rx="6" fill="#dce7f6" opacity="0.55"/>
+<path d="M 359.8,355.9 Q 405.7,356.6 428.6,355.9 Q 451.5,355.1 474.5,356.0 Q 497.4,356.9 520.3,357.1 Q 543.3,357.2 566.2,356.6 Q 589.1,356.0 612.0,356.7 T 635.0,357.3" fill="none" stroke="#5d8fc9" stroke-width="2.51" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 628.3,352.0 Q 626.8,394.3 627.5,415.4 Q 628.3,436.5 628.3,457.7 Q 628.4,478.8 628.2,499.9 T 628.0,521.0" fill="none" stroke="#5d8fc9" stroke-width="2.66" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 632.0,514.8 Q 587.0,515.1 564.4,515.3 Q 541.9,515.5 519.4,514.7 Q 496.8,513.9 474.3,514.7 Q 451.8,515.6 429.2,515.0 Q 406.7,514.4 384.2,514.5 T 361.6,514.5" fill="none" stroke="#5d8fc9" stroke-width="2.85" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 364.6,518.7 Q 366.5,477.1 366.1,456.2 Q 365.7,435.4 365.9,414.6 Q 366.0,393.7 366.3,372.9 T 366.7,352.1" fill="none" stroke="#5d8fc9" stroke-width="2.47" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="382" y="386" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16" fill="#5d8fc9" text-anchor="start" font-weight="bold">改写规则（就两条）</text>
+<text x="382" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#3b352d" text-anchor="start">① 右边的使用 → 换成当前版本</text>
+<text x="382" y="450" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#3b352d" text-anchor="start">② 左边的定义 → 领取新版本</text>
+<text x="382" y="484" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#84796a" text-anchor="start">先改右边、再发版本：</text>
+<text x="382" y="506" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#84796a" text-anchor="start">a = a + b ⇒ a₂ = a₁ + b₁</text>
+<path d="M 634.7,110.6 Q 677.4,110.3 698.7,110.8 Q 720.1,111.2 741.4,111.4 Q 762.7,111.6 784.1,111.6 Q 805.4,111.6 826.7,109.6 Q 848.1,107.6 869.4,108.9 Q 890.7,110.3 912.1,109.8 Q 933.4,109.4 954.7,109.2 T 976.1,108.9" fill="none" stroke="#3b352d" stroke-width="2.39" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 970.9,103.2 Q 970.6,147.9 970.8,170.3 Q 970.9,192.6 971.4,215.0 Q 971.8,237.3 970.9,259.7 Q 970.0,282.0 970.5,304.4 Q 970.9,326.7 969.7,349.1 Q 968.5,371.4 969.4,393.8 Q 970.3,416.1 970.0,438.5 Q 969.6,460.8 969.4,483.2 Q 969.2,505.6 969.4,527.9 T 969.7,550.3" fill="none" stroke="#3b352d" stroke-width="2.50" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 974.7,548.1 Q 932.2,547.4 911.0,547.3 Q 889.8,547.2 868.6,548.8 Q 847.3,550.4 826.1,550.0 Q 804.9,549.6 783.6,548.8 Q 762.4,548.0 741.2,548.9 Q 720.0,549.8 698.7,549.1 Q 677.5,548.3 656.3,548.6 T 635.0,549.0" fill="none" stroke="#3b352d" stroke-width="2.90" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.8,553.2 Q 640.4,508.3 640.9,485.8 Q 641.4,463.4 641.1,440.9 Q 640.9,418.4 640.4,396.0 Q 639.9,373.5 639.7,351.0 Q 639.6,328.6 640.2,306.1 Q 640.9,283.6 640.4,261.2 Q 639.8,238.7 639.6,216.2 Q 639.3,193.8 638.8,171.3 Q 638.3,148.9 638.4,126.4 T 638.6,103.9" fill="none" stroke="#3b352d" stroke-width="2.37" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="656" y="140" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="17" fill="#3b352d" text-anchor="start" font-weight="bold">SSA 版本（7 条）</text>
+<text x="666" y="176" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S1  a₁ = 1</text>
+<text x="666" y="232" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S2  b₁ = 2</text>
+<text x="666" y="288" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S3  a₂ = a₁ + b₁</text>
+<text x="666" y="344" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S4  c₁ = a₂ * 3</text>
+<text x="666" y="400" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S5  e₁ = a₂ + 100</text>
+<text x="666" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S6  a₃ = c₁ - 1</text>
+<text x="666" y="512" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="start">S7  d₁ = a₃ + b₁</text>
+<text x="666" y="536" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#84796a" text-anchor="start">每条语句：右边用旧值，左边生新值</text>
+<text x="872" y="516" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#7db37f" text-anchor="start" font-weight="bold">← 输出</text>
+<path d="M 970.0,171.0 Q 979.7,190.6 986.3,199.4 Q 992.9,208.2 998.4,217.6 Q 1004.0,227.0 997.9,236.1 Q 991.9,245.2 987.1,255.1 Q 982.3,264.9 976.1,274.0 T 970.0,283.0" fill="none" stroke="#5d8fc9" stroke-width="2.10" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="171.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<circle cx="970.0" cy="283.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<path d="M 970.0,227.0 Q 979.4,235.6 983.7,240.4 Q 987.9,245.1 992.0,250.0 Q 996.0,255.0 991.5,259.6 Q 987.1,264.1 982.8,268.8 Q 978.5,273.5 974.2,278.2 T 970.0,283.0" fill="none" stroke="#dd9550" stroke-width="2.28" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="227.0" r="3.4" fill="#dd9550" opacity="1.0"/>
+<circle cx="970.0" cy="283.0" r="3.4" fill="#dd9550" opacity="1.0"/>
+<path d="M 970.0,227.0 Q 994.0,261.3 1005.9,278.6 Q 1017.7,295.9 1027.9,314.2 Q 1038.1,332.6 1050.1,349.8 Q 1062.0,367.0 1050.1,384.2 Q 1038.1,401.4 1027.5,419.5 Q 1016.9,437.6 1004.8,454.7 Q 992.6,471.7 981.3,489.4 T 970.0,507.0" fill="none" stroke="#dd9550" stroke-width="2.18" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="227.0" r="3.4" fill="#dd9550" opacity="1.0"/>
+<circle cx="970.0" cy="507.0" r="3.4" fill="#dd9550" opacity="1.0"/>
+<path d="M 970.0,283.0 Q 980.1,292.2 984.9,297.1 Q 989.8,301.9 994.9,306.4 Q 1000.0,311.0 994.4,315.1 Q 988.9,319.2 984.5,324.5 Q 980.2,329.8 975.1,334.4 T 970.0,339.0" fill="none" stroke="#5d8fc9" stroke-width="2.37" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="283.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<circle cx="970.0" cy="339.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<path d="M 970.0,283.0 Q 987.2,300.7 994.5,310.6 Q 1001.9,320.4 1009.9,329.7 Q 1018.0,339.0 1010.5,348.7 Q 1002.9,358.5 994.8,367.7 Q 986.7,376.9 978.4,386.0 T 970.0,395.0" fill="none" stroke="#5d8fc9" stroke-width="2.55" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="283.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<circle cx="970.0" cy="395.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<path d="M 970.0,339.0 Q 986.0,358.9 995.0,367.9 Q 1004.0,377.0 1013.0,386.0 Q 1022.0,395.0 1013.5,404.5 Q 1005.0,413.9 995.5,422.6 Q 986.1,431.2 978.1,441.1 T 970.0,451.0" fill="none" stroke="#7db37f" stroke-width="2.52" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="339.0" r="3.4" fill="#7db37f" opacity="1.0"/>
+<circle cx="970.0" cy="451.0" r="3.4" fill="#7db37f" opacity="1.0"/>
+<path d="M 970.0,451.0 Q 979.9,460.5 985.2,464.8 Q 990.5,469.2 995.2,474.1 Q 1000.0,479.0 995.3,484.0 Q 990.7,489.1 985.9,494.0 Q 981.1,498.9 975.6,502.9 T 970.0,507.0" fill="none" stroke="#5d8fc9" stroke-width="2.39" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="451.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<circle cx="970.0" cy="507.0" r="3.4" fill="#5d8fc9" opacity="1.0"/>
+<path d="M 970.0,395.0 Q 980.2,392.4 984.9,389.7 Q 989.5,386.9 994.8,386.0 Q 1000.0,385.0 1002.4,384.8 Q 1004.7,384.6 1007.1,384.9 Q 1009.6,385.2 1011.8,384.1 T 1014.0,383.0" fill="none" stroke="#d17b7b" stroke-width="2.27" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="970.0" cy="395.0" r="3.4" fill="#d17b7b" opacity="1.0"/>
+<path d="M 1010.0,379.0 Q 1012.5,381.8 1013.9,383.1 Q 1015.3,384.4 1016.6,385.7 T 1018.0,387.0" fill="none" stroke="#d17b7b" stroke-width="2.14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1010.0,387.0 Q 1012.8,384.5 1013.9,382.9 Q 1015.0,381.3 1016.5,380.2 T 1018.0,379.0" fill="none" stroke="#d17b7b" stroke-width="2.21" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1026" y="387" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#d17b7b" text-anchor="start">无使用者</text>
+<text x="46" y="596" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#3b352d" text-anchor="start">每条弧 = 一个定义 → 它的使用；颜色跟被使用的值走：</text>
+<circle cx="342.0" cy="591.0" r="4.0" fill="#5d8fc9" opacity="1.0"/>
+<text x="350" y="596" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#5d8fc9" text-anchor="start">a 家族</text>
+<circle cx="402.0" cy="591.0" r="4.0" fill="#dd9550" opacity="1.0"/>
+<text x="410" y="596" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#dd9550" text-anchor="start">b₁</text>
+<circle cx="442.0" cy="591.0" r="4.0" fill="#7db37f" opacity="1.0"/>
+<text x="450" y="596" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#7db37f" text-anchor="start">c₁</text>
+<circle cx="482.0" cy="591.0" r="4.0" fill="#d17b7b" opacity="1.0"/>
+<text x="490" y="596" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13.5" fill="#d17b7b" text-anchor="start">e₁（无使用者）</text>
+<text x="46" y="632" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">版本一旦定义就固定：S6 定义 a₃ 之后，S7 里用到的 a 是 a₃，不再是 a₂ —— 旧版本对后面的语句“隐形”。</text>
+</svg>

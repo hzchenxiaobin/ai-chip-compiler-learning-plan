@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="780" viewBox="0 0 1000 780">
+  <rect x="0" y="0" width="1000" height="780" fill="#FDFBF4"/>
+  <text x="500" y="34" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="21" fill="#3A322A" text-anchor="middle" font-weight="bold">真实运行结果：好图排出四波，环图被当场拒绝，旧算法的假序现形</text>
+  <text x="500" y="57" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#8A8378" text-anchor="middle" font-weight="normal" font-style="italic">三栏都是今天在这台机器上跑出来的输出（Linux aarch64 · g++ 9.4.0 · CMake 3.20.5 · Ninja 1.10.0）</text>
+
+  <!-- ============ 左栏：第一幕 ============ -->
+  <path d="M 30.6 74.6 L 100.4 73.9 L 170.8 74.4 L 241.9 73.1 L 310.6 74.3 L 311.8 648.1 L 240.8 649.7 L 169.5 647.5 L 100.8 649.4 L 30.4 648.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 30.6 74.6 L 100.4 73.9 L 170.8 74.4 L 241.9 73.1 L 310.6 74.3 L 311.8 648.1 L 240.8 649.7 L 169.5 647.5 L 100.8 649.4 L 30.4 648.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="170" y="98" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">第一幕：双通道图（无环）</text>
+
+  <text x="44" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="start" font-weight="normal">verify: PASS</text>
+  <text x="120" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#8A8378" text-anchor="start" font-weight="normal">7 节点 · 9 值 · 1 输出</text>
+
+  <text x="44" y="148" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="start" font-weight="bold">波次表（4 波）：</text>
+  <text x="52" y="170" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">wave 1（3 个，可并行）:</text>
+  <text x="76" y="187" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">constant%n0 matmul%n1 matmul%n2</text>
+  <text x="52" y="208" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">wave 2（2 个，可并行）:</text>
+  <text x="76" y="225" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">add%n3 add%n4</text>
+  <text x="52" y="246" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">wave 3（1 个）:</text>
+  <text x="76" y="263" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">add%n5</text>
+  <text x="52" y="284" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">wave 4（1 个）:</text>
+  <text x="76" y="301" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">relu%n6</text>
+
+  <text x="44" y="330" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="start" font-weight="bold">线性时间表（波次拼接）：</text>
+  <text x="52" y="352" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 1: constant%n0 writes %bias</text>
+  <text x="52" y="368" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 2: matmul%n1 reads [%A,%B] writes %C1</text>
+  <text x="52" y="384" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 3: matmul%n2 reads [%A,%B] writes %C2</text>
+  <text x="52" y="400" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 4: add%n3 reads [%C1,%bias] writes %D</text>
+  <text x="52" y="416" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 5: add%n4 reads [%C2,%bias] writes %E</text>
+  <text x="52" y="432" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 6: add%n5 reads [%D,%E] writes %S</text>
+  <text x="52" y="448" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">step 7: relu%n6 reads [%S] writes %R</text>
+
+  <text x="44" y="478" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="start" font-weight="bold">端到端执行（A=1..6, B=7..12）：</text>
+  <text x="52" y="500" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="start" font-weight="normal">C1=C2=[58 64/139 154] → D=E=[58 -36/-11 104]</text>
+  <text x="52" y="516" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="start" font-weight="normal">→ S=[116 -72/-22 208] → relu：</text>
+  <path d="M 98.7 538.6 L 158.3 539.4 L 216.9 538.1 L 218.6 582.8 L 217.1 622.5 L 157.5 623.3 L 98.4 622.0 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 98.7 538.6 L 158.3 539.4 L 216.9 538.1 L 218.6 582.8 L 217.1 622.5 L 157.5 623.3 L 98.4 622.0 Z" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="158" y="562" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="normal">%R (f32&lt;2x2&gt;) =</text>
+  <text x="158" y="582" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#7FA65A" text-anchor="middle" font-weight="bold">116  0</text>
+  <text x="158" y="602" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#7FA65A" text-anchor="middle" font-weight="bold">0  208</text>
+  <text x="158" y="636" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle" font-weight="normal" font-style="italic">与手算逐位一致 ✓</text>
+
+  <!-- ============ 中栏上：第二幕 ============ -->
+  <path d="M 340.6 74.9 L 410.4 74.1 L 480.8 74.6 L 551.9 73.3 L 620.6 74.5 L 621.8 398.1 L 550.8 399.7 L 479.5 397.5 L 410.8 399.4 L 340.4 398.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 340.6 74.9 L 410.4 74.1 L 480.8 74.6 L 551.9 73.3 L 620.6 74.5 L 621.8 398.1 L 550.8 399.7 L 479.5 397.5 L 410.8 399.4 L 340.4 398.0 Z" fill="none" stroke="#D08A4E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="481" y="98" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#D08A4E" text-anchor="middle" font-weight="bold">第二幕：两个事故现场（真实诊断）</text>
+
+  <text x="354" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start" font-weight="bold">现场一：replace 想复用 %C → 自环</text>
+  <text x="362" y="141" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">IR 变成 %n2 = add(%D, %bias)——吃自己的结果</text>
+  <text x="362" y="159" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="start" font-weight="normal">add%n2 -&gt; add%n2（环上 1 个；已剥 2、卡住 2）</text>
+
+  <text x="354" y="186" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start" font-weight="bold">现场二：rewire 手滑接 %R → 2 环</text>
+  <text x="362" y="205" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">IR 变成 %n2 = add(%C, %R)，n3 = relu(%D)</text>
+  <text x="362" y="223" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="start" font-weight="normal">add%n2 -&gt; relu%n3 -&gt; add%n2（环上 2；剥 2 卡 2）</text>
+
+  <text x="354" y="252" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="start" font-weight="bold">两个现场里，前两道防线都放行：</text>
+  <text x="362" y="274" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">use 账本自洽 ✓（不变量没破）</text>
+  <text x="362" y="292" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#7FA65A" text-anchor="start" font-weight="normal">verify: PASS ✓（类型全对：%C、%R 都是 f32&lt;2x2&gt;）</text>
+  <text x="362" y="310" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="start" font-weight="bold">TopoSort: 拒绝 ✓——第三道防线是环的唯一克星</text>
+
+  <text x="362" y="338" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">解释器同样在入口被拦下（它调 topological_order）：</text>
+  <text x="362" y="356" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="start" font-weight="normal" font-style="italic">what(): topo_sort: 图 "self-loop" 含环，无拓扑序：add%n2 -&gt; add%n2…</text>
+  <text x="362" y="380" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="start" font-weight="normal" font-style="italic">（以前它只会跑错到一半，然后报一句跑偏的话）</text>
+
+  <!-- ============ 中栏下：环位置实验 ============ -->
+  <path d="M 340.6 424.6 L 410.4 423.9 L 480.8 424.4 L 551.9 423.1 L 620.6 424.3 L 621.8 648.1 L 550.8 649.7 L 479.5 647.5 L 410.8 649.4 L 340.4 648.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 340.6 424.6 L 410.4 423.9 L 480.8 424.4 L 551.9 423.1 L 620.6 424.3 L 621.8 648.1 L 550.8 649.7 L 479.5 647.5 L 410.8 649.4 L 340.4 648.0 Z" fill="none" stroke="#7FA65A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="481" y="448" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#7FA65A" text-anchor="middle" font-weight="bold">对照实验：环长固定 3，位置前移</text>
+  <text x="354" y="470" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="start" font-weight="normal">5 节点 relu 链，只改一个参数：环挂在谁头上</text>
+
+  <text x="362" y="496" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="bold">基线（无环）</text>
+  <text x="474" y="496" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">已剥 5   卡住 0   5 波</text>
+  <text x="362" y="516" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="bold">环从 c2 起</text>
+  <text x="474" y="516" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">已剥 2   卡住 3   2 波</text>
+  <text x="362" y="536" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="bold">环从 c1 起</text>
+  <text x="474" y="536" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">已剥 1   卡住 4   1 波</text>
+  <text x="362" y="556" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="bold">环从 c0 起</text>
+  <text x="474" y="556" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">已剥 0   卡住 5   0 波</text>
+
+  <text x="354" y="586" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#D08A4E" text-anchor="start" font-weight="bold">读数：卡住数 3/4/5，环上恒为 3</text>
+  <text x="354" y="606" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">卡住 = 环上 3 个 ＋ 被环堵死的下游；</text>
+  <text x="354" y="624" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="normal">已剥前缀恰好是环上游的安全部分——</text>
+  <text x="354" y="642" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="start" font-weight="normal" font-style="italic">完整日志：experiments/cycle-position.log</text>
+
+  <!-- ============ 右栏：v7 vs v8 ============ -->
+  <path d="M 650.6 74.6 L 720.4 73.9 L 790.8 74.4 L 861.9 73.1 L 930.6 74.3 L 931.8 528.1 L 860.8 529.7 L 789.5 527.5 L 720.8 529.4 L 650.4 528.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 650.6 74.6 L 720.4 73.9 L 790.8 74.4 L 861.9 73.1 L 930.6 74.3 L 931.8 528.1 L 860.8 529.7 L 789.5 527.5 L 720.8 529.4 L 650.4 528.0 Z" fill="none" stroke="#C96A6A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="790" y="98" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">同一张环图：修复前后（都真实跑过）</text>
+
+  <path d="M 664.7 116.6 L 724.3 117.4 L 782.9 116.1 L 784.6 288.8 L 783.1 312.5 L 723.5 313.3 L 664.4 312.0 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 664.7 116.6 L 724.3 117.4 L 782.9 116.1 L 784.6 288.8 L 783.1 312.5 L 723.5 313.3 L 664.4 312.0 Z" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="723" y="138" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#C96A6A" text-anchor="middle" font-weight="bold">v7（第 14 天的工程，原样构建）</text>
+  <text x="674" y="162" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">旧算法静默给序：</text>
+  <text x="674" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="start" font-weight="normal">constant%n0 matmul%n1 relu%n3 add%n2</text>
+  <text x="674" y="198" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">（2 环图上 relu 排到了 add 前面）</text>
+  <text x="674" y="224" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">解释器跑这份假序，报的是：</text>
+  <text x="674" y="242" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="start" font-weight="normal">「解释器: %D 没有数据（输入未绑定？）」</text>
+  <text x="674" y="264" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">病因是环，症状像「忘绑输入」——</text>
+  <text x="674" y="282" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">误导排查方向，还不报环</text>
+
+  <path d="M 664.7 330.6 L 724.3 331.4 L 782.9 330.1 L 784.6 512.8 L 783.1 536.5 L 723.5 537.3 L 664.4 536.0 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 664.7 330.6 L 724.3 331.4 L 782.9 330.1 L 784.6 512.8 L 783.1 536.5 L 723.5 537.3 L 664.4 536.0 Z" fill="none" stroke="#7FA65A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="723" y="352" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#7FA65A" text-anchor="middle" font-weight="bold">v8（今天）</text>
+  <text x="674" y="376" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">同一张图，执行之前就拒绝：</text>
+  <text x="674" y="394" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#7FA65A" text-anchor="start" font-weight="normal">topo_sort: 图 "two-node-cycle" 含环，</text>
+  <text x="674" y="412" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#7FA65A" text-anchor="start" font-weight="normal">无拓扑序：add%n2 -&gt; relu%n3 -&gt; add%n2</text>
+  <text x="674" y="430" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#7FA65A" text-anchor="start" font-weight="normal">（环上 2 个节点；已剥 2 个、卡住 2 个）</text>
+  <text x="674" y="456" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">错误三的另一种翻车：缓存拓扑序跨过</text>
+  <text x="674" y="474" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">erase → ASan: heap-use-after-free</text>
+  <text x="674" y="492" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start" font-weight="normal">@ Node::kind()——见第 6 节错误三</text>
+
+  <!-- 底部计分板 -->
+  <path d="M 650.6 552.6 L 720.4 551.9 L 790.8 552.4 L 861.9 551.1 L 930.6 552.3 L 931.8 648.1 L 860.8 649.7 L 789.5 647.5 L 720.8 649.4 L 650.4 648.0 Z" fill="#DCE9F5" stroke="none"/>
+  <path d="M 650.6 552.6 L 720.4 551.9 L 790.8 552.4 L 861.9 551.1 L 930.6 552.3 L 931.8 648.1 L 860.8 649.7 L 789.5 647.5 L 720.8 649.4 L 650.4 648.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="790" y="576" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle" font-weight="bold">今日计分板</text>
+  <text x="790" y="600" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="normal">489 条断言 · Debug/ASan/UBSan 全绿</text>
+  <text x="790" y="618" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-weight="normal">use_def 71 · visitor 45 · verifier 62</text>
+  <text x="790" y="634" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-weight="normal">frontend 83 · mul 72 · toposort 156（新）</text>
+
+  <!-- 底部一句总结 -->
+  <text x="500" y="684" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="normal">对照着看：左栏证明「好图排得出、算得对」，中栏证明「环被抓住、诊断够用」，右栏证明「修复前后同一个坑、两种命运」。</text>
+  <text x="500" y="706" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-weight="normal" font-style="italic">波次表是顺手拿到的礼物：同波互不依赖 ⇒ 可并行——第 102～103 天的流水线、第 99～100 天的内存规划都吃这张表。</text>
+</svg>

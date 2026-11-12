@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+<rect width="1000" height="620" fill="#fdfaf2"/>
+<text x="46" y="58" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="25" fill="#3b352d" text-anchor="start" font-weight="bold">支配关系在编译链路中的位置</text>
+<text x="46" y="88" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14.5" fill="#84796a" text-anchor="start">第 18 天：给 CFG 的每个块找出『从入口到它，绕不开的必经块』，让『定义先于使用』在分支世界严格成立</text>
+<path d="M 33.0,147.0 Q 49.9,147.8 66.7,145.9 Q 84.1,148.1 101.6,148.2 Q 119.6,145.2 137.7,146.8 Q 155.1,145.1 172.4,147.4 Q 189.7,149.0 207.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.79" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 207.0,147.0 Q 205.5,172.0 206.7,197.1 Q 207.8,221.0 207.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.69" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 207.0,245.0 Q 189.2,246.6 171.5,244.6 Q 154.9,243.4 138.3,245.2 Q 120.3,243.4 102.2,244.0 Q 84.3,242.8 66.6,244.7 Q 49.8,243.7 33.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.66" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.0,245.0 Q 31.3,220.3 32.7,195.5 Q 30.5,171.2 33.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.64" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="120" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="middle" font-weight="bold">图 IR 与 CFG</text>
+<text x="120" y="222" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 8–16  ✓</text>
+<path d="M 223.0,147.0 Q 240.7,145.4 258.5,146.7 Q 275.7,145.4 292.9,146.6 Q 309.6,148.9 326.5,147.8 Q 343.9,145.4 361.4,147.6 Q 379.2,146.3 397.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.49" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 397.0,147.0 Q 395.8,171.9 398.0,196.8 Q 398.7,220.9 397.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.48" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 397.0,245.0 Q 379.3,246.4 361.5,246.1 Q 344.9,244.4 328.2,245.3 Q 310.2,246.5 292.3,243.7 Q 274.5,242.2 256.8,244.9 Q 239.9,243.4 223.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.26" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 223.0,245.0 Q 221.3,220.5 221.9,195.9 Q 223.5,171.5 223.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.54" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="310" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="middle" font-weight="bold">SSA 基础（直线）</text>
+<text x="310" y="222" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 17  ✓</text>
+<rect x="416" y="150" width="168" height="92" rx="8" fill="#dce7f6" opacity="0.55"/>
+<path d="M 413.0,147.0 Q 431.0,148.9 449.0,146.8 Q 466.2,148.0 483.6,147.5 Q 500.3,148.3 517.1,147.2 Q 534.4,148.6 551.5,145.8 Q 569.3,145.3 587.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.71" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 587.0,147.0 Q 588.7,171.3 588.2,195.6 Q 589.0,220.3 587.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 587.0,245.0 Q 570.1,247.4 553.1,245.3 Q 535.5,247.5 517.9,245.1 Q 500.1,245.4 482.4,244.0 Q 464.6,247.2 446.7,245.8 Q 429.9,244.1 413.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.49" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 413.0,245.0 Q 414.4,220.1 412.7,195.2 Q 411.2,171.1 413.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.78" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16" fill="#5d8fc9" text-anchor="middle" font-weight="bold">支配关系与支配树</text>
+<text x="500" y="222" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#5d8fc9" text-anchor="middle">Day 18 · 今天</text>
+<path d="M 603.0,147.0 Q 620.3,148.0 637.5,145.8 Q 654.7,145.5 671.9,146.7 Q 689.0,144.5 706.3,145.8 Q 723.8,144.0 741.4,145.8 Q 759.1,148.6 777.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 777.0,147.0 Q 774.4,171.4 776.0,196.0 Q 777.9,220.5 777.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.53" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 777.0,245.0 Q 759.5,243.7 742.1,246.1 Q 724.2,246.5 706.6,243.7 Q 689.0,242.8 671.6,244.7 Q 654.2,242.6 636.9,244.9 Q 620.0,247.2 603.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.39" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 603.0,245.0 Q 604.9,220.9 602.1,196.9 Q 600.5,171.9 603.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="690" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="middle" font-weight="bold">分析与优化</text>
+<text x="690" y="222" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 19–27</text>
+<path d="M 793.0,147.0 Q 810.2,148.5 827.4,146.4 Q 845.2,144.5 862.8,147.4 Q 880.6,149.2 898.2,146.5 Q 915.8,147.3 933.3,146.5 Q 950.2,145.7 967.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.26" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 967.0,147.0 Q 965.9,171.0 967.7,194.9 Q 965.3,219.9 967.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.57" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 967.0,245.0 Q 949.6,243.7 932.2,244.5 Q 915.1,246.5 897.9,244.8 Q 880.0,246.0 862.3,243.8 Q 844.8,241.4 827.2,243.8 Q 810.0,242.7 793.0,245.0" fill="none" stroke="#3b352d" stroke-width="2.31" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 793.0,245.0 Q 792.5,220.6 793.8,196.3 Q 795.1,171.6 793.0,147.0" fill="none" stroke="#3b352d" stroke-width="2.40" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="880" y="192" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15.5" fill="#3b352d" text-anchor="middle" font-weight="bold">Lowering / MLIR</text>
+<text x="880" y="222" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="middle">Day 29+</text>
+<path d="M 208.0,196.0 Q 210.0,197.8 212.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.53" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 222.0,196.0 Q 217.8,191.6 211.9,190.5" fill="none" stroke="#3b352d" stroke-width="2.02" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 222.0,196.0 Q 217.6,200.0 211.9,201.5" fill="none" stroke="#3b352d" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 398.0,196.0 Q 400.0,194.5 402.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.37" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 412.0,196.0 Q 406.1,194.9 401.9,190.5" fill="none" stroke="#3b352d" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 412.0,196.0 Q 406.6,198.1 401.9,201.5" fill="none" stroke="#3b352d" stroke-width="2.14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 588.0,196.0 Q 590.0,198.2 592.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.33" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 602.0,196.0 Q 596.5,194.0 591.9,190.5" fill="none" stroke="#3b352d" stroke-width="1.94" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 602.0,196.0 Q 596.3,197.5 591.9,201.5" fill="none" stroke="#3b352d" stroke-width="1.88" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778.0,196.0 Q 780.0,194.5 782.0,196.0" fill="none" stroke="#3b352d" stroke-width="2.14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 792.0,196.0 Q 785.8,195.3 781.9,190.5" fill="none" stroke="#3b352d" stroke-width="2.13" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 792.0,196.0 Q 786.1,197.1 781.9,201.5" fill="none" stroke="#3b352d" stroke-width="2.09" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="500" y="128" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#5d8fc9" text-anchor="middle" font-weight="bold" transform="rotate(-1.5 500 128)">今天在这里</text>
+<path d="M 500.0,133.0 Q 498.4,134.5 500.0,136.0" fill="none" stroke="#5d8fc9" stroke-width="2.17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 500.0,146.0 Q 504.5,141.9 505.5,135.9" fill="none" stroke="#5d8fc9" stroke-width="2.21" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 500.0,146.0 Q 495.3,142.0 494.5,135.9" fill="none" stroke="#5d8fc9" stroke-width="2.13" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="330" width="396" height="170" rx="8" fill="#f6dcdc" opacity="0.55"/>
+<path d="M 58.0,324.0 Q 75.2,322.9 92.5,324.1 Q 109.7,321.7 127.1,323.0 Q 143.4,325.4 159.8,324.6 Q 176.8,326.6 193.9,325.3 Q 210.9,323.4 228.1,324.0 Q 245.1,325.0 262.0,323.4 Q 279.2,322.3 296.2,324.2 Q 312.5,322.3 328.8,322.8 Q 346.1,324.8 363.6,324.6 Q 380.5,326.4 397.3,324.6 Q 414.8,326.2 432.2,323.3 Q 449.1,322.2 466.0,324.0" fill="none" stroke="#d17b7b" stroke-width="2.50" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 466.0,324.0 Q 463.7,342.0 465.5,360.0 Q 467.8,377.8 466.5,395.7 Q 464.7,414.1 465.6,432.5 Q 464.6,451.1 467.0,469.5 Q 468.0,487.8 466.0,506.0" fill="none" stroke="#d17b7b" stroke-width="2.65" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 466.0,506.0 Q 448.9,504.6 431.8,505.1 Q 414.3,504.7 397.0,506.5 Q 380.7,504.9 364.4,505.3 Q 347.2,506.2 330.0,504.7 Q 313.4,503.4 296.8,505.9 Q 279.3,507.7 261.7,505.8 Q 244.9,507.4 227.9,506.9 Q 211.4,508.4 194.9,506.6 Q 178.0,508.2 161.1,506.5 Q 143.0,507.3 124.9,505.2 Q 108.6,503.4 92.2,504.9 Q 75.1,504.2 58.0,506.0" fill="none" stroke="#d17b7b" stroke-width="2.70" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 58.0,506.0 Q 59.6,488.2 58.2,470.4 Q 56.1,451.6 58.1,432.8 Q 60.6,415.1 58.7,397.3 Q 56.3,378.9 58.1,360.5 Q 60.3,342.2 58.0,324.0" fill="none" stroke="#d17b7b" stroke-width="2.65" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="84" y="366" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16.5" fill="#d17b7b" text-anchor="start" font-weight="bold" transform="rotate(-0.8 84 366)">问题：定义在分支里，使用在汇合后</text>
+<text x="84" y="400" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">B2 里 t = a * 2；B5 里 u = t + a。</text>
+<text x="84" y="428" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">走 B3→B4 那条路到 B5 时，t 根本没出生；</text>
+<text x="84" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">Day 17 的『定义先于使用』只看顺序号，</text>
+<text x="84" y="484" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">分支世界需要：每条到使用的路径都必经定义点</text>
+<rect x="540" y="330" width="396" height="170" rx="8" fill="#dbeadb" opacity="0.55"/>
+<path d="M 531.0,321.0 Q 548.9,323.0 566.8,320.6 Q 583.3,319.5 599.9,320.0 Q 617.4,322.8 635.0,321.2 Q 652.4,320.4 669.7,321.6 Q 686.5,319.5 703.4,319.8 Q 720.1,320.0 736.8,322.2 Q 754.4,323.9 771.9,321.3 Q 789.1,322.3 806.3,321.0 Q 824.2,322.1 842.0,319.8 Q 858.5,321.8 875.1,320.6 Q 892.4,318.3 909.8,320.0 Q 927.3,322.1 945.0,321.0" fill="none" stroke="#7db37f" stroke-width="2.56" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 945.0,321.0 Q 943.8,340.2 945.8,359.4 Q 946.5,378.4 945.4,397.4 Q 942.9,415.8 944.0,434.4 Q 947.2,453.1 945.7,472.1 Q 947.6,490.6 945.0,509.0" fill="none" stroke="#7db37f" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 945.0,509.0 Q 927.7,506.4 910.4,508.3 Q 893.7,507.2 877.2,510.1 Q 860.0,507.9 842.7,509.6 Q 824.4,510.0 806.1,508.0 Q 789.6,509.9 773.2,507.9 Q 755.3,507.2 737.4,508.6 Q 720.5,508.3 703.6,509.7 Q 686.6,507.1 669.4,508.8 Q 651.9,510.7 634.4,508.1 Q 616.8,507.7 599.2,508.9 Q 582.7,507.9 566.3,509.7 Q 548.7,507.2 531.0,509.0" fill="none" stroke="#7db37f" stroke-width="2.76" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 531.0,509.0 Q 529.8,490.6 530.3,472.2 Q 531.5,452.4 529.9,432.7 Q 528.5,414.2 530.7,395.7 Q 533.5,377.1 531.7,358.2 Q 532.7,339.6 531.0,321.0" fill="none" stroke="#7db37f" stroke-width="2.60" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="560" y="366" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="16.5" fill="#5f9a63" text-anchor="start" font-weight="bold" transform="rotate(-0.8 560 366)">今天之后：每个块有了『必经祖先』</text>
+<text x="560" y="400" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">Dom(b)：入口到 b 的每条路径都经过的块；</text>
+<text x="560" y="428" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">idom：离 b 最近的必经块，作父指针连成支配树；</text>
+<text x="560" y="456" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">『定义必须支配使用』——分支世界的 SSA 规则，</text>
+<text x="560" y="484" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start">也是日后理解 φ 函数该插在哪的基础</text>
+<path d="M 466.0,415.0 Q 494.0,413.1 522.0,415.0" fill="none" stroke="#5d8fc9" stroke-width="2.83" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 532.0,415.0 Q 526.4,413.2 521.9,409.5" fill="none" stroke="#5d8fc9" stroke-width="2.74" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 532.0,415.0 Q 528.0,419.8 521.9,420.5" fill="none" stroke="#5d8fc9" stroke-width="2.71" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="499" y="399" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="15" fill="#5d8fc9" text-anchor="middle" font-weight="bold">支配关系</text>
+<text x="46" y="546" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#3b352d" text-anchor="start" transform="rotate(-0.8 46 546)">MLIR 的 Region / Block 同样讲支配关系——Day 31 学 Region 时你会再遇到它。</text>
+<text x="46" y="576" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start">✓ 表示已完成；Day 19–20 活跃区间、Day 25 DCE 的合法性判断，都依赖『定义支配使用』。</text>
+</svg>

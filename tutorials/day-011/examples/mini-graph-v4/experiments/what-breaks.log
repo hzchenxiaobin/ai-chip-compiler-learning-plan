@@ -1,0 +1,244 @@
+== 步骤 0：基线（未加 Mul）==
+（应当安静地全部编译通过）
+[1/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/bench.cpp.o
+[2/10] Building CXX object src/CMakeFiles/mini-graph-v4.dir/main.cpp.o
+[3/10] Building CXX object tests/CMakeFiles/test_use_def.dir/test_use_def.cpp.o
+[4/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Interpreter.cpp.o
+[5/10] Building CXX object tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o
+[6/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o
+[7/10] Linking CXX static library src/libmini_graph_v4.a
+[8/10] Linking CXX executable tests/test_use_def
+[9/10] Linking CXX executable tests/test_visitor
+[10/10] Linking CXX executable src/mini-graph-v4
+
+== 步骤 1：只给 OpKind 加 Mul（experiments/add-mul.patch）==
+patching file src/OpKind.h
+（看 -Wswitch 在哪里报警）
+[1/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/bench.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../src/bench.cpp:5:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+In file included from ../src/bench.cpp:7:
+../src/NodeVisitor.h: In function ‘void apply_visitor(NodeVisitor&, const Node&)’:
+../src/NodeVisitor.h:27:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   27 |     switch (n.kind()) {
+      |            ^
+../src/bench.cpp: In function ‘int64_t bench_switch(const Graph&, int)’:
+../src/bench.cpp:18:20: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   18 |             switch (n->kind()) {
+      |                    ^
+[2/10] Building CXX object src/CMakeFiles/mini-graph-v4.dir/main.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../src/main.cpp:7:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+In file included from ../src/main.cpp:10:
+../src/NodeVisitor.h: In function ‘void apply_visitor(NodeVisitor&, const Node&)’:
+../src/NodeVisitor.h:27:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   27 |     switch (n.kind()) {
+      |            ^
+[3/10] Building CXX object tests/CMakeFiles/test_use_def.dir/test_use_def.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../tests/test_use_def.cpp:12:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+[4/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Interpreter.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../src/Interpreter.h:7,
+                 from ../src/Interpreter.cpp:1:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+../src/Interpreter.cpp: In member function ‘void Interpreter::run(const Graph&)’:
+../src/Interpreter.cpp:37:16: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   37 |         switch (n->kind()) {
+      |                ^
+[5/10] Building CXX object tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../tests/test_visitor.cpp:11:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+In file included from ../tests/test_visitor.cpp:14:
+../src/NodeVisitor.h: In function ‘void apply_visitor(NodeVisitor&, const Node&)’:
+../src/NodeVisitor.h:27:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   27 |     switch (n.kind()) {
+      |            ^
+../tests/test_visitor.cpp: In function ‘int main()’:
+../tests/test_visitor.cpp:311:20: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+  311 |             switch (n->kind()) {
+      |                    ^
+[6/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../src/Graph.cpp:1:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+In file included from ../src/Graph.cpp:10:
+../src/NodeVisitor.h: In function ‘void apply_visitor(NodeVisitor&, const Node&)’:
+../src/NodeVisitor.h:27:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   27 |     switch (n.kind()) {
+      |            ^
+[7/10] Linking CXX static library src/libmini_graph_v4.a
+[8/10] Linking CXX executable src/mini-graph-v4
+[9/10] Linking CXX executable tests/test_use_def
+[10/10] Linking CXX executable tests/test_visitor
+
+== 步骤 2：响应警告——给 NodeVisitor 补上 visit_mul 纯虚 ==
+          （experiments/add-mul-visit.patch，同时给 apply_visitor 加 case）
+patching file src/NodeVisitor.h
+（这次应当编译失败：漏实现的访问者被逐个点名）
+[1/8] Building CXX object src/CMakeFiles/mini_graph_v4.dir/bench.cpp.o
+In file included from ../src/Graph.h:9,
+                 from ../src/bench.cpp:5:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+../src/bench.cpp: In function ‘int64_t bench_switch(const Graph&, int)’:
+../src/bench.cpp:18:20: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   18 |             switch (n->kind()) {
+      |                    ^
+[2/8] Building CXX object src/CMakeFiles/mini-graph-v4.dir/main.cpp.o
+FAILED: src/CMakeFiles/mini-graph-v4.dir/main.cpp.o 
+/usr/bin/c++  -I../src -g -Wall -Wextra -Wpedantic -std=c++17 -MD -MT src/CMakeFiles/mini-graph-v4.dir/main.cpp.o -MF src/CMakeFiles/mini-graph-v4.dir/main.cpp.o.d -o src/CMakeFiles/mini-graph-v4.dir/main.cpp.o -c ../src/main.cpp
+In file included from ../src/Graph.h:9,
+                 from ../src/main.cpp:7:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+../src/main.cpp: In function ‘int main()’:
+../src/main.cpp:77:19: error: cannot declare variable ‘card_printer’ to be of abstract type ‘OpCardPrinter’
+   77 |     OpCardPrinter card_printer(cards);
+      |                   ^~~~~~~~~~~~
+In file included from ../src/main.cpp:11:
+../src/OpCardPrinter.h:19:7: note:   because the following virtual functions are pure within ‘OpCardPrinter’:
+   19 | class OpCardPrinter : public NodeVisitor {
+      |       ^~~~~~~~~~~~~
+In file included from ../src/main.cpp:10:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+../src/main.cpp:85:20: error: cannot declare variable ‘counter’ to be of abstract type ‘{anonymous}::CounterVisitor’
+   85 |     CounterVisitor counter;
+      |                    ^~~~~~~
+../src/main.cpp:32:7: note:   because the following virtual functions are pure within ‘{anonymous}::CounterVisitor’:
+   32 | class CounterVisitor : public NodeVisitor {
+      |       ^~~~~~~~~~~~~~
+In file included from ../src/main.cpp:10:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+[3/8] Building CXX object tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o
+FAILED: tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o 
+/usr/bin/c++  -I../src -g -Wall -Wextra -Wpedantic -std=c++17 -MD -MT tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o -MF tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o.d -o tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o -c ../tests/test_visitor.cpp
+In file included from ../src/Graph.h:9,
+                 from ../tests/test_visitor.cpp:11:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+../tests/test_visitor.cpp: In function ‘int main()’:
+../tests/test_visitor.cpp:130:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  130 |         RecordingVisitor rec;
+      |                          ^~~
+../tests/test_visitor.cpp:85:7: note:   because the following virtual functions are pure within ‘{anonymous}::RecordingVisitor’:
+   85 | class RecordingVisitor : public NodeVisitor {
+      |       ^~~~~~~~~~~~~~~~
+In file included from ../tests/test_visitor.cpp:14:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+../tests/test_visitor.cpp:144:26: error: cannot declare variable ‘rec2’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  144 |         RecordingVisitor rec2;
+      |                          ^~~~
+../tests/test_visitor.cpp:153:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  153 |         RecordingVisitor rec;
+      |                          ^~~
+../tests/test_visitor.cpp:225:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  225 |         RecordingVisitor rec;
+      |                          ^~~
+../tests/test_visitor.cpp:236:23: error: cannot declare variable ‘printer’ to be of abstract type ‘OpCardPrinter’
+  236 |         OpCardPrinter printer(cards);
+      |                       ^~~~~~~
+In file included from ../tests/test_visitor.cpp:15:
+../src/OpCardPrinter.h:19:7: note:   because the following virtual functions are pure within ‘OpCardPrinter’:
+   19 | class OpCardPrinter : public NodeVisitor {
+      |       ^~~~~~~~~~~~~
+In file included from ../tests/test_visitor.cpp:14:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+../tests/test_visitor.cpp:261:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  261 |         RecordingVisitor rec;
+      |                          ^~~
+../tests/test_visitor.cpp:263:23: error: cannot declare variable ‘printer’ to be of abstract type ‘OpCardPrinter’
+  263 |         OpCardPrinter printer(cards);
+      |                       ^~~~~~~
+../tests/test_visitor.cpp:264:24: error: cannot declare variable ‘counter’ to be of abstract type ‘{anonymous}::CounterVisitor’
+  264 |         CounterVisitor counter;
+      |                        ^~~~~~~
+../tests/test_visitor.cpp:108:7: note:   because the following virtual functions are pure within ‘{anonymous}::CounterVisitor’:
+  108 | class CounterVisitor : public NodeVisitor {
+      |       ^~~~~~~~~~~~~~
+In file included from ../tests/test_visitor.cpp:14:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+../tests/test_visitor.cpp:301:24: error: cannot declare variable ‘counter’ to be of abstract type ‘{anonymous}::CounterVisitor’
+  301 |         CounterVisitor counter;
+      |                        ^~~~~~~
+../tests/test_visitor.cpp:311:20: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+  311 |             switch (n->kind()) {
+      |                    ^
+../tests/test_visitor.cpp:326:26: error: cannot declare variable ‘rec’ to be of abstract type ‘{anonymous}::RecordingVisitor’
+  326 |         RecordingVisitor rec;
+      |                          ^~~
+[4/8] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o
+FAILED: src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o 
+/usr/bin/c++  -I../src -g -Wall -Wextra -Wpedantic -std=c++17 -MD -MT src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o -MF src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o.d -o src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o -c ../src/Graph.cpp
+In file included from ../src/Graph.h:9,
+                 from ../src/Graph.cpp:1:
+../src/OpKind.h: In function ‘std::string op_name(OpKind)’:
+../src/OpKind.h:20:12: warning: enumeration value ‘Mul’ not handled in switch [-Wswitch]
+   20 |     switch (k) {
+      |            ^
+../src/Graph.cpp: In member function ‘std::string Graph::to_string() const’:
+../src/Graph.cpp:297:21: error: cannot declare variable ‘printer’ to be of abstract type ‘{anonymous}::NodeLinePrinter’
+  297 |     NodeLinePrinter printer(text);
+      |                     ^~~~~~~
+../src/Graph.cpp:49:7: note:   because the following virtual functions are pure within ‘{anonymous}::NodeLinePrinter’:
+   49 | class NodeLinePrinter : public NodeVisitor {
+      |       ^~~~~~~~~~~~~~~
+In file included from ../src/Graph.cpp:10:
+../src/NodeVisitor.h:16:18: note: 	‘virtual void NodeVisitor::visit_mul(const Node&)’
+   16 |     virtual void visit_mul(const Node& n) = 0;
+      |                  ^~~~~~~~~
+ninja: build stopped: subcommand failed.
+
+== 步骤 3：还原两个补丁，确认重新全绿 ==
+patching file src/NodeVisitor.h
+patching file src/OpKind.h
+（应当重新全部通过）
+[1/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/bench.cpp.o
+[2/10] Building CXX object src/CMakeFiles/mini-graph-v4.dir/main.cpp.o
+[3/10] Building CXX object tests/CMakeFiles/test_use_def.dir/test_use_def.cpp.o
+[4/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Interpreter.cpp.o
+[5/10] Building CXX object tests/CMakeFiles/test_visitor.dir/test_visitor.cpp.o
+[6/10] Building CXX object src/CMakeFiles/mini_graph_v4.dir/Graph.cpp.o
+[7/10] Linking CXX static library src/libmini_graph_v4.a
+[8/10] Linking CXX executable tests/test_visitor
+[9/10] Linking CXX executable tests/test_use_def
+[10/10] Linking CXX executable src/mini-graph-v4
+实验完成，完整输出见 experiments/what-breaks.log

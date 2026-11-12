@@ -1,0 +1,124 @@
+第 12 天实验：跳过 verify 的代价（2026-11-12 00:08:32）
+环境：g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0 · aarch64
+===== [err_silent_fake_kind] g++ -std=c++17 -g -fsanitize=address -static-libasan =====
+----- 运行 ./err_silent_fake_kind -----
+== to_string()：注意 %G 的节点行整个不见了 ==
+graph "bad-kind" (2 inputs, 1 outputs) {
+  %x = input : f32<2x2>
+  %y = input : f32<2x2>
+  output %G
+}
+== use 表：它以 "?%n0" 的面目出现 ==
+use 表（def 在左，use 在右）
+  %x	def: 图输入    	uses: ?%n0(第0槽) 
+  %y	def: 图输入    	uses: ?%n0(第1槽) 
+  %G	def: ?%n0	uses: （无节点使用，图输出）
+
+== 解释器：应为逐元素乘 5 12 21 32，实际是 ==
+ 0 0
+ 0 0
+
+全程零报错。静默的错误，是最难抓的那一种。
+（退出码 0）
+
+===== [err_oob_read] g++ -std=c++17 -g -fsanitize=address -static-libasan =====
+----- 运行 ./err_oob_read -----
+图造好了，跳过 verify，直接跑解释器……
+=================================================================
+==744900==ERROR: AddressSanitizer: heap-buffer-overflow on address 0xffffa8b00b40 at pc 0xaaaacc83668c bp 0xffffea06c9e0 sp 0xffffea06ca00
+READ of size 8 at 0xffffa8b00b40 thread T0
+    #0 0xaaaacc836688 in at ../src/Interpreter.cpp:18
+    #1 0xaaaacc837858 in Interpreter::run(Graph const&) ../src/Interpreter.cpp:54
+    #2 0xaaaacc83fc50 in main ../bugs/err_oob_read.cpp:37
+    #3 0xffffad13ee0c in __libc_start_main ../csu/libc-start.c:308
+    #4 0xaaaacc7041d0  (/tmp/opencode/err_oob_read+0x141d0)
+
+0xffffa8b00b40 is located 0 bytes to the right of 32-byte region [0xffffa8b00b20,0xffffa8b00b40)
+allocated by thread T0 here:
+    #0 0xaaaacc7cb790 in operator new(unsigned long) (/tmp/opencode/err_oob_read+0xdb790)
+    #1 0xaaaacc83d194 in __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) /usr/include/c++/9/ext/new_allocator.h:114
+    #2 0xaaaacc83c2a8 in std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) /usr/include/c++/9/bits/alloc_traits.h:443
+    #3 0xaaaacc83b084 in std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) /usr/include/c++/9/bits/stl_vector.h:343
+    #4 0xaaaacc8410ec in void std::vector<double, std::allocator<double> >::_M_range_initialize<double const*>(double const*, double const*, std::forward_iterator_tag) /usr/include/c++/9/bits/stl_vector.h:1579
+    #5 0xaaaacc840b38 in std::vector<double, std::allocator<double> >::vector(std::initializer_list<double>, std::allocator<double> const&) /usr/include/c++/9/bits/stl_vector.h:626
+    #6 0xaaaacc83fbc8 in main ../bugs/err_oob_read.cpp:36
+    #7 0xffffad13ee0c in __libc_start_main ../csu/libc-start.c:308
+    #8 0xaaaacc7041d0  (/tmp/opencode/err_oob_read+0x141d0)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow ../src/Interpreter.cpp:18 in at
+Shadow bytes around the buggy address:
+  0x200ff5160110: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160120: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160130: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160140: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160150: fa fa fa fa fa fa fa fa 00 00 00 00 fa fa fd fd
+=>0x200ff5160160: fd fa fa fa 00 00 00 00[fa]fa fd fd fd fd fa fa
+  0x200ff5160170: 00 00 00 00 fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff5160190: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff51601a0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x200ff51601b0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==744900==ABORTING
+（退出码 1）
+
+===== [err_print_on_invalid] g++ -std=c++17 -g -fsanitize=address -static-libasan =====
+----- 运行 ./err_print_on_invalid -----
+verify 先行：FAIL（安全地报出问题）
+  error: [relu%n0]: 第 0 个输入是空指针
+现在不验证直接打印同一张图……
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==744927==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010 (pc 0xffffa6a22300 bp 0xffffeedeb070 sp 0xffffeedeb070 T0)
+==744927==The signal is caused by a READ memory access.
+==744927==Hint: address points to the zero page.
+    #0 0xffffa6a222fc  (/lib/aarch64-linux-gnu/libstdc++.so.6+0x1382fc)
+    #1 0xaaaad062f688 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /usr/include/c++/9/bits/basic_string.tcc:1166
+    #2 0xaaaad061bf60 in head ../src/Graph.cpp:95
+    #3 0xaaaad061b80c in visit_relu ../src/Graph.cpp:85
+    #4 0xaaaad062d594 in apply_visitor(NodeVisitor&, Node const&) ../src/NodeVisitor.h:31
+    #5 0xaaaad0626abc in Graph::to_string[abi:cxx11]() const ../src/Graph.cpp:312
+    #6 0xaaaad065c97c in main ../bugs/err_print_on_invalid.cpp:34
+    #7 0xffffa6669e0c in __libc_start_main ../csu/libc-start.c:308
+    #8 0xaaaad0515660  (/tmp/opencode/err_print_on_invalid+0x15660)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (/lib/aarch64-linux-gnu/libstdc++.so.6+0x1382fc) 
+==744927==ABORTING
+（退出码 1）
+
+===== 对照：同一错误的两种拦截（mini-graph-v5 第二幕） =====
+== 第二幕：同一个错误（2x3 × 2x2），三种命运 ==
+命运一（构造失败，当场抛）：
+  what(): matmul: 内维不匹配 3 vs 2（输入 %A : f32<2x3>）（输入 %B : f32<2x2>）
+命运二（验证失败，一次列全）：
+verify: FAIL，共 1 个问题：
+  error: [matmul%n0]: 内维不匹配：%A 是 3，%B 是 2
+命运三（运行失败，数据与类型不符）：
+  what(): bind: %A 需要 6 个元素，实给 4 个
+
+== 第三幕：一张图藏四个错，Verifier 一次列全 ==
+verify: FAIL，共 4 个问题：
+  error: 图没有输出：所有计算结果都无人消费
+  error: [?%n0]: 未知的算子类型 99（合法值：constant / matmul / add / relu）
+  error: [relu%n1]: 需要 1 个输入，实际有 2 个
+  error: [constant%n2]: 常量数据 3 个，与结果 f32<2x2> 的元素数 4 不符
