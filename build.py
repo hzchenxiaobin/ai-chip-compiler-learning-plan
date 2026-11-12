@@ -192,7 +192,7 @@ def page_template(
         }} catch (e) {{ document.documentElement.classList.add('dark'); }}
     }})();
     </script>
-    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=6">
+    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
     <script src="{root_prefix}js/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -225,7 +225,7 @@ def page_template(
     {main_html}
     <footer class="vp-footer"><span>AI 芯片编译器学习计划 · Deployed on GitHub Pages</span></footer>
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
-    <script src="{root_prefix}js/vp-solution.js?v=5"></script>
+    <script src="{root_prefix}js/vp-solution.js?v=6"></script>
     <script>
         const pageMarkdown = `{escaped_markdown}`;
         try {{

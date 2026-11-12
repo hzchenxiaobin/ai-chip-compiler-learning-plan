@@ -1473,6 +1473,7 @@ html.dark .vp-switch .moon {
 }
 
 .vp-lightbox img {
+    flex-shrink: 0;
     max-width: 90vw;
     max-height: 85vh;
     width: auto;
@@ -1482,7 +1483,6 @@ html.dark .vp-switch .moon {
     user-select: none;
     -webkit-user-drag: none;
     transition: transform 0.15s ease;
-    will-change: transform;
 }
 
 .vp-lightbox img.dragging {

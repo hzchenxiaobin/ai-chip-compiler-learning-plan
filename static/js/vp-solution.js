@@ -292,10 +292,30 @@ window.VPPage = (function () {
 
         var img = lightbox.querySelector('img');
         var zoomLabel = lightbox.querySelector('.lightbox-zoom');
-        var scale = 1, tx = 0, ty = 0, dragging = false, startX = 0, startY = 0;
+        var scale = 1, tx = 0, ty = 0, fitWidth = 0, fitHeight = 0;
+        var dragging = false, startX = 0, startY = 0;
 
         function apply() {
-            img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+            if (scale === 1) {
+                img.style.removeProperty('width');
+                img.style.removeProperty('height');
+                img.style.removeProperty('max-width');
+                img.style.removeProperty('max-height');
+                fitWidth = img.clientWidth;
+                fitHeight = img.clientHeight;
+            } else {
+                if (!fitWidth || !fitHeight) {
+                    fitWidth = img.clientWidth;
+                    fitHeight = img.clientHeight;
+                }
+                if (fitWidth && fitHeight) {
+                    img.style.maxWidth = 'none';
+                    img.style.maxHeight = 'none';
+                    img.style.width = (fitWidth * scale) + 'px';
+                    img.style.height = (fitHeight * scale) + 'px';
+                }
+            }
+            img.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
             zoomLabel.textContent = scale === 1 ? '适应' : Math.round(scale * 100) + '%';
         }
 
@@ -303,6 +323,8 @@ window.VPPage = (function () {
             scale = 1;
             tx = 0;
             ty = 0;
+            fitWidth = 0;
+            fitHeight = 0;
             apply();
         }
 
@@ -321,6 +343,7 @@ window.VPPage = (function () {
             reset();
         }
 
+        img.addEventListener('load', reset);
         images.forEach(function (image) {
             image.addEventListener('click', function (e) {
                 e.preventDefault();
