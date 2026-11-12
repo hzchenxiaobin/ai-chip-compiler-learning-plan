@@ -84,7 +84,7 @@ r = [7, 8, 9]，broadcast_to(r, (2,3))：
 
   特化复验（Day 62 的 specialize.py，同一份 blind_k.mlir）：
     不加 --force: exit=3 —— 错误（K 对账失败）：K 对不上账：%a 的 dim1=4，%b 的 dim0=3（--force 可跳过本检查，交给 mlir-opt）
-    加 --force:   exit=4 —— /tmp/tmp1yxg0nh6.mlir:4:5: error: 'linalg.matmul' op inferred input/output operand #1 has shape's dimension #0 to be 4, but found 3
+    加 --force:   exit=4 —— /tmp/tmpbs3yu9rg.mlir:4:5: error: 'linalg.matmul' op inferred input/output operand #1 has shape's dimension #0 to be 4, but found 3
 [PASS] 6d 特化把约束钉回类型：mini 层 exit=3 拒绝（K 4 vs 3 点名）
 [PASS] 6e --force 后外部 Verifier 拦截：exit=4（产物不可用）
     → 约束搬家链闭环：静态拦截(exit=1) → 动态放行(exit=0) → 特化后拦截回归(exit=3/4)
