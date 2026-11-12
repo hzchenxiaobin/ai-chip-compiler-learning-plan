@@ -1,0 +1,33 @@
+[闸门一] parse + verify: 通过
+===== 输入 IR =====
+module {
+  func.func @graph_f64_add_relu(%arg0: tensor<2x2xf64>, %arg1: tensor<2x2xf64>) -> tensor<2x2xf64> {
+    %0 = mini.add %arg0, %arg1 : tensor<2x2xf64>, tensor<2x2xf64> -> tensor<2x2xf64>
+    %1 = mini.relu %0 : tensor<2x2xf64>
+    return %1 : tensor<2x2xf64>
+  }
+}
+
+[R1] 双遍历同形态（bottom-up == top-down）: PASS
+===== 融合后（A 路 bottom-up）=====
+module {
+  func.func @graph_f64_add_relu(%arg0: tensor<2x2xf64>, %arg1: tensor<2x2xf64>) -> tensor<2x2xf64> {
+    %0 = mini.add %arg0, %arg1 : tensor<2x2xf64>, tensor<2x2xf64> -> tensor<2x2xf64>
+    %1 = mini.relu %0 : tensor<2x2xf64>
+    return %1 : tensor<2x2xf64>
+  }
+}
+
+===== 融合后（B 路 top-down）=====
+module {
+  func.func @graph_f64_add_relu(%arg0: tensor<2x2xf64>, %arg1: tensor<2x2xf64>) -> tensor<2x2xf64> {
+    %0 = mini.add %arg0, %arg1 : tensor<2x2xf64>, tensor<2x2xf64> -> tensor<2x2xf64>
+    %1 = mini.relu %0 : tensor<2x2xf64>
+    return %1 : tensor<2x2xf64>
+  }
+}
+
+[R2] 恒等拒绝（IR 逐字不变）: PASS
+[verify] 融合后复查: 通过
+verdict=identity
+accept=PASS

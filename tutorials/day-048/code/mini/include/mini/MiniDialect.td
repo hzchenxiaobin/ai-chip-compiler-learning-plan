@@ -22,6 +22,18 @@ def Mini_Dialect : Dialect {
         张量算子，再逐步长出 Shape 推导、融合与 Lowering 所需的能力。
     }];
     let cppNamespace = "::mini";
+
+    // 第 47 天：常量物化钩子。fold 只返回“值”（Attribute），把值变回
+    // 图上一个真实 mini.constant 节点是方言的活：-canonicalize 的驱动
+    // （OperationFolder）折叠出属性结果后，回头调用这个钩子。
+    // 这里只放声明（tblgen 生成的类体不适合写实现），本体在
+    // lib/MiniDialect.cpp。签名照抄基类 mlir::Dialect 的虚函数。
+    let extraClassDeclaration = [{
+      ::mlir::Operation *materializeConstant(::mlir::OpBuilder &builder,
+                                             ::mlir::Attribute value,
+                                             ::mlir::Type type,
+                                             ::mlir::Location loc) override;
+    }];
 }
 
 //===----------------------------------------------------------------------===//

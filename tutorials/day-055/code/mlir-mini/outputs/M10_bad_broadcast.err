@@ -1,0 +1,1 @@
+loc("inputs/m10_bad_bias_broadcast.mlir":7:8): error: 'mini.add' op rhs shape 对 lhs 需要广播——第 40 天起故意不支持（第 60 天放行）

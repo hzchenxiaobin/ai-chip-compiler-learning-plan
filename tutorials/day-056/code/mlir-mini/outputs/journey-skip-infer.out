@@ -1,0 +1,93 @@
+[J1] parse + verify: 通过
+===== 阶段 0: 输入 IR（8 个 mini.*）=====
+module {
+  func.func @journey(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>, %arg3: tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %1 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %2 = mini.add %0, %1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %3 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<?x2xf32>
+    %4 = mini.add %3, %2 : tensor<?x2xf32>, tensor<2x2xf32> -> tensor<?x2xf32>
+    %5 = mini.relu %4 : tensor<?x2xf32>
+    %6 = mini.add %arg2, %arg3 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %7 = mini.relu %6 : tensor<2x2xf32>
+    return %5, %7 : tensor<?x2xf32>, tensor<2x2xf32>
+  }
+}
+
+===== 阶段 1: 验证后 IR（8 个 mini.*——验证只裁决，不改图）=====
+module {
+  func.func @journey(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>, %arg3: tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %1 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %2 = mini.add %0, %1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %3 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<?x2xf32>
+    %4 = mini.add %3, %2 : tensor<?x2xf32>, tensor<2x2xf32> -> tensor<?x2xf32>
+    %5 = mini.relu %4 : tensor<?x2xf32>
+    %6 = mini.add %arg2, %arg3 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %7 = mini.relu %6 : tensor<2x2xf32>
+    return %5, %7 : tensor<?x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J2] Shape 推导: 跳过（--skip-infer 对照实验）
+===== 阶段 2: Shape 推导后 IR（8 个 mini.*——推导只细化类型，不删算子）=====
+module {
+  func.func @journey(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>, %arg3: tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %1 = mini.constant dense<5.000000e-01> : tensor<2x2xf32>
+    %2 = mini.add %0, %1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %3 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<?x2xf32>
+    %4 = mini.add %3, %2 : tensor<?x2xf32>, tensor<2x2xf32> -> tensor<?x2xf32>
+    %5 = mini.relu %4 : tensor<?x2xf32>
+    %6 = mini.add %arg2, %arg3 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %7 = mini.relu %6 : tensor<2x2xf32>
+    return %5, %7 : tensor<?x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J2] verify 复查: 通过
+[J3] 折叠: 1 个 add 折成常量
+===== 阶段 3: 折叠后 IR（6 个 mini.*）=====
+module {
+  func.func @journey(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>, %arg3: tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.constant dense<1.000000e+00> : tensor<2x2xf32>
+    %1 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<?x2xf32>
+    %2 = mini.add %1, %0 : tensor<?x2xf32>, tensor<2x2xf32> -> tensor<?x2xf32>
+    %3 = mini.relu %2 : tensor<?x2xf32>
+    %4 = mini.add %arg2, %arg3 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %5 = mini.relu %4 : tensor<2x2xf32>
+    return %3, %5 : tensor<?x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J3] verify 复查: 通过
+===== 阶段 4: 融合后 IR（5 个 mini.*）=====
+module {
+  func.func @journey(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>, %arg3: tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.constant dense<1.000000e+00> : tensor<2x2xf32>
+    %1 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<?x2xf32>
+    %2 = mini.add %1, %0 : tensor<?x2xf32>, tensor<2x2xf32> -> tensor<?x2xf32>
+    %3 = mini.relu %2 : tensor<?x2xf32>
+    %4 = mini.fused_add_relu %arg2, %arg3 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    return %3, %4 : tensor<?x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J4] verify 复查: 通过
+verdict=fused
+===== 汇总：一条 IR 的四站旅程 =====
+站点            mini.* 计数   变化
+输入            8
+站 1 验证        8        （只裁决，结构不变）
+站 2 Shape 推导   8        （--skip-infer：类型保持 ?x2，站 4 会付代价）
+站 3 折叠        6        （add(0.5,0.5) -> 1.0，死常量被收走）
+站 4 融合        5        （mini.addx1 mini.constantx1 mini.fused_add_relux1 mini.matmulx1 mini.relux1 ）
+
+===== 15 分钟讲解时间轴（数字来自本次真实运行）=====
+ 0:00- 2:00  开场：输入图 8 个 mini.*（两条链），讲解目标：走完四站剩 5 个
+ 2:00- 5:00  站 1 验证：合法性裁决（结构不变 8->8；f64/错形状负例在此短路）
+ 5:00- 8:00  站 2 推导：本次被 --skip-infer 跳过——记住这个缺口，站 4 会付代价
+ 8:00-11:00  站 3 折叠：1 个 add 折成常量（fold 只算值不碰图，DCE 收尸）
+11:00-14:00  站 4 融合：先查后改（use 表、类型闸门、? 护栏），多使用者铁律看 shared 用例
+14:00-15:00  收尾：8 -> 5 计数表 + 「融合为什么不仅是图模式替换」一句话
+accept=PASS

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob3" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <marker id="arrO" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#D79B00"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .codec { font-family:Consolas, Menlo, Courier New, monospace; fill:#B85450; }
+      .codeg { font-family:Consolas, Menlo, Courier New, monospace; fill:#4A7A42; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .bbox { fill:#DAE8FC; stroke:#5B8DB8; stroke-width:2.4; stroke-linejoin:round; }
+      .obox { fill:#FFE6CC; stroke:#D79B00; stroke-width:3; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .rbox { fill:#F8CECC; stroke:#B85450; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowB { stroke:#5B8DB8; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowR { stroke:#B85450; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowG { stroke:#82B366; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowO { stroke:#D79B00; stroke-width:2.6; fill:none; stroke-linecap:round; marker-end:url(#arrO); }
+      .dash { stroke:#8A8378; stroke-width:1.8; fill:none; stroke-dasharray:6 5; stroke-linecap:round; }
+      .chip { fill:#FFFFFF; stroke:#2F2B27; stroke-width:1.8; stroke-linejoin:round; }
+    </style>
+  </defs>
+  <rect class="bg" width="1000" height="680"/>
+  <text class="t-title" x="30" y="42">第 45 天的位置：Pattern 挂进现成驱动 -canonicalize</text>
+  <text class="t-s" x="975" y="66" text-anchor="end">mini 工程的第一个图重写规则：Relu(Relu(x)) → Relu(x)</text>
+  <g filter="url(#wob)"><rect class="box" x="30" y="96" width="148" height="58" rx="12" transform="rotate(0.3 104.0 125.0)"/></g>
+  <text class="t-b" x="104.0" y="121" text-anchor="middle">解析 .mlir</text>
+  <text class="t-s" x="104.0" y="139" text-anchor="middle">注册表决定谁能被解析</text>
+  <g filter="url(#wob)"><rect class="box" x="204" y="96" width="148" height="58" rx="12" transform="rotate(0.3 278.0 125.0)"/></g>
+  <text class="t-b" x="278.0" y="121" text-anchor="middle">ODS 约束 + Verifier</text>
+  <text class="t-s" x="278.0" y="139" text-anchor="middle">Day 39/40：合不合法</text>
+  <g filter="url(#wob)"><rect class="bbox" x="404" y="96" width="168" height="58" rx="12" transform="rotate(-0.3 488.0 125.0)"/></g>
+  <text class="t-b" x="488.0" y="121" text-anchor="middle">-mini-infer-shape</text>
+  <text class="t-s" x="488.0" y="139" text-anchor="middle">Day 44：? → 2x2</text>
+  <g filter="url(#wob)"><rect class="obox" x="606" y="96" width="168" height="58" rx="12" transform="rotate(-0.3 690.0 125.0)"/></g>
+  <text class="t-b" x="690.0" y="121" text-anchor="middle">-canonicalize</text>
+  <text class="t-s" x="690.0" y="139" text-anchor="middle">今天：Pattern 挂进这里</text>
+  <g filter="url(#wob)"><rect class="box" x="830" y="96" width="138" height="58" rx="12" transform="rotate(0.3 899.0 125.0)"/></g>
+  <text class="t-b" x="899.0" y="121" text-anchor="middle">打印 .mlir</text>
+  <text class="t-s" x="899.0" y="139" text-anchor="middle">输出变小了</text>
+  <path class="arrow" d="M178 125 Q189.0 131.0 200 125"/>
+  <path class="arrow" d="M352 125 Q377.0 131.0 402 125"/>
+  <path class="arrow" d="M572 125 Q588.0 131.0 604 125"/>
+  <path class="arrow" d="M774 125 Q801.0 131.0 828 125"/>
+  <text class="t-s" x="690" y="194">对每个已注册算子调用 getCanonicalizationPatterns 收集 Pattern</text>
+  <path class="arrowO" d="M690 158 Q694.0 168.0 690 178"/>
+  <g filter="url(#wob)"><rect class="rbox" x="28" y="262" width="296" height="210" rx="12" transform="rotate(-0.4 176.0 367.0)"/></g>
+  <text class="t-h" x="48" y="292">① 今天的真实问题</text>
+  <text class="t-b" x="48" y="318">前端吐出的 IR 常有冗余：</text>
+  <text class="code" x="48" y="342" font-size="12">%r1 = mini.relu %x</text>
+  <text class="codec" x="48" y="360" font-size="12">%r2 = mini.relu %r1</text>
+  <text class="code" x="48" y="378" font-size="12">return %r2</text>
+  <text class="t-b" x="48" y="404">relu 的输出已经 ≥ 0，</text>
+  <text class="t-b" x="48" y="422">再套一层 max(0,·) 一个元素都不变</text>
+  <text class="t-b" x="48" y="444" text-anchor="start" font-size="11.5">→ 第二层是纯白算：白付一次逐元素 pass</text>
+  <g filter="url(#wob2)"><rect class="obox" x="352" y="262" width="296" height="210" rx="12" transform="rotate(0.4 500.0 367.0)"/></g>
+  <text class="t-h" x="372" y="292">② 今天的两件套</text>
+  <text class="t-b" x="372" y="318">Pattern 本体 SimplifyDoubleRelu：</text>
+  <text class="t-b" x="372" y="336">只回答「看到什么形状 → 换成什么形状」</text>
+  <text class="t-b" x="372" y="360">挂钩 ReluOp::</text>
+  <text class="code" x="372" y="378" font-size="11.5">getCanonicalizationPatterns</text>
+  <text class="t-b" x="372" y="396">把 Pattern 塞进驱动发来的 results</text>
+  <text class="t-s" x="372" y="420">开关：MiniOps.td 里</text>
+  <text class="code" x="372" y="438" font-size="11.5">let hasCanonicalizer = 1;</text>
+  <text class="t-s" x="372" y="460">（tblgen 由此生成静态函数声明）</text>
+  <g filter="url(#wob3)"><rect class="gbox" x="676" y="262" width="296" height="210" rx="12" transform="rotate(-0.3 824.0 367.0)"/></g>
+  <text class="t-h" x="696" y="292">③ 验收（全部实测）</text>
+  <text class="t-b" x="696" y="318">-canonicalize 之后外层 relu 消失，</text>
+  <text class="t-b" x="696" y="336">return / add 的边改指内层结果</text>
+  <text class="t-b" x="696" y="360">FileCheck：6 个探针 6/6 全绿</text>
+  <text class="t-b" x="696" y="384">mini-count-ops 实测：</text>
+  <text class="code" x="696" y="404" font-size="12">4 ops (mini.relu=2)</text>
+  <text class="codeg" x="696" y="422" font-size="12">3 ops (mini.relu=1)</text>
+  <text class="t-s" x="696" y="448">环境：MLIR 18.1.8 / aarch64 / gcc 9.4.0</text>
+  <g filter="url(#wob2)"><rect class="box" x="28" y="508" width="944" height="148" rx="12" transform="rotate(0.2 500.0 582.0)"/></g>
+  <text class="t-h" x="52" y="540">为什么不自己写 Pass？——因为驱动是现成的</text>
+  <text class="t-b" x="52" y="566">Day 41 的 registerTransformsPasses() 早就把 -canonicalize 注册进了 mini-opt；今天 mini-opt 一行不改。</text>
+  <text class="t-b" x="52" y="590">Canonicalizer 驱动负责：贪婪工作表（哪个 op 先试）、迭代到不动点、顺带 folding + 简单 DCE。</text>
+  <text class="t-b" x="52" y="614">Pattern 只负责：看到什么形状 → 换成什么形状。两边各干各的，互不见面。</text>
+  <text class="t-s" x="52" y="640">头文件原文（GreedyPatternRewriteDriver.h）：Also performs folding and simple dead-code elimination before attempting to match any of the provided patterns</text>
+</svg>

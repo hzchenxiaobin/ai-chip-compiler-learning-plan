@@ -2,6 +2,7 @@ add_mlir_dialect_library(MLIRMini
   AddFold.cpp
   AddVerifier.cpp
   AlgebraicSimplification.cpp
+  CombinedPipeline.cpp
   CountOpsPass.cpp
   MatmulVerifier.cpp
   MiniDialect.cpp

@@ -1,0 +1,3 @@
+[闸门一] parse + verify: 拒绝（verifier_reject，报错见 stderr）
+verdict=verifier_reject
+accept=PASS

@@ -1,0 +1,182 @@
+==============================================================================
+第 55 天融合负例总验收（Python 层）  [类型闸门已拆除！]
+==============================================================================
+
+--- C01 bias_relu（正例）  期望 = fused
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.fused_matmul_bias_relu']  遍数 = 4
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_matmul_bias_relu']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C02 bias_only（正例）  期望 = fused
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s 还有别的使用者时不吸收 Relu）
+  融合前算子: ['mini.matmul', 'mini.add']  遍数 = 6
+  融合后算子: ['mini.fused_matmul_bias']  遍数 = 4
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_matmul_bias']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C03 add_relu_only（正例）  期望 = fused
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）
+  融合前算子: ['mini.add', 'mini.relu']  遍数 = 5
+  融合后算子: ['mini.fused_add_relu']  遍数 = 3
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_add_relu']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C04 bias_on_left_relu（正例）  期望 = fused
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.fused_matmul_bias_relu']  遍数 = 4
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_matmul_bias_relu']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C05 relu_out_multi（假负例）  期望 = fused
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu', 'mini.add']  遍数 = 11
+  融合后算子: ['mini.fused_matmul_bias_relu', 'mini.add']  遍数 = 7
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.add', 'mini.fused_matmul_bias_relu']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C06 bias_shared_2chains（假负例）  期望 = fused
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s2 还有别的使用者时不吸收 Relu）
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s1 还有别的使用者时不吸收 Relu）
+  融合前算子: ['mini.matmul', 'mini.matmul', 'mini.add', 'mini.add']  遍数 = 12
+  融合后算子: ['mini.fused_matmul_bias', 'mini.fused_matmul_bias']  遍数 = 8
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_matmul_bias', 'mini.fused_matmul_bias']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C07 multi_user_product（负例·多使用者）  期望 = identity
+  [P2] 访问 Relu：操作数由 mini.matmul 定义 -> 不匹配
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 Add：乘积使用者 2 -> 拒绝（Day 52 规则），保留整条链
+  [P1] 匹配 Add：乘积使用者 2 -> 拒绝（Day 52 规则），保留整条链
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu', 'mini.relu']  遍数 = 10
+  融合后算子: ['mini.matmul', 'mini.add', 'mini.relu', 'mini.relu']  遍数 = 10
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R2 恒等拒绝：IR 逐字不变
+  [PASS] R2 恒等拒绝：代价账本不变
+  [PASS] 判决符合期望（identity == identity）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C08 shared_result（负例·额外使用）  期望 = fused
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s 还有别的使用者时不吸收 Relu）
+  [P2] 融合结果 %s' 有 2 个使用者 -> 不能吸收 Relu
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.fused_matmul_bias', 'mini.relu']  遍数 = 6
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R1 最终算子名单 == 期望 ['mini.fused_matmul_bias', 'mini.relu']
+  [PASS] 判决符合期望（fused == fused）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C09 f64_add_relu（负例·类型不支持）  期望 = identity
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）
+  融合前算子: ['mini.add', 'mini.relu']  遍数 = 5
+  融合后算子: ['mini.fused_add_relu']  遍数 = 3
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [FAIL] R2 恒等拒绝：IR 逐字不变
+  [FAIL] R2 恒等拒绝：代价账本不变
+  [FAIL] 判决符合期望（fused == identity）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C10 both_matmul（负例·歧义）  期望 = identity
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+  融合前算子: ['mini.matmul', 'mini.matmul', 'mini.add']  遍数 = 9
+  融合后算子: ['mini.matmul', 'mini.matmul', 'mini.add']  遍数 = 9
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [PASS] R2 恒等拒绝：IR 逐字不变
+  [PASS] R2 恒等拒绝：代价账本不变
+  [PASS] 判决符合期望（identity == identity）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C11 mixed_dtype_bias（负例·类型不支持）  期望 = identity
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.fused_matmul_bias_relu']  遍数 = 4
+  [PASS] R1 双遍历同形态（bottom-up == top-down）
+  [FAIL] R2 恒等拒绝：IR 逐字不变
+  [FAIL] R2 恒等拒绝：代价账本不变
+  [FAIL] 判决符合期望（fused == identity）
+  [PASS] 融合后 Verifier 复查通过
+  [PASS] R3 数值对账：融合前后所有输出一致
+
+--- C12 bad_bias_shape（负例·Shape(Verifier)）  期望 = verifier_reject
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] bias 形状非 Same -> 拒绝（第二道防线，Verifier 已拦过）
+  [Verifier] %s: 两个操作数 shape 不匹配
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  [PASS] Verifier 拦下 1 条错误，期望判决 = verifier_reject
+  [PASS] 绕过 Verifier 后 Pattern 第二道防线仍拦下（IR 恒等）
+
+--- C13 bad_bias_broadcast（负例·Shape(Verifier)）  期望 = verifier_reject
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] bias 形状非 Same -> 拒绝（第二道防线，Verifier 已拦过）
+  [Verifier] %s: rhs shape 对 lhs 需要广播——第 40 天起故意不支持（第 60 天放行）
+  融合前算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  融合后算子: ['mini.matmul', 'mini.add', 'mini.relu']  遍数 = 8
+  [PASS] Verifier 拦下 1 条错误，期望判决 = verifier_reject
+  [PASS] 绕过 Verifier 后 Pattern 第二道防线仍拦下（IR 恒等）
+
+--- C14 f64_matmul_chain（负例·类型(Verifier)）  期望 = verifier_reject
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s 还有别的使用者时不吸收 Relu）
+  [Verifier] %m: 元素类型必须是 f32
+  融合前算子: ['mini.matmul', 'mini.add']  遍数 = 6
+  融合后算子: ['mini.matmul', 'mini.add']  遍数 = 4
+  [PASS] Verifier 拦下 1 条错误，期望判决 = verifier_reject
+  [FAIL] 绕过 Verifier 后 Pattern 第二道防线仍拦下（IR 恒等）
+
+==============================================================================
+用例    名称                    类别                期望               实测               遍数        判定
+C01   bias_relu             正例                fused            fused            8->4      通过
+C02   bias_only             正例                fused            fused            6->4      通过
+C03   add_relu_only         正例                fused            fused            5->3      通过
+C04   bias_on_left_relu     正例                fused            fused            8->4      通过
+C05   relu_out_multi        假负例               fused            fused            11->7     通过
+C06   bias_shared_2chains   假负例               fused            fused            12->8     通过
+C07   multi_user_product    负例·多使用者           identity         identity         10->10    通过
+C08   shared_result         负例·额外使用           fused            fused            8->6      通过
+C09   f64_add_relu          负例·类型不支持          identity         fused            5->3      失败
+C10   both_matmul           负例·歧义             identity         identity         9->9      通过
+C11   mixed_dtype_bias      负例·类型不支持          identity         fused            8->4      失败
+C12   bad_bias_shape        负例·Shape(Verifier)verifier_reject  verifier_reject  8->8      通过
+C13   bad_bias_broadcast    负例·Shape(Verifier)verifier_reject  verifier_reject  8->8      通过
+C14   f64_matmul_chain      负例·类型(Verifier)   verifier_reject  verifier_reject  6->4      失败
+==============================================================================
+汇总: 11/14 通过，存在失败 ✘

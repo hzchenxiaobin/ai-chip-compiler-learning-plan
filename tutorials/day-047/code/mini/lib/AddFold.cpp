@@ -35,6 +35,7 @@
 #include "mini/Ops.h"
 
 #include "llvm/ADT/APFloat.h"
+#include "llvm/ADT/STLExtras.h" // llvm::zip：两个常量的元素逐对配对
 #include "mlir/IR/BuiltinAttributes.h"
 #include "mlir/IR/BuiltinTypes.h"
 
@@ -98,13 +99,14 @@ OpFoldResult mini::AddOp::fold(mini::AddOp::FoldAdaptor adaptor) {
   // （round to nearest, ties to even）。IEEE 的边角值——inf + (-inf)
   // 得 NaN、(-0.0) + (+0.0) 得 +0.0——APFloat 按标准处理，fold
   // 出来的就是运行期会算出的同一个位模式（教程 5.5 节有实测见证）。
+  // 注：MLIR 18 的 DenseElementsAttr 没有 begin<T>()/end<T>()，
+  // 标准入口是 getValues<T>()——返回一个可迭代的值区间（见教程 4.3 节）。
   SmallVector<llvm::APFloat, 16> sum;
   sum.reserve(lhs.getNumElements());
-  auto lIt = lhs.begin<llvm::APFloat>();
-  auto rIt = rhs.begin<llvm::APFloat>();
-  for (auto lEnd = lhs.end<llvm::APFloat>(); lIt != lEnd; ++lIt, ++rIt) {
-    llvm::APFloat v = *lIt;
-    v.add(*rIt, llvm::APFloat::rmNearestTiesToEven);
+  for (auto [l, r] : llvm::zip(lhs.getValues<llvm::APFloat>(),
+                               rhs.getValues<llvm::APFloat>())) {
+    llvm::APFloat v = l;
+    v.add(r, llvm::APFloat::rmNearestTiesToEven);
     sum.push_back(v);
   }
 

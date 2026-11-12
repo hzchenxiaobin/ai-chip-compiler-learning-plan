@@ -1,0 +1,29 @@
+== T1 主线 journey.mlir（默认顺序）==
+  PASS  rc=0 且 accept=PASS
+  PASS  阶段 4 恰含 3 个 mini.* 算子
+  PASS  终点形态 = constant + fused_matmul_bias_relu + fused_add_relu
+  PASS  阶段 4 类型全静态（无 ?x2）
+  PASS  阶段 2 只改类型不改结构（仍 8 个）
+  PASS  阶段 3 折掉 1 个 add（6 个）
+  PASS  签名也被细化（返回类型 ?x2 -> 2x2）
+  PASS  折叠日志：add(0.5,0.5) 折成 1.0
+  PASS  时间轴：开场引用真实计数 8 -> 3
+== T2 对照 skip-infer（信息不齐，融合站卡住）==
+  PASS  rc=0（小融合照常，verdict 仍 fused）
+  PASS  终点 5 个 mini.*
+  PASS  大融合缺席（无 fused_matmul_bias_relu）
+  PASS  类型 ?x2 残留（没人细化）
+  PASS  ? 护栏在决策日志里拒绝过大融合
+== T3 对照 journey_shared（半融合不动点）==
+  PASS  rc=0
+  PASS  形态 = fused_matmul_bias + relu（半融合不动点）
+  PASS  P2 拒绝日志（融合结果有 2 个使用者）
+== T4 对照 journey_bad（验证站拦截）==
+  PASS  rc=0 且 verdict=verifier_reject
+  PASS  验证站在最前面拦下 f64
+  PASS  后续三站短路（无阶段 2 dump）
+== T5 单元级：四站职责口径 ==
+  PASS  验证只裁决不改图（阶段 0 == 阶段 1 的 IR 段）
+  PASS  推导只补信息不删算子（阶段 1 与 2 算子数相同）
+
+== 汇总: 22 通过 / 0 失败 ==

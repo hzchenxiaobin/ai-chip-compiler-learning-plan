@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob3" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .bbox { fill:#DAE8FC; stroke:#5B8DB8; stroke-width:2.4; stroke-linejoin:round; }
+      .obox { fill:#FFE6CC; stroke:#D79B00; stroke-width:3; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .rbox { fill:#F8CECC; stroke:#B85450; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .chip { fill:#FFFFFF; stroke:#2F2B27; stroke-width:1.8; stroke-linejoin:round; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1000" height="680"/>
+  <text class="t-title" x="30" y="42">ShapeInferencePass 内部：纯函数推导 → 逐维合并 → setType 写回</text>
+  <text class="t-s" x="975" y="68" text-anchor="end" fill="#8A8378">贯穿例子：2x? · ?x2 —— 输入两个 ?，输出反而全静态</text>
+
+  <!-- ===== 左：两个输入 ===== -->
+  <g filter="url(#wob)">
+    <rect class="bbox" x="28" y="96" width="250" height="136" rx="12" transform="rotate(-0.4 153 164)"/>
+    <rect class="bbox" x="28" y="254" width="250" height="136" rx="12" transform="rotate(0.4 153 322)"/>
+  </g>
+  <text class="t-h" x="48" y="126">lhs 输入</text>
+  <text class="code" x="48" y="156" font-size="14">tensor&lt;2x?xf32&gt;</text>
+  <g filter="url(#wob2)">
+    <rect class="chip" x="48" y="172" width="54" height="26" rx="7"/>
+    <rect class="chip" x="108" y="172" width="54" height="26" rx="7"/>
+  </g>
+  <text class="code" x="75" y="190" text-anchor="middle" font-size="11.5">M = 2</text>
+  <text class="code" x="135" y="190" text-anchor="middle" font-size="11.5">K = ?</text>
+  <text class="t-s" x="48" y="220">M 的信息只能来自 lhs</text>
+
+  <text class="t-h" x="48" y="284">rhs 输入</text>
+  <text class="code" x="48" y="314" font-size="14">tensor&lt;?x2xf32&gt;</text>
+  <g filter="url(#wob2)">
+    <rect class="chip" x="48" y="330" width="54" height="26" rx="7"/>
+    <rect class="chip" x="108" y="330" width="54" height="26" rx="7"/>
+  </g>
+  <text class="code" x="75" y="348" text-anchor="middle" font-size="11.5">K = ?</text>
+  <text class="code" x="135" y="348" text-anchor="middle" font-size="11.5">N = 2</text>
+  <text class="t-s" x="48" y="378">N 的信息只能来自 rhs</text>
+
+  <text class="t-s" x="48" y="426" fill="#3F6E9E">① 取操作数类型：llvm::cast&lt;RankedTensorType&gt;</text>
+  <text class="t-s" x="48" y="442" fill="#3F6E9E">（cast 安全：ODS 已保证 ranked f32 tensor）</text>
+
+  <!-- ===== 中上：纯函数 ===== -->
+  <g filter="url(#wob)">
+    <rect class="obox" x="340" y="96" width="340" height="216" rx="12" transform="rotate(0.3 510 204)"/>
+  </g>
+  <text class="t-h" x="360" y="126">② inferMatmulShape(lhs, rhs)</text>
+  <text class="t-s" x="360" y="144" fill="#B5651D">纯函数：不碰 IR、不诊断，可直接单测</text>
+  <g filter="url(#wob2)">
+    <rect class="chip" x="360" y="160" width="40" height="24" rx="7"/>
+    <rect class="chip" x="360" y="194" width="40" height="24" rx="7"/>
+    <rect class="chip" x="360" y="228" width="40" height="24" rx="7"/>
+    <rect class="chip" x="360" y="262" width="40" height="24" rx="7"/>
+  </g>
+  <text class="t-b" x="380" y="177" text-anchor="middle" font-weight="bold">R1</text>
+  <text class="t-b" x="412" y="171">batch 维：取“已知一侧”</text>
+  <text class="t-s" x="412" y="187">本例是 2 维，没有 batch</text>
+  <text class="t-b" x="380" y="211" text-anchor="middle" font-weight="bold">R2</text>
+  <text class="t-b" x="412" y="205">M ← lhs 倒数第 2 维 → 2</text>
+  <text class="t-s" x="412" y="221">唯一来源，? 原样传播</text>
+  <text class="t-b" x="380" y="245" text-anchor="middle" font-weight="bold">R3</text>
+  <text class="t-b" x="412" y="239">N ← rhs 倒数第 1 维 → 2</text>
+  <text class="t-s" x="412" y="255">唯一来源，? 原样传播</text>
+  <text class="t-b" x="380" y="279" text-anchor="middle" font-weight="bold">R4</text>
+  <text class="t-b" x="412" y="273">K 被消费，不进输出</text>
+  <text class="t-s" x="412" y="289">两侧都是 ? 也无所谓</text>
+
+  <!-- ===== 中下：合并 ===== -->
+  <g filter="url(#wob)">
+    <rect class="obox" x="340" y="342" width="340" height="200" rx="12" transform="rotate(-0.3 510 442)"/>
+  </g>
+  <text class="t-h" x="360" y="372">③ refineShape(old, inferred)</text>
+  <text class="t-s" x="360" y="390" fill="#B5651D">逐维合并：已有数字是承诺，? 才是空位</text>
+  <text class="t-b" x="360" y="416">old 是 ? → 采纳推导值（? 变 2）</text>
+  <text class="t-b" x="360" y="438">old 是数字 → 保留（承诺优先）</text>
+  <text class="t-b" x="360" y="460" fill="#A03B37">数字 ≠ 数字 → 报错 + signalPassFailure</text>
+  <g filter="url(#wob2)">
+    <rect class="chip" x="360" y="476" width="300" height="34" rx="8"/>
+  </g>
+  <text class="code" x="372" y="498" font-size="12.5">old [?,?] + inferred [2,2] → [2,2]</text>
+  <text class="t-s" x="360" y="532" fill="#3F6E9E">④ 合并结果与原 shape 相同 → 不碰 IR（短路）</text>
+
+  <!-- ===== 右：写回 ===== -->
+  <g filter="url(#wob)">
+    <rect class="gbox" x="724" y="96" width="248" height="446" rx="12" transform="rotate(-0.4 848 319)"/>
+  </g>
+  <text class="t-h" x="744" y="126">⑤ setType 写回</text>
+  <text class="t-s" x="744" y="152">改之前（人写的）：</text>
+  <text class="code" x="744" y="176" font-size="13">tensor&lt;?x?xf32&gt;</text>
+  <g filter="url(#wob2)">
+    <path class="arrow" d="M758 190 Q756 208 758 226"/>
+  </g>
+  <text class="code" x="776" y="214" font-size="10.5">op.getRes().setType(...)</text>
+  <text class="t-s" x="744" y="252">改之后（Pass 打印）：</text>
+  <text class="code" x="744" y="276" font-size="13" font-weight="bold">tensor&lt;2x2xf32&gt;</text>
+  <text class="t-s" x="744" y="312">类型存在 Value 本身上，</text>
+  <text class="t-s" x="744" y="328">不是存在使用点上 ——</text>
+  <text class="t-s" x="744" y="344">所有使用者即刻可见</text>
+  <text class="t-s" x="744" y="380" fill="#4C7A43">链式：%1 读到的 %0</text>
+  <text class="t-s" x="744" y="396" fill="#4C7A43">已经是细化后的类型</text>
+  <text class="t-s" x="744" y="432" fill="#A03B37">边界：函数签名不自动更新</text>
+  <text class="t-s" x="744" y="448" fill="#A03B37">（func.return 的合同，</text>
+  <text class="t-s" x="744" y="464" fill="#A03B37">见教程 6.3 的实测）</text>
+  <text class="t-s" x="744" y="498">元素类型恒为 f32，</text>
+  <text class="t-s" x="744" y="514">原样带过来（ODS 保证）</text>
+
+  <!-- 箭头：输入→纯函数→合并→写回 -->
+  <g filter="url(#wob2)">
+    <path class="arrow" d="M280 164 Q310 154 338 168"/>
+    <path class="arrow" d="M280 322 Q310 290 336 246"/>
+    <path class="arrow" d="M510 314 Q510 328 510 340"/>
+    <path class="arrow" d="M682 442 Q704 436 722 428"/>
+  </g>
+
+  <!-- ===== 底部：walk 传播 ===== -->
+  <g filter="url(#wob3)">
+    <rect class="bbox" x="28" y="560" width="944" height="102" rx="12" transform="rotate(0.2 500 611)"/>
+  </g>
+  <text class="t-h" x="48" y="588">walk 按定义序（pre-order）：链式 matmul 一趟传播到底</text>
+  <text class="code" x="48" y="614" font-size="12">%0 = mini.matmul 2x? · ?x3 -> ?x?</text>
+  <text class="t-b" x="352" y="614">先访问：细化成 2x3</text>
+  <text class="code" x="48" y="638" font-size="12">%1 = mini.matmul %0 · 3x? -> ?x?</text>
+  <text class="t-b" x="352" y="638">后访问：lhs 已是 2x3 → 推出 2x?（N 保留 ?，诚实传播）</text>
+</svg>

@@ -1,0 +1,39 @@
+[闸门一] parse + verify: 通过
+===== 输入 IR =====
+module {
+  func.func @graph_multi_product(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    %3 = mini.relu %0 : tensor<2x2xf32>
+    return %2, %3 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[R1] 双遍历同形态（bottom-up == top-down）: PASS
+===== 融合后（A 路 bottom-up）=====
+module {
+  func.func @graph_multi_product(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    %3 = mini.relu %0 : tensor<2x2xf32>
+    return %2, %3 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+===== 融合后（B 路 top-down）=====
+module {
+  func.func @graph_multi_product(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    %3 = mini.relu %0 : tensor<2x2xf32>
+    return %2, %3 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[R2] 恒等拒绝（IR 逐字不变）: PASS
+[verify] 融合后复查: 通过
+verdict=identity
+accept=PASS

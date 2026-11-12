@@ -1,0 +1,33 @@
+第 55 天 MLIR 层验收汇总 —— 2026-11-12 13:42
+工具: ./build/mini-accept；环境: g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0，
+      Ubuntu LLVM version 18.1.8，aarch64 Linux
+验收管道: P1(benefit 1) + P2(benefit 1) + P51g(让位版) + P3(benefit 2)
+          ＋ 类型闸门（fused* 语义只对 f32 验证过）
+
+== 正例：应融合，且双遍历同形态（R1）==
+M01_bias_relu  ->  rc=0  判决 fused (期望 fused)  通过
+    最终形态: mini.fused_matmul_bias_relu 
+M02_add_relu_only  ->  rc=0  判决 fused (期望 fused)  通过
+    最终形态: mini.fused_add_relu 
+
+== 负例（Pattern 闸门）：应恒等拒绝（R2：IR 逐字不变）==
+M03_multi_user  ->  rc=0  判决 identity (期望 identity)  通过
+    最终形态: mini.add mini.matmul mini.relu 
+M04_shared_result  ->  rc=0  判决 fused (期望 fused)  通过
+    最终形态: mini.fused_matmul_bias mini.relu 
+M05_both_matmul  ->  rc=0  判决 identity (期望 identity)  通过
+    最终形态: mini.add mini.matmul mini.relu 
+M06_f64_add_relu  ->  rc=0  判决 identity (期望 identity)  通过
+    最终形态: mini.add mini.relu 
+M07_mixed_dtype  ->  rc=0  判决 identity (期望 identity)  通过
+    最终形态: mini.add mini.matmul mini.relu 
+
+== 负例（Verifier 闸门）：parse + verify 拦下 ==
+M08_f64_matmul  ->  rc=0  判决 verifier_reject (期望 verifier_reject)  通过
+    最终形态: （被闸门一拦下，无融合后 IR）
+M09_bad_shape  ->  rc=0  判决 verifier_reject (期望 verifier_reject)  通过
+    最终形态: （被闸门一拦下，无融合后 IR）
+M10_bad_broadcast  ->  rc=0  判决 verifier_reject (期望 verifier_reject)  通过
+    最终形态: （被闸门一拦下，无融合后 IR）
+
+== 汇总: 10 通过 / 0 失败 ==

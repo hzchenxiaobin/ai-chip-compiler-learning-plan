@@ -1,0 +1,72 @@
+[J1] parse + verify: 通过
+===== 阶段 0: 输入 IR（3 个 mini.*）=====
+module {
+  func.func @journey_shared(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    return %1, %2 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+===== 阶段 1: 验证后 IR（3 个 mini.*——验证只裁决，不改图）=====
+module {
+  func.func @journey_shared(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    return %1, %2 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J2] Shape 推导: 细化 0 处、传播 0 处
+===== 阶段 2: Shape 推导后 IR（3 个 mini.*——推导只细化类型，不删算子）=====
+module {
+  func.func @journey_shared(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    return %1, %2 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J2] verify 复查: 通过
+[J3] 折叠: 0 个 add 折成常量
+===== 阶段 3: 折叠后 IR（3 个 mini.*）=====
+module {
+  func.func @journey_shared(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.matmul %arg0, %arg1 : tensor<2x3xf32>, tensor<3x2xf32> -> tensor<2x2xf32>
+    %1 = mini.add %0, %arg2 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %2 = mini.relu %1 : tensor<2x2xf32>
+    return %1, %2 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J3] verify 复查: 通过
+===== 阶段 4: 融合后 IR（2 个 mini.*）=====
+module {
+  func.func @journey_shared(%arg0: tensor<2x3xf32>, %arg1: tensor<3x2xf32>, %arg2: tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>) {
+    %0 = mini.fused_matmul_bias %arg0, %arg1, %arg2 : tensor<2x3xf32>, tensor<3x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %1 = mini.relu %0 : tensor<2x2xf32>
+    return %0, %1 : tensor<2x2xf32>, tensor<2x2xf32>
+  }
+}
+
+[J4] verify 复查: 通过
+verdict=fused
+===== 汇总：一条 IR 的四站旅程 =====
+站点            mini.* 计数   变化
+输入            3
+站 1 验证        3        （只裁决，结构不变）
+站 2 Shape 推导   3        （类型 ?x2 -> 2x2，结构不变）
+站 3 折叠        3        （add(0.5,0.5) -> 1.0，死常量被收走）
+站 4 融合        2        （mini.fused_matmul_biasx1 mini.relux1 ）
+
+===== 15 分钟讲解时间轴（数字来自本次真实运行）=====
+ 0:00- 2:00  开场：输入图 3 个 mini.*（两条链），讲解目标：走完四站剩 2 个
+ 2:00- 5:00  站 1 验证：合法性裁决（结构不变 3->3；f64/错形状负例在此短路）
+ 5:00- 8:00  站 2 推导：? 维细化 0 处、类型跟随 0 处（只补信息，不动图）
+ 8:00-11:00  站 3 折叠：0 个 add 折成常量（fold 只算值不碰图，DCE 收尸）
+11:00-14:00  站 4 融合：先查后改（use 表、类型闸门、? 护栏），多使用者铁律看 shared 用例
+14:00-15:00  收尾：3 -> 2 计数表 + 「融合为什么不仅是图模式替换」一句话
+accept=PASS

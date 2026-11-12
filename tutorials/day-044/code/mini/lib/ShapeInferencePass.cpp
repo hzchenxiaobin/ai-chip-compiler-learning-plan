@@ -108,7 +108,11 @@ struct ShapeInferencePass
     // walk 默认 pre-order：SSA 直线代码里，定义先于使用被访问。
     // 链式 matmul（%1 = matmul(%0, ...)）一趟就能传播到底——
     // 访问第二个 matmul 时，%0 的类型已经细化过了。
-    func->walk([&](mini::MatmulOp op) {
+    //
+    // 注意 ::mini::MatmulOp 的前导 "::"：本文件同时包含 Ops.h（定义
+    // 全局命名空间 ::mini）和 Passes.h（声明 mlir::mini），加上上面的
+    // using namespace mlir，裸写 mini::MatmulOp 会对两个命名空间二义。
+    func->walk([&](::mini::MatmulOp op) {
       auto lhs = llvm::cast<RankedTensorType>(op.getLhs().getType());
       auto rhs = llvm::cast<RankedTensorType>(op.getRhs().getType());
       auto res = llvm::cast<RankedTensorType>(op.getRes().getType());

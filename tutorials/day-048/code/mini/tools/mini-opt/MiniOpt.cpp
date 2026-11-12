@@ -43,6 +43,12 @@ int main(int argc, char **argv) {
   // -cse / -canonicalize 一样出现在同一条流水线命令里。
   mlir::mini::registerShapeInferencePass();
 
+  // 第 48 天：注册组合优化管道 mini-combined。PassPipelineRegistration
+  // 和上面的 Pass 注册写同一张表——命令行解析器不区分“一个 Pass”
+  // 和“一条管道”，-mini-combined 与 -mini-infer-shape -canonicalize
+  // 等价（顺序是 Day 46 实验证明的那个）。
+  mlir::mini::registerCombinedOptPipeline();
+
   return mlir::asMainReturnCode(
       mlir::MlirOptMain(argc, argv, "mini dialect optimizer driver\n", registry));
 }

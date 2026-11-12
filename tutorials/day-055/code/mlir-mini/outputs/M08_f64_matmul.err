@@ -1,0 +1,1 @@
+loc("inputs/m08_f64_matmul_chain.mlir":6:8): error: 'mini.matmul' op 元素类型必须是 f32

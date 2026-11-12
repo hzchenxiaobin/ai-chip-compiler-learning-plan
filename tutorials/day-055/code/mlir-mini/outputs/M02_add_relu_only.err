@@ -1,0 +1,6 @@
+决策日志（A 路，bottom-up）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）
+决策日志（B 路，top-down）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）

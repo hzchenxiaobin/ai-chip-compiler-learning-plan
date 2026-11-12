@@ -1,0 +1,12 @@
+站 2 Shape 推导（细化 + 传播 + 签名，迭代到不动点）：
+  [J2] matmul 结果 %3 = "mini.matmul"(%arg0, %arg1) : (tensor<2x3xf32>, tensor<3x2xf32>) -> tensor<2x2xf32>: ? 维细化为 tensor<2x2xf32>
+  [J2] mini.add 结果类型跟随操作数: -> tensor<2x2xf32>
+  [J2] mini.relu 结果类型跟随操作数: -> tensor<2x2xf32>
+  [J2] 函数签名返回类型细化: (tensor<2x3xf32>, tensor<3x2xf32>, tensor<2x2xf32>) -> (tensor<?x2xf32>, tensor<2x2xf32>) -> (tensor<2x3xf32>, tensor<3x2xf32>, tensor<2x2xf32>) -> (tensor<2x2xf32>, tensor<2x2xf32>)
+站 3 折叠（fold 钩子 + 死常量收尾，迭代到不动点）：
+站 4 融合（P1/P2/P51g/P3 让位版 + 类型闸门 + ? 护栏）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] 匹配 Add + Relu -> fused_add_relu（Add+Relu 小融合）
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [P3] 匹配 MatMul + Add + Relu -> fused_matmul_bias_relu（直接三算子，一步到位）

@@ -1,0 +1,10 @@
+决策日志（A 路，bottom-up）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+决策日志（B 路，top-down）：
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+  [拒绝] 匹配 Add：两侧都是 mini.matmul —— 分不清谁是 bias，拒绝融合
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P51g] add 的操作数之一是 matmul 乘积 -> 让位给更大的融合（MatMul+Bias 系），本次不抢

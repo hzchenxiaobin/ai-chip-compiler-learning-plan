@@ -10,11 +10,7 @@
         → T15 崩：3 · 3 取 rhs[-2] 直接 IndexError。
 
 预期：12/15，红 T11、T14、T15。
-重放（在 code/ 目录下）：
-  mkdir -p /tmp/day043/v1
-  cp test_matmul_infer.py matmul_infer_v1.py /tmp/day043/v1/
-  mv /tmp/day043/v1/matmul_infer_v1.py /tmp/day043/v1/matmul_infer.py
-  cd /tmp/day043/v1 && python3 test_matmul_infer.py
+重放（在 code/ 目录下）：bash tdd_replay.sh
 """
 
 DYN = None  # 动态维 "?"

@@ -157,9 +157,16 @@ struct ShapeInferencePass
 namespace mlir {
 namespace mini {
 
+// 第 48 天：抽出的工厂函数。原本注册函数里写着这个 lambda，
+// 今天 CombinedPipeline.cpp 也要构造这个 Pass（装进 mini-combined
+// 管道），两处共用一个实现，避免"注册的和组合的是两个东西"。
+std::unique_ptr<Pass> createShapeInferencePass() {
+  return std::make_unique<ShapeInferencePass>();
+}
+
 void registerShapeInferencePass() {
   registerPass([]() -> std::unique_ptr<Pass> {
-    return std::make_unique<ShapeInferencePass>();
+    return createShapeInferencePass();
   });
 }
 

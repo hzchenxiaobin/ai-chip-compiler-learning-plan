@@ -1,0 +1,9 @@
+决策日志（A 路，bottom-up）：
+  [P2] 访问 Relu：操作数由 mini.add 定义 -> 不匹配
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s 还有别的使用者时不吸收 Relu）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）
+决策日志（B 路，top-down）：
+  [P3] 匹配 MatMul + Add -> fused_matmul_bias（%s 还有别的使用者时不吸收 Relu）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）
+  [P2] 融合结果有 2 个使用者 -> 不能吸收 Relu（Day 53 场景 E 的规则）

@@ -1,0 +1,30 @@
+[闸门一] parse + verify: 通过
+===== 输入 IR =====
+module {
+  func.func @graph_add_relu(%arg0: tensor<2x2xf32>, %arg1: tensor<2x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.add %arg0, %arg1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    %1 = mini.relu %0 : tensor<2x2xf32>
+    return %1 : tensor<2x2xf32>
+  }
+}
+
+[R1] 双遍历同形态（bottom-up == top-down）: PASS
+===== 融合后（A 路 bottom-up）=====
+module {
+  func.func @graph_add_relu(%arg0: tensor<2x2xf32>, %arg1: tensor<2x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.fused_add_relu %arg0, %arg1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    return %0 : tensor<2x2xf32>
+  }
+}
+
+===== 融合后（B 路 top-down）=====
+module {
+  func.func @graph_add_relu(%arg0: tensor<2x2xf32>, %arg1: tensor<2x2xf32>) -> tensor<2x2xf32> {
+    %0 = mini.fused_add_relu %arg0, %arg1 : tensor<2x2xf32>, tensor<2x2xf32> -> tensor<2x2xf32>
+    return %0 : tensor<2x2xf32>
+  }
+}
+
+[verify] 融合后复查: 通过
+verdict=fused
+accept=PASS

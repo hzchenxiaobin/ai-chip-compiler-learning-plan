@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob3" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <marker id="arrO" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#D79B00"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .codec { font-family:Consolas, Menlo, Courier New, monospace; fill:#B85450; }
+      .codeg { font-family:Consolas, Menlo, Courier New, monospace; fill:#4A7A42; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .bbox { fill:#DAE8FC; stroke:#5B8DB8; stroke-width:2.4; stroke-linejoin:round; }
+      .obox { fill:#FFE6CC; stroke:#D79B00; stroke-width:3; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .rbox { fill:#F8CECC; stroke:#B85450; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowB { stroke:#5B8DB8; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowR { stroke:#B85450; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowG { stroke:#82B366; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowO { stroke:#D79B00; stroke-width:2.6; fill:none; stroke-linecap:round; marker-end:url(#arrO); }
+      .dash { stroke:#8A8378; stroke-width:1.8; fill:none; stroke-dasharray:6 5; stroke-linecap:round; }
+      .chip { fill:#FFFFFF; stroke:#2F2B27; stroke-width:1.8; stroke-linejoin:round; }
+    </style>
+  </defs>
+  <rect class="bg" width="1000" height="620"/>
+  <text class="t-title" x="30" y="42">六个探针 × 真实输出：正例塌缩、负例不动、驱动白送 DCE</text>
+  <text class="t-s" x="975" y="66" text-anchor="end">全部实测：MLIR 18.1.8 / Ubuntu 20.04 aarch64 / gcc 9.4.0 / FileCheck 6/6</text>
+  <g filter="url(#wob)"><rect class="gbox" x="28" y="96" width="296" height="158" rx="12" transform="rotate(0.4 176.0 175.0)"/></g>
+  <text class="code" x="46" y="124" font-size="12.5" font-weight="bold">double_relu_basic.mlir</text>
+  <text class="t-b" x="46" y="152">2×relu → 1×relu</text>
+  <text class="t-s" x="46" y="174">外层消失，return 直接</text>
+  <text class="t-s" x="46" y="192">用内层结果</text>
+  <g filter="url(#wob3)"><rect x="246" y="216" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="276" y="235" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="46" y="235" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob)"><rect class="gbox" x="352" y="96" width="296" height="158" rx="12" transform="rotate(-0.4 500.0 175.0)"/></g>
+  <text class="code" x="370" y="124" font-size="12.5" font-weight="bold">triple_relu.mlir</text>
+  <text class="t-b" x="370" y="152">3×relu → 1×relu</text>
+  <text class="t-s" x="370" y="174">驱动迭代到不动点：</text>
+  <text class="t-s" x="370" y="192">剥一层→重排队→再剥</text>
+  <g filter="url(#wob3)"><rect x="570" y="216" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="600" y="235" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="370" y="235" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob)"><rect class="gbox" x="676" y="96" width="296" height="158" rx="12" transform="rotate(0.4 824.0 175.0)"/></g>
+  <text class="code" x="694" y="124" font-size="12.5" font-weight="bold">double_relu_multi_user.mlir</text>
+  <text class="t-b" x="694" y="152">add 和 return 两条边</text>
+  <text class="t-s" x="694" y="174">都改指内层——防「只改</text>
+  <text class="t-s" x="694" y="192">一半」的半吊子重写</text>
+  <g filter="url(#wob3)"><rect x="894" y="216" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="924" y="235" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="694" y="235" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob2)"><rect class="bbox" x="28" y="280" width="296" height="158" rx="12" transform="rotate(-0.4 176.0 359.0)"/></g>
+  <text class="code" x="46" y="308" font-size="12.5" font-weight="bold">relu_untouched.mlir</text>
+  <text class="t-b" x="46" y="336">单层 &amp; relu(add)</text>
+  <text class="t-s" x="46" y="358">原样保留（负例）：</text>
+  <text class="t-s" x="46" y="376">结构不匹配 → failure()</text>
+  <g filter="url(#wob3)"><rect x="246" y="400" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="276" y="419" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="46" y="419" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob2)"><rect class="bbox" x="352" y="280" width="296" height="158" rx="12" transform="rotate(0.4 500.0 359.0)"/></g>
+  <text class="code" x="370" y="308" font-size="12.5" font-weight="bold">dead_op_after_rewrite.mlir</text>
+  <text class="t-b" x="370" y="336">%junk 无使用者</text>
+  <text class="t-s" x="370" y="358">不是 Pattern 干的——</text>
+  <text class="t-s" x="370" y="376">驱动自带的简单 DCE 白送</text>
+  <g filter="url(#wob3)"><rect x="570" y="400" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="600" y="419" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="370" y="419" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob2)"><rect class="obox" x="676" y="280" width="296" height="158" rx="12" transform="rotate(-0.4 824.0 359.0)"/></g>
+  <text class="code" x="694" y="308" font-size="12.5" font-weight="bold">pipeline_dynamic.mlir</text>
+  <text class="t-b" x="694" y="336">?x2 --infer-shape--&gt; 2x2</text>
+  <text class="t-s" x="694" y="358">--canonicalize--&gt; 外层</text>
+  <text class="t-s" x="694" y="376">relu 塌缩（两条 Pass 串联）</text>
+  <g filter="url(#wob3)"><rect x="894" y="400" width="60" height="26" rx="8" fill="#FFFFFF" stroke="#82B366" stroke-width="2"/></g>
+  <text class="codeg" x="924" y="419" text-anchor="middle" font-size="12" font-weight="bold">PASS</text>
+  <text class="t-s" x="694" y="419" font-size="10.5">-canonicalize</text>
+  <g filter="url(#wob)"><rect class="box" x="28" y="470" width="944" height="128" rx="12" transform="rotate(-0.25 500.0 534.0)"/></g>
+  <text class="t-h" x="52" y="500">count-ops 前后对照（真实 remark 输出）</text>
+  <text class="code" x="52" y="528" font-size="11.5">$ mini-opt double_relu_basic.mlir -mini-count-ops        → 4 ops (func.func=1, func.return=1, mini.relu=2)</text>
+  <text class="code" x="52" y="550" font-size="11.5">$ mini-opt double_relu_basic.mlir -canonicalize -mini-count-ops → 3 ops (func.func=1, func.return=1, mini.relu=1)</text>
+  <text class="t-s" x="52" y="578">同一条命令只交换 Pass 顺序：少掉的恰好是那一个多余的 mini.relu——这是「IR 真的变小了」的机器可读证据。</text>
+</svg>

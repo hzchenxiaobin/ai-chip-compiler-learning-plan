@@ -1,0 +1,33 @@
+第 56 天四站旅程汇总 —— 2026-11-12 14:10
+工具: ./build/mini-journey；环境: g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0，
+      Ubuntu LLVM version 18.1.8，aarch64 Linux
+管道: 站1 parse+verify -> 站2 Shape 推导 -> 站3 fold+DCE -> 站4 融合
+      （P1/P2/P51g/P3 让位版 + 类型闸门 + ? 护栏）
+
+== 主线：journey.mlir（默认顺序）==
+  rc=0（verdict=fused，8 -> 3）
+  断言 PASS: 终点含 fused_matmul_bias_relu
+  断言 PASS: 终点含 fused_add_relu
+  断言 PASS: 终点 3 个 mini.*（阶段 4 标题）
+  断言 PASS: 阶段 4 之后无动态维 ?x2
+  断言 PASS: 日志含 P3 三算子融合
+
+== 对照 1：--skip-infer（信息不齐，融合站卡住）==
+  rc=0（verdict=fused，但大融合缺席：8 -> 5）
+  断言 PASS: 终点仍含 ?x2（没人细化）
+  断言 PASS: 终点不含 fused_matmul_bias_relu
+  断言 PASS: 终点 5 个 mini.*
+  断言 PASS: 日志含 ? 护栏拒绝
+
+== 对照 2：journey_shared.mlir（半融合不动点）==
+  rc=0（verdict=fused，形态 = fused_matmul_bias + relu）
+  断言 PASS: 终点含 fused_matmul_bias（两算子版）
+  断言 PASS: 终点不含三算子版
+  断言 PASS: 日志含「不能吸收 Relu」
+
+== 对照 3：journey_bad.mlir（验证站拦截，短路）==
+  rc=0（verdict=verifier_reject）
+  断言 PASS: 验证站拦截 f64
+  断言 PASS: 后续三站短路
+
+== 汇总: 14 通过 / 0 失败 ==
