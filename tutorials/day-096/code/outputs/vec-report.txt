@@ -1,0 +1,77 @@
+完整报告在 vec-report-full.txt，下面是关键行（sort -u）：
+unroll_matmul.cpp:100:31: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:114:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:116:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:118:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:120:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:122:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:124:48: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:144:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:146:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:148:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:150:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:152:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:154:48: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:154:48: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:176:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:178:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:180:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:182:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:184:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:188:42: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:188:42: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:190:51: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:195:38: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:216:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:218:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:220:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:222:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:224:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:227:42: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:229:51: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:229:51: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:235:38: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:235:38: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:255:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:257:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:259:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:261:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:263:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:266:52: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:266:52: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:268:51: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:291:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:293:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:295:37: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:297:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:299:44: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:302:48: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:302:48: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:304:51: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:382:79: missed: not vectorized:not suitable for strided load _32 = *_31;
+unroll_matmul.cpp:398:44: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:409:25: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:411:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:413:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:415:36: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:416:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:434:25: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:436:29: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:438:33: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:440:36: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:441:40: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:443:38: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:446:34: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:458:5: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:459:49: optimized: basic block part vectorized using 16 byte vectors
+unroll_matmul.cpp:471:39: optimized: basic block part vectorized using 16 byte vectors
+unroll_matmul.cpp:479:45: missed: not vectorized:not suitable for strided load _261 = *_260;
+unroll_matmul.cpp:543:52: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+unroll_matmul.cpp:57:24: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:58:24: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:59:24: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:61:31: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:64:31: optimized: loop vectorized using 16 byte vectors
+unroll_matmul.cpp:68:31: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:99:27: missed: not vectorized: control flow in loop.
+unroll_matmul.cpp:99:27: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized

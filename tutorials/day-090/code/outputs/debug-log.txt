@@ -1,0 +1,139 @@
+Day 90 调试树汇总（--debug，对应 MLIR -debug-only=dialect-conversion 的格式）
+
+—— 案例 1：全不同形状 A(2,3)@B(3,5) 正常转换 ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x5xf32, strided<[5, 1]>>) -> memref<2x5xf32, strided<[5, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'MatMulBodyPattern' {
+    ** Insert  : 'memref.alloc'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'memref.load'
+    ** Insert  : 'memref.load'
+    ** Insert  : 'arith.mulf'
+    ** Insert  : 'arith.addf'
+    ** Insert  : 'scf.yield'
+    ** Insert  : 'scf.for'
+    ** Insert  : 'memref.store'
+    ** Insert  : 'scf.for'
+    ** Insert  : 'scf.for'
+    ** Replace : 'mini.matmul'
+  } -> SUCCESS : pattern applied successfully
+} -> SUCCESS
+//===-------------------------------------------===//
+Legalizing operation : 'memref.alloc' {
+  %c = memref.alloc() : memref<2x5xf32, strided<[5, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %zero = arith.constant 0.0 : f32
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c0 = arith.constant 0 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c1 = arith.constant 1 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c2 = arith.constant 2 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c5 = arith.constant 5 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c3 = arith.constant 3 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  scf.for %i = %c0 to %c2 step %c1
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  scf.for %j = %c0 to %c5 step %c1
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  %acc = scf.for %k = %c0 to %c3 step %c1 iter_args(%acc = %zero)
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'memref.load' {
+  %xa = memref.load %a[%i, %k]
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'memref.load' {
+  %xb = memref.load %b[%k, %j]
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.mulf' {
+  %p = arith.mulf %xa, %xb : f32
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.addf' {
+  %s = arith.addf %acc, %p : f32
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.yield' {
+  scf.yield %s
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'memref.store' {
+  memref.store %acc, %c[%i, %j]
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'func.return' {
+  return %mm : tensor<2x5xf32>
+} -> SUCCESS : operation marked legal by the target
+
+—— 案例 2：1×N 基型 M 动态，保守拒绝（ST6） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<?x7xf32, strided<[7, 1]>>, %b: memref<7x4xf32, strided<[4, 1]>>) -> memref<?x4xf32, strided<[4, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'MatMulBodyPattern' {
+  } -> FAILURE : 动态维度（A('?', 7) @ B(7, 4)）：循环体访存的地址映射依赖 memref 类型里的静态 strides 与 alloc 尺寸（strided<[6, 1]> 的 6 就是 K），动态 '?' 下无从物化——本 Pattern 先支持静态 Shape（计划），宁拒不猜（动态版 Pattern 走 memref.dim ＋动态 alloc，后续专题）
+} -> FAILURE : 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+
+—— 案例 3：小 K 基型 K 动态，保守拒绝（ST6） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<5x?xf32, strided<[?, 1]>>, %b: memref<?x3xf32, strided<[3, 1]>>) -> memref<5x3xf32, strided<[3, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'MatMulBodyPattern' {
+  } -> FAILURE : 动态维度（A(5, '?') @ B('?', 3)）：循环体访存的地址映射依赖 memref 类型里的静态 strides 与 alloc 尺寸（strided<[6, 1]> 的 6 就是 K），动态 '?' 下无从物化——本 Pattern 先支持静态 Shape（计划），宁拒不猜（动态版 Pattern 走 memref.dim ＋动态 alloc，后续专题）
+} -> FAILURE : 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+
+—— 案例 4：半途而废 Pattern，回滚（ST6 回归项） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x5xf32, strided<[5, 1]>>) -> memref<2x5xf32, strided<[5, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'HalfDoneBodyPattern' {
+  } -> FAILURE : 故意半途而废：先 create 了 alloc＋常量＋load＋mulf 再放弃（回归测试：回滚必须不留痕）
+} -> FAILURE : 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+

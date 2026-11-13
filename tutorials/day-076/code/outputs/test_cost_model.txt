@@ -1,0 +1,50 @@
+== A. ground truth 回归：16 例 × auto/force ==
+[PASS] A1 auto 判决与 D75 案例库 16 例逐例一致（ground truth 回归）
+[PASS] A2 force 列语义：非法 8 例 refuse（force 也不融非法的图）、合法 8 例 fuse
+[PASS] A3 翼 B 的 auto 判决分布：5 拒（R1/R1ctl/R2/R3重算/R4）3 融（R2ctl/R3keep/R4ctl）
+
+== B. 评分数字（独立重算）==
+[PASS] B1 R1 keep 评分 −2,097,152 B（ΔB 8,388,608 − spill 10,485,760）
+[PASS] B2 R1 recompute 评分 +13,893,632 B（消除 25,165,824 − 罚 786,432 − spill 10,485,760）
+[PASS] B3 R1 两形式的资源账共用：spill 同为 10,485,760 B（核结构一样）
+[PASS] B4 形式排序差 = 15,990,784 B（recompute 消掉了写趟＋组外读，只多付一遍生产者输入重读）
+[PASS] B5 R2ctl 评分 +1,048,576 B、零 spill、寄存器并发 4
+[PASS] B6 R3keep 评分 +16,384 B；寄存器并发 3 而完整模型并发 1（工作集与复用是两个量——门槛用前者）
+[PASS] B7 R3recompute 评分 −4,128,768 B（消除 65,536 − 罚 4,194,304）
+[PASS] B8 R4 评分 +67,108,864 B、零 spill、寄存器并发 1（评分正但门槛拦——与 D75 的分歧行同判）
+[PASS] B9 评分恒等式：score == Σ sign·bytes（翼 B 全部声明形式）
+
+== C. 门槛归因（谁在拒绝）==
+[PASS] C1 R1ctl：评分 +6,291,456 B > 0 仍拒——首条理由是 spill 一票否决
+[PASS] C2 R4：评分正、零 spill，首条理由是并行度门槛（寄存器并发 1 < 3）
+[PASS] C3 R2ctl：三门槛全过才融（评分 / 零 spill / 并发 4 ≥ 3）
+[PASS] C4 全部 13 个拒绝行（翼 A 8 ＋ 翼 B 5）的首条理由都可归因到四类前缀之一
+
+== D. 模式差异（force vs auto）==
+[PASS] D1 force 对翼 B 全部 8 例（含 5 个 auto 拒绝的）都 fuse
+[PASS] D2 动态 Shape：auto 拒（评分未知）、force 融（只看合法性）
+[PASS] D3 force 的理由里评分照记：R4 force 融且理由含 67,108,864 B
+
+== E. 误差参数轴：只换机器卡，看判决翻转 ==
+[PASS] E1 寄存器堆 64→256 KiB：R4 寄存器并发 1→3、refuse→fuse；评分不变 67,108,864 B（翻转全部来自门槛，不来自计价）
+[PASS] E2 寄存器堆 64→32 KiB：R2ctl / R3keep / R4ctl 三个原本融合的全部翻成 refuse（参数误差的另一侧）
+[PASS] E3 同一候选换卡只翻判决不翻计价：32 KiB 卡下 R2ctl 评分仍为 +1,048,576 B（ΔB 与机器无关，spill 仍为 0）
+
+== F. 记账对拍（独立随机 10 组）==
+[PASS] F1 keep 对拍 10/10：记账差值 == ΔB 公式
+[PASS] F2 recompute 对拍：记账差值 == elim − 罚（有组外的全部一致）
+[PASS] F3 对拍边界：记账器差值 == ΔB 16,777,216 B，但看不见 spill 10,485,760 B——容量项只能靠模型（误差的口径轴）
+
+== G. IR 对照 ==
+[PASS] G1 贯穿链 IR：融合前 3 kernel/3 alloc → 融合后 1 kernel/1 alloc，kernel 名 mini.fused_matmul_bias_relu
+[PASS] G2 R1 双形式 IR：keep 的 outs 是 (%g, %f)、recompute 的 outs 只 (%f)
+[PASS] G3 R3 双形式 IR：keep 有 %c = memref.alloc（C 落盘喂组外）、recompute 无 %c（C 不落盘）
+[PASS] G4 融合前 IR 的 kernel 数 == 算子数（16 例合法候选全部成立）
+
+== H. 可解释性（报告是人能读的）==
+[PASS] H1 明细账每项带出处：R1 keep 报告含 [D72] 与 [D73] 标注
+[PASS] H2 未计价清单如实：含 launch/编译时间 与 并发 proxy 两条
+[PASS] H3 形式提示：R1（keep 拒）提示 recompute 评分更高；R3recompute（recompute 拒）提示 keep 评分更高
+[PASS] H4 动态 Shape 的报告说人话：评分未知 + 「特化」出口
+
+== 结果：33/33 项检查通过 ==

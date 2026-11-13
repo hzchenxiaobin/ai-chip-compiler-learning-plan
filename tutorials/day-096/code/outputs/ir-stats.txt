@@ -1,0 +1,3 @@
+wrote /mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-096/code/ir/matmul_before.mlir: 1167 bytes, scf.for x5, load x3, MAC(arith.mulf) x1
+wrote /mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-096/code/ir/matmul_unroll_k2.mlir: 2231 bytes, scf.for x6, load x9, MAC(arith.mulf) x3
+wrote /mnt/workspace/aiinfra/ai-chip-compiler-learning-plan/tutorials/day-096/code/ir/matmul_unroll_k4_divisible.mlir: 3069 bytes, scf.for x6, load x15, MAC(arith.mulf) x5

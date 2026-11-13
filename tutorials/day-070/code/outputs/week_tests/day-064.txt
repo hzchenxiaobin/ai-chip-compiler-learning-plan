@@ -1,0 +1,80 @@
+== A. Operation 与 IR 文本往返 ==
+[PASS] A1 打印→解析往返一致（2D/3D/1D/恒等/f16 共 5 例）
+[PASS] A2 默认结果形状由推导补全
+[PASS] A3 推导失败的 op 结果形状保持 None
+[PASS] A4 非 transpose 行解析报 ValueError
+[PASS] A5 IR 文本含 permutation 属性与类型签名
+
+== B. Verifier 正例 ==
+[PASS] B1 2D 交换
+[PASS] B2 3D 循环 (1,2,0)
+[PASS] B3 3D 循环 (2,0,1)
+[PASS] B4 恒等（no-op，合法）
+[PASS] B5 1D 恒等
+[PASS] B6 size-1 维参与
+[PASS] B7 高秩 5D
+
+== C. Verifier 反例与报错质量 ==
+[PASS] C1 E1 排列过长
+[PASS] C2 E1 排列过短
+[PASS] C3 E2 值越上界
+[PASS] C4 E2 值为负
+[PASS] C5 E3 重复维
+[PASS] C6 E3 高秩重复
+[PASS] C7 E4 形状写错
+[PASS] C8 E4 3D 维序错
+[PASS] C9 E4 结果秩不符
+[PASS] C10 E2 报错写明位置(第 0 项)、非法值(2)与合法范围(0..1)
+[PASS] C11 E4 报错写明期望(3=输入第 1 维)与实际(2)及约定
+[PASS] C12 检查顺序：E1 错误时不产生 E2/E3/E4 报错（长度不对无从查起）
+[PASS] C13 越界值不会被拿去索引 shape（E2 先于 E4 触发）
+
+== D. 推导对拍：mini vs numpy ==
+[PASS] D1 2D 交换
+[PASS] D2 2D 恒等
+[PASS] D3 3D (1,2,0)
+[PASS] D4 3D (2,0,1)
+[PASS] D5 3D (2,1,0)
+[PASS] D6 3D 换后两维
+[PASS] D7 1D
+[PASS] D8 size-1
+[PASS] D9 切片源
+[PASS] D10 转置链
+[PASS] D11 4D
+[PASS] D12 广播视图源
+[PASS] D13 随机 300 组：shape/strides/值/零拷贝四方一致（300/300）
+
+== E. 视图语义 ==
+[PASS] E1 视图配方：A(2,3)/(3,1) --perm(1,0)--> (3,2)/(1,3)
+[PASS] E2 零拷贝：视图与源共享存储
+[PASS] E3 写穿联动：V[0,1]=99 使 A[1,0]=99
+[PASS] E4 连续性被破坏：连续源转置后不再 C-连续（rank>1 且非恒等）
+[PASS] E5 100 组随机转置全部零拷贝（转置永远可视图化）
+[PASS] E6 size-1 维转置 strides 仍正确：(1,3)/(3,1)→(3,1)/(1,3)
+
+== F. 搬家语义 ==
+[PASS] F1 搬家后 C-连续且 strides 规整为 (2,1)
+[PASS] F2 值与视图版一致（语义不变）
+[PASS] F3 内存独立（真重排，非视图）
+[PASS] F4 读序偏移被规整为 0..5
+
+== G. 排列性质 ==
+[PASS] G1 inverse_perm 定义 inv[perm[i]]=i（5 组随机）
+[PASS] G2 阶：恒等 1 / 对合 2 / 3-循环 3 / 4-循环 4
+[PASS] G3 非对合陷阱：同款转置两次≠原样，排列+逆排列=原样
+[PASS] G4 2D 交换是唯一非平凡对合（转两次必回原样）
+[PASS] G5 逆排列的形状推导满足『回程』约束：3x4x2 经 (2,0,1) 回 2x3x4
+
+== H. MLIR 对照（linalg.transpose 真实裁决） ==
+[PASS] H1 合法 2D（exit=0）
+[PASS] H2 约定A 4x2x3（exit=0）
+[PASS] H3 约定B 3x4x2（exit=1）
+[PASS] H4 E1 长度（exit=1）
+[PASS] H5 E3 双射（exit=1）
+[PASS] H6 E2 值域（exit=1）
+[PASS] H7 E4 形状（exit=1）
+[PASS] H8 恒等合法（exit=0）
+[PASS] H9 M3 报错原文把约定写在错误里（dim(input, permutation[0])）
+[PASS] H10 越界排列两次报错的乱码值不同（值域检查缺失的现场）
+
+test_transpose: PASS 63 / FAIL 0

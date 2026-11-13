@@ -1,0 +1,14 @@
+func @main(%x: tensor<2x12xf32>) -> (%10: tensor<4x3xf32>) {
+  %x = arg : tensor<2x12xf32>
+  %1 = const shape=[3, 6] values=[0.3, -0.25, 0.125, -0.5, …] : tensor<3x6xf32>
+  %2 = quantize %1 {scale=0.0078125, zp=0} : tensor<3x6xf32>
+  %3 = dequantize %2 {scale=0.0078125, zp=0} : tensor<3x6xf32>
+  %4 = transpose %3 perm=[1, 0] : tensor<6x3xf32>
+  %5 = reshape %x new_shape=[24] : tensor<24xf32>
+  %6 = reshape %5 new_shape=[4, 6] : tensor<4x6xf32>
+  %7 = matmul %6, %4 : tensor<4x3xf32>
+  %8 = const shape=[3] values=[0.125, -0.25, 0.5] : tensor<3xf32>
+  %9 = add %7, %8 : tensor<4x3xf32>
+  %10 = relu %9 : tensor<4x3xf32>
+  return %10
+}

@@ -1,0 +1,7 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, U=2, useful_flops(M*N*K)=105, tiles=12
+kernel                 correct inner_iters ctrl_iters  max_abs_err      oob body_copies
+baseline(i/j/k)            yes         105        195        0.000        0         1
+reorder(i/k/j)             yes         105        155        0.000        0         1
+unroll-k U=2               yes         105        160        0.000        0         3
+unroll-j U=2               yes         105        110        0.000        0         3
+== 正确性：4/4 全部逐位相等（与参考逐位比较） ==

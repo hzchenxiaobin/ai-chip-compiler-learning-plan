@@ -1,0 +1,4 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, mode=clamp-store
+strategy                   correct  inner_iters    guard/idle   boundary        oob  dup_write  max/elem
+clamp-store(钳索引)         yes          144    0/0                 0          0         13         4
+inner_iters=144 oob_touches=0 assign_stores=48 duplicate_writes=13 max_assign_per_elem=4 max_abs_err=0.000 correct=yes

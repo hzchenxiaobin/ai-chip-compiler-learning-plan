@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<rect x="4" y="4" width="972" height="632" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+<text x="490.0" y="36.0" font-size="22" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">定位与数据搬运图：Load／Compute／Store 在 HBM 与 SRAM 之间流动</text>
+<path d="M 300.0,46.0 Q 488.6,47.5 680.0,48.0" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="490.0" y="66.0" font-size="13" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">第 15 周路线：D99 活跃区间 → D100 workspace → D101 片上空间 → 今天 → D103 双缓冲 → D104 资源过滤器</text>
+<path d="M 66.4,78.2 Q 129.2,78.1 196.9,78.3 Q 196.4,104.1 196.6,130.3 Q 132.5,130.8 65.4,130.3 Q 66.4,102.9 65.1,77.7 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="131.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D99</text>
+<text x="131.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">活跃区间</text>
+<path d="M 198.0,104.0 Q 201.0,105.2 207.0,104.0" stroke="#3B3B3B" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M 207.0,104.0 L 200.8,108.2 M 207.0,104.0 L 200.8,99.8" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 207.1,78.1 Q 271.6,78.4 337.5,77.8 Q 338.5,104.7 338.3,130.0 Q 272.0,128.5 207.7,129.8 Q 208.6,104.8 208.5,78.2 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="273.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D100</text>
+<text x="273.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">workspace</text>
+<path d="M 340.0,104.0 Q 344.5,105.0 349.0,104.0" stroke="#3B3B3B" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M 349.0,104.0 L 342.8,108.2 M 349.0,104.0 L 342.8,99.8" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 349.1,78.3 Q 415.5,77.8 480.2,79.1 Q 480.2,103.8 479.7,130.9 Q 415.7,131.4 350.3,131.1 Q 348.8,104.6 349.8,76.9 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="415.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D101</text>
+<text x="415.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">片上空间</text>
+<path d="M 482.0,104.0 Q 486.4,105.8 491.0,104.0" stroke="#3B3B3B" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M 491.0,104.0 L 484.8,108.2 M 491.0,104.0 L 484.8,99.8" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 491.7,78.8 Q 557.4,79.5 622.1,79.0 Q 622.4,104.1 622.4,129.5 Q 558.9,130.1 491.6,131.0 Q 492.4,105.8 491.9,77.0 Z" stroke="#3B3B3B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="557.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D102</text>
+<text x="557.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">搬运与依赖</text>
+<text x="557.0" y="145.0" font-size="11.5" fill="#B0632E" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">← 今天</text>
+<path d="M 624.0,104.0 Q 630.3,102.7 633.0,104.0" stroke="#3B3B3B" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M 633.0,104.0 L 626.8,108.2 M 633.0,104.0 L 626.8,99.8" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 633.2,78.6 Q 700.8,77.0 765.2,79.1 Q 763.8,104.7 765.0,130.3 Q 697.9,129.7 633.0,131.1 Q 635.3,103.9 632.8,76.9 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="699.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D103</text>
+<text x="699.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">双缓冲</text>
+<path d="M 766.0,104.0 Q 769.4,102.3 775.0,104.0" stroke="#3B3B3B" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M 775.0,104.0 L 768.8,108.2 M 775.0,104.0 L 768.8,99.8" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 775.7,77.4 Q 841.9,77.7 906.3,76.9 Q 905.1,102.8 905.0,131.0 Q 840.2,130.9 777.0,128.9 Q 777.1,103.9 775.7,79.1 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="841.0" y="100.0" font-size="14" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">D104</text>
+<text x="841.0" y="118.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">资源过滤</text>
+<path d="M 58.5,174.1 Q 206.4,173.8 357.1,174.9 Q 359.0,339.6 358.9,504.0 Q 209.3,506.7 57.1,504.9 Q 56.5,339.9 58.9,175.1 Z" stroke="#3B3B3B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="208.0" y="201.0" font-size="15" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">HBM（片外仓库，GB 级）</text>
+<text x="208.0" y="219.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">整张图的家当都在这里（D100）</text>
+<path d="M 88.6,229.3 Q 208.8,229.7 329.4,227.2 Q 328.5,261.9 327.4,295.6 Q 209.3,295.2 88.6,295.2 Q 87.0,262.9 86.6,228.8 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="178.0" y="266.0" font-size="13" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">A 512×512</text>
+<text x="310.0" y="266.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">1 MiB</text>
+<path d="M 86.9,307.8 Q 208.4,307.9 327.0,307.1 Q 329.4,343.8 326.8,374.7 Q 207.4,374.7 89.2,375.1 Q 86.5,341.8 89.0,308.9 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="178.0" y="346.0" font-size="13" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">B 512×512</text>
+<text x="310.0" y="346.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">1 MiB</text>
+<path d="M 87.3,388.2 Q 209.7,387.9 328.7,386.6 Q 329.6,420.3 327.0,455.8 Q 209.0,456.9 89.0,454.6 Q 86.3,420.1 87.3,389.4 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="178.0" y="426.0" font-size="13" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">C 512×512</text>
+<text x="310.0" y="426.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">1 MiB</text>
+<path d="M 87.3,469.3 Q 209.5,468.7 328.0,468.3 Q 329.7,481.2 328.2,494.1 Q 206.3,494.7 87.8,494.3 Q 89.4,482.0 88.0,467.7 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="168.0" y="485.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">bias 512</text>
+<text x="310.0" y="485.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">2 KiB</text>
+<path d="M 639.0,176.5 Q 783.9,176.4 929.6,174.0 Q 928.7,308.4 929.2,444.2 Q 784.9,442.5 640.8,442.0 Q 638.3,308.0 640.4,176.0 Z" stroke="#3B3B3B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="785.0" y="199.0" font-size="15" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">SRAM（片上台面，256 KiB）</text>
+<text x="785.0" y="217.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">一个 64³ 块的家当 49,408 B（D101）</text>
+<path d="M 661.5,229.0 Q 785.8,227.5 908.0,227.9 Q 906.4,240.3 907.2,249.5 Q 787.0,248.3 662.8,248.9 Q 662.2,241.5 662.0,230.1 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="785.0" y="244.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">A 槽 16,384 B</text>
+<path d="M 660.6,256.9 Q 786.4,256.6 907.1,257.1 Q 907.8,267.3 909.4,276.7 Q 784.5,279.1 660.6,278.1 Q 660.3,266.4 662.9,256.9 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="785.0" y="272.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">B 槽 16,384 B</text>
+<path d="M 662.6,286.3 Q 786.4,285.5 908.5,285.7 Q 907.2,293.8 908.9,305.1 Q 786.4,307.3 661.1,306.7 Q 660.6,294.6 661.5,284.3 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="785.0" y="300.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">C 槽 16,384 B（常驻累加）</text>
+<path d="M 661.0,312.1 Q 785.7,314.2 907.3,312.2 Q 909.1,318.8 909.2,324.3 Q 786.9,324.7 660.8,322.2 Q 662.2,319.7 662.7,313.8 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="785.0" y="337.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">bias 槽 256 B（窄到画不出）</text>
+<path d="M 661.7,354.0 Q 783.0,353.1 907.4,353.2 Q 907.8,390.1 907.3,429.9 Q 783.3,429.1 662.7,429.2 Q 662.6,389.4 662.6,352.8 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="785.0" y="398.0" font-size="12" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">空闲 212,736 B（81.2%）</text>
+<path d="M 638.7,469.9 Q 784.5,471.3 930.3,468.8 Q 931.4,509.9 930.5,547.2 Q 784.2,547.4 639.5,546.8 Q 638.8,509.0 639.7,471.2 Z" stroke="#3B3B3B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.35"/>
+<text x="785.0" y="496.0" font-size="14.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">计算单元（MAC 阵列）</text>
+<text x="785.0" y="516.0" font-size="12" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">只读写 SRAM，从不直接碰 HBM</text>
+<text x="785.0" y="534.0" font-size="12" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">C += A·B（262,144 MAC/圈）</text>
+<path d="M 710.0,466.0 Q 710.5,453.9 710.0,440.0" stroke="#A9C4D4" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M 710.0,440.0 L 714.2,446.2 M 710.0,440.0 L 705.8,446.2" stroke="#A9C4D4" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 860.0,440.0 Q 858.8,452.5 860.0,466.0" stroke="#A9C4D4" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M 860.0,466.0 L 855.8,459.8 M 860.0,466.0 L 864.2,459.8" stroke="#A9C4D4" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<text x="785.0" y="458.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">读 A/B、写 C</text>
+<path d="M 408.4,295.0 Q 496.6,295.3 583.7,296.0 Q 586.0,325.2 584.5,360.0 Q 497.5,358.5 410.5,360.0 Q 408.5,328.4 411.3,294.0 Z" stroke="#3B3B3B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="497.5" y="321.0" font-size="14.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">DMA 引擎</text>
+<text x="497.5" y="341.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">异步搬运·按提交顺序</text>
+<path d="M 362.0,240.0 Q 384.5,246.0 404.0,250.0" stroke="#E8A87C" stroke-width="3.0" stroke-linecap="round" fill="none"/><path d="M 404.0,250.0 L 397.8,254.2 M 404.0,250.0 L 397.8,245.8" stroke="#E8A87C" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 591.0,250.0 Q 611.9,245.5 634.0,240.0" stroke="#E8A87C" stroke-width="3.0" stroke-linecap="round" fill="none"/><path d="M 634.0,240.0 L 627.8,244.2 M 634.0,240.0 L 627.8,235.8" stroke="#E8A87C" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<text x="384.0" y="228.0" font-size="12.5" fill="#B0632E" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Load 搬入（A/B/bias 块）</text>
+<text x="612.5" y="228.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">32,768 B/µs（示例值）</text>
+<path d="M 634.0,420.0 Q 612.7,424.5 591.0,430.0" stroke="#9CBF8E" stroke-width="3.0" stroke-linecap="round" fill="none"/><path d="M 591.0,430.0 L 597.2,425.8 M 591.0,430.0 L 597.2,434.2" stroke="#9CBF8E" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 404.0,430.0 Q 382.2,425.6 362.0,420.0" stroke="#9CBF8E" stroke-width="3.0" stroke-linecap="round" fill="none"/><path d="M 362.0,420.0 L 368.2,415.8 M 362.0,420.0 L 368.2,424.2" stroke="#9CBF8E" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<text x="612.5" y="446.0" font-size="12.5" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Store 搬出（C 块）</text>
+<path d="M 505.0,370.0 Q 636.6,415.0 765.0,462.0" stroke="#9CBF8E" stroke-width="1.7" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<path d="M 765.0,462.0 L 760.8,455.8 M 765.0,462.0 L 769.2,455.8" stroke="#9CBF8E" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<path d="M 775.0,462.0 Q 644.4,414.6 515.0,370.0" stroke="#C97B7B" stroke-width="1.7" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<path d="M 515.0,370.0 L 519.2,376.2 M 515.0,370.0 L 510.8,376.2" stroke="#C97B7B" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+<text x="760.0" y="420.0" font-size="11" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S1 搬完才许开算（RAW·完成通知）</text>
+<text x="445.0" y="390.0" font-size="11" fill="#C97B7B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S2 算完才许覆盖槽（WAR）</text>
+<text x="490.0" y="612.0" font-size="11.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">带宽与吞吐为示例值（非实测芯片）；三类操作分属两套硬件：Load/Store 走 DMA，Compute 只碰 SRAM</text>
+</svg>

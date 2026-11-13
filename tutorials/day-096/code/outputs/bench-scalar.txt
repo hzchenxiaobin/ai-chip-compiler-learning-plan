@@ -1,0 +1,10 @@
+bench: n=384 tile=64x64x64, warmup=5 reps=15 (median), flop=113.2 MFLOP
+baseline          35.249 ms      3.213 GFLOPS   逐位相等
+reorder           39.394 ms      2.875 GFLOPS   逐位相等
+unroll-k 2        34.721 ms      3.262 GFLOPS   逐位相等
+unroll-k 4        35.009 ms      3.235 GFLOPS   逐位相等
+unroll-k 8        34.484 ms      3.284 GFLOPS   逐位相等
+unroll-j 2        29.985 ms      3.777 GFLOPS   逐位相等
+unroll-j 4        30.624 ms      3.698 GFLOPS   逐位相等
+unroll-j 8        29.073 ms      3.895 GFLOPS   逐位相等
+== 逐位正确性：8/8 通过 ==

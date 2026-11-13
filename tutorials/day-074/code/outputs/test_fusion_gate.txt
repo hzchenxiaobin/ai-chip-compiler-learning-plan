@@ -1,0 +1,39 @@
+== A. 接口边界：三层各自的输入 ==
+[PASS] A1 can_fuse 签名里没有机器参数（「能否」与机器无关）
+[PASS] A2 should_fuse 签名里有 Machine（账本依赖假设卡）且不产出合法性结论
+[PASS] A3 decide 只吃两份报告：换策略不需要动前两层（D76 的接缝）
+== B. 合法性 Pattern：正例、六类负例、动态维度 ==
+[PASS] B1 贯穿链 P1/P2/P3 三种融合形式全部合法
+[PASS] B2 模式名正确：mini.fused_add_relu / mini.fused_matmul_bias / mini.fused_matmul_bias_relu
+[PASS] B3 七类负例全部拦截：模式/纯度/Shape/dtype/内维/偷中间/无使用者
+[PASS] B4 每个负例给出可定位的规则号（L1–L5）
+[PASS] B5 动态维度不改变合法性（-1 通配，D61 口径），报告标记 dynamic
+== C. 收益性分析：ΔB 与资源账逐位对上 D72/D73 ==
+[PASS] C1 ΔB 对上 D72：P1=P2=32 B、P3=64 B（组内中间才省两趟）
+[PASS] C2 资源账对上 D73：P3 reg 272 B（累加器 16 + bias 在飞 256）、staging 48 B；P1 的在飞向量 768 B
+[PASS] C3 净收益恒等式 net = ΔB − spill 流量，三个候选零 spill
+[PASS] C4 多使用者 keep：ΔB = 48 B = C 两趟 32 + E 一趟 16（D72 §5 口径）
+[PASS] C5 活集随 tile：4,352 / 16,640 / 65,792 / 262,400 / 16,777,472 B（D73 扫描表逐位一致），ΔB 恒 64 MiB
+[PASS] C6 tile 128 降级 256 B 零 spill（reg+sram）；tile 256 溢 256 B；2048 溢 16,515,328 B、流量 33,030,656 B
+[PASS] C7 2048 不分块净收益 34,078,208 B（兑现 50.8%，D73 口径）
+[PASS] C8 并发 tile 数对上 D73：32→12、64→3、128→1（需求超资源时下限 1）
+[PASS] C9 MM→MM：ΔB = 1/4/16/64 MiB；K1=1024/4096 净收益都封顶 6 MiB（spill 按行块缩放，D73 A10）
+[PASS] C10 K1=4096 兑现率 9.4%（6 MiB / 64 MiB）
+[PASS] C11 epilogue 指令增量 2/K：贯穿示例 K=3 → 66.7%，大 shape K=64 → 3.1%
+[PASS] C12 动态维度 → known=False（不编造数字），而不是抛异常
+== D. 策略：conservative / auto / force 与理由归属 ==
+[PASS] D1 保守门全收零 spill：tile 32/64/128
+[PASS] D2 tile 256 保守拒绝，理由点名 spill（收益层），hint 给出口
+[PASS] D3 同一候选 auto 放行（net 34,078,208 B > 0）——策略只换第三层
+[PASS] D4 force 也不看收益：tile 2048 放行
+[PASS] D5 force 不能越过合法性：负例（偷中间）在 force 下仍拒绝
+[PASS] D6 「合法 ≠ 值得」：K1=4096 合法且下界净收益 +6 MiB，但保守门拒绝；auto 放行
+[PASS] D7 动态维度：保守与 auto 都拒绝（收益未知），force 放行，hint 指向 D62 特化
+[PASS] D8 拒绝理由能区分层次：非法候选的理由以「合法性：」开头，spill 拒绝以「保守策略：」开头
+[PASS] D9 净收益为 0 → 拒绝（拒绝 = 回到已知正确的基线）；decide 可以只吃手造报告——第三层独立可测
+== E. 假设清单 ==
+[PASS] E1 假设清单 8 项（B1–B8），覆盖机器卡/ΔB/资源/策略/动态/枚举/调度
+[PASS] E2 默认策略写进假设：B4 明确 conservative 拒绝 spill > 0 与收益未知
+[PASS] E3 run_gate 三件套完整：报告＋账本＋决策（贯穿示例 P3 → fuse）
+
+== 结果：32/32 项检查通过 ==

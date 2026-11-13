@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 24px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .tag { font-size: 12px; font-weight: bold; fill: #6b6257; }
+    .name { font-size: 14px; font-weight: bold; }
+    .det { font-size: 10.5px; fill: #5a554d; }
+    .ban { font-size: 15px; font-weight: bold; }
+    .ban2 { font-size: 12px; fill: #5a554d; }
+    .pt { font-size: 14px; font-weight: bold; }
+    .ps { font-size: 10px; fill: #5a554d; }
+    .chip { font-size: 11px; font-weight: bold; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="952" height="492" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+
+  <text x="480" y="38" text-anchor="middle" class="title">第 14 周复盘：从「怎么循环」到「怎么解释」</text>
+  <path d="M 300,48 Q 480,44 660,49" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="480" y="64" text-anchor="middle" class="sub">D92–D97 攒下单点因果，D98 把它们拼成能解释「排名翻转」的账</text>
+
+  <!-- 上排：D92–D97 六个日子 -->
+  <g>
+    <path class="box" d="M 60,80 Q 122,76 184,81 Q 187,115 184,150 Q 122,154 61,150 Q 57,116 60,80 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="122" y="99" text-anchor="middle" class="tag">D92</text>
+    <text x="122" y="116" text-anchor="middle" class="name">循环顺序</text>
+    <text x="122" y="132" text-anchor="middle" class="det">6 种排列：最内层</text>
+    <text x="122" y="144" text-anchor="middle" class="det">决定步长与累加器</text>
+
+    <path class="box" d="M 203,81 Q 265,77 327,82 Q 330,116 327,150 Q 265,154 204,150 Q 200,116 203,81 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="265" y="99" text-anchor="middle" class="tag">D93</text>
+    <text x="265" y="116" text-anchor="middle" class="name">LoopOptions</text>
+    <text x="265" y="132" text-anchor="middle" class="det">旋钮收进配置</text>
+    <text x="265" y="144" text-anchor="middle" class="det">fail-closed 四道门</text>
+
+    <path class="box" d="M 346,80 Q 408,76 470,81 Q 473,115 470,150 Q 408,154 347,150 Q 343,116 346,80 Z" fill="#93C6A0" fill-opacity="0.24"/>
+    <text x="408" y="99" text-anchor="middle" class="tag">D94</text>
+    <text x="408" y="116" text-anchor="middle" class="name">Tiling</text>
+    <text x="408" y="132" text-anchor="middle" class="det">块/点两层循环</text>
+    <text x="408" y="144" text-anchor="middle" class="det">跨块累加回内存</text>
+
+    <path class="box" d="M 489,81 Q 551,77 613,82 Q 616,116 613,150 Q 551,154 490,150 Q 486,116 489,81 Z" fill="#93C6A0" fill-opacity="0.24"/>
+    <text x="551" y="99" text-anchor="middle" class="tag">D95</text>
+    <text x="551" y="116" text-anchor="middle" class="name">尾部处理</text>
+    <text x="551" y="132" text-anchor="middle" class="det">min 钳制</text>
+    <text x="551" y="144" text-anchor="middle" class="det">任意 shape 算得对</text>
+
+    <path class="box" d="M 632,80 Q 694,76 756,81 Q 759,115 756,150 Q 694,154 633,150 Q 629,116 632,80 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="694" y="99" text-anchor="middle" class="tag">D96</text>
+    <text x="694" y="116" text-anchor="middle" class="name">展开·向量化</text>
+    <text x="694" y="132" text-anchor="middle" class="det">j 最内层喂 NEON</text>
+    <text x="694" y="144" text-anchor="middle" class="det">4.5× 来自向量化</text>
+
+    <path class="box" d="M 775,81 Q 837,77 899,82 Q 902,116 899,150 Q 837,154 776,150 Q 772,116 775,81 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="837" y="99" text-anchor="middle" class="tag">D97</text>
+    <text x="837" y="116" text-anchor="middle" class="name">测量纪律</text>
+    <text x="837" y="132" text-anchor="middle" class="det">中位数 / MAD</text>
+    <text x="837" y="144" text-anchor="middle" class="det">测出 512↔516 翻转</text>
+  </g>
+
+  <!-- 日子之间的小箭头 -->
+  <g>
+    <path class="arr" d="M 187,114 q 6,-4 13,0"/><path class="arr" d="M 200,114 l -6,-4 M 200,114 l -6,5"/>
+    <path class="arr" d="M 330,114 q 6,-4 13,0"/><path class="arr" d="M 343,114 l -6,-4 M 343,114 l -6,5"/>
+    <path class="arr" d="M 473,114 q 6,-4 13,0"/><path class="arr" d="M 486,114 l -6,-4 M 486,114 l -6,5"/>
+    <path class="arr" d="M 616,114 q 6,-4 13,0"/><path class="arr" d="M 629,114 l -6,-4 M 629,114 l -6,5"/>
+    <path class="arr" d="M 759,114 q 6,-4 13,0"/><path class="arr" d="M 772,114 l -6,-4 M 772,114 l -6,5"/>
+  </g>
+
+  <!-- D97 → D98 弯箭头 -->
+  <path class="arr" d="M 830,155 Q 848,186 718,199"/>
+  <path class="arr" d="M 718,199 l 9,-4 M 718,199 l 8,6"/>
+  <text x="812" y="184" class="det">留给今天</text>
+
+  <!-- D98 横幅 -->
+  <path class="box" stroke-width="2.6" d="M 252,184 Q 480,179 708,185 Q 712,212 708,242 Q 480,247 253,242 Q 248,212 252,184 Z" fill="#D98484" fill-opacity="0.2"/>
+  <text x="480" y="209" text-anchor="middle" class="ban">第 98 天（今天）：复盘——大 Tile 为什么换个 shape 就换冠军</text>
+  <text x="480" y="231" text-anchor="middle" class="ban2">交付：一页性能复盘 + 标准回答（第 6 节）</text>
+
+  <!-- 翻转现场：两个小面板 -->
+  <g>
+    <path class="box" d="M 150,258 Q 290,254 428,259 Q 431,296 428,334 Q 290,338 152,334 Q 147,296 150,258 Z" fill="#F5F0E4"/>
+    <text x="289" y="274" text-anchor="middle" class="chip">512³ → ikj-128 赢 +6%</text>
+    <rect x="216" y="286" width="24" height="46" fill="#7FA8D9" fill-opacity="0.85" stroke="#3B3B3B" stroke-width="1.8" rx="3"/>
+    <rect x="282" y="270" width="24" height="62" fill="#E8A87C" fill-opacity="0.85" stroke="#3B3B3B" stroke-width="1.8" rx="3"/>
+    <text x="228" y="282" text-anchor="middle" class="ps">13.33</text>
+    <text x="294" y="266" text-anchor="middle" class="ps">14.14</text>
+    <text x="352" y="316" class="ps">蓝 = ikj-64</text>
+    <text x="352" y="330" class="ps">橙 = ikj-128</text>
+
+    <path class="arr" d="M 433,290 Q 480,279 525,290"/>
+    <path class="arr" d="M 525,290 l -7,-4 M 525,290 l -7,5"/>
+    <path class="arr" d="M 527,310 Q 480,321 435,310"/>
+    <path class="arr" d="M 435,310 l 7,-4 M 435,310 l 7,5"/>
+    <text x="480" y="305" text-anchor="middle" class="chip">翻转!</text>
+
+    <path class="box" d="M 532,258 Q 672,254 810,259 Q 813,296 810,334 Q 672,338 534,334 Q 529,296 532,258 Z" fill="#F5F0E4"/>
+    <text x="671" y="274" text-anchor="middle" class="chip">516³ → ikj-64 赢 +1.5~8.6%</text>
+    <rect x="600" y="275" width="24" height="57" fill="#7FA8D9" fill-opacity="0.85" stroke="#3B3B3B" stroke-width="1.8" rx="3"/>
+    <rect x="666" y="297" width="24" height="35" fill="#E8A87C" fill-opacity="0.85" stroke="#3B3B3B" stroke-width="1.8" rx="3"/>
+    <rect x="666" y="278" width="24" height="54" fill="none" stroke="#E8A87C" stroke-width="1.6" stroke-dasharray="5 4" rx="3"/>
+    <text x="612" y="271" text-anchor="middle" class="ps">13.90</text>
+    <text x="700" y="290" class="ps">12.80~13.74</text>
+    <text x="742" y="322" class="ps">（相位区间）</text>
+  </g>
+
+  <!-- 办案流水线 -->
+  <g>
+    <path class="box" d="M 67,364 Q 124,360 181,365 Q 184,392 181,420 Q 124,424 68,420 Q 64,392 67,364 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="124" y="388" text-anchor="middle" class="pt">账本</text>
+    <text x="124" y="406" text-anchor="middle" class="ps">趟数 · 重读 · 满块占比</text>
+
+    <path class="box" d="M 203,365 Q 260,361 317,366 Q 320,393 317,421 Q 260,425 204,421 Q 200,393 203,365 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="260" y="388" text-anchor="middle" class="pt">隔离</text>
+    <text x="260" y="406" text-anchor="middle" class="ps">M / N / K 逐维单换</text>
+
+    <path class="box" d="M 339,364 Q 396,360 453,365 Q 456,392 453,420 Q 396,424 340,420 Q 336,392 339,364 Z" fill="#93C6A0" fill-opacity="0.24"/>
+    <text x="396" y="388" text-anchor="middle" class="pt">机制</text>
+    <text x="396" y="406" text-anchor="middle" class="ps">行距探针分离冲突</text>
+
+    <path class="box" d="M 475,365 Q 532,361 589,366 Q 592,393 589,421 Q 532,425 476,421 Q 472,393 475,365 Z" fill="#93C6A0" fill-opacity="0.24"/>
+    <text x="532" y="388" text-anchor="middle" class="pt">定价</text>
+    <text x="532" y="406" text-anchor="middle" class="ps">尾层每 MAC 单价</text>
+
+    <path class="box" d="M 611,364 Q 668,360 725,365 Q 728,392 725,420 Q 668,424 612,420 Q 608,392 611,364 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="668" y="388" text-anchor="middle" class="pt">确认</text>
+    <text x="668" y="406" text-anchor="middle" class="ps">跨进程方向票数</text>
+
+    <path class="box" stroke-width="2.6" d="M 747,361 Q 822,356 897,362 Q 901,393 897,424 Q 822,429 748,424 Q 743,393 747,361 Z" fill="#D98484" fill-opacity="0.2"/>
+    <text x="822" y="384" text-anchor="middle" class="pt">标准回答</text>
+    <text x="822" y="401" text-anchor="middle" class="ps">结构账＋缓存账＋尾巴账</text>
+    <text x="822" y="415" text-anchor="middle" class="ps">方向背住 · 幅度给区间</text>
+  </g>
+  <g>
+    <path class="arr" d="M 184,392 q 6,-4 13,0"/><path class="arr" d="M 197,392 l -6,-4 M 197,392 l -6,5"/>
+    <path class="arr" d="M 320,392 q 6,-4 13,0"/><path class="arr" d="M 333,392 l -6,-4 M 333,392 l -6,5"/>
+    <path class="arr" d="M 456,392 q 6,-4 13,0"/><path class="arr" d="M 469,392 l -6,-4 M 469,392 l -6,5"/>
+    <path class="arr" d="M 592,392 q 6,-4 13,0"/><path class="arr" d="M 605,392 l -6,-4 M 605,392 l -6,5"/>
+    <path class="arr" d="M 728,392 q 6,-4 13,0"/><path class="arr" d="M 741,392 l -6,-4 M 741,392 l -6,5"/>
+  </g>
+
+  <text x="480" y="462" text-anchor="middle" class="foot">口径全部继承本周：min 钳制外壳（D95）· j 最内层（D96）· 种子 42 / 中位数 / 逐位正确性门（D97）· 数据见 code/outputs/</text>
+</svg>

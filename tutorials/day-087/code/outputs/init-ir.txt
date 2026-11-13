@@ -1,0 +1,33 @@
+// 生成自 init_pass.py（Day 87）——输出初始化就位版 MatMul Lowering Pass 的输出
+// 相对 Day 86 骨架的三处升级：%zero 常量 · iter_args(%acc=%zero) · yield %zero（占位回传）
+// 计算仍留白：load/store/mulf/addf 是 Day 88 的填空（见 scf.yield 处的预留注释）
+func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>> {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+  // 任务① 输出缓冲 48 B：memref.alloc 不清零——零起点靠下面的 %zero
+  %zero = arith.constant 0.0 : f32
+  // 任务③ 初始化 1/2：零起点是 SSA 值，不写内存——C 每元素只写不读
+  %c0 = arith.constant 0 : index
+  // 下界 0
+  %c1 = arith.constant 1 : index
+  // 步长 1
+  %c4 = arith.constant 4 : index
+  // M ← A.shape[0]
+  %c3 = arith.constant 3 : index
+  // N ← B.shape[1]
+  %c6 = arith.constant 6 : index
+  // K ← 内维契约 A.shape[1]==B.shape[0]
+  scf.for %i = %c0 to %c4 step %c1 {
+    scf.for %j = %c0 to %c3 step %c1 {
+      %acc = scf.for %k = %c0 to %c6 step %c1
+              iter_args(%acc = %zero) -> (f32) {
+        scf.yield %zero : f32
+        // 任务③ 初始化 2/2：iter_args 的回传口
+        // 占位：恒等循环（%acc ≡ %zero）；Day 88 把 %zero 换成 %s = addf %acc, %p
+        // 预留(Day 88 填): load %a[%i,%k] · load %b[%k,%j] · mulf · addf · store %c[%i,%j]
+      }
+      // 任务③ 初始化：累加器初值 = %zero（Day 85 清单③方案 B，+0 B 流量）
+      // 体内 %acc（iter_args 区域参数）≠ 体外 %acc（循环结果）——同名不同值
+    }
+  }
+  return %c : memref<4x3xf32, strided<[3, 1]>>
+}

@@ -1,0 +1,33 @@
+LoopOptions 端到端实测（配置 → 生成 → 解释执行 → 真实日志）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~92 口径：Python 复刻 DialectConversion 语义仿真）
+
+贯穿小例：A(2,3)@B(3,2) → C(2,2)，种子 93（流量/op 数在此测量）
+缓存列：A16×16@B16×16 真实轨迹回放，
+  直接映射、行 16B、矩阵间隔 1 行（Day 92 口径）：miss@512B（32 行）/ miss@1KB（64 行）
+
+顺序      最小规范形         最内  op数   C流量(小例)         位等价   miss@512B miss@1KB 
+i-j-k   （全默认）         k   18    0L+4S           ✓     4764      950      
+i-k-j   order=i-k-j   j   21    12L+12S+4清      ✓     2580      1584     
+j-i-k   order=j-i-k   k   18    0L+4S           ✓     5472      1245     
+j-k-i   order=j-k-i   i   21    12L+12S+4清      ✓     8636      2853     
+k-i-j   order=k-i-j   j   21    12L+12S+4清      ✓     2670      1737     
+k-j-i   order=k-j-i   i   21    12L+12S+4清      ✓     8447      2463     
+
+op 序列对照（「配置是数据」的直接证据——同样的积木，不同的装配）：
+  order=i-j-k（18 op）：func.func → memref.alloc → arith.constant×6 → scf.for×3 → memref.load×2 → arith.mulf → arith.addf → scf.yield → memref.store → func.return
+  order=i-k-j（21 op）：func.func → memref.alloc → arith.constant×6 → scf.for×2 → memref.store → scf.for×3 → memref.load×3 → arith.mulf → arith.addf → memref.store → func.return
+
+读表：① op 数与 C 流量只由「k 在不在最内层」决定（18/21、4 写 vs 28 访问）；
+② miss 列与 Day 92 的 order-table.txt 逐格一致——今天换的是「配置从哪来」，不是行为口径；
+③ 最小规范形一列就是 LoopOptions.to_config_string()：全默认是一份合法配置。
+
+—— fail-closed 消费实录（第④道门：校验通过 ≠ 已经生效） ——
+tile-16（tile=16x16x16，16³ 三维整除，第①~③道门全过）：
+  ✗ OptionsNotConsumedError: tile=16x16x16 通过了校验（第①~③道门），但 Tiling 的 lowering 是 Day 94 的内容——今天拒绝运行，绝不静默忽略
+unroll-2（unroll=2，第①~②道门全过）：
+  ✗ OptionsNotConsumedError: unroll=2 通过了校验（第①~②道门），但展开 lowering 是 Day 96 的内容——今天拒绝运行，绝不静默忽略
+tile=1x1x1（平凡块，数学上等于不分块）：
+  ✓ 放行，附注：tile=1x1x1 是平凡块（数学上等于不分块）：按「不启用」处理
+
+原则：宁可拒绝运行，不可静默忽略——用户以为配置生效、实际跑的是没改的 IR，
+这比任何报错都危险。Day 94 实现 TilingPattern 后，第④道门对 tile 放行。

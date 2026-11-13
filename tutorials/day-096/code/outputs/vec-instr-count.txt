@@ -1,0 +1,26 @@
+统计每个 p_* 内核：机器码总指令数 vs 带 NEON 向量寄存器(vN.4s 等)的指令数
+
+_Z10p_baselinePKfS0_PfRK1P
+  total instructions : 116
+  vector instructions: 0  {}
+_Z9p_reorderPKfS0_PfRK1P
+  total instructions : 272
+  vector instructions: 3  {'ld1r': 1, 'fmul': 1, 'fadd': 1}
+_Z9p_unrollkILi2EEvPKfS1_PfRK1P
+  total instructions : 194
+  vector instructions: 0  {}
+_Z9p_unrollkILi4EEvPKfS1_PfRK1P
+  total instructions : 260
+  vector instructions: 0  {}
+_Z9p_unrollkILi8EEvPKfS1_PfRK1P
+  total instructions : 372
+  vector instructions: 0  {}
+_Z9p_unrolljILi2EEvPKfS1_PfRK1P
+  total instructions : 420
+  vector instructions: 8  {'ld1r': 1, 'ld2': 2, 'fmul': 2, 'fadd': 2, 'st2': 1}
+_Z9p_unrolljILi4EEvPKfS1_PfRK1P
+  total instructions : 538
+  vector instructions: 12  {'ld1r': 1, 'ld4': 2, 'fmul': 4, 'fadd': 4, 'st4': 1}
+_Z9p_unrolljILi8EEvPKfS1_PfRK1P
+  total instructions : 480
+  vector instructions: 5  {'ld1r': 1, 'fmul': 2, 'fadd': 2}

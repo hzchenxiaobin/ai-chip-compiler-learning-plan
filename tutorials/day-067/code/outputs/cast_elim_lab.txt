@@ -1,0 +1,186 @@
+==================================================================
+第 67 天主实验：Cast 消除（类型全等判据 + 符号语义 + 方向终审）
+==================================================================
+
+== 0. 环境与主线 ==
+python  3.11.4
+numpy   1.26.4
+arch    aarch64
+mlir-opt /usr/lib/llvm-18/bin/mlir-opt（Ubuntu LLVM version 18.1.8）
+主线：什么才是「无操作 Cast」——类型全等的唯一判据、四类反例的数值证据、位宽陷阱的反面教材、回环链的方向终审与 MLIR 实测。
+
+== 1. 现场一：cast 家族交给 --canonicalize，stock 管道动不动？==
+  ① extf f32→f32（无操作扩展）
+    --canonicalize Verifier 拒绝（exit=1）
+    <stdin>:3:10: error: 'arith.extf' op operand type 'f32' and result type 'f32' are cast incompatible
+  ② bitcast f32→f32（无操作重解释）
+    --canonicalize 消除为 return %arg0
+  ③ truncf∘extf f16→f32→f16（安全回环）
+    --canonicalize 原样保留 2 个 cast op
+  ④ extf∘truncf f32→f16→f32（有损回环）
+    --canonicalize 原样保留 2 个 cast op
+  ⑤ trunci∘extsi i8→i32→i8（安全回环）
+    --canonicalize 消除为 return %arg0
+  ⑥ extsi∘trunci i32→i8→i32（有损回环）
+    --canonicalize 原样保留 2 个 cast op
+  ⑦ bitcast 链 f32→i32→f32（双射回环）
+    --canonicalize 消除为 return %arg0
+  ⑧ bitcast i8→ui8（符号进类型？）
+    --canonicalize Verifier 拒绝（exit=1）
+    <stdin>:3:10: error: 'arith.bitcast' op result #0 must be signless-integer-or-float-like or memref of signless-integer or float, but got 'ui8'
+  对照读法：②⑦ bitcast 的同型/双射回环会被消除；⑤ 整数回环（trunci∘extsi）有折叠；
+            ③ 浮点回环（truncf∘extf）stock 没有这条规则——数学上恒等也要自己写；
+            ④⑥ 有损方向一律原样保留（正确）；①⑧ 表达不出的 op 直接被 Verifier 拦在门外。
+[PASS] ① extf f32→f32 被 Verifier 拒绝（方向化家族表达不出 no-op）
+[PASS] ② bitcast f32→f32 消除为 return %arg0
+[PASS] ③ truncf∘extf（安全回环）stock 原样保留 2 个 op（无此规则）
+[PASS] ④ extf∘truncf（有损回环）原样保留 2 个 op（正确拒绝）
+[PASS] ⑤ trunci∘extsi（安全回环）消除为 return %arg0
+[PASS] ⑦ bitcast 链 f32→i32→f32 消除为 return %arg0
+[PASS] ⑧ ui8 类型不存在：MLIR 整数 signless，符号在 op 不在类型
+
+== 2. 五分类：一个 dtype 对一张脸 ==
+  in → out      分类          今日裁决
+   f32 → f32   无操作   （identity  ）  消除
+   f16 → f16   无操作   （identity  ）  消除
+  bf16 → bf16  无操作   （identity  ）  消除
+    i8 → i8    无操作   （identity  ）  消除
+   f16 → f32   精度扩展  （widen     ）  保留
+  bf16 → f32   精度扩展  （widen     ）  保留
+    i8 → i32   精度扩展  （widen     ）  保留
+   ui8 → i32   精度扩展  （widen     ）  保留
+   f32 → f16   精度缩减  （narrow    ）  保留
+   f32 → bf16  精度缩减  （narrow    ）  保留
+   i32 → i8    精度缩减  （narrow    ）  保留
+   f16 → bf16  同宽异格式 （reformat  ）  保留
+  bf16 → f16   同宽异格式 （reformat  ）  保留
+    i8 → ui8   符号语义  （signflip  ）  保留
+   ui8 → i8    符号语义  （signflip  ）  保留
+   f32 → i32   域翻转   （domainflip）  保留
+   i32 → f32   域翻转   （domainflip）  保留
+[PASS] 五分类覆盖 17 个 dtype 对：identity 4 个、其余 13 个全保留
+
+== 3. 数值现场：0.1 的三重人格 + 0xFF 的两副面孔 ==
+  f32(0.1)  = 0.10000000149011612    bits 0x3DCCCCCD
+  f16(f32(0.1))  = 0.0999755859375        bits 0x2E66（10 位尾数）
+  bf16(f32(0.1)) = 0.099609375            bits 0x3DCC0000（7 位尾数，截断）
+  回环 f32→f16→f32  == 原值？ False（0.10000000149011612 ≠ 0.0999755859375）
+[PASS] f32→f16→f32 回环改变数值（0.1 的现场）
+  假阴性现场：f32(0.5) 回环 == 原值？ True（2 的幂在 f16 里精确——测试值不能只挑好值）
+[PASS] 0.5 的回环恰好相等（假阴性陷阱的实证）
+  i32(300) → i8 = 44（回绕 300-256）；回 i32 = 44
+[PASS] i32→i8 回绕丢高位（300 → 44）
+  i8(-1) → ui8 = 255；位都是 0xFF：0xff == 0xff
+  但值不等：np.array_equal(-1i8, 255ui8) = False——位宽相同的两副面孔
+[PASS] i8→ui8 位不变值变（0xFF = -1 或 255）
+
+== 4. mini 侧：无操作 Cast 消除的现场 ==
+Pattern：Cast(x, T) 且 type(x) == T → x——不需要唯一使用者检查（昨天 P1 原型）
+
+场景 A（identity 多使用者：%r 被 %a、%b 两个消费者用 → 照样消除）：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %r = mini.cast %in from=f32 to=f32 : (2x3xf32) -> (2x3xf32)
+  %a = mini.cast %r from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %b = mini.cast %r from=f32 to=i32 : (2x3xf32) -> (2x3xi32)
+  func.return %a, %b
+  %r 的使用者数 = 2（%a、%b 各一）——Pattern 不看这个
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %a = mini.cast %in from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %b = mini.cast %in from=f32 to=i32 : (2x3xf32) -> (2x3xi32)
+  func.return %a, %b
+[PASS] A：identity 消除不看使用者数（op 数 3→2），%a/%b 全部改道读 %in
+
+场景 B（identity 单跳直返 → 整体消除为 return %in）：
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] B：identity 单跳整体消除（op 数 1→0，return %in）
+
+场景 C（混合图：identity + 精度扩展 + 精度缩减 → 只消 identity）：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %a = mini.cast %in from=f32 to=f32 : (2x3xf32) -> (2x3xf32)
+  %b = mini.cast %a from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %c = mini.cast %b from=f16 to=f32 : (2x3xf16) -> (2x3xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %b = mini.cast %in from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %c = mini.cast %b from=f16 to=f32 : (2x3xf16) -> (2x3xf32)
+  func.return %c
+  %a 消除后 %b 直读 %in；%b（f32→f16 扩展）和 %c（f16→f32 缩减）原样保留——f32→f16→f32 链是「先缩后扩」，合并会改数值（第 6 节）
+[PASS] C：混合图只消 identity（op 数 3→2），widen/narrow 原样保留
+
+场景 D（连续两个 identity：f32→f32→f32 → 迭代到 0）：
+→ PassManager 3 轮、应用 2 次（每轮消一个）：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] D：连续 identity 迭代消除（op 数 2→0，2 次应用 + 1 轮不动点确认）
+
+场景 E（四类反例单跳：widen/narrow/signflip/domainflip → 全保留）：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %inp : shape (2, 3) dtype int8（func 入参，值可由 numpy 提供可见性）
+  %w = mini.cast %in from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %n = mini.cast %in from=f32 to=bf16 : (2x3xf32) -> (2x3xbf16)
+  %d = mini.cast %in from=f32 to=i32 : (2x3xf32) -> (2x3xi32)
+  %s = mini.cast %inp from=i8 to=ui8 : (2x3xi8) -> (2x3xui8)
+  func.return %w, %n, %d, %s
+→ PassManager 1 轮、应用 0 次：
+  %in : shape (2, 3) dtype float32（func 入参，值可由 numpy 提供可见性）
+  %inp : shape (2, 3) dtype int8（func 入参，值可由 numpy 提供可见性）
+  %w = mini.cast %in from=f32 to=f16 : (2x3xf32) -> (2x3xf16)
+  %n = mini.cast %in from=f32 to=bf16 : (2x3xf32) -> (2x3xbf16)
+  %d = mini.cast %in from=f32 to=i32 : (2x3xf32) -> (2x3xi32)
+  %s = mini.cast %inp from=i8 to=ui8 : (2x3xi8) -> (2x3xui8)
+  func.return %w, %n, %d, %s
+  四个 op 分别是精度扩展（f16）、精度缩减（bf16）、域翻转（i32）、符号语义（ui8）——没有一个是 identity，全保留
+[PASS] E：四类反例全保留（op 数 4→4，零应用）且数值不变
+
+场景 F（反面教材：只比位宽的 buggy 版在 i8→ui8 上翻车）：
+  正确版（dtype 全等）：op 数 1→1，返回值 dtype uint8，值[0,0] = 255
+  buggy 版（只比位宽）：op 数 1→0，返回值 dtype int8，值[0,0] = -1
+  数值对拍：正确版 == 优化前 True；buggy 版 == 优化前 False（-1 应该变成 255，buggy 版还是 -1）
+[PASS] F：正确判据保留 i8→ui8（值 255 不变）；位宽判据当场翻车（255 → -1）
+[PASS] F2：位宽判据同样放过 f32→i32（0.1/0.5 变成 0）——位宽不是类型
+
+== 5. 判定表：17 个 dtype 对，优化前后数值对拍 ==
+  in → out      分类          优化后op数  数值对拍
+   f32 → f32   无操作   （identity  ）       0      ok
+   f16 → f16   无操作   （identity  ）       0      ok
+  bf16 → bf16  无操作   （identity  ）       0      ok
+    i8 → i8    无操作   （identity  ）       0      ok
+   f16 → f32   精度扩展  （widen     ）       1      ok
+  bf16 → f32   精度扩展  （widen     ）       1      ok
+    i8 → i32   精度扩展  （widen     ）       1      ok
+   ui8 → i32   精度扩展  （widen     ）       1      ok
+   f32 → f16   精度缩减  （narrow    ）       1      ok
+   f32 → bf16  精度缩减  （narrow    ）       1      ok
+   i32 → i8    精度缩减  （narrow    ）       1      ok
+   f16 → bf16  同宽异格式 （reformat  ）       1      ok
+  bf16 → f16   同宽异格式 （reformat  ）       1      ok
+    i8 → ui8   符号语义  （signflip  ）       1      ok
+   ui8 → i8    符号语义  （signflip  ）       1      ok
+   f32 → i32   域翻转   （domainflip）       1      ok
+   i32 → f32   域翻转   （domainflip）       1      ok
+[PASS] 判定表 17/17：identity → 0 op，其余 → 1 op，数值全不变
+
+随机压力对拍（300 组随机 dtype 链，链长 1..5，六型全组合；值域非负有界（int 0..127 / float 0.125..8.125）——回绕与负值的翻车现场由判定表和场景 F 承担）：
+[PASS] 随机对拍 300/300：数值不变、Verifier 通过、op 数 = 非 identity 跳数
+  300 组共 894 个初始 cast op，消除 164 个 identity，保留 730 个类型变换——保留的每个都有类型理由
+
+== 6. 回环终审：信息只往窄的方向丢（方向决定安全）==
+  回环链                  数值现场                                    裁决
+  f16→f32→f16     1003 个值（含 ±inf/NaN）全部原样                       安全：f16 值集 ⊆ f32
+  f32→f16→f32     1003 个值里 1001 个变了（0.1 → 0.0999755859375）      有损：f16 值集 ⊄ f32
+  i8→i32→i8       [-128,-1,0,127] 全部原样                          安全：符号扩展保低位
+  i32→i8→i32      [255→-1, 300→44] 高位丢了                         有损：截断丢高位
+  f32→bf16→f32    0.1 → 0.099609375（截断版 bf16）                   有损：尾数 24 → 7 位
+  i8→ui8→i8       [-128..127] 双射回原（mod 256）                     安全：同宽双射（但今天也不合并）
+  f32→i32→f32     [0.5, 2.75, -3.25] → [0, 2, -3]               有损：小数部分蒸发
+[PASS] 方向终审：先窄后宽 ≠ 恒等（f32→f16→f32、i32→i8→i32、f32→bf16→f32、f32→i32→f32 全部改变数值）
+[PASS] 方向终审：先宽后窄回到子集才安全（f16→f32→f16、i8→i32→i8）——即便如此，今天也只做 identity，回环合并留给以后
+[PASS] 方向终审：同宽双射（i8→ui8→i8）数学上安全，但需要逐对证明——mini 的保守边界把它一并挡在门外
+
+==================================================================
+汇总：PASS 24 / FAIL 0
+==================================================================

@@ -1,0 +1,31 @@
+== A. 公式 vs 仪器化计数（随机 Shape，25 组） ==
+[PASS] A1 25 组随机 MatMul 计数 == 2·M·N·K（含 M=1/N=1/K=1）
+[PASS] A2 25 组随机 MatMul 数值 == numpy
+[PASS] A3 Add 计数 == M·N（5×7 → 35）
+[PASS] A4 Relu 计数 == M·N（口径 1/元素）
+[PASS] A5 Relu 记 0 口径恒为 0
+== B. 字节公式 vs numpy nbytes ==
+[PASS] B1 numel×itemsize == ndarray.nbytes（6 组 Shape）
+[PASS] B2 MatMul 读写字节 == 对应 ndarray.nbytes 之和
+[PASS] B3 Add 读 == 两个输入 nbytes，写 == 输出 nbytes
+== C. 链账本一致性 ==
+[PASS] C1 20 组随机链：总流量 == 逐算子读+写之和
+[PASS] C2 20 组随机链：io + 中间 == 总（拆账闭合）
+[PASS] C3 20 组随机链：中间流量 == 2 个中间 × 字节 × 写+读两遍
+[PASS] C4 贯穿示例回归：144 B / 中间 64 B / io 80 B
+== D. 算术强度性质 ==
+[PASS] D1 方阵 AI = n/6（n = 3/17/64/257/1000）
+[PASS] D2 GEMV M=1,K=N=1024：AI = 0.499 < 0.51（访存受限）
+[PASS] D3 AI 随 K 单调升且有上界 M·N/(2(M+N)) = 2（实测 1.882 < 1.939 < 1.984 < 2）
+[PASS] D4 逐元素 AI 与 Shape 无关（Add 1/12，Relu 1/8）
+== E. dtype 缩放 ==
+[PASS] E1 链字节 ∝ itemsize（fp16/bf16/int8 × 3 组）
+[PASS] E2 链 FLOPs 与 dtype 无关
+[PASS] E3 MatMul AI ∝ 1/itemsize（fp16 AI = 2× fp32）
+[PASS] E4 贯穿示例 fp16 = 72 B、int8 = 36 B
+== F. 临界规模公式 ==
+[PASS] F1 三个阈值（1/4/12.54）均满足 AI(n_crit) ≥ 阈值 > AI(n_crit-1)
+[PASS] F2 A100 FP32 口径 n_crit = 76
+[PASS] F3 阈值口径标注：A100 数字为 datasheet 峰值，非实测
+
+== 汇总：23 PASS / 0 FAIL ==

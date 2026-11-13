@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 646" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 12.5px; fill: #6b6257; }
+    .plab { font-size: 14px; font-weight: bold; }
+    .cell { font-size: 11px; }
+    .cset { font-size: 11.5px; font-weight: bold; fill: #4a463f; }
+    .note { font-size: 11.5px; fill: #5a554d; }
+    .conc { font-size: 12px; fill: #3B3B3B; }
+    .chip { font-size: 11.5px; }
+    .box { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="952" height="638" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+
+  <text x="480" y="34" text-anchor="middle" class="title">行距怎么撞上缓存组：2048B 的「周期 8」</text>
+  <text x="480" y="56" text-anchor="middle" class="sub">L1d 64KB = 256 组 × 4 路 × 64B 行（本机 sysfs 实读）；行 r 的组号 = (r × 行距 ÷ 64) mod 256</text>
+
+  <!-- A: 2048B -->
+  <text x="40" y="90" class="plab">A. 行距 2048B = 整 32 行（512 列 × 4B，512³ 的天然行距）</text>
+  <g>
+    <path class="box" d="M 162,102 Q 198,99 232,103 Q 234,119 232,136 Q 198,139 164,136 Q 160,119 162,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 242,102 Q 278,99 312,103 Q 314,119 312,136 Q 278,139 244,136 Q 240,119 242,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 322,102 Q 358,99 392,103 Q 394,119 392,136 Q 358,139 324,136 Q 320,119 322,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 402,102 Q 438,99 472,103 Q 474,119 472,136 Q 438,139 404,136 Q 400,119 402,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 482,102 Q 518,99 552,103 Q 554,119 552,136 Q 518,139 484,136 Q 480,119 482,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 562,102 Q 598,99 632,103 Q 634,119 632,136 Q 598,139 564,136 Q 560,119 562,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 642,102 Q 678,99 712,103 Q 714,119 712,136 Q 678,139 644,136 Q 640,119 642,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <path class="box" d="M 722,102 Q 758,99 792,103 Q 794,119 792,136 Q 758,139 724,136 Q 720,119 722,102 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <text x="197" y="116" text-anchor="middle" class="cell">行 0</text><text x="197" y="131" text-anchor="middle" class="cset">组 0</text>
+    <text x="277" y="116" text-anchor="middle" class="cell">行 1</text><text x="277" y="131" text-anchor="middle" class="cset">组 32</text>
+    <text x="357" y="116" text-anchor="middle" class="cell">行 2</text><text x="357" y="131" text-anchor="middle" class="cset">组 64</text>
+    <text x="437" y="116" text-anchor="middle" class="cell">行 3</text><text x="437" y="131" text-anchor="middle" class="cset">组 96</text>
+    <text x="517" y="116" text-anchor="middle" class="cell">行 4</text><text x="517" y="131" text-anchor="middle" class="cset">组 128</text>
+    <text x="597" y="116" text-anchor="middle" class="cell">行 5</text><text x="597" y="131" text-anchor="middle" class="cset">组 160</text>
+    <text x="677" y="116" text-anchor="middle" class="cell">行 6</text><text x="677" y="131" text-anchor="middle" class="cset">组 192</text>
+    <text x="757" y="116" text-anchor="middle" class="cell">行 7</text><text x="757" y="131" text-anchor="middle" class="cset">组 224</text>
+
+    <path class="box" d="M 162,160 Q 198,157 232,161 Q 234,177 232,194 Q 198,197 164,194 Q 160,177 162,160 Z" fill="#D98484" fill-opacity="0.3"/>
+    <text x="197" y="174" text-anchor="middle" class="cell">行 8</text><text x="197" y="189" text-anchor="middle" class="cset">组 0 (!)</text>
+    <path class="box" d="M 242,160 Q 278,157 312,161 Q 314,177 312,194 Q 278,197 244,194 Q 240,177 242,160 Z" fill="#F5F0E4"/>
+    <text x="277" y="174" text-anchor="middle" class="cell">行 9</text><text x="277" y="189" text-anchor="middle" class="cset">组 32</text>
+
+    <path class="arr" d="M 197,158 Q 191,150 197,141"/>
+    <path class="arr" d="M 197,141 l -5,7 M 197,141 l 6,7"/>
+    <text x="212" y="152" class="note">每 8 行绕回同一组（32 × 8 = 256）</text>
+    <text x="330" y="178" class="note">…行 16、行 24 也全挤回这 32 个组</text>
+  </g>
+  <text x="40" y="224" class="conc">▸ 64 行的 C tile 挤进 32 个组：每组要住 8 行 × 4 线 = 32 条线，却只有 4 路 → 被挤出去的就是<b>冲突缺失</b></text>
+
+  <!-- B: 2064B -->
+  <text x="40" y="258" class="plab">B. 行距 2064B = 32.25 行（516 列 × 4B，16B 对齐）</text>
+  <g>
+    <path class="box" d="M 162,270 Q 198,267 232,271 Q 234,287 232,304 Q 198,307 164,304 Q 160,287 162,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 242,270 Q 278,267 312,271 Q 314,287 312,304 Q 278,307 244,304 Q 240,287 242,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 322,270 Q 358,267 392,271 Q 394,287 392,304 Q 358,307 324,304 Q 320,287 322,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 402,270 Q 438,267 472,271 Q 474,287 472,304 Q 438,307 404,304 Q 400,287 402,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 482,270 Q 518,267 552,271 Q 554,287 552,304 Q 518,307 484,304 Q 480,287 482,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 562,270 Q 598,267 632,271 Q 634,287 632,304 Q 598,307 564,304 Q 560,287 562,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 642,270 Q 678,267 712,271 Q 714,287 712,304 Q 678,307 644,304 Q 640,287 642,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 722,270 Q 758,267 792,271 Q 794,287 792,304 Q 758,307 724,304 Q 720,287 722,270 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <text x="197" y="284" text-anchor="middle" class="cell">行 0</text><text x="197" y="299" text-anchor="middle" class="cset">组 0</text>
+    <text x="277" y="284" text-anchor="middle" class="cell">行 1</text><text x="277" y="299" text-anchor="middle" class="cset">组 32¼</text>
+    <text x="357" y="284" text-anchor="middle" class="cell">行 2</text><text x="357" y="299" text-anchor="middle" class="cset">组 64½</text>
+    <text x="437" y="284" text-anchor="middle" class="cell">行 3</text><text x="437" y="299" text-anchor="middle" class="cset">组 96¾</text>
+    <text x="517" y="284" text-anchor="middle" class="cell">行 4</text><text x="517" y="299" text-anchor="middle" class="cset">组 129</text>
+    <text x="597" y="284" text-anchor="middle" class="cell">行 5</text><text x="597" y="299" text-anchor="middle" class="cset">组 161¼</text>
+    <text x="677" y="284" text-anchor="middle" class="cell">行 6</text><text x="677" y="299" text-anchor="middle" class="cset">组 193½</text>
+    <text x="757" y="284" text-anchor="middle" class="cell">行 7</text><text x="757" y="299" text-anchor="middle" class="cset">组 225¾</text>
+
+    <path class="box" d="M 162,328 Q 198,325 232,329 Q 234,345 232,362 Q 198,365 164,362 Q 160,345 162,328 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <text x="197" y="342" text-anchor="middle" class="cell">行 8</text><text x="197" y="357" text-anchor="middle" class="cset">组 2¼</text>
+    <text x="250" y="348" class="note">不再回到 0！组号错位累进（258 mod 256），行与行错开落组</text>
+  </g>
+  <text x="40" y="392" class="conc">▸ 撞组周期被打破，且 2064 是 16 的倍数 → NEON 128-bit 装载仍对齐：<b>516³ 白捡的行距红利</b></text>
+
+  <!-- C/D -->
+  <text x="40" y="426" class="plab">C. 2112B = 整 33 行（528 列）：对齐＋散开，两全</text>
+  <g>
+    <path class="box" d="M 62,438 Q 98,435 132,439 Q 134,455 132,472 Q 98,475 64,472 Q 60,455 62,438 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 142,438 Q 178,435 212,439 Q 214,455 212,472 Q 178,475 144,472 Q 140,455 142,438 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 222,438 Q 258,435 292,439 Q 294,455 292,472 Q 258,475 224,472 Q 220,455 222,438 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <path class="box" d="M 302,438 Q 338,435 372,439 Q 374,455 372,472 Q 338,475 304,472 Q 300,455 302,438 Z" fill="#93C6A0" fill-opacity="0.28"/>
+    <text x="97" y="452" text-anchor="middle" class="cell">行 0</text><text x="97" y="467" text-anchor="middle" class="cset">组 0</text>
+    <text x="177" y="452" text-anchor="middle" class="cell">行 1</text><text x="177" y="467" text-anchor="middle" class="cset">组 33</text>
+    <text x="257" y="452" text-anchor="middle" class="cell">行 2</text><text x="257" y="467" text-anchor="middle" class="cset">组 66</text>
+    <text x="337" y="452" text-anchor="middle" class="cell">行 3</text><text x="337" y="467" text-anchor="middle" class="cset">组 99</text>
+    <text x="404" y="452" class="note">33 与 256 互素 →</text>
+    <text x="404" y="467" class="note">256 行才绕一圈</text>
+  </g>
+
+  <text x="500" y="426" class="plab">D. 2052B = 32.06 行（513 列）：散开但失对齐</text>
+  <g>
+    <path class="box" d="M 520,440 Q 552,437 582,441 Q 584,453 582,466 Q 552,469 522,466 Q 518,453 520,440 Z" fill="#F5F0E4"/>
+    <path class="box" d="M 588,440 Q 620,437 650,441 Q 652,453 650,466 Q 620,469 590,466 Q 586,453 588,440 Z" fill="#F5F0E4"/>
+    <path class="box" d="M 656,440 Q 688,437 718,441 Q 720,453 718,466 Q 688,469 658,466 Q 654,453 656,440 Z" fill="#F5F0E4"/>
+    <path class="box" d="M 724,440 Q 756,437 786,441 Q 788,453 786,466 Q 756,469 726,466 Q 722,453 724,440 Z" fill="#F5F0E4"/>
+    <text x="551" y="457" text-anchor="middle" class="cell">64B</text>
+    <text x="619" y="457" text-anchor="middle" class="cell">64B</text>
+    <text x="687" y="457" text-anchor="middle" class="cell">64B</text>
+    <text x="755" y="457" text-anchor="middle" class="cell">64B</text>
+    <rect x="524" y="478" width="264" height="16" rx="7" fill="#E8A87C" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="1.6"/>
+    <text x="800" y="490" class="note">一段 256B（64 个 float）</text>
+    <path class="arr" d="M 524,486 Q 512,478 516,468"/>
+    <text x="800" y="476" class="note">行首错开 4B → 骑跨 5 个</text>
+    <text x="800" y="504" class="note">行边界（对齐只要 4 个）</text>
+  </g>
+  <text x="40" y="524" class="conc">▸ C：行首 64B 对齐＋非 2 幂行数，冲突和对齐都不牺牲；D：4B 错位让向量装载失对齐——<b>散开不能以失对齐为代价</b></text>
+
+  <!-- 实测账单 -->
+  <g>
+    <path class="box" d="M 42,540 Q 480,536 918,541 Q 920,553 918,566 Q 480,570 44,566 Q 40,553 42,540 Z" fill="#93C6A0" fill-opacity="0.3"/>
+    <text x="56" y="558" class="chip">实测账单① 行距 512→528（计算一字不变）：ikj-64 13.18 → 14.25 GFLOPS（+8.1%）——冲突缺失的价</text>
+
+    <path class="box" d="M 42,574 Q 480,570 918,575 Q 920,587 918,600 Q 480,604 44,600 Q 40,587 42,574 Z" fill="#D98484" fill-opacity="0.28"/>
+    <text x="56" y="592" class="chip">实测账单② 行距 512→513：ikj-64 −15.6% / ikj-128 −11.8%——失对齐比撞组更贵</text>
+
+    <path class="box" d="M 42,608 Q 480,604 918,609 Q 920,621 918,634 Q 480,638 44,634 Q 40,621 42,608 Z" fill="#7FA8D9" fill-opacity="0.25"/>
+    <text x="56" y="626" class="chip">容量边界：128³ 的 tile 合计 128KB 超 L1d → B/C 本来就走 L2，对撞组远不如 64³ 敏感；其探针对照格相位敏感，红利给不出干净数字</text>
+  </g>
+</svg>

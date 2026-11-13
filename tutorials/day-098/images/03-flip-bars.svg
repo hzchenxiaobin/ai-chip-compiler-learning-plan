@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 12.5px; fill: #6b6257; }
+    .ylab { font-size: 12px; fill: #5a554d; }
+    .glab { font-size: 13px; font-weight: bold; }
+    .gsub { font-size: 10.5px; fill: #6b6257; }
+    .val { font-size: 12px; font-weight: bold; }
+    .zone { font-size: 13px; font-weight: bold; }
+    .ann { font-size: 12px; font-weight: bold; }
+    .note { font-size: 11px; fill: #5a554d; }
+    .chip { font-size: 11.5px; }
+    .box { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+    .grid { stroke: #D8CFBB; stroke-width:1.4; stroke-linecap: round; }
+  </style>
+
+  <rect x="4" y="4" width="952" height="572" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+
+  <text x="480" y="34" text-anchor="middle" class="title">排名翻转：四个格子、两个独立来源</text>
+  <text x="480" y="56" text-anchor="middle" class="sub">GFLOPS（越高越好）· aarch64 · GCC 9.4 -O3 · 种子 42 · 点 = 中位数，须 = ±MAD · 纵轴从 12.0 起（为看清 5% 级差距）</text>
+
+  <!-- 网格与坐标轴 -->
+  <g>
+    <path class="grid" d="M 142,375 Q 500,372 868,375"/>
+    <path class="grid" d="M 142,320 Q 500,317 868,320"/>
+    <path class="grid" d="M 142,265 Q 500,262 868,265"/>
+    <path class="grid" d="M 142,210 Q 500,207 868,210"/>
+    <path class="grid" d="M 142,155 Q 500,152 868,155"/>
+    <path class="grid" d="M 142,100 Q 500,97 868,100"/>
+    <text x="132" y="434" text-anchor="end" class="ylab">12.0</text>
+    <text x="132" y="379" text-anchor="end" class="ylab">12.5</text>
+    <text x="132" y="324" text-anchor="end" class="ylab">13.0</text>
+    <text x="132" y="269" text-anchor="end" class="ylab">13.5</text>
+    <text x="132" y="214" text-anchor="end" class="ylab">14.0</text>
+    <text x="132" y="159" text-anchor="end" class="ylab">14.5</text>
+    <text x="132" y="104" text-anchor="end" class="ylab">15.0</text>
+    <path class="arr" d="M 142,430 L 866,430"/>
+    <path class="arr" d="M 866,430 l -9,-4 M 866,430 l -9,5"/>
+    <path class="arr" d="M 140,428 L 140,104"/>
+    <path class="arr" d="M 140,104 l -4,9 M 140,104 l 5,9"/>
+    <text x="156" y="424" class="note">轴起点 12.0（诚实起见：差距按此比例放大显示）</text>
+  </g>
+
+  <!-- 分区标签 -->
+  <g>
+    <path class="box" d="M 190,72 Q 320,68 450,73 Q 452,88 450,98 Q 320,102 192,98 Q 188,85 190,72 Z" fill="#E8A87C" fill-opacity="0.3"/>
+    <text x="320" y="90" text-anchor="middle" class="zone">512³ 区：橙点高 → ikj-128 赢</text>
+    <path class="box" d="M 560,72 Q 700,68 840,73 Q 842,88 840,98 Q 700,102 562,98 Q 558,85 560,72 Z" fill="#7FA8D9" fill-opacity="0.3"/>
+    <text x="700" y="90" text-anchor="middle" class="zone">516³ 区：蓝点高 → ikj-64 赢</text>
+    <path d="M 510,100 L 510,430" stroke="#B9AE95" stroke-width="2" stroke-dasharray="7 6" stroke-linecap="round"/>
+  </g>
+
+  <!-- 组 1：512^3 · D97 -->
+  <g>
+    <path d="M 195,362 L 195,366 M 195,358 L 195,354" stroke="#3B3B3B" stroke-width="1.8"/>
+    <path d="M 195,354 L 195,370" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="195" cy="362" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="172" y="356" text-anchor="end" class="val">12.62</text>
+    <path d="M 255,256 L 255,260" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="255" cy="255" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="278" y="252" class="val">13.59</text>
+  </g>
+
+  <!-- 组 2：512^3 · D98 确认 -->
+  <g>
+    <path d="M 385,282 L 385,287" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="385" cy="284" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="362" y="278" text-anchor="end" class="val">13.33</text>
+    <path d="M 445,206 L 445,224" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="445" cy="215" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="468" y="212" class="val">14.14</text>
+  </g>
+
+  <!-- 组 3：516^3 · D97 -->
+  <g>
+    <circle cx="575" cy="243" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="552" y="238" text-anchor="end" class="val">13.88</text>
+    <circle cx="635" cy="315" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="658" y="312" class="val">13.23</text>
+  </g>
+
+  <!-- 组 4：516^3 · D98 确认 -->
+  <g>
+    <path d="M 765,240 L 765,247" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="765" cy="244" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="742" y="238" text-anchor="end" class="val">13.90</text>
+    <path d="M 825,336 L 825,348" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="825" cy="342" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="800" y="364" text-anchor="end" class="val">12.80</text>
+  </g>
+
+  <!-- 组标签 -->
+  <g>
+    <text x="225" y="456" text-anchor="middle" class="glab">512³ · D97</text>
+    <text x="225" y="471" text-anchor="middle" class="gsub">21 次重复</text>
+    <text x="415" y="456" text-anchor="middle" class="glab">512³ · D98 确认</text>
+    <text x="415" y="471" text-anchor="middle" class="gsub">15 次重复（新进程）</text>
+    <text x="605" y="456" text-anchor="middle" class="glab">516³ · D97</text>
+    <text x="605" y="471" text-anchor="middle" class="gsub">21 次重复</text>
+    <text x="795" y="456" text-anchor="middle" class="glab">516³ · D98 确认</text>
+    <text x="795" y="471" text-anchor="middle" class="gsub">15 次重复（新进程）</text>
+  </g>
+
+  <!-- 跨区弧线注解 -->
+  <path d="M 452,206 Q 640,128 820,330" stroke="#C25E5E" stroke-width="2.4" fill="none" stroke-dasharray="8 6" stroke-linecap="round"/>
+  <path d="M 820,330 l -3,10 M 820,330 l -10,2" stroke="#C25E5E" stroke-width="2.4" stroke-linecap="round"/>
+  <text x="600" y="150" class="ann" fill="#C25E5E">同一个 ikj-128：换 shape 掉 9.5%</text>
+
+  <path d="M 380,290 Q 575,342 760,250" stroke="#4C7BA8" stroke-width="2.4" fill="none" stroke-dasharray="8 6" stroke-linecap="round"/>
+  <path d="M 760,250 l -9,2 M 760,250 l -3,-10" stroke="#4C7BA8" stroke-width="2.4" stroke-linecap="round"/>
+  <text x="500" y="341" class="ann" fill="#4C7BA8">ikj-64 反而 +4.3%</text>
+
+  <!-- 图例 -->
+  <g>
+    <circle cx="188" cy="500" r="8" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="202" y="505" class="note">ikj-64（Tile 64³，j 最内层）</text>
+    <circle cx="432" cy="500" r="8" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="446" y="505" class="note">ikj-128（Tile 128³，j 最内层）</text>
+    <path d="M 700,492 L 700,508 M 700,492 l -4,6 M 700,492 l 4,6" stroke="#3B3B3B" stroke-width="1.8"/>
+    <text x="712" y="505" class="note">±MAD（多小于 0.1，几乎贴着点）</text>
+  </g>
+
+  <!-- 底部注解卡 -->
+  <g>
+    <path class="box" d="M 80,522 Q 270,518 460,523 Q 462,536 460,548 Q 270,552 82,548 Q 78,535 80,522 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="270" y="540" text-anchor="middle" class="chip">ikj-64：13.33 → 13.90（+4.3%）行距红利盖过尾巴</text>
+    <path class="box" d="M 500,522 Q 690,518 880,523 Q 882,536 880,548 Q 690,552 502,548 Q 498,535 500,522 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="690" y="540" text-anchor="middle" class="chip">ikj-128：14.14 → 12.80（−9.5%）K 尾多趟 C · N 尾短内层</text>
+  </g>
+
+  <text x="480" y="568" text-anchor="middle" class="note">数据：D97 outputs/perf-512.txt、perf-516.txt ＋ D98 outputs/confirm.txt · 全部可复核进程：516³ 翻转 5/5 一致，512³ 上 ikj-128 优势 6/7（反例差 0.7%，噪声内）· 幅度随相位波动，只给区间</text>
+</svg>

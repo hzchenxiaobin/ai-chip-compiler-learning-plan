@@ -1,0 +1,38 @@
+LoopOptions 形状感知校验（第③道门）findings（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~92 口径：Python 复刻 DialectConversion 语义仿真）
+
+〔tile=2x2x3 @ A(2,3)@B(3,2)：三维全整除〕配置：tile=2x2x3；Shape：2×3×2
+    [ok   ] tile_m=2 整除 M=2：整除场景，Day 94 的首选测试点
+    [ok   ] tile_n=2 整除 N=2：整除场景，Day 94 的首选测试点
+    [ok   ] tile_k=3 整除 K=3：整除场景，Day 94 的首选测试点
+
+〔tile=2x2x2 @ A(2,3)@B(3,2)：tile_k 不整除 K=3〕配置：tile=2x2x2；Shape：2×3×2
+    [ok   ] tile_m=2 整除 M=2：整除场景，Day 94 的首选测试点
+    [ok   ] tile_n=2 整除 N=2：整除场景，Day 94 的首选测试点
+    [warn ] tile_k=2 不整除 K=3：需要尾部处理（Day 95 的范围；Day 94 先保证整除场景）
+
+〔tile=4x4x4 @ A(2,3)@B(3,2)：块比维度还大〕配置：tile=4x4x4；Shape：2×3×2
+    [error] tile_m=4 > M=2：块比维度还大，没有意义
+    [error] tile_n=4 > N=2：块比维度还大，没有意义
+    [error] tile_k=4 > K=3：块比维度还大，没有意义
+
+〔tile=16x16x16 @ A(16,16)@B(16,16)：Day 94 的首选测试点〕配置：tile=16x16x16；Shape：16×16×16
+    [ok   ] tile_m=16 整除 M=16：整除场景，Day 94 的首选测试点
+    [ok   ] tile_n=16 整除 N=16：整除场景，Day 94 的首选测试点
+    [ok   ] tile_k=16 整除 K=16：整除场景，Day 94 的首选测试点
+
+〔unroll=4、order 默认（k 内层，trip=K=16）：整除〕配置：unroll=4；Shape：16×16×16
+    [ok   ] unroll=4 整除最内层 k 的 trip 16
+
+〔unroll=3、order 默认（k 内层，trip=K=16）：不整除〕配置：unroll=3；Shape：16×16×16
+    [warn ] unroll=3 不整除最内层 k 的 trip 16：展开会剩尾巴（Day 96 处理余数）
+
+〔unroll=3、order=i-k-j（最内层换成 j，trip=N=16）：不整除〕配置：order=i-k-j,unroll=3；Shape：16×16×16
+    [warn ] unroll=3 不整除最内层 j 的 trip 16：展开会剩尾巴（Day 96 处理余数）
+
+〔tile=4x4x4、Shape 全未知（动态）：跳过〕配置：tile=4x4x4；Shape：?×?×?
+    [info ] M 未知（动态 Shape）：跳过 tile_m 的整除性检查——宁可不猜（Day 90 口径）
+    [info ] N 未知（动态 Shape）：跳过 tile_n 的整除性检查——宁可不猜（Day 90 口径）
+    [info ] K 未知（动态 Shape）：跳过 tile_k 的整除性检查——宁可不猜（Day 90 口径）
+
+级别口径：error=改配置才能救｜warn=能用但要尾部处理（Day 95/96 的范围）｜ok=整除场景（Day 94 首选测试点）｜info=动态 Shape 跳过（宁拒不猜）

@@ -1,0 +1,18 @@
+手画预期表 × 生成 IR × 解释执行访存日志（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~90 口径：Python 复刻 DialectConversion 语义仿真）
+
+循环 %i：手画 [0,2) step 1（M = A 的行数 = 2）｜IR 实测 [0,2) step 1，trip = 2｜✓
+循环 %j：手画 [0,2) step 1（N = B 的列数 = 2）｜IR 实测 [0,2) step 1，trip = 2｜✓
+循环 %k：手画 [0,3) step 1（K = 内维契约 = A 列数 = B 行数 = 3）｜IR 实测 [0,3) step 1，trip = 3｜✓
+配对 %a：手画 [%i, %k]（A[i,k]：i 当行、k 当列）｜IR 实测 [%i, %k]｜✓
+配对 %b：手画 [%k, %j]（B[k,j]：k 当行、j 当列）｜IR 实测 [%k, %j]｜✓
+配对 %c：手画 [%i, %j]（C[i,j]：一行对一个 i、一列对一个 j）｜IR 实测 [%i, %j]｜✓
+地址 %a：手画 strides [3, 1] → addr = 3·r + 1·c｜IR 类型实测 strided<[3, 1]>｜✓
+地址 %b：手画 strides [2, 1] → addr = 2·r + 1·c｜IR 类型实测 strided<[2, 1]>｜✓
+地址 %c：手画 strides [2, 1] → addr = 2·r + 1·c｜IR 类型实测 strided<[2, 1]>｜✓
+访存日志逐条对账：28/28 条地址 = 手画公式（A: 3i+k，B: 2k+j，C: 2i+j）
+每格乘积项数：手画 K = 3｜实测（每格前的 A-load 数）[3, 3, 3, 3]
+流量：手画 load 24 / store 4｜实测 24 / 4
+覆盖：手画 A×2 / B×2 / C×1｜实测 A 6 格、B 6 格、C 4 格，读/写次数全部符合
+
+结论：手画的每一行都被生成 IR 与访存日志证实——「先手算、再对账」就是语义保持的人工版本。

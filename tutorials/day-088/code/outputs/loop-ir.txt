@@ -1,0 +1,48 @@
+// 生成自 loop_pass.py（Day 88）——三重循环生成＋循环规格表
+// 相对 Day 87：op 产出不变（13 op），循环改由 LoopSpec 驱动（单一事实来源）；
+// 访存与累加（load×2/mulf/addf/store）按计划留给 Day 89。
+//
+// 循环规格表（LoopSpec——四要素＋上界来源）：
+//   iv   lb  ub  step  trip = max(0, ceil((ub-lb)/step))   ub 来源
+//   %i    0   4     1  max(0, ceil((4-0)/1)) = 4       M = A.shape[0] = 4
+//   %j    0   3     1  max(0, ceil((3-0)/1)) = 3       N = B.shape[1] = 3
+//   %k    0   6     1  max(0, ceil((6-0)/1)) = 6       K = 内维契约 A.shape[1] == B.shape[0] = 6
+//
+// 语义依据（官方 scf.for，mlir.llvm.org，2026-11 核对）：
+//   半开区间 [lb, ub)：含下界、不含上界；iv 取 lb + j·step（j = 0..trip-1）；
+//   step 必须严格为正；iv 是循环区域的第一个参数（index 类型，体外不可见）。
+func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>> {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+  // 任务① 输出缓冲 48 B：memref.alloc 不清零——零起点是 %zero（D87）
+  %zero = arith.constant 0.0 : f32
+  // 任务③(D87) 零起点：SSA 值，不写内存——C 每元素只写不读
+  %c0 = arith.constant 0 : index
+  // 下界 0（含端点；memref 下标从 0 开始）
+  %c1 = arith.constant 1 : index
+  // 步长 1（scf.for 要求 step 严格为正）
+  %c4 = arith.constant 4 : index
+  // M ← A.shape[0]：i 的上界（不含端点）
+  %c3 = arith.constant 3 : index
+  // N ← B.shape[1]：j 的上界（不含端点）
+  %c6 = arith.constant 6 : index
+  // K ← 内维契约：k 的上界（不含端点）
+  scf.for %i = %c0 to %c4 step %c1 {
+    scf.for %j = %c0 to %c3 step %c1 {
+      %acc = scf.for %k = %c0 to %c6 step %c1
+              iter_args(%acc = %zero) -> (f32) {
+        scf.yield %zero : f32
+        // 占位：恒等循环（%acc ≡ %zero）；Day 89 把 %zero 换成 %s = addf %acc, %p
+        // 预留(Day 89 填): load %a[%i,%k] · load %b[%k,%j] · mulf · addf · store %c[%i,%j]
+      }
+      // 四要素：lb=0（含）· ub=6（不含——半开区间 [0,6)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 6
+      // ub 来源：K = 内维契约 A.shape[1] == B.shape[0] = 6；%k 是本循环的区域参数（index 类型，体内可见、体外不可见）
+      // iter_args(%acc = %zero)：归约在最内层——%acc 挂在 k 循环上（D87）
+      // 体内 %acc（区域参数）≠ 体外 %acc（循环结果）；带 iter_args 必须显式 yield
+    }
+    // 四要素：lb=0（含）· ub=3（不含——半开区间 [0,3)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 3
+    // ub 来源：N = B.shape[1] = 3；%j 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  }
+  // 四要素：lb=0（含）· ub=4（不含——半开区间 [0,4)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 4
+  // ub 来源：M = A.shape[0] = 4；%i 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  return %c : memref<4x3xf32, strided<[3, 1]>>
+}

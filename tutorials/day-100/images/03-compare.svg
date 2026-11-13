@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .pt { font-size: 14px; font-weight: bold; }
+    .ps { font-size: 11.5px; fill: #6b6257; }
+    .val { font-size: 12.5px; font-weight: bold; }
+    .bl { font-size: 12px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .lb { font-size: 12.5px; font-weight: bold; fill: #D98484; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="592" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="34" text-anchor="middle" class="title">对照：复用省多少（左）＆ 放置顺序多重要（右）——同一张区间表</text>
+  <path d="M 300,44 Q 490,40 680,45" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="490" y="60" text-anchor="middle" class="sub">第 99 天的双分支特征块 · 5 个动态张量 · 主干优先顺序 · 对齐 32 B；两栏共用同一比例尺（340 px = 2432 B）</text>
+
+  <!-- 左栏 -->
+  <path class="box" d="M 30,80 Q 250,75 470,80 Q 474,310 470,540 Q 250,545 32,540 Q 27,310 30,80 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="250" y="104" text-anchor="middle" class="pt">五个动态张量住多大的房子？</text>
+  <text x="250" y="122" text-anchor="middle" class="ps">虚线 = 峰值活跃集合 1280 B（任何方案的下界）</text>
+
+  <rect x="88" y="150" width="85" height="340" rx="6" fill="#C9C2B8" fill-opacity="0.85" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="130" y="140" text-anchor="middle" class="val">2432 B</text>
+  <rect x="218" y="257" width="85" height="233" rx="6" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="260" y="247" text-anchor="middle" class="val">1664 B</text>
+  <rect x="348" y="311" width="85" height="179" rx="6" fill="#7FA8D9" fill-opacity="0.7" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="390" y="301" text-anchor="middle" class="val">1280 B</text>
+
+  <path d="M 55,311 L 455,311" stroke="#D98484" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="460" y="303" text-anchor="end" class="lb">下界 1280 B</text>
+  <path d="M 60,490 L 450,490" stroke="#3B3B3B" stroke-width="2"/>
+
+  <path class="arr" d="M 165,148 Q 300,168 380,296" stroke="#D98484" stroke-width="2.2"/>
+  <path d="M 380,296 l -9,-2 M 380,296 l -2,-9" stroke="#D98484" stroke-width="2.2" fill="none"/>
+  <text x="300" y="192" text-anchor="middle" class="det">先来后到，错峰入住</text>
+
+  <text x="130" y="512" text-anchor="middle" class="bl">无复用</text>
+  <text x="130" y="528" text-anchor="middle" class="det">一人一块</text>
+  <text x="260" y="512" text-anchor="middle" class="bl">复用·捷径优先</text>
+  <text x="260" y="528" text-anchor="middle" class="det">省 768 B（−31.6%）</text>
+  <text x="390" y="512" text-anchor="middle" class="bl">复用·主干优先</text>
+  <text x="390" y="528" text-anchor="middle" class="det">省 1152 B（−47.4%）</text>
+
+  <!-- 右栏 -->
+  <path class="box" d="M 510,80 Q 730,75 950,80 Q 954,310 950,540 Q 730,545 512,540 Q 507,310 510,80 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="730" y="104" text-anchor="middle" class="pt">同一张区间表，贪心放置的排序不同</text>
+  <text x="730" y="122" text-anchor="middle" class="ps">首次适应：只有 H3 让「早退房的」先拿到低地址</text>
+
+  <rect x="568" y="222" width="85" height="268" rx="6" fill="#E8A87C" fill-opacity="0.42" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="610" y="212" text-anchor="middle" class="val">1920 B</text>
+  <rect x="698" y="293" width="85" height="197" rx="6" fill="#E8A87C" fill-opacity="0.68" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="740" y="283" text-anchor="middle" class="val">1408 B</text>
+  <rect x="828" y="311" width="85" height="179" rx="6" fill="#7FA8D9" fill-opacity="0.7" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="870" y="301" text-anchor="middle" class="val">1280 B</text>
+
+  <path d="M 535,311 L 935,311" stroke="#D98484" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="938" y="303" text-anchor="end" class="lb">下界 1280 B</text>
+  <path d="M 540,490 L 930,490" stroke="#3B3B3B" stroke-width="2"/>
+
+  <path class="arr" d="M 645,232 Q 735,258 822,298" stroke="#D98484" stroke-width="2.2"/>
+  <path d="M 822,298 l -9,-1 M 822,298 l -4,-9" stroke="#D98484" stroke-width="2.2" fill="none"/>
+  <text x="737" y="252" text-anchor="middle" class="det">差 640 B（+50%）</text>
+
+  <text x="610" y="512" text-anchor="middle" class="bl">H1 按定义点</text>
+  <text x="610" y="528" text-anchor="middle" class="det">+640 B 碎片</text>
+  <text x="740" y="512" text-anchor="middle" class="bl">H2 按尺寸降序</text>
+  <text x="740" y="528" text-anchor="middle" class="det">+128 B 碎片</text>
+  <text x="870" y="512" text-anchor="middle" class="bl">H3 按最后使用</text>
+  <text x="870" y="528" text-anchor="middle" class="det">0 B · 达下界</text>
+
+  <text x="490" y="565" text-anchor="middle" class="foot">左：复用本身的价值——省 1152 B；右：复用之后放置顺序的价值——再省 640 B（真实运行，outputs/order-sweep.txt）</text>
+  <text x="490" y="585" text-anchor="middle" class="foot">贪心不保证最优，best-of-3 只是便宜的保护；对齐 256 B 时 best 涨到 1408 B（对齐填充，outputs/align-sweep.txt）</text>
+</svg>

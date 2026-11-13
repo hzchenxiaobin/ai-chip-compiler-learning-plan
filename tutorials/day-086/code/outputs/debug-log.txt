@@ -1,0 +1,108 @@
+Day 86 调试树汇总（--debug，对应 MLIR -debug-only=dialect-conversion 的格式）
+
+—— 案例 1：主图正常路径（匹配 → 骨架落地） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'MatMulSkeletonPattern' {
+    ** Insert  : 'memref.alloc'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'arith.constant'
+    ** Insert  : 'scf.yield'
+    ** Insert  : 'scf.for'
+    ** Insert  : 'scf.for'
+    ** Insert  : 'scf.for'
+    ** Replace : 'mini.matmul'
+  } -> SUCCESS : pattern applied successfully
+} -> SUCCESS
+//===-------------------------------------------===//
+Legalizing operation : 'memref.alloc' {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c0 = arith.constant 0 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c1 = arith.constant 1 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c4 = arith.constant 4 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c3 = arith.constant 3 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'arith.constant' {
+  %c6 = arith.constant 6 : index
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  scf.for %i = %c0 to %c4 step %c1
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  scf.for %j = %c0 to %c3 step %c1
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.for' {
+  scf.for %k = %c0 to %c6 step %c1
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'scf.yield' {
+  scf.yield
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'func.return' {
+  return %mm : tensor<4x3xf32>
+} -> SUCCESS : operation marked legal by the target
+
+—— 案例 2：内维不匹配，Pattern 拒绝（DT5） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<4x2xf32, strided<[2, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'MatMulSkeletonPattern' {
+  } -> FAILURE : 内维不匹配：A.shape[1]=6 ≠ B.shape[0]=3，k 循环边界无从确定
+} -> FAILURE : 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+
+—— 案例 3：半途而废 Pattern，回滚（DT6-B） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'HalfDoneMatMulPattern' {
+  } -> FAILURE : 故意半途而废：先 create 了 memref.alloc 再放弃（测试回滚：失败必须不留痕）
+} -> FAILURE : 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+
+—— 案例 4：忘 replaceOp，契约违反（DT6-C） ——
+//===-------------------------------------------===//
+Legalizing operation : 'func.func' {
+  func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>>
+} -> SUCCESS : operation marked legal by the target
+//===-------------------------------------------===//
+Legalizing operation : 'mini.matmul' {
+  %mm = mini.matmul(%x, %w)
+
+  * Pattern : 'ForgetfulMatMulPattern' {
+  } -> FAILURE : 契约违反
+

@@ -1,0 +1,13 @@
+case(M N K | T)                说明                     guard                minclamp             epilogue
+5x7x3 | 2x4x2                  三个维度都有尾部   PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+1x7x3 | 2x4x2                  M=1                        PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+5x1x3 | 2x4x2                  N=1                        PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+5x7x1 | 2x4x2                  K=1                        PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+9x9x9 | 4x4x4                  每个维度余 1          PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+7x7x7 | 8x8x8                  Tile 比维度还大       PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+64x64x64 | 16x16x16            完全整除（回归 Day 94） PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+65x63x33 | 16x16x16            大 shape 全带尾        PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+3x100x2 | 2x32x5               瘦长 N                   PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+100x3x17 | 16x2x3              瘦长 M                   PASS(逐位相等)   PASS(逐位相等)   PASS(逐位相等)
+
+== suite 结果：30/30 通过 ==

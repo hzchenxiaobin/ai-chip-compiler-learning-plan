@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .rowlab { font-size: 13.5px; font-weight: bold; fill: #5a554d; }
+    .bt { font-size: 13.5px; font-weight: bold; }
+    .nd { font-size: 13px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .tag { font-size: 11.5px; font-weight: bold; fill: #B0632E; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; fill: #FDFBF6; }
+    .hl { stroke: #3B3B3B; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; fill: #E8A87C; fill-opacity: 0.5; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+    .head { fill: #3B3B3B; stroke: none; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="632" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="34" text-anchor="middle" class="title">定位：编译主线 → 第 15 周路线 → 今天内部的三步估算</text>
+  <path d="M 330,45 Q 490,39 650,46" class="arr" stroke="#E8A87C" stroke-width="3"/>
+
+  <!-- ① 编译主线 -->
+  <text x="70" y="76" class="rowlab">① 编译主线：前 98 天回答「算什么、怎么算快」；第 15 周起回答「数据住哪、怎么搬」</text>
+
+  <path class="box" d="M 73,88 Q 150,85 225,89 Q 229,112 226,134 Q 150,139 74,135 Q 70,111 73,88 Z"/>
+  <text x="150" y="108" text-anchor="middle" class="det">D85~91</text>
+  <text x="150" y="124" text-anchor="middle" class="nd">循环 Lowering</text>
+
+  <path d="M 232,110 Q 238,106 242,110" class="arr"/>
+  <path d="M 242,110 l -7,-3.5 l 1.5,7 z" class="head"/>
+
+  <path class="box" d="M 247,89 Q 324,86 398,90 Q 402,113 399,135 Q 325,140 248,136 Q 244,112 247,89 Z"/>
+  <text x="324" y="109" text-anchor="middle" class="det">D92~98</text>
+  <text x="324" y="125" text-anchor="middle" class="nd">Tiling 与性能</text>
+
+  <path d="M 406,110 Q 412,105 416,110" class="arr"/>
+  <path d="M 416,110 l -7,-3.5 l 1.5,7 z" class="head"/>
+
+  <path class="hl" d="M 421,88 Q 518,84 610,89 Q 615,112 612,136 Q 517,141 422,137 Q 418,112 421,88 Z"/>
+  <text x="516" y="104" text-anchor="middle" class="det">D99~104</text>
+  <text x="516" y="121" text-anchor="middle" class="nd">内存与硬件映射</text>
+  <text x="516" y="136" text-anchor="middle" class="det">（第 15 周，本周）</text>
+
+  <path d="M 620,110 Q 626,106 630,110" class="arr"/>
+  <path d="M 630,110 l -7,-3.5 l 1.5,7 z" class="head"/>
+
+  <path class="box" d="M 635,89 Q 712,86 786,90 Q 790,113 787,135 Q 713,140 636,136 Q 632,112 635,89 Z"/>
+  <text x="711" y="109" text-anchor="middle" class="det">D106~112</text>
+  <text x="711" y="125" text-anchor="middle" class="nd">自动调优</text>
+
+  <path d="M 794,110 Q 800,105 804,110" class="arr"/>
+  <path d="M 804,110 l -7,-3.5 l 1.5,7 z" class="head"/>
+
+  <path class="box" d="M 809,88 Q 886,85 958,90 Q 962,113 959,135 Q 887,140 810,136 Q 806,112 809,88 Z"/>
+  <text x="884" y="109" text-anchor="middle" class="det">D113+</text>
+  <text x="884" y="125" text-anchor="middle" class="nd">LLVM 与 Runtime</text>
+
+  <!-- ② 第 15 周路线 -->
+  <text x="70" y="174" class="rowlab">② 第 15 周路线：昨天把整张图装进片外 workspace；今天起，为一个 Tile 估片上 SRAM 的户口</text>
+
+  <path class="box" d="M 73,186 Q 140,183 206,187 Q 210,210 207,242 Q 140,247 75,243 Q 71,214 73,186 Z"/>
+  <text x="140" y="205" text-anchor="middle" class="det">D99</text>
+  <text x="140" y="221" text-anchor="middle" class="bt">生命周期区间表</text>
+  <text x="140" y="236" text-anchor="middle" class="det">[def, last_use]</text>
+
+  <path d="M 212,214 Q 217,210 221,214" class="arr"/>
+  <path d="M 221,214 l -6.5,-3 l 1.5,6.5 z" class="head"/>
+
+  <path class="box" d="M 226,187 Q 293,184 358,188 Q 362,211 359,243 Q 293,248 228,244 Q 224,215 226,187 Z"/>
+  <text x="293" y="206" text-anchor="middle" class="det">D100</text>
+  <text x="293" y="222" text-anchor="middle" class="bt">缓冲区复用</text>
+  <text x="293" y="237" text-anchor="middle" class="det">workspace 分配表</text>
+
+  <path d="M 364,214 Q 369,210 373,214" class="arr"/>
+  <path d="M 373,214 l -6.5,-3 l 1.5,6.5 z" class="head"/>
+
+  <path class="hl" d="M 378,184 Q 446,180 514,186 Q 519,212 516,245 Q 446,251 377,246 Q 373,215 378,184 Z" fill="#E8A87C" fill-opacity="0.55"/>
+  <text x="446" y="203" text-anchor="middle" class="det">D101</text>
+  <text x="446" y="220" text-anchor="middle" class="bt">片上空间估算</text>
+  <text x="446" y="235" text-anchor="middle" class="det">Tile 级 · SRAM 字节</text>
+  <text x="446" y="167" text-anchor="middle" class="tag">← 今天</text>
+
+  <path d="M 522,214 Q 527,210 531,214" class="arr"/>
+  <path d="M 531,214 l -6.5,-3 l 1.5,6.5 z" class="head"/>
+
+  <path class="box" d="M 536,187 Q 603,184 668,188 Q 672,211 669,243 Q 603,248 538,244 Q 534,215 536,187 Z"/>
+  <text x="603" y="206" text-anchor="middle" class="det">D102</text>
+  <text x="603" y="222" text-anchor="middle" class="bt">数据搬运与依赖</text>
+  <text x="603" y="237" text-anchor="middle" class="det">Load/Store · DMA</text>
+
+  <path d="M 676,214 Q 681,210 685,214" class="arr"/>
+  <path d="M 685,214 l -6.5,-3 l 1.5,6.5 z" class="head"/>
+
+  <path class="box" d="M 690,187 Q 757,184 822,188 Q 826,211 823,243 Q 757,248 692,244 Q 688,215 690,187 Z"/>
+  <text x="757" y="206" text-anchor="middle" class="det">D103</text>
+  <text x="757" y="222" text-anchor="middle" class="bt">双缓冲流水线</text>
+  <text x="757" y="237" text-anchor="middle" class="det">重叠收益 · ×2 空间</text>
+
+  <path d="M 830,214 Q 835,210 839,214" class="arr"/>
+  <path d="M 839,214 l -6.5,-3 l 1.5,6.5 z" class="head"/>
+
+  <path class="box" d="M 844,186 Q 911,183 974,188 Q 978,211 975,243 Q 912,248 846,244 Q 842,214 844,186 Z"/>
+  <text x="909" y="206" text-anchor="middle" class="det">D104</text>
+  <text x="909" y="222" text-anchor="middle" class="bt">资源约束过滤</text>
+  <text x="909" y="237" text-anchor="middle" class="det">空间表当过滤器</text>
+
+  <!-- 两级括注 -->
+  <path d="M 70,256 Q 71,262 76,262 L 356,262 Q 362,262 363,268" class="arr" stroke="#7FA8D9" stroke-width="2.2"/>
+  <text x="216" y="280" text-anchor="middle" class="det" fill="#4d6f9e">图级 · 片外 HBM：D99~100 已完成（整张图的 workspace）</text>
+  <path d="M 376,256 Q 377,262 382,262 L 966,262 Q 972,262 973,268" class="arr" stroke="#E8945C" stroke-width="2.2"/>
+  <text x="674" y="280" text-anchor="middle" class="det" fill="#B0632E">Tile 级 · 片上 SRAM：D101 起开张（一个 Tile 的家当）</text>
+
+  <!-- ③ 今天内部 -->
+  <text x="70" y="324" class="rowlab">③ 今天内部：三步估算 ＋ 预算判定（就是 code/estimator.py 里的真实函数名）</text>
+
+  <path class="box" d="M 73,336 Q 190,332 306,337 Q 310,370 307,414 Q 189,419 75,415 Q 71,374 73,336 Z"/>
+  <text x="190" y="356" text-anchor="middle" class="bt">TileConfig（frozen）</text>
+  <text x="190" y="374" text-anchor="middle" class="det">tile = Tm×Tn×Tk</text>
+  <text x="190" y="390" text-anchor="middle" class="det">dtype_in · acc（auto→4 B）</text>
+  <text x="190" y="406" text-anchor="middle" class="det">bias · staging ＋ buffering 单/双</text>
+
+  <path d="M 312,374 Q 328,368 344,374" class="arr"/>
+  <path d="M 344,374 l -8,-4 l 2,8 z" class="head"/>
+
+  <path class="box" d="M 350,336 Q 470,332 596,337 Q 600,370 597,414 Q 474,419 352,415 Q 348,374 350,336 Z"/>
+  <text x="473" y="356" text-anchor="middle" class="bt">estimate()：五项逐项记账</text>
+  <text x="473" y="374" text-anchor="middle" class="det">A / B / C / bias / staging</text>
+  <text x="473" y="390" text-anchor="middle" class="det">每项 × dtype 字节数</text>
+  <text x="473" y="406" text-anchor="middle" class="det">align_up 到 32 B；×2 只给 A+B</text>
+
+  <path d="M 602,374 Q 618,368 634,374" class="arr"/>
+  <path d="M 634,374 l -8,-4 l 2,8 z" class="head"/>
+
+  <path class="hl" d="M 640,336 Q 790,332 950,337 Q 954,372 951,416 Q 788,421 642,417 Q 638,376 640,336 Z" fill="#93C6A0" fill-opacity="0.42"/>
+  <text x="794" y="356" text-anchor="middle" class="bt">合计 vs 预算（判定用 ≤）</text>
+  <text x="794" y="376" text-anchor="middle" class="det">✓ 住得下：利用率 = total / budget</text>
+  <text x="794" y="392" text-anchor="middle" class="det">✗ 住不下：溢出 = total − budget（B）</text>
+  <text x="794" y="408" text-anchor="middle" class="det">参考旋钮：tile ↓ / dtype ↓ / single</text>
+
+  <path d="M 716,422 Q 714,432 715,440" class="arr"/>
+  <path d="M 715,440 l -3.5,-6.5 l 7,1.5 z" class="head"/>
+  <path d="M 884,422 Q 886,432 885,440" class="arr"/>
+  <path d="M 885,440 l -3.5,-6.5 l 7,1.5 z" class="head"/>
+
+  <path class="box" d="M 643,446 Q 714,443 786,447 Q 790,470 787,498 Q 713,502 645,499 Q 641,472 643,446 Z"/>
+  <text x="714" y="466" text-anchor="middle" class="bt">空间表</text>
+  <text x="714" y="484" text-anchor="middle" class="det">Tile × dtype × 策略</text>
+  <text x="714" y="497" text-anchor="middle" class="det">（今天的交付物）</text>
+
+  <path class="box" d="M 793,446 Q 864,443 944,448 Q 948,471 945,499 Q 862,503 795,500 Q 791,473 793,446 Z"/>
+  <text x="869" y="466" text-anchor="middle" class="bt">拒绝判定</text>
+  <text x="869" y="484" text-anchor="middle" class="det">→ D104 过滤器入口：</text>
+  <text x="869" y="497" text-anchor="middle" class="det">超预算的候选直接出局</text>
+
+  <path d="M 73,446 Q 190,443 306,448 Q 310,471 307,499 Q 189,503 75,500 Q 71,473 73,446 Z" fill="#F5F0E4" stroke="#8f887c" stroke-width="1.7" stroke-dasharray="5 4" stroke-linejoin="round"/>
+  <text x="190" y="466" text-anchor="middle" class="bt">一键复现</text>
+  <text x="190" y="483" text-anchor="middle" class="det">bash run_all.sh（8 份记录）</text>
+  <text x="190" y="497" text-anchor="middle" class="det">python3 estimator.py --test（31 断言）</text>
+
+  <text x="70" y="548" class="foot">上排的「第 15 周」＝ D99~105：区间表 → workspace → 片上估算 → 搬运 → 双缓冲 → 过滤 → 复盘；</text>
+  <text x="70" y="566" class="foot">D104 的资源过滤器拿的就是今天「合计 vs 预算」的判定结果——今天的产出是明天们的零部件。</text>
+  <text x="70" y="584" class="foot">下排函数名与参数全部来自 code/estimator.py；outputs/ 目录存有真实运行记录（main-config / space-table 等 8 份）。</text>
+  <text x="490" y="616" text-anchor="middle" class="foot">预算默认 256 KB（262,144 B）——本文示例量级，不代表任何具体芯片</text>
+</svg>

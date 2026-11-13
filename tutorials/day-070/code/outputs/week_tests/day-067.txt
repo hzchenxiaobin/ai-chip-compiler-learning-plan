@@ -1,0 +1,57 @@
+
+== A  类型系统与 Verifier ==
+[PASS] A1 五分类 17 个 dtype 对全部正确（[]）
+[PASS] A2 未知 dtype 被 Verifier 拦截
+[PASS] A3 G1：输入无定义被拦截
+[PASS] A4 G2：返回值无定义被拦截
+[PASS] A5 G3：声明输入类型与生产者实际类型不一致被拦截
+[PASS] A6 合法图 verify 通过
+[PASS] A7 bf16 截断仿真：f32(0.1) → 0.099609375（0x3DCC0000）
+[PASS] A8 eval 恒等跳与 numpy 直取一致
+[PASS] A9 eval 的 f32→i32 与 numpy astype 一致（0.5→0、2.75→2）
+
+== B  Pattern 恒等消除 ==
+[PASS] B1 多使用者照样消除（3→2，%a/%b 直读 %in）
+[PASS] B2 单跳直返整体消除（1→0，return %in）
+[PASS] B3 非恒等单跳不动（f32→f16 保留）
+[PASS] B4 被返回的 identity 也照样消除（i8→i8，return %in）
+[PASS] B5 幂等：不动点后再跑不变（f32→f16 原样）
+[PASS] B6 同宽/缩窄/换号五种反例全部保留
+
+== C  位宽陷阱：只比位宽的 buggy 判据翻车现场 ==
+[PASS] C1 i8→ui8：正确版保留（255 不变）；位宽版消除后 255 → -1
+[PASS] C2 f32→i32：位宽版把 0.1/0.5 原样放行（应为 0）
+[PASS] C3 f16→bf16：位宽版放行（值应重新编码）
+[PASS] C4 MLIR 的答案：同型 extf 被 Verifier 拒（源头上没有 no-op 可消除）；同型 bitcast 被消除——类型全等才动手，位宽不够（见 G 节实测）
+[PASS] C5 buggy 版对真正的 identity 也成立（1→0，值不变）——错在判据太宽，不在消除动作本身
+
+== D  PassManager 不动点 ==
+[PASS] D1 连续 identity 1..4 跳全部迭代到 0
+[PASS] D2 随机 dtype 链 150/150：op 数 = 非 identity 跳数，数值不变
+
+== E  反例与判定表 ==
+[PASS] E1 四类反例图全保留（4→4，零应用）且数值不变
+[PASS] E2 判定表 17/17：identity → 0，其余 → 1，数值不变（[]）
+[PASS] E3 i32→i8 回绕现场：300 → 44（numpy C cast 语义）
+
+== F  数值对拍与方向终审 ==
+[PASS] F1 0.1 三重人格：f32 0.10000000149011612 / f16 0.0999755859375 / bf16 0.099609375
+[PASS] F2 0.5 假阴性：f32→f16→f32 恰好相等（2 的幂——挑值不能只挑好值）
+[PASS] F3 0xFF 两副面孔：i8=-1、ui8=255，array_equal 判 False
+[PASS] F4 方向终审：i8→i32→i8 与 i8→ui8→i8 安全；f32→f16→f32 的 0.1 变 0.0999755859375
+[PASS] F5 values_equal 对 NaN/Inf 视为相等（identity 不改位模式）
+[PASS] F6 含 NaN/Inf 的图：identity 消除后数值仍可对拍（equal_nan 口径）
+
+== G  MLIR 对照：stock 管道的真实裁决 ==
+[PASS] G1 extf f32→f32：Verifier 拒绝（cast incompatible）
+[PASS] G2 bitcast f32→f32：消除为 return %arg0
+[PASS] G3 truncf∘extf（f16→f32→f16，数学恒等）：原样保留 2 op——stock 无浮点回环折叠
+[PASS] G4 extf∘truncf（f32→f16→f32，有损）：原样保留 2 op（正确拒绝）
+[PASS] G5 trunci∘extsi（i8→i32→i8，恒等）：消除为 return %arg0——整数回环有折叠
+[PASS] G6 extsi∘trunci（i32→i8→i32，有损）：原样保留 2 op（正确拒绝）
+[PASS] G7 bitcast 链 f32→i32→f32：消除为 return %arg0（双射重解释）
+[PASS] G8 bitcast i8→ui8：ui8 类型不存在——MLIR 整数 signless，符号在 op 不在类型
+
+==================================================================
+汇总：PASS 39 / FAIL 0 / SKIP 0
+==================================================================

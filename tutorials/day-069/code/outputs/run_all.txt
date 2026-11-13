@@ -1,0 +1,347 @@
+== [1/3] 主实验 combo_lab.py ==
+
+========================================================================
+== 0. 环境 ==
+========================================================================
+python  3.11.4
+numpy   1.26.4
+mlir-opt Ubuntu LLVM version 18.1.8  (/usr/lib/llvm-18/bin/mlir-opt)
+
+========================================================================
+== 1. 零件清点：7 条 Pattern 装进同一根管道 ==
+========================================================================
+
+正式 Pattern 集（顺序 = 推荐顺序，第 3 节给出顺序说明）：
+  1 merge_adjacent_transposes       D65  T(T(x)) -> T_r(x) / 透传
+  2 merge_adjacent_reshapes         D66  R(R(x)) -> R(x, 外层目标)
+  3 eliminate_transparent_reshape   D66  R(x)=同shape -> x
+  4 eliminate_noop_cast             D67  cast 同类型 -> x
+  5 fold_transpose_into_constant    D68  T(Const) -> Const'
+  6 fuse_add_relu                   D51  relu(add(a,b)) -> fused(a,b)
+  7 push_transpose_through_elementwise  D68  T(E(x)) -> E(T(x))
+先逐条最小用例验证没装坏：
+[PASS] 零件-merge_adjacent_transposes（('transpose', 'transpose') -> ('transpose',)）
+[PASS] 零件-merge_adjacent_reshapes（('reshape', 'reshape') -> ('reshape',)）
+[PASS] 零件-eliminate_transparent_reshape（('reshape',) -> ()）
+[PASS] 零件-eliminate_noop_cast（('cast', 'relu') -> ('relu',)）
+[PASS] 零件-fold_transpose_into_constant（('transpose', 'relu') -> ('relu',)）
+[PASS] 零件-fuse_add_relu（('add', 'relu') -> ('fused_add_relu',)）
+[PASS] 零件-push_transpose_through_elementwise（('relu', 'transpose') -> ('transpose', 'relu')）
+[PASS] 零件-T合并 数值不变（ok）
+[PASS] 零件-R合并 数值不变（ok）
+[PASS] 零件-透明R 数值不变（ok）
+[PASS] 零件-Cast 数值不变（ok）
+[PASS] 零件-折常量 数值不变（ok）
+[PASS] 零件-融合 数值不变（ok）
+[PASS] 零件-传播 数值不变（ok）
+
+========================================================================
+== 2. 多步组合用例：10-op 混合链 -> 稳定 IR ==
+========================================================================
+改写前（10 op：2 arg + 8 计算）：
+def @mixed_chain
+  %1 = arg                                     ; -> (2, 3)
+  %2 = arg                                     ; -> (2, 3)
+  %3 = transpose %1, perm=[1, 0]               ; -> (3, 2)
+  %4 = transpose %3, perm=[1, 0]               ; -> (2, 3)
+  %5 = cast %4, f32->f32                       ; -> (2, 3)
+  %6 = add %5, %2                              ; -> (2, 3)
+  %7 = relu %6                                 ; -> (2, 3)
+  %8 = transpose %7, perm=[1, 0]               ; -> (3, 2)
+  %9 = reshape %8, to=[6]                      ; -> (6,)
+  %10 = reshape %9, to=[3, 2]                  ; -> (3, 2)
+  return %10
+
+op 统计：{'ops': 8, 'transpose': 3, 'reshape': 2, 'cast': 1, 'fused': 0}
+
+推荐顺序跑完：5 轮，verdict=fixpoint
+改写后（稳定 IR）：
+def @mixed_chain
+  %1 = arg                                     ; -> (2, 3)
+  %2 = arg                                     ; -> (2, 3)
+  %12 = fused_add_relu %1, %2                  ; -> (2, 3)
+  %8 = transpose %12, perm=[1, 0]              ; -> (3, 2)
+  return %8
+
+op 统计：{'ops': 2, 'transpose': 1, 'reshape': 0, 'cast': 0, 'fused': 1}
+[PASS] 混合链-verdict 是 fixpoint（5 轮）
+[PASS] 混合链-总 op 10 -> 4（含 2 个 arg；计算 op 8 -> 2）（实际 4（计算 2））
+[PASS] 混合链-转置 2 -> 1（卡在 fused 上，传播白名单不认 fused）
+[PASS] 混合链-cast 1 -> 0
+[PASS] 混合链-reshape 2 -> 0
+[PASS] 混合链-fused 0 -> 1
+[PASS] 混合链-数值逐位相等（ok）
+[PASS] 稳定条件1-二次运行零轮次（幂等）（0 轮）
+[PASS] 稳定条件2-状态哈希不变
+[PASS] 稳定条件3-数值仍逐位相等
+
+结论：混合链的 5 次触发依次是
+  merge_t（r=恒等，透传）→ merge_r → transparent_r → cast → fuse
+  剩下的 1 个转置卡在 fused_add_relu 上：C1 白名单只有 relu/neg/floor。
+
+========================================================================
+== 3. 合流 vs 竞争：Pattern 顺序研究 ==
+========================================================================
+
+顺序只有两类行为（今天全部实测）：
+  合流（confluent）：换顺序只影响轮次，终点相同；
+  竞争：换顺序换终点——两个不动点都合法，选谁是 Cost Model（第 11 周）的事。
+
+[PASS] 合流-cast×融合 终点相同（哈希相等）（轮次 2 vs 2，终点 相同）
+[PASS] 合流-两个终点都是 fused（cast 被消掉）
+  cast 先消：2 轮；融合先试：2 轮——轮次相同，因为 run_passes 每轮把 Pattern 集整个试一遍，
+  被挡住的模式下一轮还有机会（一次性管道没有这个机会，见第 6 节）。
+
+竞争现场：z = T( relu( add(x, y) ) )——窗口是那个 relu
+
+顺序A（传播在前）：1 轮 fixpoint
+def @window
+  %1 = arg                                     ; -> (2, 3)
+  %2 = arg                                     ; -> (2, 3)
+  %3 = add %1, %2                              ; -> (2, 3)
+  %6 = transpose %3, perm=[1, 0]               ; -> (3, 2)
+  %7 = relu %6                                 ; -> (3, 2)
+  return %7
+  op 统计：{'ops': 3, 'transpose': 1, 'reshape': 0, 'cast': 0, 'fused': 0}
+
+顺序B（融合在前）：1 轮 fixpoint
+def @window
+  %1 = arg                                     ; -> (2, 3)
+  %2 = arg                                     ; -> (2, 3)
+  %6 = fused_add_relu %1, %2                   ; -> (2, 3)
+  %5 = transpose %6, perm=[1, 0]               ; -> (3, 2)
+  return %5
+  op 统计：{'ops': 2, 'transpose': 1, 'reshape': 0, 'cast': 0, 'fused': 1}
+[PASS] 竞争-两个终点不同（哈希不等）
+[PASS] 竞争-先传播 5 op、先融合 4 op（含 2 个 arg）（5 vs 4）
+[PASS] 竞争-两边都剩 1 个卡住的转置
+[PASS] 竞争-两个不动点数值都对
+
+机制：融合把 relu 吞进 fused_add_relu，传播的白名单（relu/neg/floor）
+认不出 fused；传播把 T 推到 relu 下面，融合的匹配（relu 的输入是 add）
+也断了。谁先用掉这个 relu，谁就关掉另一条路。
+今天 mini 的裁决：融合在前 op 更少（4 < 5）；但若传播有机会让两个转置
+会合（三明治），收益是整段搬运归零——选谁属于 Cost Model（第 11 周）。
+
+混合链上的顺序表（同一条 10-op 链，不同 Pattern 顺序）：
+  推荐(消除->融合->传播)   5 轮 fixpoint   ops=2 T=1 cast=0 R=0 fused=1 hash=c784b0c7 数值=对
+  传播优先             5 轮 fixpoint   ops=3 T=1 cast=0 R=0 fused=0 hash=c404512b 数值=对
+  融合优先             5 轮 fixpoint   ops=2 T=1 cast=0 R=0 fused=1 hash=c784b0c7 数值=对
+  倒序               5 轮 fixpoint   ops=3 T=1 cast=0 R=0 fused=0 hash=c404512b 数值=对
+[PASS] 顺序表-推荐与倒序终点可以不同（顺序敏感）（2 个不同终点）
+[PASS] 顺序表-所有顺序数值都对
+
+========================================================================
+== 4. 意外无限变换：三类现场与驯服 ==
+========================================================================
+
+交换规则 V(P(x)) -> P(V(x)) 的合法性 = 算子对可交换。
+先数值验证（不凭直觉），(relu, neg) 是反例——它不能进交换规则集：
+[PASS] 交换律-transpose×relu 可交换
+[PASS] 交换律-transpose×neg 可交换
+[PASS] 交换律-transpose×floor 可交换
+[PASS] 交换律-relu×floor 可交换
+[PASS] 交换律-relu×neg 不可交换（反例）（A[0,0,1]=1.02: relu后neg=-1.02, neg后relu=0.00）
+
+现场一（规则环）：三个可交换算子 {T, relu, floor}，每对都配双向交换规则
+（共 6 条，优先级 = 列表顺序，first-match-wins）。
+链上 3 个算子共 6 种排列——从每个排列出发看调度器的真实轨迹：
+  起点排列              轮次  verdict        轨迹尾部
+  transpose->relu->floor   2  oscillation    relu -> transpose -> floor ... transpose -> relu -> floor
+  transpose->floor->relu   3  oscillation    floor -> relu -> transpose ... floor -> transpose -> relu
+  relu->transpose->floor   2  oscillation    transpose -> relu -> floor ... relu -> transpose -> floor
+  relu->floor->transpose   3  oscillation    transpose -> relu -> floor ... relu -> transpose -> floor
+  floor->transpose->relu   2  oscillation    floor -> relu -> transpose ... floor -> transpose -> relu
+  floor->relu->transpose   2  oscillation    floor -> transpose -> relu ... floor -> relu -> transpose
+
+  第一个起点的完整轨迹（每轮后的算子序列，生产者->消费者）：
+    轮0: transpose -> relu -> floor
+    轮1: relu -> transpose -> floor
+    轮2: transpose -> relu -> floor
+[PASS] 规则环-6 个起点全部 oscillation（没有可达的不动点）
+[PASS] 规则环-每条规则语义正确（振荡中数值始终不变）
+[PASS] 规则环-判定 oscillation（不是 fixpoint）（2 轮）
+
+  每条规则单独存在时都能停（各自到不动点或无事可做）；
+  6 条共存后 6 个排列全部流入环——状态空间只有 6 个状态，
+  每步必有规则可触发（相邻对总能换向），抽屉原理保证必环。
+
+现场二（undo 对）：fuse_add_relu 与 unfuse_add_relu（后端不支持融合算子时的
+物化规则）同场——每条各自都「有用」，合在一起互相撤销：
+  跑了 2 轮，verdict=oscillation
+    轮0: add -> relu
+    轮1: fused_add_relu
+    轮2: add -> relu
+[PASS] undo对-判定 oscillation（2 轮）
+[PASS] undo对-数值仍对
+
+现场三（哈希陷阱）：同样的 fuse/unfuse 振荡，改用**原始 SSA 名字**做状态哈希
+（render 里 %N 只增不减）——结构上早就转圈了，哈希却每次都「新鲜」：
+  规范化哈希：2 轮检出 oscillation（上面实测 2 轮）
+  原始名哈希：40 轮，verdict=max_rounds（只有 max_rounds 兜底，
+             真实编译器里这就是超时 / 死循环的现场）
+[PASS] 哈希陷阱-原始名哈希测不出振荡（只能 max_rounds 兜底）（40 轮 max_rounds）
+
+驯服：给交换规则一个**规范序**（transpose < relu < floor，按秩排），
+只在「逆序」时交换——这就是冒泡排序，逆序数是良基测度：
+[PASS] 驯服-起始transpose->relu->floor 0 步排好、总逆序 0->0（逆序轨迹 [0]）
+[PASS] 驯服-起始transpose->floor->relu 1 步排好、总逆序 1->0（逆序轨迹 [1, 0]）
+[PASS] 驯服-起始relu->transpose->floor 1 步排好、总逆序 1->0（逆序轨迹 [1, 0]）
+[PASS] 驯服-起始relu->floor->transpose 2 步排好、总逆序 2->0（逆序轨迹 [2, 1, 0]）
+[PASS] 驯服-起始floor->transpose->relu 2 步排好、总逆序 2->0（逆序轨迹 [2, 1, 0]）
+[PASS] 驯服-起始floor->relu->transpose 3 步排好、总逆序 3->0（逆序轨迹 [3, 2, 1, 0]）
+[PASS] 驯服-6 个起点到达同一个规范形（canonical form）（1 个）
+
+========================================================================
+== 5. 压力对拍：200 组随机混合图 ==
+========================================================================
+
+随机图：rank 2~3 起点，链长 4~9，算子从 {transpose, relu, neg, floor,
+cast(f32->f32), reshape} 随机抽；30% 的图以 add(x, y) 起头（融合机会），
+15% 带 const 起点（常量折叠机会）。每张图断言五条：
+数值逐位相等 / fixpoint / 二次运行零轮（幂等）/ op 数不增 / 无振荡。
+
+  数值等价 + fixpoint + 幂等 + op 不增：200/200
+  轮次分布：min=0 中位=2 max=14
+  计算 op 总数：1357 -> 973（消掉 384，28.3%）
+  转置总数：188 -> 126；cast：172 -> 0；reshape：380 -> 240；生成 fused：10
+[PASS] 压力-200 组全部通过（数值/fixpoint/幂等/op 不增/无振荡）
+[PASS] 压力-轮次有界（max <= 15）（max=14）
+
+========================================================================
+== 6. MLIR 对表：stock 管道的幂等与顺序（本机实测） ==
+========================================================================
+[PASS] MLIR-探针1 canonicalize 幂等（跑两遍=跑一遍）（输出 相同）
+    恒等 tensor.cast 剩余：0（输入里有 1 个）
+[PASS] MLIR-探针2 cse 幂等
+    linalg.generic 剩余：1（输入里有 2 个相同副本）
+[PASS] MLIR-探针3 顺序敏感：canon->cse = 1 个 addf（实际 1）
+[PASS] MLIR-探针3 顺序敏感：cse->canon = 2 个 addf（实际 2）
+[PASS] MLIR-探针3 补一趟 cse 追平（差的是调度不是能力）（实际 1）
+    --canonicalize --cse          -> 1 个 addf
+    --cse --canonicalize          -> 2 个 addf
+    --cse --canonicalize --cse    -> 1 个 addf（追平）
+[PASS] MLIR-探针4 canonicalize 删除恒等 tensor.cast（剩余 0）
+[PASS] MLIR-探针4 canon->cse = 1 个 generic（cast 删掉后双胞胎合并）（实际 1）
+[PASS] MLIR-探针4 cse->canon = 2 个 generic（先跑时操作数还不同）（实际 2）
+    --canonicalize --cse -> 1 个 generic；--cse --canonicalize -> 2 个 generic
+
+  结论：mlir-opt 的 pass 按命令行顺序一次性执行，不会回头；
+  「先造机会的在前，用机会的在后」——顺序是真实编译器的真实决策。
+
+========================================================================
+== 7. 汇总 ==
+========================================================================
+通过 60 项，失败 0 项
+
+今日三问的答案：
+  ① 不动点：混合链 5 次触发后停住；稳定 = 幂等 + 哈希不变 + 数值相等，
+     200 组随机图全部满足（二次运行零轮次）。
+  ② 无限变换：规则环（6 条交换规则转圈）、undo 对（fuse/unfuse）、
+     哈希陷阱（原始名哈希漏检）——前两者状态哈希当场抓住，
+     驯服靠单调配度（规范序 + 逆序数每步恰降 1，6 个起点同一规范形）。
+  ③ 优化顺序：cast×融合 合流（终点相同）；传播×融合 竞争（5 op vs 4 op，
+     两个不动点数值都对）；MLIR 实测同款现象（addf 1 vs 2、generic 1 vs 2，
+     补一趟能追平）。推荐顺序与理由见 README 第 5 节的 Pass 顺序说明。
+
+== [2/3] 验收测试 test_combo_lab.py ==
+python 3.11.4 / numpy 1.26.4
+
+--------------------------------------------------------------------
+A. Verifier
+--------------------------------------------------------------------
+[PASS] A1 非法 perm 被拦下（['[V1] %2 perm (0, 0) 对 rank 2 不合法']）
+[PASS] A2 perm 与 rank 不符被拦下
+[PASS] A3 reshape numel 不守恒被拦下
+[PASS] A4 add 两侧 shape 不一致被拦下
+[PASS] A5 合法链零错误
+[PASS] A6 transpose shape 推导正确（(4, 2, 3)）
+
+--------------------------------------------------------------------
+B. Pattern 单测
+--------------------------------------------------------------------
+[PASS] B1 互逆转置合并为透传
+[PASS] B2 一般合并排列正确（r=(2, 0, 1)）
+[PASS] B3 reshape 合并到外层目标
+[PASS] B3' 同目标双层 reshape 合并成单层（不是透传）
+[PASS] B4 同 shape reshape 透传
+[PASS] B5 noop cast 透传
+[PASS] B5' 精度改变（f32->f16）的 cast 不消除
+[PASS] B6 transpose(常量) 折成转置后的常量
+[PASS] B7 add+relu 融合
+[PASS] B7' 多使用者的 add 拒绝融合（Day 52 的门）
+[PASS] B8 T(relu(x)) -> relu(T(x))
+[PASS] B8' reshape 挡住传播（白名单）
+[PASS] B8'' 多使用者的 E 拒绝传播（不增殖）
+[PASS] B9 白名单 = relu/neg/floor（fused 不在内）
+
+--------------------------------------------------------------------
+C. 组合用例（10-op 混合链 -> 稳定 IR）
+--------------------------------------------------------------------
+[PASS] C1 初始 10 op / 8 计算 op
+[PASS] C2 初始冗余盘点（T3 / cast1 / reshape2）
+[PASS] C3 收敛到 fixpoint（5 轮）
+[PASS] C4 轮次 <= 8（5 轮）
+[PASS] C5 终点形态 = fused + 1 个卡住的转置（('fused_add_relu', 'transpose')）
+[PASS] C6 总 op 10 -> 4（4）
+[PASS] C7 数值逐位相等（ok）
+[PASS] C8 幂等：二次运行零轮次
+[PASS] C9 哈希不变
+[PASS] C10 五种冗余清理结果（cast 0 / reshape 0 / T 2 消）
+
+--------------------------------------------------------------------
+D. 顺序研究
+--------------------------------------------------------------------
+[PASS] D1 传播在前：relu(T(add))，5 op（('add', 'transpose', 'relu')）
+[PASS] D2 融合在前：T(fused)，4 op（('fused_add_relu', 'transpose')）
+[PASS] D3 两个不动点不同（哈希不等）
+[PASS] D4 两个不动点数值都对
+[PASS] D5 cast×融合合流：两个顺序同一终点
+
+--------------------------------------------------------------------
+E. 无限变换与驯服
+--------------------------------------------------------------------
+[PASS] E1 6 个起点全部 oscillation（无不动点可达）
+[PASS] E2 交换规则数值始终不变
+[PASS] E3 fuse/unfuse 同场 -> oscillation（2 轮检出）（2 轮 oscillation）
+[PASS] E4 原始 SSA 名哈希漏检（只能 max_rounds 兜底）（40 轮 max_rounds）
+[PASS] E5 逆序数每步恰降 1 且数值不变（单调配度）
+[PASS] E6 6 个起点到达同一规范形（1 个）
+
+--------------------------------------------------------------------
+F. 压力对拍（60 组随机混合图，独立种子）
+--------------------------------------------------------------------
+[PASS] F1 60 组全部通过（数值/fixpoint/幂等/op 不增）（60/60）
+
+--------------------------------------------------------------------
+G. MLIR 探针
+--------------------------------------------------------------------
+[PASS] G1 canonicalize 幂等（x2 == x1）
+[PASS] G1' 恒等 tensor.cast 被删（剩余 0）
+[PASS] G2 cse 幂等（x2 == x1）
+[PASS] G2' 两个相同 generic 合并成 1 个
+[PASS] G3 canon->cse = 1 个 addf
+[PASS] G3' cse->canon = 2 个 addf（顺序敏感）
+[PASS] G3'' 补一趟 cse 追平
+[PASS] G4 canon->cse = 1 个 generic（cast 先删）
+[PASS] G4' cse->canon = 2 个 generic（CSE 先跑没机会）
+
+====================================================================
+验收测试：通过 51 项，失败 0 项
+====================================================================
+
+== [3/3] MLIR 探针（需要 mlir-opt）==
+-- 探针 1/2：幂等 --
+canonicalize x2 == x1
+cse x2 == x1
+-- 探针 3：顺序敏感（arith）--
+canon->cse        addf = 1
+cse->canon        addf = 2
+cse->canon->cse   addf = 1
+-- 探针 4：Cast 消除解锁 CSE --
+canonicalize 单独：tensor.cast 剩 0
+canon->cse        generic = 1
+cse->canon        generic = 2
+
+汇总：combo_lab=0 test_combo_lab=0 mlir=0
+ALL PASS

@@ -1,0 +1,4 @@
+<stdin>:3:10: error: 'arith.extf' op operand type 'f32' and result type 'f32' are cast incompatible
+    %r = arith.extf %x : f32 to f32
+         ^
+<stdin>:3:10: note: see current operation: %0 = "arith.extf"(%arg0) : (f32) -> f32

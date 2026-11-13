@@ -1,0 +1,10 @@
+func @variant(%x: tensor<2x12xf32>) -> (%12: tensor<4x3xf32>) {
+  %x = arg : tensor<2x12xf32>
+  %14 = const shape=[6, 3] values=[0.296875, -0.125, 0.25, -0.25, …] : tensor<6x3xf32>
+  %15 = reshape %x new_shape=[4, 6] : tensor<4x6xf32>
+  %8 = const shape=[3] values=[0.125, -0.25, 0.5] : tensor<3xf32>
+  %16 = fused_matmul_bias_relu %15, %14, %8 : tensor<4x3xf32>
+  %11 = quantize %16 {scale=0.125, zp=-128} : tensor<4x3xf32>
+  %12 = dequantize %11 {scale=0.125, zp=-128} : tensor<4x3xf32>
+  return %12
+}

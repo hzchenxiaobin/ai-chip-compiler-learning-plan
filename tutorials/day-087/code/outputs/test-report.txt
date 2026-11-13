@@ -1,0 +1,47 @@
+Day 87 输出初始化·检查测试报告（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（DialectConversion 语义仿真＋内存语义解释执行，不伪造 MLIR 行为）
+
+[PASS] IT1 初始化结构
+  转换前 3 op → 转换后 13 op（Day 86 骨架 12 ＋ %zero = 13；func＋alloc＋constant×6＋for×3＋yield＋return）
+  %zero = arith.constant 0.0 : f32：位置在 alloc 之后（True）
+  最内层 for：iter_args(%acc = %zero) -> (f32)，结果 %acc（True）；中外层 for 无 iter_args（True）
+  scf.yield 升级为带操作数：yield %zero : f32（占位回传初值，True）
+  Day 86 骨架栏目保留：常量值 [0, 1, 3, 4, 6]、边界 i/j/k = [4, 3, 6]、alloc memref<4x3xf32, strided<[3, 1]>>（True）
+  mini 方言残留：无
+
+[PASS] IT2 占位语义（解释执行）
+  解释执行今天的 IR（A/B 为种子 87 的真实数据）：执行成功
+  恒等循环成立：%acc 终值 = 0.0（≡ %zero，True）——yield %zero 占位的语义就是「回传初值」
+  对 C 的访问：load 0 次 · store 0 次 · fill 0 次（True）——访存是 Day 88 的填空
+  未初始化读：0 次（True）——中间态安全，零起点已显式化
+
+[PASS] IT3 三策略内存语义
+  方案 B（iter_args 初值 = %zero）：未初始化读 0 次，max|C-ref| = 0.0e+00 ← 位等价（PASS）
+    流量：load A/B 共 144 次（A 72 ＋ B 72，M×N×K 次 each）· store C 12 次 · fill 0 次——C 零读零 fill，每元素只写一次（＋0 B）
+  方案 A（fill 0.0 ＋ 初值 = load C[i,j]）：未初始化读 0 次，max|C-ref| = 0.0e+00 ← 位等价（PASS）
+    流量：比 B 多付 fill 写 M×N×4 B ＋ load C M×N×4 B = 2×M×N×4 = 96 B（与 Day 85 清单③口径一致）
+  探针 none（初值 = load C[i,j]，没有 fill）：未初始化读 12 次（M×N = 4×3 = 12，符合预期），max|C-ref| = 8.540e+02 ← 不等价（未定义行为，垃圾值污染）
+    首个未初始化读：%c(0, 0)（线性地址 0，垃圾值 777.0）
+  —— Day 85 清单③的三行结论在 IR 层复现：B 位等价＋0 流量；A 位等价＋96 B；什么都不做是 UB。Pattern 产出 B。
+
+[PASS] IT4 动态维度保守路径
+  A(?x6) @ B(6x3)（M 动态），full 模式：按预期失败
+  签名转换后：%a : memref<?x6xf32, strided<[6, 1]>>（strides 仍可知）——类型转换不拒绝动态，拒绝发生在 Pattern 的 match
+  拒绝原因（只在 --debug 调试树）：动态维度（A('?', 6) @ B(6, 3)）：alloc 类型与循环边界无法编译期确定…保守路径，宁拒不猜（True）
+  N 动态（A(4x6) @ B(6x?)），partial 模式：成功，显式残留 ['mini.matmul']（交给后续 Pass——动态版 Pattern 走 memref.dim ＋动态 alloc）
+  保守路径的意义：宁可拒绝（图保持原样），也不生成边界靠猜的错误代码——「不生成错代码」优先于「生成代码」
+
+[PASS] IT5 事务性回归
+  [HalfDone(benefit=2，先 create alloc＋%zero 再拒绝) → 回滚] ＋ [Init(benefit=1) → 接手]：成功，终图与只用 Init 的结果逐字相同：True
+  只注册 HalfDone：full 失败，失败后 op 序列 = ['func.func', 'mini.matmul', 'func.return']（与转换前相同：True），半成品（alloc/%zero/循环）残留 = 无
+  —— 填了第一块肉之后，Day 86 的事务性承诺依然成立：失败不留痕
+
+—— 检查测试 5/5 PASS ——
+
+口径附注：
+  1. op 计数沿用 Day 86 口径：主图 3 op → 13 op（骨架 10 ＋ %zero = 11 目标 op；
+     完整目标 = 11 ＋ Day 88 待填 5（load×2、mulf、addf、store）= 16 目标 op。
+  2. IT3 的三策略预演用手工构造的完整 IR（含 Day 88 访存 op）做内存语义验证；
+     Pattern 本身只产出今天的 13 op 版（访存留白）——分工见 README §5。
+  3. 垃圾值是确定性公式 garbage(addr) = 777 + 7·addr（真实语义为未定义行为，
+     仿真让它可观察、可计数、可复现）；位等价的参考实现与循环 IR 严格同序。

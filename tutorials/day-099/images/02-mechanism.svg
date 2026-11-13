@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 570" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .pt { font-size: 14px; font-weight: bold; }
+    .op { font-size: 13.5px; font-weight: bold; }
+    .det { font-size: 10.5px; fill: #5a554d; }
+    .nd { font-size: 13px; font-weight: bold; }
+    .edge { font-size: 11.5px; font-weight: bold; fill: #5a554d; }
+    .rule { font-size: 12.5px; }
+    .ruleh { font-size: 11.5px; font-weight: bold; fill: #5a554d; }
+    .bar { font-size: 11px; font-weight: bold; }
+    .tot { font-size: 13px; font-weight: bold; }
+    .peak { font-size: 11.5px; font-weight: bold; fill: #D98484; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+    .thin { stroke: #3B3B3B; stroke-width: 1.5; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="562" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="36" text-anchor="middle" class="title">机制：算子边给出 def 和 last_use，执行顺序把它们钉在时间轴上</text>
+  <path d="M 300,46 Q 490,42 680,47" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="490" y="62" text-anchor="middle" class="sub">左：图结构（张量=边，算子=节点）｜右：推导规则｜下：顺序「主干优先」每步的内存快照（块宽 ∝ 元素数）</text>
+
+  <!-- 左：计算图 -->
+  <path class="box" d="M 30,74 Q 230,69 430,74 Q 433,180 430,286 Q 229,291 32,286 Q 28,180 30,74 Z" fill="#7FA8D9" fill-opacity="0.10"/>
+  <text x="230" y="92" text-anchor="middle" class="ruleh">双分支特征块（融合后只剩 4 个算子）</text>
+
+  <ellipse cx="85" cy="122" rx="36" ry="15" fill="#F5F0E4" stroke="#3B3B3B" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="85" y="126" text-anchor="middle" class="det">w_exp</text>
+  <ellipse cx="85" cy="190" rx="30" ry="18" fill="#7FA8D9" fill-opacity="0.35" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="85" y="195" text-anchor="middle" class="nd">x</text>
+  <ellipse cx="85" cy="258" rx="36" ry="15" fill="#F5F0E4" stroke="#3B3B3B" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="85" y="262" text-anchor="middle" class="det">w_sk</text>
+  <ellipse cx="348" cy="106" rx="32" ry="14" fill="#F5F0E4" stroke="#3B3B3B" stroke-width="1.8" stroke-dasharray="5 4"/>
+  <text x="348" y="110" text-anchor="middle" class="det">w_dn</text>
+  <text x="130" y="107" class="det">虚线椭圆 = 参数（常驻）</text>
+
+  <path class="box" d="M 178,132 Q 220,128 262,132 Q 264,150 262,167 Q 219,171 180,167 Q 176,150 178,132 Z" fill="#E8A87C" fill-opacity="0.30"/>
+  <text x="220" y="147" text-anchor="middle" class="op">① matmul</text>
+  <text x="220" y="161" text-anchor="middle" class="det">→ t1 (1,256)</text>
+
+  <path class="box" d="M 308,132 Q 350,128 392,132 Q 394,150 392,167 Q 349,171 310,167 Q 306,150 308,132 Z" fill="#E8A87C" fill-opacity="0.30"/>
+  <text x="350" y="147" text-anchor="middle" class="op">② matmul</text>
+  <text x="350" y="161" text-anchor="middle" class="det">→ t2 (1,32)</text>
+
+  <path class="box" d="M 178,237 Q 220,233 262,237 Q 264,255 262,272 Q 219,276 180,272 Q 176,255 178,237 Z" fill="#E8A87C" fill-opacity="0.30"/>
+  <text x="220" y="252" text-anchor="middle" class="op">③ matmul</text>
+  <text x="220" y="266" text-anchor="middle" class="det">→ s (1,128)</text>
+
+  <path class="box" d="M 308,184 Q 350,180 392,184 Q 394,202 392,219 Q 349,223 310,219 Q 306,202 308,184 Z" fill="#93C6A0" fill-opacity="0.30"/>
+  <text x="350" y="199" text-anchor="middle" class="op">④ concat</text>
+  <text x="350" y="213" text-anchor="middle" class="det">→ y (1,160)</text>
+
+  <path class="thin" d="M 112,128 Q 150,132 176,141"/><path class="thin" d="M 176,141 l -8,-2 M 176,141 l -6,6"/>
+  <path class="thin" d="M 106,184 Q 145,170 176,150"/><path class="thin" d="M 176,150 l -9,0 M 176,150 l -5,7"/>
+  <path class="thin" d="M 106,196 Q 145,218 176,246"/><path class="thin" d="M 176,246 l -9,-2 M 176,246 l -5,-8"/>
+  <path class="thin" d="M 112,252 Q 150,250 176,248"/><path class="thin" d="M 176,248 l -8,-3 M 176,248 l -7,5"/>
+  <path class="thin" d="M 348,120 Q 349,124 350,130"/><path class="thin" d="M 350,130 l -4,-6 M 350,130 l 4,-6"/>
+  <path class="arr" d="M 264,150 Q 286,150 306,150"/><path class="arr" d="M 306,150 l -7,-4 M 306,150 l -7,5"/>
+  <text x="285" y="143" text-anchor="middle" class="edge">t1</text>
+  <path class="arr" d="M 394,160 Q 412,168 396,184"/><path class="arr" d="M 396,184 l -1,-8 M 396,184 l 6,-4"/>
+  <text x="414" y="170" class="edge">t2</text>
+  <path class="arr" d="M 264,255 Q 286,245 306,208"/><path class="arr" d="M 306,208 l -8,2 M 306,208 l 4,7"/>
+  <text x="285" y="240" text-anchor="middle" class="edge">s</text>
+  <path class="arr" d="M 394,202 Q 412,202 426,202"/><path class="arr" d="M 426,202 l -7,-4 M 426,202 l -7,5"/>
+  <text x="410" y="192" text-anchor="middle" class="edge">y</text>
+
+  <!-- 右：规则 -->
+  <path class="box" d="M 460,74 Q 705,69 950,74 Q 953,180 950,286 Q 704,291 462,286 Q 458,180 460,74 Z" fill="#F5F0E4"/>
+  <text x="705" y="96" text-anchor="middle" class="pt">活跃区间的推导规则（先固定一种执行顺序）</text>
+
+  <circle cx="487" cy="120" r="11" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="1.8"/>
+  <text x="487" y="124" text-anchor="middle" class="bar">D</text>
+  <text x="506" y="118" class="rule">def(t) = 产生 t 的算子的执行步号</text>
+  <text x="506" y="132" class="ruleh">图输入与参数在图前就存在，def 记 0</text>
+
+  <circle cx="487" cy="154" r="11" fill="#D98484" fill-opacity="0.45" stroke="#3B3B3B" stroke-width="1.8"/>
+  <text x="487" y="158" text-anchor="middle" class="bar">K</text>
+  <text x="506" y="152" class="rule">last_use(t) = 最后一个读 t 的算子的步号</text>
+  <text x="506" y="166" class="ruleh">之后再也没有人读它 → 缓冲区可以释放 / 复用</text>
+
+  <rect x="474" y="180" width="26" height="18" rx="6" fill="#93C6A0" fill-opacity="0.4" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="487" y="193" text-anchor="middle" class="bar" font-size="10px">[a,b]</text>
+  <text x="506" y="190" class="rule">活跃区间 = [def, last_use]，闭区间</text>
+  <text x="506" y="204" class="ruleh">闭：算子执行时输入在被读、输出在被写，两边都占缓冲区</text>
+
+  <rect x="474" y="218" width="26" height="18" rx="6" fill="#F5F0E4" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="487" y="231" text-anchor="middle" class="bar" font-size="10px">N+1</text>
+  <text x="506" y="228" class="rule">图输出没有图内读者：last_use = N+1</text>
+  <text x="506" y="242" class="ruleh">它要活到图跑完之后，交给调用方</text>
+
+  <path d="M 478,254 Q 705,250 932,255" class="arr" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="705" y="272" text-anchor="middle" class="ruleh">例（左图按 ①→②→③→④ 执行）：t1 在 ① 产生、② 最后一次读 → 区间 [1,2]；x 被 ①③ 读 → [0,3]</text>
+
+  <!-- 下：执行顺序 + 内存快照 -->
+  <text x="490" y="310" text-anchor="middle" class="ruleh">执行顺序「主干优先」= t1 → t2 → s → y，共 4 步；每步执行时内存里活着谁 ↓</text>
+
+  <g>
+    <path class="box" d="M 42,318 Q 140,314 238,318 Q 240,335 238,352 Q 139,356 43,352 Q 39,335 42,318 Z" fill="#E8A87C" fill-opacity="0.30"/>
+    <text x="140" y="333" text-anchor="middle" class="op">步骤1  t1=matmul</text>
+    <text x="140" y="347" text-anchor="middle" class="det">(x, w_exp)</text>
+    <path class="box" d="M 282,318 Q 380,314 478,318 Q 480,335 478,352 Q 379,356 283,352 Q 279,335 282,318 Z" fill="#E8A87C" fill-opacity="0.30"/>
+    <text x="380" y="333" text-anchor="middle" class="op">步骤2  t2=matmul</text>
+    <text x="380" y="347" text-anchor="middle" class="det">(t1, w_dn)</text>
+    <path class="box" d="M 522,318 Q 620,314 718,318 Q 720,335 718,352 Q 619,356 523,352 Q 519,335 522,318 Z" fill="#E8A87C" fill-opacity="0.30"/>
+    <text x="620" y="333" text-anchor="middle" class="op">步骤3  s=matmul</text>
+    <text x="620" y="347" text-anchor="middle" class="det">(x, w_sk)</text>
+    <path class="box" d="M 762,318 Q 860,314 958,318 Q 960,335 958,352 Q 859,356 763,352 Q 759,335 762,318 Z" fill="#93C6A0" fill-opacity="0.30"/>
+    <text x="860" y="333" text-anchor="middle" class="op">步骤4  y=concat</text>
+    <text x="860" y="347" text-anchor="middle" class="det">(t2, s)</text>
+  </g>
+
+  <path class="arr" d="M 140,356 Q 140,364 140,370"/><path class="arr" d="M 140,370 l -4,-7 M 140,370 l 4,-7"/>
+  <path class="arr" d="M 380,356 Q 380,364 380,370"/><path class="arr" d="M 380,370 l -4,-7 M 380,370 l 4,-7"/>
+  <path class="arr" d="M 620,356 Q 620,364 620,370"/><path class="arr" d="M 620,370 l -4,-7 M 620,370 l 4,-7"/>
+  <path class="arr" d="M 860,356 Q 860,364 860,370"/><path class="arr" d="M 860,370 l -4,-7 M 860,370 l 4,-7"/>
+
+  <!-- 快照 1：x + t1 = 288 -->
+  <path class="box" d="M 42,374 Q 140,370 238,374 Q 240,452 238,530 Q 139,534 43,530 Q 39,452 42,374 Z" fill="#F5F0E4"/>
+  <text x="140" y="392" text-anchor="middle" class="det">步骤 1 执行时</text>
+  <rect x="56" y="402" width="16" height="15" fill="#7FA8D9" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="78" y="414" class="bar">x 32</text>
+  <rect x="56" y="424" width="128" height="15" fill="#E8A87C" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="190" y="436" class="bar">t1 256 ·D</text>
+  <text x="56" y="458" class="det">t1 在此步出生</text>
+  <text x="56" y="476" class="tot">合计 288 元素</text>
+  <text x="56" y="494" class="det">(1152 B)</text>
+
+  <!-- 快照 2：x + t1 + t2 = 320 峰值 -->
+  <path class="box" stroke="#D98484" stroke-width="2.4" stroke-dasharray="8 5" d="M 282,374 Q 380,370 478,374 Q 480,452 478,530 Q 379,534 283,530 Q 279,452 282,374 Z" fill="#E8A87C" fill-opacity="0.14"/>
+  <text x="380" y="392" text-anchor="middle" class="det">步骤 2 执行时</text>
+  <rect x="296" y="402" width="16" height="15" fill="#7FA8D9" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="318" y="414" class="bar">x 32</text>
+  <rect x="296" y="424" width="128" height="15" fill="#E8A87C" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="430" y="436" class="bar">t1 256 ·K</text>
+  <rect x="296" y="446" width="16" height="15" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="318" y="458" class="bar">t2 32 ·D</text>
+  <text x="296" y="486" class="tot">合计 320 元素</text>
+  <text x="296" y="504" class="peak">← 峰值！t1 正在被读，</text>
+  <text x="296" y="518" class="peak">t2 正在被写，x 还要留给③</text>
+
+  <!-- 快照 3：x + t2 + s = 192 -->
+  <path class="box" d="M 522,374 Q 620,370 718,374 Q 720,452 718,530 Q 619,534 523,530 Q 519,452 522,374 Z" fill="#F5F0E4"/>
+  <text x="620" y="392" text-anchor="middle" class="det">步骤 3 执行时</text>
+  <rect x="536" y="402" width="16" height="15" fill="#7FA8D9" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="558" y="414" class="bar">x 32 ·K</text>
+  <rect x="536" y="436" width="16" height="15" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="558" y="448" class="bar">t2 32</text>
+  <rect x="536" y="470" width="64" height="15" fill="#D98484" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="606" y="482" class="bar">s 128 ·D</text>
+  <text x="536" y="506" class="tot">合计 192 元素</text>
+  <text x="536" y="522" class="det">t1 已死，x 在此步谢幕</text>
+
+  <!-- 快照 4：t2 + s + y = 320 峰值 -->
+  <path class="box" stroke="#D98484" stroke-width="2.4" stroke-dasharray="8 5" d="M 762,374 Q 860,370 958,374 Q 960,452 958,530 Q 859,534 763,530 Q 759,452 762,374 Z" fill="#E8A87C" fill-opacity="0.14"/>
+  <text x="860" y="392" text-anchor="middle" class="det">步骤 4 执行时</text>
+  <rect x="776" y="402" width="16" height="15" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="798" y="414" class="bar">t2 32 ·K</text>
+  <rect x="776" y="440" width="64" height="15" fill="#D98484" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="846" y="452" class="bar">s 128 ·K</text>
+  <rect x="776" y="478" width="80" height="15" fill="#C9C2B8" fill-opacity="0.7" stroke="#3B3B3B" stroke-width="1.6" rx="3"/>
+  <text x="862" y="490" class="bar">y 160 ·D</text>
+  <text x="776" y="514" class="tot">合计 320 元素</text>
+  <text x="776" y="528" class="peak">← 峰值！concat 两边共存</text>
+
+  <text x="490" y="553" text-anchor="middle" class="foot">本图与 outputs/main-first.txt 的「每步活跃内存」一致；峰值 320 元素（1280 B）出现在步骤 2 和 4</text>
+</svg>

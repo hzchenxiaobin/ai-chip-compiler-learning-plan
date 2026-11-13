@@ -1,0 +1,71 @@
+Day 88 生成三重循环·检查测试报告（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（DialectConversion 语义仿真＋IV 轨迹/按维越界解释执行，不伪造 MLIR 行为）
+
+[PASS] BT1 四要素与配对
+  转换前 3 op → 转换后 13 op（与 Day 87 相同的 13 op：func＋alloc＋constant×6＋for×3＋yield＋return）
+  三条循环的 (lb, ub, step)：i(0, 4, 1) · j(0, 3, 1) · k(0, 6, 1)——lb=0（含）、ub=M/N/K（不含）、step=1（True）
+  LoopSpec 出生证明：[('%i', 0, 4, 1), ('%j', 0, 3, 1), ('%k', 0, 6, 1)]（True），trip 公式 = [4, 3, 6]（True）
+  ub 来源配对：i ← A.shape[0] · j ← B.shape[1] · k ← 内维契约（True）
+  Day 87 栏目回归：iter_args(%acc=%zero)、yield %zero 占位、alloc 4x3、常量 {0,1,3,4,6}（True）
+  回滚回归：HalfDone(先 create 再拒绝) 回滚后，终图与只用 Loop 的结果逐字相同（True）
+  mini 方言残留：无
+
+[PASS] BT2 半开区间与 IV 轨迹
+  IV 轨迹（解释执行真实记录，A/B 为种子 87 的数据）：
+    %i：进入 1 次 · 每趟 4 次迭代 · 取值 {0,1,2,3}——最大值 3 = ub−step（ub=4 不含，半开区间的执行证据）
+    %j：进入 4 次（=M）· 每趟 3 次迭代 · 取值 {0,1,2}——最大值 2 = ub−step
+    %k：进入 12 次（=M×N）· 每趟 6 次迭代 · 取值 {0,…,5}——最大值 5 = ub−step
+  每趟迭代数与 trip 公式一致：4/3/6 = max(0, ceil((ub-lb)/step))（True）；k 体总执行 72 次= M×N×K = 4×3×6（True）
+  %acc 终值 = 0.0（≡ %zero，True）——Day 87 占位语义回归
+  对 C 的访问：load 0 · store 0 · fill 0 · 未初始化读 0（True）——访存是 Day 89 的填空
+
+[PASS] BT3 归纳变量身份与作用域
+  三个 iv 都是 index 类型（True）——MLIR 专用于下标/尺寸的整数类型，Day 89 的地址计算（6·i+k 等）乘的就是它
+  %i 不是常量：与 5 个 arith.constant 的结果均为不同 Value（True）——区域参数每次迭代重新绑定，%c4 才是常量
+  体外不可见（支配性结构断言）：三条循环的 region 子树之外，没有任何 op 引用它们的 iv（True）——真实 MLIR 由 verifier 强制；仿真 env 平铺，故用结构断言（诚实边界）
+  体内/嵌套可见（预演 IR 正向验证）：k 体里 load %a[%i,%k]、load %b[%k,%j]、store %c[%i,%j] 全部合法引用外层 iv（True）
+  终止器规则（官方）：带 iter_args 必须显式 scf.yield——k 循环有（True）；无结果可隐式——i/j 循环体末尾就是嵌套 for（True）
+
+[PASS] BT4 嵌套结构
+  嵌套链：fi.body=[fj] · fj.body=[fk] · fk.body=[yield]（True）——深度 3，i 外 · j 中 · k 内
+  归约在最内层：%acc 的 iter_args 挂在 k 循环上（True）——i/j 循环不携带值（True）
+  三个 iv 互不重用（True）：每层循环定义自己的区域参数
+  i/j/k 的顺序今天固定（局部性与排列是 Day 92 的专题；参数化是 Day 93）
+
+[PASS] BT5 边界 shape 全家福
+  7 组形状全部通过（明细见 boundary-table.txt）：trips 实测 = (M,N,K)，IV 值域 = [0,ub)（不含 ub），k 体总执行 = M×N×K
+  边界成员：最小 (1,1,1) · 行向量 (1,5,3) · 内维 1 (5,1,3) · 非方形 (2,3,2)/(3,2,7) · 贯穿例 (4,6,3) · 零趟 (4,0,3)
+  零趟特写 K=0（A(4,0) @ B(0,3)）：k 循环每趟 0 次迭代 → %acc 终值 = 初值 0.0；预演完整 IR 执行：store 12 次（写 0.0）· load 0 次（True）
+    数学佐证：空和 = 0（归约单位元）——np.matmul((4,0),(0,3)) = 4×3 零矩阵，与同序参考实现逐位相同；Day 87 的「零次迭代时结果 = 初值」在今天拿到了数学身份
+  分工说明：端到端数值对照（≥8 组 shape）是 Day 90 的验收；今天只测循环结构与 IV 语义（体仍为空）
+
+[PASS] BT6 静态前提（动态拒绝）
+  A(?x6) @ B(6x3)（M 动态），full 模式：按预期失败
+  拒绝的焦点（今天视角）：lb/ub 要物化成 arith.constant，动态 '?' 下 %cM 无从产生——四要素缺了两个
+  拒绝原因（只在 --debug 调试树，真实文本）：动态维度（A('?', 6) @ B(6, 3)）：循环四要素的 lb/ub 要物化成 arith.constant 常量，动态 '?' 做不到…宁拒不猜（True）
+  N 动态（A(4x6) @ B(6x?)），partial 模式：成功，显式残留 ['mini.matmul']（交给后续 Pass——动态版 Pattern 走 memref.dim ＋动态 alloc）
+  保守路径的意义：不生成边界靠猜的循环——「宁拒不猜」与 Day 87 同一立场，今天换了个聚焦点
+
+[PASS] BT7 反面控制组（探针）
+  P1 off-by-one（i 上界 = M+1 = 5）：结构探针红——trip = 5 ≠ M = 4（True）；执行探针红——i=4 时 load %a[4,k] 按维越界（True）
+    真实报错：memref.load %a(4, 0)：第 0 维下标 4 ∉ [0, 4)（shape (4, 6)）
+  P2 step=2（k 步长 = 2）：不越界、安静地错——k 取值 {0,2,4}，每趟 3 次迭代（ceil(6/2)），load A/B 共 72 次（正确的 144 的一半）（True）
+    数值探针红：max|C-ref| = 1.939e+00（漏加全部奇数 k 项，True）——step 不是「精度」参数，MatMul 的点循环必须逐步覆盖
+  P3 配对错误（i 界=N=3、j 界=M=4）：迭代总数纹丝不动——3×4×6 = 72 = M×N×K（True），地址空间已经全错
+    执行轨迹：i 只跑到 0、j 跑到 3（正是 B 的列界外）就被拦下，此前 k 完整跑完 3 趟（[6,6,6]，True）
+    执行探针红：j=3 时 load %b[k,3] 第 1 维越界（True）；真实报错：memref.load %b(0, 3)：第 1 维下标 3 ∉ [0, 3)（shape (6, 3)）；线性地址 3 甚至仍在缓冲区（18 格）内——只查线性地址抓不住这类逻辑越界
+    注意：这次越界的线性地址 3·k+3 大多仍在 B 的 18 格缓冲区内——只查线性地址抓不住，按维检查才能抓住（stride 类 bug 的共性）
+  —— 三个探针全红：边界测试咬得住人，才配当 Day 89 填空时的护栏
+
+—— 检查测试 7/7 PASS ——
+
+口径附注：
+  1. op 计数沿用 Day 86/87 口径：主图 3 op → 13 op；完整目标 = 11 目标 op ＋
+     Day 89 待填 5（load×2、mulf、addf、store）= 16 目标 op。
+  2. BT5 边界表测的是循环结构与 IV 语义（循环体仍为空）；端到端数值对照
+     （≥8 组 shape）是 Day 90 的验收。
+  3. BT7 反面控制用预演器 build_full_ir（Day 87 三策略预演器的参数化版，
+     方案 B）注入三个 bug；按维越界检测是今天新增的仿真探针。
+  4. scf.for 语义描述依据官方文档（2026-11 核对）：半开区间、
+     trip = max(0, ceil((ub-lb)/step))、step 严格为正、iv 为区域参数；
+     垃圾值是确定性公式（真实语义为未定义行为）。

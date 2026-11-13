@@ -1,0 +1,28 @@
+U=4
+case(M N K | T)          说明                     unroll-k         unroll-j         no-tail          overlap         
+5x7x3 | 2x4x2            主例：tile 内 k 长 2  PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+1x7x3 | 2x4x2            M=1                        PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+5x1x3 | 2x4x2            N=1（j 展开只剩尾部） PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+5x7x1 | 2x4x2            K=1（k 展开只剩尾部） PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+9x9x9 | 4x4x4            每维余 1                PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+7x7x7 | 8x8x8            Tile 比维度大          PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+64x64x64 | 16x16x16      完全整除               PASS(逐位相等) PASS(逐位相等) PASS(碰巧)     PASS(碰巧)    
+65x63x33 | 16x16x16      大 shape 全带尾        PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+3x100x2 | 2x32x5         瘦长 N                   PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+100x3x17 | 16x2x3        瘦长 M                   PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+
+== suite 结果：unroll-k/unroll-j 正确性 20/20 通过；no-tail/overlap 只在“有尾部”的用例上发作，完全整除时碰巧正确 ==
+U=5
+case(M N K | T)          说明                     unroll-k         unroll-j         no-tail          overlap         
+5x7x3 | 2x4x2            主例：tile 内 k 长 2  PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+1x7x3 | 2x4x2            M=1                        PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+5x1x3 | 2x4x2            N=1（j 展开只剩尾部） PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+5x7x1 | 2x4x2            K=1（k 展开只剩尾部） PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+9x9x9 | 4x4x4            每维余 1                PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+7x7x7 | 8x8x8            Tile 比维度大          PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+64x64x64 | 16x16x16      完全整除               PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+65x63x33 | 16x16x16      大 shape 全带尾        PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+3x100x2 | 2x32x5         瘦长 N                   PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+100x3x17 | 16x2x3        瘦长 M                   PASS(逐位相等) PASS(逐位相等) FAIL(丢尾部)  FAIL(越界/重算)
+
+== suite 结果：unroll-k/unroll-j 正确性 20/20 通过；no-tail/overlap 只在“有尾部”的用例上发作，完全整除时碰巧正确 ==

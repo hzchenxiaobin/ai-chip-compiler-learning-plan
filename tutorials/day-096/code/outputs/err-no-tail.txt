@@ -1,0 +1,4 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, U=2, mode=no-tail, useful_flops(M*N*K)=105
+kernel                 correct inner_iters ctrl_iters  max_abs_err      oob body_copies
+no-tail(丢尾部)          NO          70        125        1.875        0         2
+inner_iters=70 (useful=105) ctrl_iters=125 oob=0 max_abs_err=1.875 correct=NO

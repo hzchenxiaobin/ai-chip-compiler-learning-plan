@@ -1,0 +1,21 @@
+== 上游 MLIR 对同一主例（5x7x3, tile 2x4x2）做 tiling 的关键输出 ==
+
+10:    scf.for %arg3 = %c0 to %c5 step %c2 {
+12:      %0 = affine.min #map(%arg3)
+16:      scf.for %arg4 = %c0_1 to %c7 step %c4 {
+18:        %1 = affine.min #map1(%arg4)
+22:        scf.for %arg5 = %c0_3 to %c3 step %c2_4 {
+24:          %2 = affine.min #map2(%arg5)
+34:          %subview = memref.subview %arg0[%arg3, %arg5] [%0, %2] [1, 1] : memref<5x3xf32> to memref<?x?xf32, strided<[3, 1], offset: ?>>
+35:          %subview_6 = memref.subview %arg1[%arg5, %arg4] [%2, %1] [1, 1] : memref<3x7xf32> to memref<?x?xf32, strided<[7, 1], offset: ?>>
+36:          %subview_7 = memref.subview %arg2[%arg3, %arg4] [%0, %1] [1, 1] : memref<5x7xf32> to memref<?x?xf32, strided<[7, 1], offset: ?>>
+
+== affine 映射定义（tile 尺寸的 min 钳制）==
+#map = affine_map<(d0) -> (2, -d0 + 5)>
+#map1 = affine_map<(d0) -> (4, -d0 + 7)>
+#map2 = affine_map<(d0) -> (2, -d0 + 3)>
+#map3 = affine_map<(d0) -> (d0 - 1)>
+
+读法：上游把 tile 尺寸写成 min(Tile, 维度 - 起点)：
+  min(2, 5-i0) / min(4, 7-j0) / min(2, 3-k0)
+与手写的 min(起点+Tile, 维度) 是同一个钳制的两种写法（一个算尺寸、一个算终点）。

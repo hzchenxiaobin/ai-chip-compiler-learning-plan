@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="Helvetica,Arial,sans-serif">
+<rect x="0" y="0" width="980" height="560" fill="#FFFFFF"/>
+<text x="490.0" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#333">不同 Tile 的片上空间（双缓冲）vs 256 KB 预算</text>
+<text x="490.0" y="50" text-anchor="middle" font-size="12" fill="#777">acc=auto，bias=on，对齐 32 B；条内白色刻度 = 单缓冲合计；由 estimator.py --chart 生成</text>
+<line x1="730.7" y1="78" x2="730.7" y2="500" stroke="#C0392B" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="730.7" y="70" text-anchor="middle" font-size="12" fill="#C0392B">预算 256 KB = 262,144 B</text>
+<text x="240" y="116.83333333333333" text-anchor="end" font-size="12" fill="#333">32×32×32 · fp32</text>
+<rect x="250" y="104.1" width="37.8" height="17.5" fill="#7FA8D9" fill-opacity="0.85"/>
+<line x1="272.8" y1="104.1" x2="272.8" y2="121.6" stroke="#FFFFFF" stroke-width="3"/>
+<text x="295.8" y="116.83333333333333" text-anchor="start" font-size="12" font-weight="normal" fill="#555">20,608 B</text>
+<text x="240" y="150.5" text-anchor="end" font-size="12" fill="#333">32×32×32 · fp16</text>
+<rect x="250" y="137.7" width="22.8" height="17.5" fill="#E8A87C" fill-opacity="0.85"/>
+<line x1="265.3" y1="137.7" x2="265.3" y2="155.3" stroke="#FFFFFF" stroke-width="3"/>
+<text x="280.8" y="150.5" text-anchor="start" font-size="12" font-weight="normal" fill="#555">12,416 B</text>
+<text x="240" y="184.16666666666666" text-anchor="end" font-size="12" fill="#333">32×32×32 · bf16</text>
+<rect x="250" y="171.4" width="22.8" height="17.5" fill="#E8C48C" fill-opacity="0.85"/>
+<line x1="265.3" y1="171.4" x2="265.3" y2="188.9" stroke="#FFFFFF" stroke-width="3"/>
+<text x="280.8" y="184.16666666666666" text-anchor="start" font-size="12" font-weight="normal" fill="#555">12,416 B</text>
+<text x="240" y="217.83333333333334" text-anchor="end" font-size="12" fill="#333">32×32×32 · int8</text>
+<rect x="250" y="205.1" width="15.3" height="17.5" fill="#93C6A0" fill-opacity="0.85"/>
+<line x1="261.5" y1="205.1" x2="261.5" y2="222.6" stroke="#FFFFFF" stroke-width="3"/>
+<text x="273.3" y="217.83333333333334" text-anchor="start" font-size="12" font-weight="normal" fill="#555">8,320 B</text>
+<text x="240" y="251.5" text-anchor="end" font-size="12" fill="#333">64×64×64 · fp32</text>
+<rect x="250" y="238.7" width="150.7" height="17.5" fill="#7FA8D9" fill-opacity="0.85"/>
+<line x1="340.6" y1="238.7" x2="340.6" y2="256.3" stroke="#FFFFFF" stroke-width="3"/>
+<text x="408.7" y="251.5" text-anchor="start" font-size="12" font-weight="normal" fill="#555">82,176 B</text>
+<text x="240" y="285.16666666666663" text-anchor="end" font-size="12" fill="#333">64×64×64 · fp16</text>
+<rect x="250" y="272.4" width="90.6" height="17.5" fill="#E8A87C" fill-opacity="0.85"/>
+<line x1="310.6" y1="272.4" x2="310.6" y2="289.9" stroke="#FFFFFF" stroke-width="3"/>
+<text x="348.6" y="285.16666666666663" text-anchor="start" font-size="12" font-weight="normal" fill="#555">49,408 B</text>
+<text x="240" y="318.8333333333333" text-anchor="end" font-size="12" fill="#333">64×64×64 · bf16</text>
+<rect x="250" y="306.1" width="90.6" height="17.5" fill="#E8C48C" fill-opacity="0.85"/>
+<line x1="310.6" y1="306.1" x2="310.6" y2="323.6" stroke="#FFFFFF" stroke-width="3"/>
+<text x="348.6" y="318.8333333333333" text-anchor="start" font-size="12" font-weight="normal" fill="#555">49,408 B</text>
+<text x="240" y="352.49999999999994" text-anchor="end" font-size="12" fill="#333">64×64×64 · int8</text>
+<rect x="250" y="339.7" width="60.6" height="17.5" fill="#93C6A0" fill-opacity="0.85"/>
+<line x1="295.5" y1="339.7" x2="295.5" y2="357.3" stroke="#FFFFFF" stroke-width="3"/>
+<text x="318.6" y="352.49999999999994" text-anchor="start" font-size="12" font-weight="normal" fill="#555">33,024 B</text>
+<text x="240" y="386.16666666666663" text-anchor="end" font-size="12" fill="#333">128×128×128 · fp32</text>
+<rect x="250" y="373.4" width="601.9" height="17.5" fill="#D98484" fill-opacity="0.85"/>
+<line x1="611.5" y1="373.4" x2="611.5" y2="390.9" stroke="#FFFFFF" stroke-width="3"/>
+<text x="843.9" y="386.16666666666663" text-anchor="end" font-size="12" font-weight="bold" fill="#C0392B">328,192 B（✗ 溢出）</text>
+<text x="240" y="419.8333333333333" text-anchor="end" font-size="12" fill="#333">128×128×128 · fp16</text>
+<rect x="250" y="407.1" width="361.5" height="17.5" fill="#E8A87C" fill-opacity="0.85"/>
+<line x1="491.3" y1="407.1" x2="491.3" y2="424.6" stroke="#FFFFFF" stroke-width="3"/>
+<text x="619.5" y="419.8333333333333" text-anchor="start" font-size="12" font-weight="normal" fill="#555">197,120 B</text>
+<text x="240" y="453.49999999999994" text-anchor="end" font-size="12" fill="#333">128×128×128 · bf16</text>
+<rect x="250" y="440.7" width="361.5" height="17.5" fill="#E8C48C" fill-opacity="0.85"/>
+<line x1="491.3" y1="440.7" x2="491.3" y2="458.3" stroke="#FFFFFF" stroke-width="3"/>
+<text x="619.5" y="453.49999999999994" text-anchor="start" font-size="12" font-weight="normal" fill="#555">197,120 B</text>
+<text x="240" y="487.16666666666663" text-anchor="end" font-size="12" fill="#333">128×128×128 · int8</text>
+<rect x="250" y="474.4" width="241.3" height="17.5" fill="#93C6A0" fill-opacity="0.85"/>
+<line x1="431.2" y1="474.4" x2="431.2" y2="491.9" stroke="#FFFFFF" stroke-width="3"/>
+<text x="499.3" y="487.16666666666663" text-anchor="start" font-size="12" font-weight="normal" fill="#555">131,584 B</text>
+</svg>

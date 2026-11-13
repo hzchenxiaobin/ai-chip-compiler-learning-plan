@@ -1,0 +1,33 @@
+消费契约实录（第 94 天版）——六份配置的真实命运
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~93 口径：Python 复刻 DialectConversion 语义仿真）
+
+门序沿用 Day 93：③形状门在前、④消费门在后；今天第④道门对 tile 开张，
+其余路径（不整除 / unroll / 组合）仍然 fail-closed——绝不静默忽略。
+
+✓ parse('tile=2x2x3')——Day 93 第④道门拒过的配置
+    端到端：31 op；C 流量 4L+4S+4清；与参考位等价 = True
+    附注：tile=2x2x3 已消费（今天开张）：1×1×1 个块，Tiled IR 31 op
+
+✗ parse('tile=2x2x2')——Tk=2 不整除 K=3
+    拒绝：tile=2x2x2 通过了校验（第①~③道门，warn 级），但：tile_k=2 不整除 K=3：需要尾部处理（Day 95 的范围；Day 94 先保证整除场景）——今天只保证整除场景正确，拒绝运行（尾部处理是 Day 95 的内容）
+
+✗ parse('unroll=2')
+    拒绝：unroll=2 通过了校验（第①~②道门），但展开 lowering 是 Day 96 的内容——今天拒绝运行，绝不静默忽略
+
+✗ parse('order=ikj,tile=2x2x3')——组合实验
+    拒绝：tile=2x2x3 已开张，但 tile × 非默认 order（i-k-j）的组合实验是 Day 97 的内容——今天拒绝运行，绝不静默忽略
+
+✗ parse('tile=4x4x4') on A(2,3)@B(3,2)
+    拒绝：第③道门（形状门）拒绝：tile_m=4 > M=2：块比维度还大，没有意义；tile_n=4 > N=2：块比维度还大，没有意义；tile_k=4 > K=3：块比维度还大，没有意义
+
+✓ parse('order=ikj')——默认路径回退
+    端到端：21 op；C 流量 12L+12S+4清；与参考位等价 = True
+    附注：tile 未设置：走 Day 92 的 LoopOrderPattern 路径（Day 93 口径不变）
+
+✓ parse('tile=1x1x1')——平凡块
+    端到端：31 op；C 流量 12L+12S+4清；与参考位等价 = True
+    附注：tile=1x1x1 是平凡块：K/Tk = K 个 k-块——合法但最笨（C 流量回到形态 B 水平）
+    附注：tile=1x1x1 已消费（今天开张）：2×2×3 个块，Tiled IR 31 op
+
+一周的闭环：Day 93 形状门写着『整除场景，Day 94 的首选测试点』——
+今天 26 组整除测试全部通过（TL4），两个非整除路径全部被点名拒绝（TL6b/§6）。

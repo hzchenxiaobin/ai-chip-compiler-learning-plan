@@ -1,0 +1,25 @@
+LoopOptions 参数校验电池（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~92 口径：Python 复刻 DialectConversion 语义仿真）
+
+坏输入 17 个；判定标准：必须抛 OptionsValidationError，且报错里含定位片段（能看出错在哪个字段、为什么）
+
+✗ 拒绝：order='ikm'：不认识 m  →  order 里出现不认识的循环变量 'm'（合法：i、j、k）
+✗ 拒绝：order='iij'：归纳变量重复  →  order 里的归纳变量重复了：('i', 'i', 'j')（每个恰好出现一次）
+✗ 拒绝：order=('i','j')：只有 2 个  →  order 必须恰好 3 个归纳变量（外→内），拿到 ('i', 'j')（2 个）
+✗ 拒绝：order=42：类型不对  →  order 必须是 i/j/k 的序列（如 'ikj' 或 ('i','k','j')），拿到 42
+✗ 拒绝：tile=(0,2,2)：0 不是正整数  →  tile_m 必须是正整数（≥1），拿到 0
+✗ 拒绝：tile=(2,-1,2)：负数  →  tile_n 必须是正整数（≥1），拿到 -1
+✗ 拒绝：tile=(2,2)：分量不够  →  tile 必须恰好 3 个分量 (tile_m, tile_n, tile_k)，拿到 (2, 2)（2 个）
+✗ 拒绝：tile=(1.5,2,2)：float 不是维度  →  tile_m 必须是正整数，拿到 1.5（float）
+✗ 拒绝：tile=(True,2,2)：bool 冒充 int  →  tile_m 必须是正整数，拿到 True（bool）
+✗ 拒绝：unroll=0：展开 0 次没意义  →  unroll 必须是正整数（≥1），拿到 0
+✗ 拒绝：unroll='x'：不是整数  →  unroll 必须是正整数，拿到 'x'（str）
+✗ 拒绝：parse('foo=1')：未知键  →  不认识的配置项「foo」（合法键：order / tile / unroll）——拒绝猜测
+✗ 拒绝：parse('order=ikj,order=kij')：同一键两次  →  配置项「order」出现两次：'ikj' 和 'kij'——以哪个为准？拒绝猜测
+✗ 拒绝：parse('unroll')：缺 '='  →  配置项必须是「键=值」，拿到 'unroll'（缺 '='）
+✗ 拒绝：parse('tile=2xXx3')：分量不是整数  →  tile 的每个分量必须是正整数，拿到 '2xXx3'
+✗ 拒绝：parse('tile=2x2x3x4')：分量太多  →  tile 必须恰好 3 个分量 (tile_m, tile_n, tile_k)，拿到 (2, 2, 3, 4)（4 个）
+✗ 拒绝：parse('order=')：值是空的  →  order 必须恰好 3 个归纳变量（外→内），拿到 ()（0 个）
+
+汇总：17/17 全部按预期拒绝
+对照：宽容式实现（把不认识的键 filter 掉、把坏值改成默认值）会吞掉以上全部错误

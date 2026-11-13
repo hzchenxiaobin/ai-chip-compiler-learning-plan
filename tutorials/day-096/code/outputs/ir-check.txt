@@ -1,0 +1,8 @@
+
+PARSE OK  ir/matmul_before.mlir  (1167 bytes)
+PARSE OK  ir/matmul_unroll_k2.mlir  (2231 bytes)
+PARSE OK  ir/matmul_unroll_k4_divisible.mlir  (3069 bytes)
+
+PARSE OK  ir/matmul_before.mlir  (1167 bytes)
+PARSE OK  ir/matmul_unroll_k2.mlir  (2231 bytes)
+PARSE OK  ir/matmul_unroll_k4_divisible.mlir  (3069 bytes)

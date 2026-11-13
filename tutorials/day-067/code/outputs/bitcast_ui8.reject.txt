@@ -1,0 +1,4 @@
+<stdin>:3:10: error: 'arith.bitcast' op result #0 must be signless-integer-or-float-like or memref of signless-integer or float, but got 'ui8'
+    %b = arith.bitcast %x : i8 to ui8
+         ^
+<stdin>:3:10: note: see current operation: %0 = "arith.bitcast"(%arg0) : (i8) -> ui8

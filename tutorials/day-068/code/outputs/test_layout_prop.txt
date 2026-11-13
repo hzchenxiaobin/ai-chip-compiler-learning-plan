@@ -1,0 +1,53 @@
+
+--- A. 等价性：T(E(x)) == E(T(x)) 的语义验证（numpy 直算） ---
+[PASS] A1 relu 穿转置等价（15 组随机 shape×perm）（15/15）
+[PASS] A2 neg 穿转置等价（15 组）（15/15）
+[PASS] A3 add 两侧同 perm 等价
+[PASS] A4 add 只 perm 一侧不等或 shape 不匹配（不能只推一边）
+[PASS] A5 reduce 重映射 T(reduce(x,k)) == reduce(T(x), p^-1(k))（15/15）
+
+--- B. Pattern 触发与拒绝（图侧行为） ---
+[PASS] B1 T(Relu(x)) 触发改写
+[PASS] B2 改写后 IR = Relu(Transpose(x))（relu 的输入是 transpose）
+[PASS] B3 改写后输出 shape 不变
+[PASS] B4 改写后数值等价（ok）
+[PASS] B5 T(arg) 不触发（arg 不是逐元素算子）
+[PASS] B5 T(const) 不触发（const 不是逐元素算子）
+[PASS] B6 T(ReduceSum) 不触发（不在白名单）
+[PASS] B7 T(Reshape) 不触发（不在白名单）
+[PASS] B8 Relu 结果有两个使用者时拒绝
+[PASS] B9 拒绝时图未被改动
+[PASS] B10 T(Transpose) 不走传播 Pattern（交给合并规则）
+[PASS] B11 相邻转置由合并规则处理（2 -> 0，互逆）
+[PASS] B12 合并互逆对数值等价（ok）
+
+--- C. 三明治：传播 → 合并 → 相消（收益链路） ---
+[PASS] C1 互逆三明治 2 -> 0 个转置（2 轮，fixpoint）
+[PASS] C2 互逆三明治数值等价（ok）
+[PASS] C3 纯搬运元素移动降为 0（24 -> 0）
+[PASS] C4 非互逆三明治 2 -> 1 个转置（合并特例）
+[PASS] C5 非互逆三明治数值等价（ok）
+[PASS] C6 纯搬运减半（元素移动 2n -> n 规模）（96 -> 48）
+[PASS] C7 常量路径：转置折进常量（0 个转置）
+[PASS] C8 常量路径数值等价（ok）
+
+--- D. 反面教材：无视唯一使用者的劣化 ---
+[PASS] D1 强推后数值仍等价（合法性没破）（ok）
+[PASS] D2 但算子增殖（劣化，这就是 C2 的理由）（op 4 -> 5）
+
+--- E. 方向门：双向振荡 vs 单向收敛（Day 69 预告） ---
+[PASS] E1 双向规则互相 undo，振荡被检测（2 轮后判定）
+[PASS] E2 单向规则正常收敛（1 轮）
+[PASS] E3 反向规则单独存在也能收敛（问题只在「同时在场」）
+
+--- F. 压力对拍：200 组随机图（数值/单调/不动点/无振荡） ---
+[PASS] F1 数值等价 200/200（200/200）
+[PASS] F2 转置数不增 200/200（200/200）
+[PASS] F3 二次运行不动点 200/200（200/200）
+[PASS] F4 转置总数显著下降（468 -> 118）
+
+--- G. 白名单本身的语义（防呆） ---
+[PASS] G1 白名单只含逐元素一元算子
+[PASS] G2 add 不在白名单（受限 Pattern 的边界，选做挑战再扩展）
+
+测试汇总：PASS 37 / FAIL 0

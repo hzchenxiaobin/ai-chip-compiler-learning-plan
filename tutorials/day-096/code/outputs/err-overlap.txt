@@ -1,0 +1,4 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, U=2, mode=overlap, useful_flops(M*N*K)=105
+kernel                 correct inner_iters ctrl_iters  max_abs_err      oob body_copies
+overlap(k<khi)              NO         140        160       56.250       70         2
+inner_iters=140 (useful=105) ctrl_iters=160 oob=70 max_abs_err=56.250 correct=NO

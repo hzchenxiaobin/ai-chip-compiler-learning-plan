@@ -1,0 +1,7 @@
+g++: g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+host: aarch64 Linux, nproc=32
+
+scalar : g++ -O2 -std=c++17 -fno-tree-vectorize -ffp-contract=off
+  wall=1.72s
+vector : g++ -O3 -std=c++17 -ffp-contract=off
+  wall=2.03s

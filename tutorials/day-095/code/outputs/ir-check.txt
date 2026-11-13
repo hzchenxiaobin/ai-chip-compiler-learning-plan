@@ -1,0 +1,19 @@
+mlir-opt 版本：
+Ubuntu LLVM version 18.1.8
+  Optimized build.
+
+PARSE OK  matmul_danger.mlir  (1919 bytes)
+PARSE OK  matmul_mask.mlir  (2226 bytes)
+PARSE OK  matmul_min_bounds_divisible.mlir  (1993 bytes)
+PARSE OK  matmul_min_bounds.mlir  (2055 bytes)
+
+静态保护指令计数：
+  matmul_min_bounds.mlir            arith.minsi x3
+  matmul_mask.mlir                  arith.cmpi  x3 / arith.andi x2
+  matmul_danger.mlir                保护指令 x0
+
+canonicalize 折叠实验（整除配置的 min 能否被常量折叠消掉）：
+  matmul_min_bounds.mlir -canonicalize 之后 arith.minsi 仍剩 3 条
+  matmul_min_bounds_divisible.mlir -canonicalize 之后 arith.minsi 仍剩 3 条
+  —— i0 是循环归纳变量，min(i0+TM, M) 不是常量表达式，
+     常量折叠帮不上忙；这就是 21 次 min 成为真实运行时代价的原因。

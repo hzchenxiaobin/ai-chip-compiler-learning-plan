@@ -1,0 +1,50 @@
+== A. 组合排列代数 ==
+[PASS] A1 compose 全量对拍：36 对 3 元排列 T_q∘T_p == T_{compose(p,q)}
+[PASS] A2 回到原样 ⟺ compose==恒等 ⟺ q==inv(p)，三重判定 36 对一致
+[PASS] A3 3-循环 p² = inv(p)：compose((1,2,0),(1,2,0)) == (2,0,1)
+[PASS] A4 阶：24 个 4 元排列连做『阶』次同款转置回到恒等
+[PASS] A5 结合律 (p∘q)∘s == p∘(q∘s)（729 组 3 元三元组）——长链先合并哪一对都不影响终点
+[PASS] A6 is_identity 只认真恒等：(0,1) 是、(1,0) 不是、(1,0,2) 不是
+[PASS] A7 verify_transpose 四关入口仍在：perm [2,0] 对 2 维被 E2 拒绝
+
+== B. Pattern 1 互逆消除 ==
+[PASS] B1 2D 互逆对：2 op → 0，returns 换成 %in
+[PASS] B2 3D 互逆对（非对合）：2 op → 0 且数值不变
+[PASS] B3 4D 互逆对（rev 排列是对合）：2 op → 0
+[PASS] B4 使用替换传播：链尾 %t2 直接改接 %in（op 数 3→1，perm 不变）
+[PASS] B5 非互逆对 P1 不动手（T_(1,0)∘T_(0,1) 原样 2 op，留给 P2 合并）
+
+== C. Pattern 2 一般合并 ==
+[PASS] C1 3D 一般对 p=q：合并为单转置 T_{p²}=T_(2,0,1)，op 2→1
+[PASS] C2 合并产物过四关 Verifier（结果类型 = 推导结果）
+[PASS] C3 P2 单独也能消除互逆对（P1 在数学上是 P2 的特例）：2 op → 0
+[PASS] C4 五个代表场景：P2 单独跑与双 Pattern 的结果完全一致
+[PASS] C5 一般对 p≠q：合并为 T_(1,0,2)，值与两步链一致
+
+== D. 多使用者与返回值边界 ==
+[PASS] D1 中间值多一个消费方：图不动（3 op）且数值不变
+[PASS] D2 use_count('%t0') == 2（%t1 一个 + %u 一个）
+[PASS] D3 中间值被 func.return：拒绝（2 op 原样），两个返回值都完好
+[PASS] D4 消除后返回值个数不变且值不变
+
+== E. PassManager 不动点 ==
+[PASS] E1 3-循环链长 1..8：op 数按 p^L 消长（L mod 3==0 → 0，否则 1），数值不变 8/8
+[PASS] E2 八连链在 max_rounds 内收敛（实际 4 轮 < 10）
+[PASS] E3 无链可配时 0 次应用且 IR 不变
+[PASS] E4 已优化的图再跑一遍不动（幂等）
+
+== F. 判定表与随机压力对拍 ==
+[PASS] F1 判定表 12/12：op 数 + 数值 + Verifier
+[PASS] F2 随机对拍 300/300：数值不变、Verifier 通过、op 数不增
+[PASS] F3 合并后剩单转置的 256 组：排列恰好等价整条链
+
+== G. MLIR 对照（本机 LLVM 18.1.8）==
+[PASS] G1 互逆转置对经 --canonicalize 原样保留（2 个 linalg.transpose）
+[PASS] G2 canonicalize 输出结构不变（2 个 alloc + return）
+[PASS] G3 链降级：6 层 scf.for + 2 行 load + 2 行 store（numel×2 访存）
+[PASS] G4 单转置降级：3 层 scf.for + 1 行 load（链白付一整次搬运的对照）
+[PASS] G5 静态 IR 文件 transpose_chain.mlir 存在且非空
+
+============================================================
+汇总：PASS 33 / FAIL 0 / SKIP 0
+============================================================

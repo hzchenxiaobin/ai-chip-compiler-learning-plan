@@ -1,0 +1,4 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, mode=off-by-one
+strategy                   correct  inner_iters    guard/idle   boundary        oob  dup_write  max/elem
+off-by-one(min(..,M-1))         NO           48    0/0                21          0          0         0
+inner_iters=48 oob_touches=0 assign_stores=0 duplicate_writes=0 max_assign_per_elem=0 max_abs_err=2.250 correct=NO

@@ -1,0 +1,69 @@
+// 生成自 body_pass.py（Day 89）——循环体收官：load×2＋mulf＋addf＋store
+// 相对 Day 88：13 op → 18 op（新增 5 块肉）；yield %zero 占位换成 yield %s；
+// 输出第一次有真实数值：与同序参考实现位等价（test-report.txt AT3）。
+//
+// 访存清单（Day 85 任务清单② 的落地；strides 声明在 memref 类型里）：
+//   访问     多下标      线性地址公式     strides（来自 memref 类型）
+//   A[i,k]   (%i, %k)   6·i + 1·k       %a: strided<[6, 1]>（6 = K）
+//   B[k,j]   (%k, %j)   3·k + 1·j       %b: strided<[3, 1]>（3 = N）
+//   C[i,j]   (%i, %j)   3·i + 1·j       %c: strided<[3, 1]>（3 = N）
+//
+// 位置法则（依赖作用域交集的最内层）：
+//   %xa/%xb/%p/%s 依赖 %k（或依赖需要 %k 的值） → k 体内
+//   store 依赖 %acc（k 循环结果）＋ %i ＋ %j      → k 外、j 内
+//   「只写最终值」：C 每格恰好写 1 次（AT2 覆盖统计）
+//   累加值读取 = iter_args 区域参数 %acc；写回 = yield %s（不是 store！）
+//
+// 循环规格表（LoopSpec——Day 88 成果原样沿用）：
+//   iv   lb  ub  step  trip = max(0, ceil((ub-lb)/step))   ub 来源
+//   %i    0   4     1  max(0, ceil((4-0)/1)) = 4       M = A.shape[0] = 4
+//   %j    0   3     1  max(0, ceil((3-0)/1)) = 3       N = B.shape[1] = 3
+//   %k    0   6     1  max(0, ceil((6-0)/1)) = 6       K = 内维契约 A.shape[1] == B.shape[0] = 6
+//
+// 语义依据（官方文档，mlir.llvm.org，2026-11 核对）：memref.load/store 收
+// 多维下标，线性地址映射 addr = Σ stride·idx 由 memref 类型的 strides 完成；
+// scf.for 半开区间 [lb,ub)，iv 为 index 型区域参数；带 iter_args 必须显式 yield。
+func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>> {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+  // 任务① 输出缓冲 48 B：alloc 不清零——零起点是 %zero（D87）
+  %zero = arith.constant 0.0 : f32
+  // 任务③(D87) 零起点：累加器的初值（归约单位元），不写内存
+  %c0 = arith.constant 0 : index
+  // 下界 0（含端点；memref 下标从 0 开始）
+  %c1 = arith.constant 1 : index
+  // 步长 1（scf.for 要求 step 严格为正）
+  %c4 = arith.constant 4 : index
+  // M ← A.shape[0]：i 的上界（不含端点）
+  %c3 = arith.constant 3 : index
+  // N ← B.shape[1]：j 的上界（不含端点）
+  %c6 = arith.constant 6 : index
+  // K ← 内维契约：k 的上界（不含端点）
+  scf.for %i = %c0 to %c4 step %c1 {
+    scf.for %j = %c0 to %c3 step %c1 {
+      %acc = scf.for %k = %c0 to %c6 step %c1
+              iter_args(%acc = %zero) -> (f32) {
+        %xa = memref.load %a[%i, %k] : memref<4x6xf32, strided<[6, 1]>>
+        // 任务② 读 A：A[i,k] → 6·i+k（strides [6,1] 在 %a 的类型里；i←行号，k←归约下标）
+        %xb = memref.load %b[%k, %j] : memref<6x3xf32, strided<[3, 1]>>
+        // 任务② 读 B：B[k,j] → 3·k+j（strides [3,1]；k←行号，j←列号）
+        %p = arith.mulf %xa, %xb : f32
+        // 一块肉：%p = A[i,k]·B[k,j]（f32 逐步舍入）
+        %s = arith.addf %acc, %p : f32
+        // 累加值读取与写回：%acc（区域参数，读取通道）＋ %p → %s（下一趟经 yield 回到 %acc）
+        scf.yield %s : f32
+        // 写回通道：yield 把本趟结果交给下一趟的 %acc；循环结束时成为循环结果 %acc（体外同名不同身份）（Day 88 的 yield %zero 占位今天换成 %s）
+      }
+      // 四要素：lb=0（含）· ub=6（不含——半开区间 [0,6)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 6
+      // ub 来源：K = 内维契约 A.shape[1] == B.shape[0] = 6；%k 是本循环的区域参数（index 类型，体内可见、体外不可见）
+      // iter_args(%acc = %zero)：归约在最内层（D87/88）
+      // 体内 %acc（区域参数）≠ 体外 %acc（循环结果）；带 iter_args 必须显式 yield
+      memref.store %acc, %c[%i, %j] : memref<4x3xf32, strided<[3, 1]>>
+      // 任务② 写 C：C[i,j] → 3·i+j——每格恰好写 1 次（最终值）；位置在 k 外、j 内——作用域交集的最内层（%acc 出了 k 才有、%j 出了 j 就没）
+    }
+    // 四要素：lb=0（含）· ub=3（不含——半开区间 [0,3)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 3
+    // ub 来源：N = B.shape[1] = 3；%j 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  }
+  // 四要素：lb=0（含）· ub=4（不含——半开区间 [0,4)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 4
+  // ub 来源：M = A.shape[0] = 4；%i 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  return %c : memref<4x3xf32, strided<[3, 1]>>
+}

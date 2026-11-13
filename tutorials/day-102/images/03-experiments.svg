@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<rect x="4" y="4" width="972" height="632" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+<text x="490.0" y="36.0" font-size="22" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">对照实验（真实模拟结果）：带宽与 Tile 都压不死单缓冲的气泡</text>
+<path d="M 300.0,46.0 Q 488.7,47.2 680.0,48.0" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 42.7,64.4 Q 262.7,66.1 481.2,65.3 Q 483.8,301.4 481.7,535.4 Q 262.5,534.5 42.3,535.3 Q 42.1,299.2 42.8,66.7 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="262.0" y="92.0" font-size="15" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">实验一：DMA 带宽 ×0.5 → ×8（tile 64³）</text>
+<path d="M 95.1,172.0 Q 119.8,172.7 146.9,173.0 Q 145.5,320.1 146.0,470.7 Q 121.0,473.6 94.0,473.0 Q 92.6,322.6 93.1,171.0 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="120.0" y="152.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">1601</text>
+<text x="120.0" y="164.0" font-size="9" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">µs</text>
+<text x="120.0" y="134.0" font-size="11.5" fill="#4a708c" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">31.98%</text>
+<text x="120.0" y="492.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">×0.5</text>
+<path d="M 176.0,273.2 Q 202.6,274.8 227.2,273.3 Q 229.4,371.5 227.2,471.0 Q 201.2,472.0 176.8,471.3 Q 174.8,375.0 176.8,274.8 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="202.0" y="254.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">1056.5</text>
+<text x="202.0" y="266.0" font-size="9" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">µs</text>
+<text x="202.0" y="236.0" font-size="11.5" fill="#4a708c" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">48.46%</text>
+<text x="202.0" y="492.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">×1</text>
+<path d="M 258.5,324.4 Q 284.3,323.9 311.1,324.8 Q 311.3,398.2 309.5,470.8 Q 284.3,473.1 258.5,471.8 Q 258.0,396.8 256.9,325.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="284.0" y="305.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">784.25</text>
+<text x="284.0" y="317.0" font-size="9" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">µs</text>
+<text x="284.0" y="287.0" font-size="11.5" fill="#4a708c" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">65.29%</text>
+<text x="284.0" y="492.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">×2</text>
+<path d="M 340.8,352.1 Q 364.6,351.2 392.4,350.4 Q 393.0,411.1 390.6,470.6 Q 367.3,470.6 341.4,471.8 Q 338.5,413.1 339.6,350.8 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="366.0" y="330.6" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">648.125</text>
+<text x="366.0" y="342.6" font-size="9" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">µs</text>
+<text x="366.0" y="312.6" font-size="11.5" fill="#4a708c" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">79.00%</text>
+<text x="366.0" y="492.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">×4</text>
+<path d="M 423.6,363.5 Q 446.9,362.5 474.8,364.3 Q 474.6,417.0 472.8,471.8 Q 449.9,473.0 423.2,473.0 Q 421.7,419.1 421.2,362.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="448.0" y="343.3" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">580.062</text>
+<text x="448.0" y="355.3" font-size="9" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">µs</text>
+<text x="448.0" y="325.3" font-size="11.5" fill="#4a708c" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">88.27%</text>
+<text x="448.0" y="492.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">×8</text>
+<path d="M 62.0,370.0 Q 263.2,369.5 462.0,370.0" stroke="#9CBF8E" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="7 5"/>
+<path d="M 250.0,118.0 Q 263.4,117.7 276.0,118.0" stroke="#9CBF8E" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="7 5"/>
+<text x="282.0" y="122.0" font-size="11.5" fill="#5c7a4f" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">理想重叠下界 544.5 µs（D103 起点）</text>
+<text x="262.0" y="516.0" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">计算利用率标注在柱顶：31.98% → 88.27%，单调上升但到不了 100%</text>
+<text x="262.0" y="534.0" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">每圈时长始终 = Load + Compute（串行不变式）</text>
+<path d="M 513.2,66.0 Q 724.0,64.5 939.3,65.3 Q 938.6,315.7 936.9,567.3 Q 726.4,566.4 513.1,565.3 Q 513.4,317.9 510.7,66.7 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="725.0" y="92.0" font-size="15" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">实验二：Tile 32³ → 256³（带宽不变）</text>
+<path d="M 556.7,403.3 Q 585.3,404.3 612.9,404.9 Q 614.0,453.3 613.6,501.6 Q 584.1,501.5 558.4,502.8 Q 559.3,452.6 559.1,403.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="586.0" y="394.1" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">32.63%</text>
+<text x="586.0" y="522.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">32³</text>
+<text x="586.0" y="540.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">4 MAC/B</text>
+<text x="586.0" y="556.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">12,416 B</text>
+<path d="M 645.6,355.3 Q 675.4,357.7 700.6,355.3 Q 703.2,429.9 700.9,502.3 Q 674.0,502.2 647.1,500.6 Q 647.2,427.4 647.4,358.0 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="674.0" y="346.6" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">48.46%</text>
+<text x="674.0" y="522.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">64³</text>
+<text x="674.0" y="540.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">8 MAC/B</text>
+<text x="674.0" y="556.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">49,408 B</text>
+<path d="M 732.8,311.1 Q 763.6,311.8 788.7,309.4 Q 788.5,407.9 791.1,501.9 Q 760.4,502.9 732.9,501.4 Q 732.3,404.8 735.3,310.7 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="762.0" y="300.1" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">63.98%</text>
+<text x="762.0" y="522.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">128³</text>
+<text x="762.0" y="540.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">16 MAC/B</text>
+<text x="762.0" y="556.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">197,120 B</text>
+<path d="M 822.5,273.5 Q 850.2,274.4 877.7,274.3 Q 878.9,388.4 878.9,501.1 Q 851.5,501.2 821.1,502.8 Q 822.6,387.3 822.3,272.6 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.55"/>
+<path d="M 828.0,281.5 Q 849.1,387.6 872.0,492.0" stroke="#C97B7B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 828.0,492.0 Q 848.1,388.5 872.0,281.5" stroke="#C97B7B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<text x="850.0" y="395.7" font-size="22" fill="#C97B7B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">✗</text>
+<text x="850.0" y="263.5" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">76.18%</text>
+<text x="850.0" y="522.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">256³</text>
+<text x="850.0" y="540.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">32 MAC/B</text>
+<text x="850.0" y="556.0" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">787,456 B</text>
+<path d="M 532.0,202.0 Q 723.6,202.6 918.0,202.0" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none" stroke-dasharray="6 5"/>
+<text x="725.0" y="194.0" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">100% —— 单缓冲到不了</text>
+<text x="725.0" y="126.0" font-size="11" fill="#C97B7B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">256³：787,456 B ＞ 256 KiB，被 D101 预算拒绝</text>
+<text x="725.0" y="148.0" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">算术强度 = T/8：Tile 翻倍，搬运字节减半，利用率上升</text>
+<text x="490.0" y="608.0" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">数据来自 code/outputs/sweep-dma.txt 与 sweep-tile.txt 的真实运行（示例值模型，Python 3.11.4，aarch64，2026-11-13）</text>
+</svg>

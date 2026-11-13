@@ -1,0 +1,6 @@
+shape: M=6 N=8 K=4, tile: TM=2 TN=4 TK=2, useful_flops(M*N*K)=192, tiles=12
+strategy                   correct  inner_iters    guard/idle   boundary        oob  dup_write  max/elem
+guard(每元素if)             yes          192  192/0                 0          0          0         0
+minclamp(min钳制)            yes          192    0/0                21          0          0         0
+epilogue(分离尾部)         yes          192    0/0                 8          0          0         0
+== 正确性：3/3 全部逐位相等（与参考逐位比较） ==

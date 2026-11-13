@@ -1,0 +1,43 @@
+// 第 92 天：循环顺序 i-j-k（18 op，真实转换输出）
+// 语义与 i-j-k 位等价（OT1）；差别只在访存行为（OT2/OT3）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~91 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<2x2xf32, strided<[2, 1]>> {
+  %c = memref.alloc() : memref<2x2xf32, strided<[2, 1]>>
+  // 输出缓冲 16 B：alloc 不清零（D87）
+  %zero = arith.constant 0.0 : f32
+  // 零起点：k 在最内层时是 iter_args 初值；否则喂给清零 nest
+  %c0 = arith.constant 0 : index
+  %c1 = arith.constant 1 : index
+  %c2 = arith.constant 2 : index
+  %c2' = arith.constant 2 : index
+  %c3 = arith.constant 3 : index
+  scf.for %i = %c0 to %c2 step %c1 {
+    scf.for %j = %c0 to %c2' step %c1 {
+      %acc = scf.for %k = %c0 to %c3 step %c1
+              iter_args(%acc = %zero) -> (f32) {
+        %xa = memref.load %a[%i, %k] : memref<2x3xf32, strided<[3, 1]>>
+        // 读 A：A[i,k] → 3·i+k（i←行，k←列）
+        %xb = memref.load %b[%k, %j] : memref<3x2xf32, strided<[2, 1]>>
+        // 读 B：B[k,j] → 2·k+j（k←行，j←列）
+        %p = arith.mulf %xa, %xb : f32
+        // %p = A[i,k]·B[k,j]
+        %s = arith.addf %acc, %p : f32
+        // %acc（区域参数）＋ %p → %s
+        scf.yield %s : f32
+        // 写回通道：本趟 %s → 下一趟 %acc
+      }
+      // 四要素：[0,3) step 1，trip = 3
+      // ub 来源：K = 内维契约 A.shape[1] == B.shape[0] = 3
+      // 最内层：k 每步 2 次访存（A、B）
+      // 归约在最内层：累加器走 iter_args（寄存器语义）——Day 89/90 原顺序
+      memref.store %acc, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+      // 写 C：k 扫完一趟 store 一次——每格恰写 1 次终值
+    }
+    // 四要素：[0,2) step 1，trip = 2
+    // ub 来源：N = B.shape[1] = 2
+  }
+  // 四要素：[0,2) step 1，trip = 2
+  // ub 来源：M = A.shape[0] = 2
+  // 最外层：i——i-j-k 顺序（外→内）
+  return %c : memref<2x2xf32, strided<[2, 1]>>
+}

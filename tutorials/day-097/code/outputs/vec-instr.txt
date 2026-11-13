@@ -1,0 +1,2 @@
+    6 条 128-bit 向量指令(.4s 算术 + ldr/str q)  <void (anonymous namespace)::tiled_matmul<1>(float const*, float const*, float*, int, int, int, int, int, int)>
+    （未列出的 tiled_matmul<0>/naive_ref 含 0 条向量指令——纯标量）

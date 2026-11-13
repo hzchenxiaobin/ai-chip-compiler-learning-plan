@@ -1,0 +1,7 @@
+正确性套件：5 个 shape × 6 个配置（tile 超出维度时由 min 钳制兜底）
+shape   5x  7x  3: ijk-32  :PASS ijk-64  :PASS ijk-128 :PASS ikj-32  :PASS ikj-64  :PASS ikj-128 :PASS
+shape  33x 31x 29: ijk-32  :PASS ijk-64  :PASS ijk-128 :PASS ikj-32  :PASS ikj-64  :PASS ikj-128 :PASS
+shape  64x 64x 64: ijk-32  :PASS ijk-64  :PASS ijk-128 :PASS ikj-32  :PASS ikj-64  :PASS ikj-128 :PASS
+shape  65x 63x 33: ijk-32  :PASS ijk-64  :PASS ijk-128 :PASS ikj-32  :PASS ikj-64  :PASS ikj-128 :PASS
+shape 127x129x125: ijk-32  :PASS ijk-64  :PASS ijk-128 :PASS ikj-32  :PASS ikj-64  :PASS ikj-128 :PASS
+== 正确性套件: 30/30 PASS（全部与参考逐位相等）==

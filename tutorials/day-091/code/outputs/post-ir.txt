@@ -1,0 +1,48 @@
+// Lowering 后：18 op 循环实现（真实转换输出）
+// mini.matmul 消失；类型变 memref（内存语义）；语义保持由 RT2~RT4 验证
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~90 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<2x2xf32, strided<[2, 1]>> {
+  %c = memref.alloc() : memref<2x2xf32, strided<[2, 1]>>
+  // 任务① 输出缓冲 16 B：alloc 不清零——零起点是 %zero（D87）
+  %zero = arith.constant 0.0 : f32
+  // 任务③(D87) 零起点：累加器的初值（归约单位元），不写内存
+  %c0 = arith.constant 0 : index
+  // 下界 0（含端点；memref 下标从 0 开始）
+  %c1 = arith.constant 1 : index
+  // 步长 1（scf.for 要求 step 严格为正）
+  %c2 = arith.constant 2 : index
+  // M ← A.shape[0]：i 的上界（不含端点）
+  %c2' = arith.constant 2 : index
+  // N ← B.shape[1]：j 的上界（不含端点）
+  %c3 = arith.constant 3 : index
+  // K ← 内维契约：k 的上界（不含端点）
+  scf.for %i = %c0 to %c2 step %c1 {
+    scf.for %j = %c0 to %c2' step %c1 {
+      %acc = scf.for %k = %c0 to %c3 step %c1
+              iter_args(%acc = %zero) -> (f32) {
+        %xa = memref.load %a[%i, %k] : memref<2x3xf32, strided<[3, 1]>>
+        // 任务② 读 A：A[i,k] → 3·i+k（strides [3,1] 在 %a 的类型里；i←行号，k←归约下标）
+        %xb = memref.load %b[%k, %j] : memref<3x2xf32, strided<[2, 1]>>
+        // 任务② 读 B：B[k,j] → 2·k+j（strides [2,1]；k←行号，j←列号）
+        %p = arith.mulf %xa, %xb : f32
+        // 一块肉：%p = A[i,k]·B[k,j]（f32 逐步舍入）
+        %s = arith.addf %acc, %p : f32
+        // 累加值读取与写回：%acc（区域参数，读取通道）＋ %p → %s（下一趟经 yield 回到 %acc）
+        scf.yield %s : f32
+        // 写回通道：yield 把本趟结果交给下一趟的 %acc；循环结束时成为循环结果 %acc（体外同名不同身份）
+      }
+      // 四要素：lb=0（含）· ub=3（不含——半开区间 [0,3)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 3
+      // ub 来源：K = 内维契约 A.shape[1] == B.shape[0] = 3；%k 是本循环的区域参数（index 类型，体内可见、体外不可见）
+      // iter_args(%acc = %zero)：归约在最内层（D87/88）
+      // 体内 %acc（区域参数）≠ 体外 %acc（循环结果）；带 iter_args 必须显式 yield
+      memref.store %acc, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+      // 任务② 写 C：C[i,j] → 2·i+j——每格恰好写 1 次（最终值）；位置在 k 外、j 内（作用域交集的最内层）
+    }
+    // 四要素：lb=0（含）· ub=2（不含——半开区间 [0,2)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 2
+    // ub 来源：N = B.shape[1] = 2；%j 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  }
+  // 四要素：lb=0（含）· ub=2（不含——半开区间 [0,2)）· step=1 · trip = max(0, ceil((ub-lb)/step)) = 2
+  // ub 来源：M = A.shape[0] = 2；%i 是本循环的区域参数（index 类型，体内可见、体外不可见）
+  // i 是最外层：C 的每一行独立（行间无依赖）
+  return %c : memref<2x2xf32, strided<[2, 1]>>
+}

@@ -1,0 +1,5 @@
+main table  : 见 main-table.txt
+suite       : 20/20 通过（U=4+U=5 两轮）
+bench       : bench-scalar.txt / bench-vector.txt（中位数，预热 5 次）
+IR parse    : 3/3 OK（matmul_before / unroll_k2 / unroll_k4_divisible）
+upstream    : affine-loop-unroll 1121B/1mulf -> 2283B/5mulf

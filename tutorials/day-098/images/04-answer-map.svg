@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 530" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 12.5px; fill: #6b6257; }
+    .colh { font-size: 14px; font-weight: bold; }
+    .chipn { font-size: 15px; font-weight: bold; }
+    .chipv { font-size: 11.5px; }
+    .why { font-size: 10.5px; fill: #5a554d; }
+    .pt { font-size: 13px; font-weight: bold; }
+    .step { font-size: 11.5px; }
+    .res { font-size: 12.5px; font-weight: bold; }
+    .verdict { font-size: 11.5px; }
+    .memo { font-size: 12.5px; }
+    .box { stroke: #3B3B3B; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="952" height="522" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+
+  <text x="480" y="34" text-anchor="middle" class="title">标准回答的合成：两笔方向相反的账</text>
+  <text x="480" y="56" text-anchor="middle" class="sub">左：512³ 起点 → 中：换到 516³ 各自的增量（行距探针 / 账本实测）→ 右：516³ 结果 · 数据见 D98 outputs/</text>
+
+  <path class="arr" d="M 292,68 Q 480,44 668,68"/>
+  <path class="arr" d="M 292,68 l 10,-3 M 292,68 l 9,6"/>
+  <path class="arr" d="M 668,68 l -10,-3 M 668,68 l -9,6"/>
+  <text x="480" y="44" text-anchor="middle" class="sub" font-weight="bold">冠军换人（同一个内核，只换 shape）</text>
+
+  <!-- 左列：512^3 -->
+  <text x="160" y="94" text-anchor="middle" class="colh">512³（无尾 · 行距 2048B）</text>
+  <g>
+    <path class="box" d="M 50,102 Q 162,98 272,103 Q 275,130 272,158 Q 162,162 52,158 Q 47,130 50,102 Z" fill="#E8A87C" fill-opacity="0.4"/>
+    <text x="161" y="124" text-anchor="middle" class="chipn">★ ikj-128</text>
+    <text x="161" y="145" text-anchor="middle" class="chipv">14.14 GFLOPS · 领先 +6.1%</text>
+    <text x="50" y="178" class="why">赢在哪：C 过趟 4（ikj-64 是 8）</text>
+    <text x="50" y="194" class="why">外壳数 64 对 512——开销摊薄 8 倍</text>
+    <text x="50" y="210" class="why">工作集 128KB 超 L1，但住得进 L2</text>
+  </g>
+  <g>
+    <path class="box" d="M 50,224 Q 162,220 272,225 Q 275,248 272,274 Q 162,278 52,274 Q 47,248 50,224 Z" fill="#7FA8D9" fill-opacity="0.3"/>
+    <text x="161" y="245" text-anchor="middle" class="chipn">ikj-64</text>
+    <text x="161" y="265" text-anchor="middle" class="chipv">13.33 GFLOPS</text>
+    <text x="50" y="296" class="why">工作集 32KB 住 L1d</text>
+    <text x="50" y="312" class="why">但 2048B 行距周期 8 撞组 → 冲突缺失</text>
+  </g>
+
+  <!-- 中列：增量账 -->
+  <text x="480" y="94" text-anchor="middle" class="colh">换到 516³：各自的增量账</text>
+  <g>
+    <path class="box" d="M 332,102 Q 480,98 628,103 Q 631,172 628,240 Q 480,245 334,240 Q 330,172 332,102 Z" fill="#7FA8D9" fill-opacity="0.14"/>
+    <text x="480" y="122" text-anchor="middle" class="pt">ikj-64 的账</text>
+    <path class="box" d="M 344,130 Q 480,127 616,131 Q 618,141 616,150 Q 480,154 346,150 Q 342,140 344,130 Z" fill="#F5F0E4"/>
+    <text x="480" y="145" text-anchor="middle" class="step">13.33（512³ 起点）</text>
+    <path class="box" d="M 344,158 Q 480,155 616,159 Q 618,169 616,178 Q 480,182 346,178 Q 342,169 344,158 Z" fill="#93C6A0" fill-opacity="0.4"/>
+    <text x="480" y="173" text-anchor="middle" class="step">+8.1% 行距红利：2064B 打散周期 8 撞组</text>
+    <path class="box" d="M 344,186 Q 480,183 616,187 Q 618,197 616,206 Q 480,210 346,206 Q 342,197 344,186 Z" fill="#D98484" fill-opacity="0.35"/>
+    <text x="480" y="201" text-anchor="middle" class="step">−5.0% 三条尾（对齐口径 528 实测）</text>
+    <path class="box" d="M 344,214 Q 480,211 616,215 Q 618,225 616,234 Q 480,238 346,234 Q 342,225 344,214 Z" fill="#93C6A0" fill-opacity="0.4"/>
+    <text x="480" y="229" text-anchor="middle" class="step">+1.5% 行距 2064B 对 2112B</text>
+    <text x="480" y="258" text-anchor="middle" class="res">= 13.90（账面）→ 实测 13.90 ✓</text>
+  </g>
+  <g>
+    <path class="box" d="M 332,272 Q 480,268 628,273 Q 631,340 628,412 Q 480,417 334,412 Q 330,340 332,272 Z" fill="#E8A87C" fill-opacity="0.18"/>
+    <text x="480" y="292" text-anchor="middle" class="pt">ikj-128 的账</text>
+    <path class="box" d="M 344,300 Q 480,297 616,301 Q 618,311 616,320 Q 480,324 346,320 Q 342,311 344,300 Z" fill="#F5F0E4"/>
+    <text x="480" y="315" text-anchor="middle" class="step">14.14（512³ 起点）</text>
+    <path class="box" d="M 344,328 Q 480,325 616,329 Q 618,339 616,348 Q 480,352 346,348 Q 342,339 344,328 Z" fill="#D98484" fill-opacity="0.35"/>
+    <text x="480" y="343" text-anchor="middle" class="step">−4.5% 三条尾：K 尾第 5 趟 C（流量 +25%）</text>
+    <path class="box" d="M 344,356 Q 480,353 616,357 Q 618,367 616,376 Q 480,380 346,376 Q 342,367 344,356 Z" fill="#D98484" fill-opacity="0.35"/>
+    <text x="480" y="371" text-anchor="middle" class="step">其中 N 尾：4 宽短内层（1/5 的 j-tile）</text>
+    <path class="box" d="M 344,384 Q 480,381 616,385 Q 618,395 616,404 Q 480,408 346,404 Q 342,395 344,384 Z" fill="#E7DFCE" fill-opacity="0.7"/>
+    <text x="480" y="399" text-anchor="middle" class="step">−0.1% 行距（工作集本就超 L1）</text>
+    <text x="480" y="428" text-anchor="middle" class="res">= 13.51（账面）→ 实测 12.80~13.74（相位区间）</text>
+  </g>
+
+  <!-- 右列：516^3 -->
+  <text x="800" y="94" text-anchor="middle" class="colh">516³（带尾 · 行距 2064B）</text>
+  <g>
+    <path class="box" d="M 690,102 Q 800,98 910,103 Q 913,130 910,158 Q 800,162 692,158 Q 687,130 690,102 Z" fill="#7FA8D9" fill-opacity="0.35"/>
+    <text x="800" y="124" text-anchor="middle" class="chipn">★ ikj-64</text>
+    <text x="800" y="145" text-anchor="middle" class="chipv">13.90 GFLOPS · 领先 +1.5~8.6%</text>
+    <text x="690" y="178" class="why">尾巴照付，但行距红利 +8% 盖过</text>
+    <text x="690" y="194" class="why">工作集小，L1 装得下</text>
+  </g>
+  <g>
+    <path class="box" d="M 690,208 Q 800,204 910,209 Q 913,234 910,260 Q 800,264 692,260 Q 687,234 690,208 Z" fill="#E8A87C" fill-opacity="0.3"/>
+    <text x="800" y="229" text-anchor="middle" class="chipn">ikj-128</text>
+    <text x="800" y="250" text-anchor="middle" class="chipv">12.80~13.74 GFLOPS</text>
+    <text x="690" y="282" class="why">K 尾多付第 5 趟 C（+25%）</text>
+    <text x="690" y="298" class="why">N 尾短内层：开销只摊 4 个元素</text>
+  </g>
+  <g>
+    <path class="box" stroke-width="2.6" d="M 690,312 Q 800,308 910,313 Q 913,358 910,404 Q 800,409 692,404 Q 687,358 690,312 Z" fill="#D98484" fill-opacity="0.22"/>
+    <text x="800" y="336" text-anchor="middle" class="pt">天平换向</text>
+    <text x="800" y="358" text-anchor="middle" class="verdict">大 Tile 的流量/开销优势</text>
+    <text x="800" y="376" text-anchor="middle" class="verdict">＜ 尾巴伤 ＋ 对手白捡的行距红利</text>
+    <text x="800" y="396" text-anchor="middle" class="why">（幅度随进程相位波动 → 只给区间）</text>
+  </g>
+
+  <!-- 列间箭头 -->
+  <path class="arr" d="M 276,240 Q 304,212 330,168"/>
+  <path class="arr" d="M 330,168 l -8,3 M 330,168 l -3,9"/>
+  <path class="arr" d="M 276,134 Q 306,240 330,330"/>
+  <path class="arr" d="M 330,330 l -8,-1 M 330,330 l -4,-9"/>
+  <path class="arr" d="M 632,246 Q 660,204 686,140"/>
+  <path class="arr" d="M 686,140 l -8,4 M 686,140 l -4,9"/>
+  <path class="arr" d="M 632,412 Q 660,330 686,246"/>
+  <path class="arr" d="M 686,246 l -8,2 M 686,246 l -4,-9"/>
+
+  <!-- 底部备忘卡 -->
+  <path class="box" d="M 62,442 Q 480,438 898,443 Q 900,464 898,486 Q 480,491 64,486 Q 60,464 62,442 Z" fill="#93C6A0" fill-opacity="0.24"/>
+  <text x="480" y="462" text-anchor="middle" class="memo" font-weight="bold">背下来的话（6.2 节）：大 Tile 拿流量和开销换容量和尾巴；shape 一换，天平两边的砝码全换了</text>
+  <text x="480" y="482" text-anchor="middle" class="memo">——最优 Tile 是 shape 的函数，不是常数；区间 = 跨进程相位波动（tailcost 三连跑实测单格最多 −13%）</text>
+</svg>

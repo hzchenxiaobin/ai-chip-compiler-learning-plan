@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 570" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .bt { font-size: 13.5px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .band { font-size: 12px; font-weight: bold; fill: #5a554d; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .key { font-size: 13.5px; font-weight: bold; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="562" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="36" text-anchor="middle" class="title">定位：缓冲区复用（D100）在编译链路与本周路线中的位置</text>
+  <path d="M 300,46 Q 490,42 680,47" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="490" y="62" text-anchor="middle" class="sub">上：编译主线——本周从「算得快」转向「放得下」｜中：本周路线｜下：今天内部的四步流水线</text>
+
+  <!-- 上：编译主线 -->
+  <path class="box" d="M 28,80 Q 139,76 250,80 Q 254,114 250,148 Q 139,152 30,148 Q 25,114 28,80 Z" fill="#F5F0E4"/>
+  <text x="139" y="104" text-anchor="middle" class="bt">图优化 · Lowering</text>
+  <text x="139" y="122" text-anchor="middle" class="det">D1~D98：算什么、怎么算快</text>
+  <text x="139" y="138" text-anchor="middle" class="det">融合／消除类 Pass 已跑完</text>
+
+  <path class="box" d="M 272,80 Q 383,76 494,80 Q 498,114 494,148 Q 383,152 274,148 Q 269,114 272,80 Z" fill="#F5F0E4"/>
+  <text x="383" y="104" text-anchor="middle" class="bt">优化后的图 ＋ 执行顺序</text>
+  <text x="383" y="122" text-anchor="middle" class="det">4 个算子 · 5 个动态张量</text>
+  <text x="383" y="138" text-anchor="middle" class="det">3 个权重常驻（80 KB）</text>
+
+  <path class="box" d="M 516,80 Q 627,75 738,80 Q 743,114 738,148 Q 627,153 518,148 Q 512,114 516,80 Z" fill="#E8A87C" fill-opacity="0.32"/>
+  <text x="627" y="104" text-anchor="middle" class="bt">内存规划（第 15 周）</text>
+  <text x="627" y="122" text-anchor="middle" class="det">「内存里怎么放」</text>
+  <text x="627" y="138" text-anchor="middle" class="det">D99 区间表 → D100 复用</text>
+
+  <path class="box" d="M 760,80 Q 856,76 952,80 Q 955,114 952,148 Q 855,152 762,148 Q 757,114 760,80 Z" fill="#F5F0E4"/>
+  <text x="856" y="104" text-anchor="middle" class="bt">代码生成 · 下板</text>
+  <text x="856" y="122" text-anchor="middle" class="det">D103 之后：拿着分配表</text>
+  <text x="856" y="138" text-anchor="middle" class="det">生成地址访问代码</text>
+
+  <path class="arr" d="M 252,114 L 270,114"/><path class="arr" d="M 270,114 l -8,-4 M 270,114 l -8,5"/>
+  <path class="arr" d="M 496,114 L 514,114"/><path class="arr" d="M 514,114 l -8,-4 M 514,114 l -8,5"/>
+  <path class="arr" d="M 740,114 L 758,114"/><path class="arr" d="M 758,114 l -8,-4 M 758,114 l -8,5"/>
+
+  <!-- 中：本周路线 -->
+  <text x="490" y="172" text-anchor="middle" class="band">本周路线：D99 给「谁在何时占用」→ D100 装房子 → D101 起估片上</text>
+
+  <path class="box" d="M 28,180 Q 139,176 250,180 Q 254,205 250,230 Q 139,234 30,230 Q 25,205 28,180 Z" fill="#7FA8D9" fill-opacity="0.18"/>
+  <text x="139" y="202" text-anchor="middle" class="bt">D99 Tensor 生命周期</text>
+  <text x="139" y="220" text-anchor="middle" class="det">区间表 · 峰值 1280 / 1664 B</text>
+
+  <path class="box" d="M 272,180 Q 383,175 494,180 Q 499,205 494,230 Q 383,235 274,230 Q 268,205 272,180 Z" fill="#E8A87C" fill-opacity="0.38" stroke-width="2.6" stroke-dasharray="9 5"/>
+  <text x="383" y="202" text-anchor="middle" class="bt">D100 缓冲区复用 ← 今天</text>
+  <text x="383" y="220" text-anchor="middle" class="det">2432 B → 1280 B（−47%）</text>
+
+  <path class="box" d="M 516,180 Q 627,176 738,180 Q 742,205 738,230 Q 627,234 518,230 Q 513,205 516,180 Z" fill="#93C6A0" fill-opacity="0.20"/>
+  <text x="627" y="202" text-anchor="middle" class="bt">D101 片上空间估算</text>
+  <text x="627" y="220" text-anchor="middle" class="det">Tile · Dtype · 双缓冲</text>
+
+  <path class="box" d="M 760,180 Q 856,176 952,180 Q 955,205 952,230 Q 855,234 762,230 Q 757,205 760,180 Z" fill="#F5F0E4"/>
+  <text x="856" y="202" text-anchor="middle" class="bt">D102~103 搬运与固化</text>
+  <text x="856" y="220" text-anchor="middle" class="det">DMA · 权重布局</text>
+
+  <path class="arr" d="M 252,205 L 270,205"/><path class="arr" d="M 270,205 l -8,-4 M 270,205 l -8,5"/>
+  <path class="arr" d="M 496,205 L 514,205"/><path class="arr" d="M 514,205 l -8,-4 M 514,205 l -8,5"/>
+  <path class="arr" d="M 740,205 L 758,205"/><path class="arr" d="M 758,205 l -8,-4 M 758,205 l -8,5"/>
+
+  <!-- 下：今天内部 -->
+  <text x="490" y="262" text-anchor="middle" class="band">今天内部：从区间表到一块共享 workspace（四步流水线）</text>
+
+  <path class="box" d="M 28,272 Q 139,267 250,272 Q 254,327 250,382 Q 139,387 30,382 Q 25,327 28,272 Z" fill="#7FA8D9" fill-opacity="0.14"/>
+  <text x="139" y="296" text-anchor="middle" class="bt">① 输入：区间表＋约束</text>
+  <text x="139" y="318" text-anchor="middle" class="det">· 区间不重叠（闭区间）</text>
+  <text x="139" y="336" text-anchor="middle" class="det">· 尺寸（字节）</text>
+  <text x="139" y="354" text-anchor="middle" class="det">· 对齐（默认 32 B）</text>
+  <text x="139" y="372" text-anchor="middle" class="det">· 别名（视图先合并）</text>
+
+  <path class="box" d="M 272,272 Q 383,267 494,272 Q 498,327 494,382 Q 383,387 274,382 Q 269,327 272,272 Z" fill="#7FA8D9" fill-opacity="0.14"/>
+  <text x="383" y="296" text-anchor="middle" class="bt">② 简单内存规划器</text>
+  <text x="383" y="318" text-anchor="middle" class="det">合并别名组</text>
+  <text x="383" y="336" text-anchor="middle" class="det">按策略排序（H1/H2/H3）</text>
+  <text x="383" y="354" text-anchor="middle" class="det">首次适应放置</text>
+  <text x="383" y="372" text-anchor="middle" class="det">候选偏移对齐上取整</text>
+
+  <path class="box" d="M 516,272 Q 627,267 738,272 Q 742,327 738,382 Q 627,387 518,382 Q 513,327 516,272 Z" fill="#E8A87C" fill-opacity="0.20"/>
+  <text x="627" y="296" text-anchor="middle" class="bt">③ 内存分配表</text>
+  <text x="627" y="318" text-anchor="middle" class="det">存储单元 → 偏移×字节范围</text>
+  <text x="627" y="336" text-anchor="middle" class="det">workspace 总量</text>
+  <text x="627" y="354" text-anchor="middle" class="det">碎片 = 总量 − 峰值</text>
+  <text x="627" y="372" text-anchor="middle" class="det">（今天的核心产出）</text>
+
+  <path class="box" d="M 760,272 Q 856,267 952,272 Q 955,327 952,382 Q 855,387 762,382 Q 757,327 760,272 Z" fill="#93C6A0" fill-opacity="0.22"/>
+  <text x="856" y="296" text-anchor="middle" class="bt">④ 复用正确性测试</text>
+  <text x="856" y="318" text-anchor="middle" class="det">静态：重叠 ⇒ 字节错开</text>
+  <text x="856" y="336" text-anchor="middle" class="det">动态：逐字节投毒模拟</text>
+  <text x="856" y="354" text-anchor="middle" class="det">别名组同偏移检查</text>
+  <text x="856" y="372" text-anchor="middle" class="det">（7 项检查全过才算数）</text>
+
+  <path class="arr" d="M 252,327 L 270,327"/><path class="arr" d="M 270,327 l -8,-4 M 270,327 l -8,5"/>
+  <path class="arr" d="M 496,327 L 514,327"/><path class="arr" d="M 514,327 l -8,-4 M 514,327 l -8,5"/>
+  <path class="arr" d="M 740,327 L 758,327"/><path class="arr" d="M 758,327 l -8,-4 M 758,327 l -8,5"/>
+
+  <!-- 关键结论 -->
+  <path class="box" d="M 28,400 Q 490,395 952,400 Q 956,434 952,468 Q 490,473 30,468 Q 24,434 28,400 Z" fill="#F5F0E4"/>
+  <text x="490" y="424" text-anchor="middle" class="key">昨天的结论就是今天的下界：峰值活跃集合 1280 B——任何方案的 workspace 都不可能低于它</text>
+  <text x="490" y="444" text-anchor="middle" class="det">今天的工作：把「一人一间」的 2432 B 压到这条线，并且用测试证明压得对</text>
+  <text x="490" y="460" text-anchor="middle" class="det">产出：内存分配表 ＋ 复用正确性测试（code/outputs/ 下有全部真实运行记录）</text>
+
+  <text x="490" y="545" text-anchor="middle" class="foot">与 D99 同一张图、同一口径：x (1,32) · t1 (1,256) · t2 (1,32) · s (1,128) · y (1,160)，float32，参数 81920 B 常驻权重区</text>
+</svg>

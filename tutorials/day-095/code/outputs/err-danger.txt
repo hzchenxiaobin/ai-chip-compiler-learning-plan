@@ -1,0 +1,4 @@
+shape: M=5 N=7 K=3, tile: TM=2 TN=4 TK=2, mode=danger
+strategy                   correct  inner_iters    guard/idle   boundary        oob  dup_write  max/elem
+danger(无任何保护)         NO          192    0/0                 0        242          0         0
+inner_iters=192 oob_touches=242 assign_stores=0 duplicate_writes=0 max_assign_per_elem=0 max_abs_err=56.250 correct=NO

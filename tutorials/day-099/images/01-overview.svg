@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 24px; font-weight: bold; }
+    .sub { font-size: 13.5px; fill: #6b6257; }
+    .tag { font-size: 12px; font-weight: bold; fill: #6b6257; }
+    .name { font-size: 14.5px; font-weight: bold; }
+    .det { font-size: 10.5px; fill: #5a554d; }
+    .ban { font-size: 16px; font-weight: bold; }
+    .ban2 { font-size: 12.5px; fill: #5a554d; }
+    .pt { font-size: 13.5px; font-weight: bold; }
+    .ps { font-size: 10.5px; fill: #5a554d; }
+    .foot { font-size: 12px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="952" height="532" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="480" y="38" text-anchor="middle" class="title">第 15 周开局：内存规划的第一块积木——Tensor 生命周期</text>
+  <path d="M 250,48 Q 480,44 710,49" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="480" y="65" text-anchor="middle" class="sub">D98 复盘完「怎么算得快」，本周开始回答「内存里怎么放」——今天的答案是一张生命周期表</text>
+
+  <!-- 上排：编译主线 -->
+  <g>
+    <path class="box" d="M 42,84 Q 172,79 300,84 Q 304,116 300,148 Q 171,153 43,148 Q 39,116 42,84 Z" fill="#7FA8D9" fill-opacity="0.22"/>
+    <text x="171" y="104" text-anchor="middle" class="tag">第 2~10 周</text>
+    <text x="171" y="121" text-anchor="middle" class="name">图 IR 与优化 Pass</text>
+    <text x="171" y="137" text-anchor="middle" class="det">融合 / 消除 / Shape（输入是「优化后的图」）</text>
+
+    <path class="box" d="M 327,85 Q 457,80 585,85 Q 589,117 585,149 Q 456,154 328,149 Q 324,117 327,85 Z" fill="#93C6A0" fill-opacity="0.24"/>
+    <text x="456" y="105" text-anchor="middle" class="tag">第 13~14 周</text>
+    <text x="456" y="122" text-anchor="middle" class="name">Lowering · Tiling</text>
+    <text x="456" y="138" text-anchor="middle" class="det">图 → 循环 IR，切块与尾部</text>
+
+    <path class="box" stroke-width="2.8" d="M 612,83 Q 742,78 872,84 Q 876,117 872,150 Q 741,155 613,149 Q 609,116 612,83 Z" fill="#E8A87C" fill-opacity="0.30"/>
+    <text x="742" y="103" text-anchor="middle" class="tag">第 15 周（本周）</text>
+    <text x="742" y="120" text-anchor="middle" class="name">内存规划与硬件映射</text>
+    <text x="742" y="136" text-anchor="middle" class="det">逻辑张量 → 缓冲区 / 片上空间</text>
+
+    <path class="arr" d="M 303,116 q 11,-4 22,0"/><path class="arr" d="M 325,116 l -7,-4 M 325,116 l -7,5"/>
+    <path class="arr" d="M 588,117 q 11,-4 22,0"/><path class="arr" d="M 610,117 l -7,-4 M 610,117 l -7,5"/>
+    <path class="arr" d="M 875,116 q 14,-5 28,0" stroke-dasharray="6 5"/>
+    <path class="arr" d="M 903,116 l -8,-4 M 903,116 l -8,5"/>
+    <text x="917" y="112" class="ps">→ 调优 /</text>
+    <text x="917" y="124" class="ps">CodeGen</text>
+    <text x="917" y="136" class="ps">(第16周起)</text>
+  </g>
+
+  <!-- 中排：本周七天 -->
+  <text x="480" y="178" text-anchor="middle" class="sub">本周七天：先搞清「谁在何时占用内存」，再谈复用、搬运和片上放不下怎么办</text>
+  <g>
+    <path class="box" stroke-width="2.8" d="M 55,196 Q 158,191 259,196 Q 262,236 259,276 Q 157,281 56,276 Q 52,236 55,196 Z" fill="#D98484" fill-opacity="0.22"/>
+    <text x="157" y="216" text-anchor="middle" class="tag">D99（今天）</text>
+    <text x="157" y="233" text-anchor="middle" class="name">Tensor 生命周期</text>
+    <text x="157" y="249" text-anchor="middle" class="det">定义点 / 最后使用点 /</text>
+    <text x="157" y="262" text-anchor="middle" class="det">活跃区间 + 执行顺序影响</text>
+
+    <path class="box" d="M 272,197 Q 362,192 450,197 Q 453,236 450,275 Q 361,280 273,275 Q 269,236 272,197 Z" fill="#F5F0E4"/>
+    <text x="361" y="217" text-anchor="middle" class="tag">D100（明天）</text>
+    <text x="361" y="234" text-anchor="middle" class="name">缓冲区复用</text>
+    <text x="361" y="250" text-anchor="middle" class="det">区间不重叠 → 共享缓冲区</text>
+    <text x="361" y="263" text-anchor="middle" class="det">吃今天的生命周期表</text>
+
+    <path class="box" d="M 463,197 Q 553,192 641,197 Q 644,236 641,275 Q 552,280 464,275 Q 460,236 463,197 Z" fill="#F5F0E4"/>
+    <text x="552" y="217" text-anchor="middle" class="tag">D101~D103</text>
+    <text x="552" y="234" text-anchor="middle" class="name">片上空间 · 搬运</text>
+    <text x="552" y="250" text-anchor="middle" class="det">Double Buffering</text>
+    <text x="552" y="263" text-anchor="middle" class="det">区间决定搬运时机</text>
+
+    <path class="box" d="M 654,197 Q 744,192 832,197 Q 835,236 832,275 Q 743,280 655,275 Q 651,236 654,197 Z" fill="#F5F0E4"/>
+    <text x="743" y="217" text-anchor="middle" class="tag">D104~D105</text>
+    <text x="743" y="234" text-anchor="middle" class="name">资源约束 · 复盘</text>
+    <text x="743" y="250" text-anchor="middle" class="det">放不下怎么办，</text>
+    <text x="743" y="263" text-anchor="middle" class="det">一周账合起来看</text>
+
+    <path class="arr" d="M 262,236 q 6,-3 12,0"/><path class="arr" d="M 274,236 l -6,-4 M 274,236 l -6,4"/>
+    <path class="arr" d="M 453,236 q 6,-3 12,0"/><path class="arr" d="M 465,236 l -6,-4 M 465,236 l -6,4"/>
+    <path class="arr" d="M 644,236 q 6,-3 12,0"/><path class="arr" d="M 656,236 l -6,-4 M 656,236 l -6,4"/>
+  </g>
+
+  <!-- 今天的输入输出流水线 -->
+  <path class="box" d="M 70,304 Q 930,299 950,303 L 950,460 Q 480,468 62,461 Q 58,340 70,304 Z" fill="none" stroke="#E7DFCE" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="480" y="328" text-anchor="middle" class="ban">今天的单向流水线：图 + 执行顺序 ⟶ 生命周期表 ⟶ 峰值内存 ⟶（明天）共享缓冲区</text>
+
+  <g>
+    <path class="box" d="M 92,346 Q 232,341 368,346 Q 371,378 368,410 Q 231,415 93,410 Q 89,378 92,346 Z" fill="#7FA8D9" fill-opacity="0.20"/>
+    <text x="230" y="366" text-anchor="middle" class="pt">输入①：优化后的计算图</text>
+    <text x="230" y="384" text-anchor="middle" class="det">第 8 周融合已跑完，剩 4 个算子</text>
+    <text x="230" y="399" text-anchor="middle" class="det">（双分支特征块，见第 5 节）</text>
+
+    <text x="384" y="386" text-anchor="middle" class="ban" font-size="22px">+</text>
+
+    <path class="box" d="M 402,346 Q 542,341 678,346 Q 681,378 678,410 Q 541,415 403,410 Q 399,378 402,346 Z" fill="#93C6A0" fill-opacity="0.22"/>
+    <text x="540" y="366" text-anchor="middle" class="pt">输入②：拓扑执行顺序</text>
+    <text x="540" y="384" text-anchor="middle" class="det">同图可有多种合法顺序，</text>
+    <text x="540" y="399" text-anchor="middle" class="det">今天证明它改写峰值（+30%）</text>
+
+    <path class="arr" d="M 681,378 q 12,-4 24,0"/><path class="arr" d="M 705,378 l -8,-4 M 705,378 l -8,5"/>
+
+    <path class="box" stroke-width="2.6" d="M 712,344 Q 838,339 940,344 Q 943,378 940,412 Q 837,417 713,412 Q 709,378 712,344 Z" fill="#E8A87C" fill-opacity="0.30"/>
+    <text x="826" y="364" text-anchor="middle" class="pt">今天：生命周期分析</text>
+    <text x="826" y="382" text-anchor="middle" class="det">每张量：def / last_use / 区间</text>
+    <text x="826" y="397" text-anchor="middle" class="det">每步：谁活着、峰值在哪步</text>
+  </g>
+
+  <path class="arr" d="M 826,417 Q 826,442 760,447 L 400,447 Q 300,447 300,425"/>
+  <path class="arr" d="M 300,425 l 5,8 M 300,425 l 9,2"/>
+  <text x="565" y="441" text-anchor="middle" class="ps">产出回流：生命周期表 + 区间可视化（ outputs/ 下的真实文件 ）——明天的内存规划器直接消费它</text>
+
+  <text x="480" y="500" text-anchor="middle" class="foot">一句话定位：内存规划不问「要多大」，先问「什么时候要」——生命周期就是把「什么时候」写成一张表</text>
+  <text x="480" y="520" text-anchor="middle" class="foot">类比边界：今天的表是静态图推导的结果；动态图 / 数据相关控制流需要运行时信息，是第 19 周的话题</text>
+</svg>

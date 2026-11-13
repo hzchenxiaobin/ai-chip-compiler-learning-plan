@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','楷体',cursive">
+  <defs>
+    <filter id="rough" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#34322c"/>
+    </marker>
+  </defs>
+
+  <rect x="4" y="4" width="952" height="592" fill="#fdfaf2" stroke="none"/>
+  <text x="42" y="50" font-size="27" fill="#34322c" font-weight="bold">第 97 天：把“单点结论”升级成“可信实验”</text>
+  <text x="44" y="76" font-size="15" fill="#6b675c">D96 只测了一个点：reorder 比 baseline 快 4.5×。今天让 3 种 Tile × 2 种循环顺序同台竞争，先学会“怎么测才算数”。</text>
+
+  <g filter="url(#rough)" stroke-width="2.6">
+    <rect x="42" y="104" width="150" height="46" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.6 117 127)"/>
+    <rect x="236" y="102" width="170" height="48" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(0.5 321 126)"/>
+    <rect x="452" y="98" width="216" height="54" rx="9" fill="#8fb3d9" stroke="#4f7cae" stroke-width="3.2" transform="rotate(-0.8 560 125)"/>
+    <rect x="716" y="104" width="140" height="46" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(0.6 786 127)"/>
+    <line x1="196" y1="127" x2="230" y2="127" stroke="#34322c" marker-end="url(#arr)"/>
+    <line x1="410" y1="127" x2="446" y2="126" stroke="#34322c" marker-end="url(#arr)"/>
+    <line x1="672" y1="126" x2="710" y2="127" stroke="#34322c" marker-end="url(#arr)"/>
+  </g>
+  <text x="117" y="123" font-size="14.5" fill="#34322c" text-anchor="middle">D95 算得对</text>
+  <text x="117" y="141" font-size="11.5" fill="#6b675c" text-anchor="middle">min 钳制尾部</text>
+  <text x="321" y="122" font-size="14.5" fill="#34322c" text-anchor="middle">D96 展开与向量化</text>
+  <text x="321" y="140" font-size="11.5" fill="#6b675c" text-anchor="middle">reorder 4.5×(单点)</text>
+  <text x="560" y="120" font-size="15" font-weight="bold" fill="#1f3a56" text-anchor="middle">D97 多配置实验</text>
+  <text x="560" y="140" font-size="12" fill="#1f3a56" text-anchor="middle">今天：正确性门 + 可信测量</text>
+  <text x="786" y="123" font-size="14.5" fill="#34322c" text-anchor="middle">D98 复盘</text>
+  <text x="786" y="141" font-size="11.5" fill="#6b675c" text-anchor="middle">为什么配置会翻转</text>
+
+  <text x="60" y="196" font-size="16.5" fill="#34322c" font-weight="bold">① 定死一个配置空间：6 个版本同源</text>
+  <text x="62" y="216" font-size="12.5" fill="#6b675c">同一 tile 外壳 + min 钳制，只换两个旋钮：Tile 尺寸和最内层循环</text>
+
+  <g filter="url(#rough)" stroke-width="2.4">
+    <rect x="62" y="232" width="120" height="40" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="196" y="232" width="120" height="40" rx="6" fill="#f0b47a" stroke="#c98340" transform="rotate(-0.7 256 252)"/>
+    <rect x="62" y="284" width="120" height="40" rx="6" fill="#eae5d6" stroke="#8a8574" transform="rotate(0.5 122 304)"/>
+    <rect x="196" y="284" width="120" height="40" rx="6" fill="#f0b47a" stroke="#c98340"/>
+    <rect x="62" y="336" width="120" height="40" rx="6" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.5 122 356)"/>
+    <rect x="196" y="336" width="120" height="40" rx="6" fill="#f0b47a" stroke="#c98340" stroke-width="3.2" transform="rotate(0.8 256 356)"/>
+    <line x1="70" y1="255" x2="90" y2="255" stroke="#34322c"/>
+    <line x1="70" y1="263" x2="90" y2="263" stroke="#34322c"/>
+    <line x1="98" y1="247" x2="98" y2="271" stroke="#34322c"/>
+    <line x1="204" y1="255" x2="224" y2="255" stroke="#34322c"/>
+    <line x1="204" y1="263" x2="224" y2="263" stroke="#34322c"/>
+    <line x1="232" y1="247" x2="232" y2="271" stroke="#34322c"/>
+    <line x1="70" y1="307" x2="90" y2="307" stroke="#34322c"/>
+    <line x1="70" y1="315" x2="90" y2="315" stroke="#34322c"/>
+    <line x1="98" y1="299" x2="98" y2="323" stroke="#34322c"/>
+    <line x1="204" y1="307" x2="224" y2="307" stroke="#34322c"/>
+    <line x1="204" y1="315" x2="224" y2="315" stroke="#34322c"/>
+    <line x1="232" y1="299" x2="232" y2="323" stroke="#34322c"/>
+    <line x1="70" y1="359" x2="90" y2="359" stroke="#34322c"/>
+    <line x1="70" y1="367" x2="90" y2="367" stroke="#34322c"/>
+    <line x1="98" y1="351" x2="98" y2="375" stroke="#34322c"/>
+    <line x1="204" y1="359" x2="224" y2="359" stroke="#34322c"/>
+    <line x1="204" y1="367" x2="224" y2="367" stroke="#34322c"/>
+    <line x1="232" y1="351" x2="232" y2="375" stroke="#34322c"/>
+  </g>
+  <text x="122" y="227" font-size="13" fill="#34322c" text-anchor="middle">i-j-k（k 最内层）</text>
+  <text x="256" y="227" font-size="13" fill="#7a4f1d" text-anchor="middle">i-k-j（j 最内层）</text>
+  <text x="128" y="256" font-size="13.5" fill="#34322c">tile 32×32×32</text>
+  <text x="128" y="308" font-size="13.5" fill="#34322c">tile 64×64×64</text>
+  <text x="128" y="360" font-size="13.5" fill="#34322c">tile 128×128×128</text>
+  <text x="262" y="360" font-size="13" fill="#7a4f1d">n=512 的冠军</text>
+  <text x="256" y="382" font-size="12.5" fill="#7a4f1d" text-anchor="middle">★ BEST 13.59 GFLOPS</text>
+
+  <text x="470" y="196" font-size="16.5" fill="#34322c" font-weight="bold">② 定死一个测量协议：谁先谁后不许变</text>
+
+  <g filter="url(#rough)" stroke-width="2.4">
+    <rect x="470" y="224" width="372" height="44" rx="8" fill="#a9c98f" stroke="#6f9455" transform="rotate(-0.5 656 246)"/>
+    <rect x="470" y="288" width="372" height="44" rx="8" fill="#e0938f" stroke="#b96762" transform="rotate(0.6 656 310)"/>
+    <rect x="470" y="352" width="372" height="44" rx="8" fill="#8fb3d9" stroke="#4f7cae" transform="rotate(-0.6 656 374)"/>
+  </g>
+  <text x="656" y="243" font-size="14" fill="#25401a" text-anchor="middle">第 1 关：正确性门 —— 30/30 逐位相等才准计时</text>
+  <text x="656" y="261" font-size="11.5" fill="#41582f" text-anchor="middle">错得飞快的版本没有参赛资格（错误版本往往更快）</text>
+  <text x="656" y="307" font-size="14" fill="#5c2a26" text-anchor="middle">第 2 关：预热 ×3 + 重复测量 ×21</text>
+  <text x="656" y="325" font-size="11.5" fill="#7a4640" text-anchor="middle">首次运行的缺页 / 指令缓存冷成本不许混进成绩单</text>
+  <text x="656" y="371" font-size="14" fill="#1f3a56" text-anchor="middle">第 3 关：中位数 + MAD，再看差距是否大于波动</text>
+  <text x="656" y="389" font-size="11.5" fill="#3d5a76" text-anchor="middle">差距小于波动 = 没有结论（本机实测会出现 rank 翻转）</text>
+
+  <g filter="url(#rough)" stroke-width="2.4">
+    <line x1="500" y1="428" x2="500" y2="462" stroke="#34322c" marker-end="url(#arr)"/>
+    <line x1="656" y1="428" x2="656" y2="462" stroke="#34322c" marker-end="url(#arr)"/>
+    <line x1="812" y1="428" x2="812" y2="462" stroke="#34322c" marker-end="url(#arr)"/>
+    <rect x="430" y="466" width="140" height="52" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.7 500 492)"/>
+    <rect x="586" y="466" width="140" height="52" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(0.5 656 492)"/>
+    <rect x="742" y="466" width="140" height="52" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.5 812 492)"/>
+  </g>
+  <text x="500" y="488" font-size="14" fill="#34322c" text-anchor="middle">性能表</text>
+  <text x="500" y="507" font-size="11" fill="#6b675c" text-anchor="middle">perf-512/516.txt</text>
+  <text x="656" y="488" font-size="14" fill="#34322c" text-anchor="middle">最优配置</text>
+  <text x="656" y="507" font-size="11" fill="#6b675c" text-anchor="middle">n=512: ikj-128</text>
+  <text x="812" y="488" font-size="14" fill="#34322c" text-anchor="middle">环境记录</text>
+  <text x="812" y="507" font-size="11" fill="#6b675c" text-anchor="middle">env.txt（可复现）</text>
+  <text x="42" y="560" font-size="13" fill="#6b675c">控制变量的含义：6 个版本之间，除 Tile 与循环顺序外一切相同（shape、数据种子、编译命令、预热、重复次数、统计口径）。</text>
+</svg>

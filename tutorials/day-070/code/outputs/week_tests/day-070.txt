@@ -1,0 +1,50 @@
+第 70 天验收测试：反例集 + 内存账本（独立用例）
+
+== A. 内存账本模型：bookkeeping 与 numpy 真实地址对账 ==
+[PASS] A1 视图世界 transpose 0 字节、strides (3,1)->(1,3)
+[PASS] A2 MemRec(offset=0, C-连续) 与 numpy 视图一致
+[PASS] A3 同图两世界 traffic 48B vs 144B、输出逐位相等
+[PASS] A4 非连续输入上的 reshape 是拷贝（48B）
+[PASS] A5 连续输入上的 reshape 是 0 字节视图
+[PASS] A6 force_physical 让单个 transpose 物化（traffic 96B = 转置 48B + relu 48B）
+
+== B. 反例回归：R1–R7 关键事实复测（独立种子） ==
+[PASS] B1 R1 复测：f32→f16→f32 往返 12 元素几乎全变（≥10/12）（12/12）
+[PASS] B2 R2 复测：透传错版把 return shape 从 (2,4) 变 (8,)
+[PASS] B3 R3 复测：消除 copy 后输入缓冲被写、输出被污染
+[PASS] B4 R4 复测：naive 删 store（G 空）、guarded 保留（G 有数据）
+[PASS] B5 R5 复测：双消费者下消除物化点 traffic 翻倍（48→96B）
+[PASS] B6 R6 复测：强行传播 op +1、转置数不变、值等价
+[PASS] B7 R7 复测：axis 跟着 perm 换才等价（原样 axis 不等）
+
+== C. 守卫测试：每条 Pattern 在反例上拒绝、在正例上触发 ==
+[PASS] C1 eliminate_noop_cast 拒绝 f32→f16
+[PASS] C2 eliminate_noop_cast 触发 f32→f32 并透传
+[PASS] C3 诱人版 cast 对消会触发（反例之所以是陷阱）
+[PASS] C4 守卫版合并成一层且值等价
+[PASS] C5 传播拒绝 reduce_sum（C1 白名单）
+[PASS] C6 传播拒绝多使用者（C2 唯一使用者门）
+[PASS] C7 单使用者 relu 传播触发且值等价
+[PASS] C8 T(T(x)) 恒等透传后图只剩 arg
+
+== D. DCE 副作用：随机图上 naive 丢 store、guarded 不丢 ==
+[PASS] D1 30 组随机图：有 store 时 naive 必删、guarded 必留
+[PASS] D2 guarded DCE 不动 return 可达集（值不变）
+
+== E. 结构哈希：改名不改结构 → 哈希相等 ==
+[PASS] E1 改名不改结构 → state_hash 相等
+[PASS] E2 perm 属性不同 → state_hash 不同
+[PASS] E3 同一 state_hash 的图两世界 traffic 不同、值相等
+
+== F. 随机性质：随机视图链上命题成立（值等价、账本可分） ==
+[PASS] F1 40 组随机视图链：两世界值全等且 traffic 全不同（40/40）
+[PASS] F2 20 组三明治：相消值等价且输出 strides (1,2)→(3,1)（20/20）
+
+== G. MLIR 探针：stock 管道计数断言 ==
+[PASS] G1 truncf+extf 往返不被 --canonicalize 折叠
+[PASS] G2 tensor.reshape 链不被 --canonicalize 合并
+[PASS] G3 memref.copy 在 canonicalize / cse 下都保留
+[PASS] G4 store 保留、死的纯 addf 被删（两个 pass 一致）
+[PASS] G5 恒等排列 linalg.transpose 两个 pass 下都保留
+
+汇总：PASS 33 / FAIL 0（共 33 项）

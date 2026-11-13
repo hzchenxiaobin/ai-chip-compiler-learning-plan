@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 610" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .bt { font-size: 13.5px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .nd { font-size: 13px; font-weight: bold; }
+    .blk { font-size: 12.5px; font-weight: bold; }
+    .lab { font-size: 12.5px; font-weight: bold; fill: #3B3B3B; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="602" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="34" text-anchor="middle" class="title">机制：把活跃区间钉在「时间 × 地址」平面上——错峰住进同一块 workspace</text>
+  <path d="M 300,44 Q 490,40 680,45" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="490" y="60" text-anchor="middle" class="sub">横轴 = 执行步骤（主干优先 t1→t2→s→y），纵轴 = 字节地址；每个矩形 = 一个存储单元：宽 = 活跃区间，高 = 字节范围</text>
+
+  <!-- 列头 -->
+  <text x="121.7" y="88" text-anchor="middle" class="det">步骤 0</text>
+  <text x="121.7" y="104" text-anchor="middle" class="nd">图前</text>
+  <text x="225" y="88" text-anchor="middle" class="det">步骤 1</text>
+  <text x="225" y="104" text-anchor="middle" class="nd">t1</text>
+  <text x="225" y="118" text-anchor="middle" class="det">matmul</text>
+  <text x="328.3" y="88" text-anchor="middle" class="det">步骤 2</text>
+  <text x="328.3" y="104" text-anchor="middle" class="nd">t2</text>
+  <text x="328.3" y="118" text-anchor="middle" class="det">matmul</text>
+  <text x="431.7" y="88" text-anchor="middle" class="det">步骤 3</text>
+  <text x="431.7" y="104" text-anchor="middle" class="nd">s</text>
+  <text x="431.7" y="118" text-anchor="middle" class="det">matmul</text>
+  <text x="535" y="88" text-anchor="middle" class="det">步骤 4</text>
+  <text x="535" y="104" text-anchor="middle" class="nd">y</text>
+  <text x="535" y="118" text-anchor="middle" class="det">concat</text>
+  <text x="638.3" y="88" text-anchor="middle" class="det">步骤 5</text>
+  <text x="638.3" y="104" text-anchor="middle" class="nd">图后</text>
+
+  <!-- 网格 -->
+  <path d="M 70,126 L 690,126" stroke="#D8D0C0" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <path d="M 70,204 L 690,204" stroke="#D8D0C0" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <path d="M 70,282 L 690,282" stroke="#D8D0C0" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <path d="M 70,360 L 690,360" stroke="#D8D0C0" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <path d="M 70,438 L 690,438" stroke="#D8D0C0" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <path d="M 173.3,126 L 173.3,516" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 276.7,126 L 276.7,516" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 380,126 L 380,516" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 483.3,126 L 483.3,516" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 586.7,126 L 586.7,516" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 70,516 L 690,516" stroke="#3B3B3B" stroke-width="2"/>
+
+  <text x="62" y="112" text-anchor="end" class="det">地址(B)</text>
+  <text x="62" y="520" text-anchor="end" class="det">0</text>
+  <text x="62" y="442" text-anchor="end" class="det">256</text>
+  <text x="62" y="364" text-anchor="end" class="det">512</text>
+  <text x="62" y="286" text-anchor="end" class="det">768</text>
+  <text x="62" y="208" text-anchor="end" class="det">1024</text>
+  <text x="62" y="130" text-anchor="end" class="det">1280</text>
+
+  <!-- 峰值步标记（列 2 全被 x/t1/t2 覆盖） -->
+  <path d="M 328.3,126 L 328.3,516" stroke="#D98484" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+
+  <!-- 存储单元矩形（真实分配：s@0 t1@0 y@512 x@1024 t2@1152） -->
+  <rect x="175" y="204" width="203" height="312" rx="7" fill="#E8A87C" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.3"/>
+  <text x="276" y="352" text-anchor="middle" class="lab">t1 · 1024 B</text>
+  <text x="276" y="370" text-anchor="middle" class="det">[0, 1024)</text>
+
+  <rect x="382" y="360" width="203" height="156" rx="7" fill="#D98484" fill-opacity="0.48" stroke="#3B3B3B" stroke-width="2.3"/>
+  <text x="483" y="432" text-anchor="middle" class="lab">s · 512 B</text>
+  <text x="483" y="450" text-anchor="middle" class="det">[0, 512)</text>
+
+  <rect x="485" y="165" width="203" height="195" rx="7" fill="#C9C2B8" fill-opacity="0.75" stroke="#3B3B3B" stroke-width="2.3"/>
+  <text x="586" y="256" text-anchor="middle" class="lab">y · 640 B</text>
+  <text x="586" y="274" text-anchor="middle" class="det">[512, 1152)</text>
+
+  <rect x="72" y="165" width="306" height="39" rx="6" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.3"/>
+  <text x="225" y="190" text-anchor="middle" class="lab" font-size="12px">x · 128 B · [1024,1152)</text>
+
+  <rect x="279" y="126" width="306" height="39" rx="6" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.3"/>
+  <text x="432" y="151" text-anchor="middle" class="lab" font-size="12px">t2 · 128 B · [1152,1280)</text>
+
+  <!-- 图内编号 -->
+  <circle cx="400" cy="382" r="11" fill="#FDFBF6" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="400" y="386" text-anchor="middle" class="det" font-weight="bold">1</text>
+  <circle cx="95" cy="185" r="11" fill="#FDFBF6" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="95" y="189" text-anchor="middle" class="det" font-weight="bold">2</text>
+  <circle cx="560" cy="146" r="11" fill="#FDFBF6" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="560" y="150" text-anchor="middle" class="det" font-weight="bold">3</text>
+  <circle cx="328" cy="240" r="11" fill="#FDFBF6" stroke="#D98484" stroke-width="2"/>
+  <text x="328" y="244" text-anchor="middle" class="det" font-weight="bold" fill="#D98484">4</text>
+
+  <!-- 右栏：约束 + 分配表 -->
+  <path class="box" d="M 700,126 Q 830,121 960,126 Q 964,321 960,516 Q 830,521 702,516 Q 697,321 700,126 Z" fill="#F5F0E4"/>
+  <text x="830" y="150" text-anchor="middle" class="bt">四条约束（缺一不可）</text>
+
+  <circle cx="718" cy="172" r="10" fill="#7FA8D9" fill-opacity="0.5" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="718" y="176" text-anchor="middle" class="det" font-weight="bold">1</text>
+  <text x="734" y="170" class="blk">区间不重叠才可共享</text>
+  <text x="734" y="184" class="det">闭区间：执行期共存也算重叠</text>
+
+  <circle cx="718" cy="212" r="10" fill="#7FA8D9" fill-opacity="0.5" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="718" y="216" text-anchor="middle" class="det" font-weight="bold">2</text>
+  <text x="734" y="210" class="blk">尺寸：共享 = 字节区间错开</text>
+  <text x="734" y="224" class="det">不是「共用一个变量」</text>
+
+  <circle cx="718" cy="252" r="10" fill="#7FA8D9" fill-opacity="0.5" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="718" y="256" text-anchor="middle" class="det" font-weight="bold">3</text>
+  <text x="734" y="250" class="blk">对齐：偏移落在网格上</text>
+  <text x="734" y="264" class="det">本图 32 B（图上只画 256 B 粗线）</text>
+
+  <circle cx="718" cy="292" r="10" fill="#7FA8D9" fill-opacity="0.5" stroke="#3B3B3B" stroke-width="1.7"/>
+  <text x="718" y="296" text-anchor="middle" class="det" font-weight="bold">4</text>
+  <text x="734" y="290" class="blk">别名：同一存储的多个名字</text>
+  <text x="734" y="304" class="det">先合并成一个单元（区间取并集）</text>
+
+  <path d="M 712,326 Q 830,322 948,327" class="arr" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="830" y="348" text-anchor="middle" class="det">采用方案（H3 早退房优先）的分配表：</text>
+  <text x="726" y="370" class="blk">t1</text><text x="766" y="370" class="det"> @0</text><text x="836" y="370" class="det">[0, 1024)</text>
+  <text x="726" y="388" class="blk">s</text><text x="766" y="388" class="det"> @0</text><text x="836" y="388" class="det">[0, 512)</text>
+  <text x="726" y="406" class="blk">y</text><text x="766" y="406" class="det"> @512</text><text x="836" y="406" class="det">[512, 1152)</text>
+  <text x="726" y="424" class="blk">x</text><text x="766" y="424" class="det"> @1024</text><text x="836" y="424" class="det">[1024, 1152)</text>
+  <text x="726" y="442" class="blk">t2</text><text x="766" y="442" class="det"> @1152</text><text x="836" y="442" class="det">[1152, 1280)</text>
+  <text x="830" y="472" text-anchor="middle" class="bt">workspace = 1280 B</text>
+  <text x="830" y="492" text-anchor="middle" class="det">= 峰值活跃集合（理论下界）</text>
+
+  <!-- 底部注释 -->
+  <text x="70" y="544" class="det"><tspan font-weight="bold">1</tspan> t1 死于步骤 2 → s 出生（步骤 3）住进同一地址段 [0,512)　　<tspan font-weight="bold">2</tspan> x 与 y 时间错开（[0,3] vs [4,5]），共享 [1024,1152)</text>
+  <text x="70" y="564" class="det"><tspan font-weight="bold">3</tspan> t2 [2,4] 与在场所有人都时间重叠 → 独占 [1152,1280)　　<tspan font-weight="bold" fill="#D98484">4</tspan> 峰值步 2：x+t1+t2 = 1280 B 同列全在场 = 理论下界</text>
+  <text x="490" y="592" text-anchor="middle" class="foot">与 outputs/main-first.txt 的内存分配表一致（H3 策略）；虚线网格 = 256 B，所有偏移都是 32 B 的倍数</text>
+</svg>

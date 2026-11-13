@@ -1,0 +1,10 @@
+func @main(%x: tensor<2x12xf32>) -> (%10: tensor<4x3xf32>) {
+  %x = arg : tensor<2x12xf32>
+  %12 = const shape=[6, 3] values=[0.296875, -0.125, 0.25, -0.25, …] : tensor<6x3xf32>
+  %13 = reshape %x new_shape=[4, 6] : tensor<4x6xf32>
+  %7 = matmul %13, %12 : tensor<4x3xf32>
+  %8 = const shape=[3] values=[0.125, -0.25, 0.5] : tensor<3xf32>
+  %9 = add %7, %8 : tensor<4x3xf32>
+  %10 = relu %9 : tensor<4x3xf32>
+  return %10
+}

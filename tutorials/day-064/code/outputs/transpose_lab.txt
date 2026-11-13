@@ -1,0 +1,142 @@
+==================================================================
+第 64 天主实验：Transpose 的语义（排列 / 视图 / 搬家）
+==================================================================
+
+== 0. 环境与主线 ==
+python  3.11.4
+numpy   1.26.4
+arch    aarch64
+mlir-opt /usr/lib/llvm-18/bin/mlir-opt（Ubuntu LLVM version 18.1.8）
+主线：一个 A(2,3) 的转置需求，三种命运（视图 / 搬家 / 不落地）；mini.transpose 的属性与四关 Verifier；与 linalg.transpose 实测对表。
+
+== 1. 现场一：同一个转置需求，三种命运 ==
+A       shape (2, 3) strides (3, 1) 存储 [1, 2, 3, 4, 5, 6]
+命运① V = A.T                shape (3, 2) strides (1, 3) 共享存储 True
+命运② C = ascontiguousarray  shape (3, 2) strides (2, 1) 共享存储 False 存储 [1, 4, 2, 5, 3, 6]
+命运③ 不落地：消费方直接按交换下标读 A——A.T[0,1] 与 A[1,0] 是同一格：
+        A.T[0,1] 的物理偏移 3，A[1,0] 的物理偏移 3（linalg 降级后的 load %a[%j, %i] 同款，见段 6）
+
+读序偏移（按行主序从头读一遍，物理上走过的格子）：
+  A（原样） : [0, 1, 2, 3, 4, 5]   连续
+  命运① V  : [0, 3, 1, 4, 2, 5]   蹦着走——存储没动，账本换了
+  命运② C  : [0, 1, 2, 3, 4, 5]   规整——存储真的重排了
+[PASS] 命运①视图：形状/值正确且与 A 共享存储
+[PASS] 命运②搬家：值相同但存储独立、strides 规整
+[PASS] 写穿联动：V[0,1]=99 后 A[1,0] 同步变 99（视图共享存储）
+[PASS] 恢复现场后 A 仍为 [[1,2,3],[4,5,6]]
+
+== 2. mini.transpose：Permutation 属性与四关 Verifier ==
+Operation（IR 文本）：%t = mini.transpose %in permutation = [1, 0] : (2x3xf32) -> (3x2xf32)
+属性 permutation = [1, 0]，秩 2，是双射，逆排列 = (1, 0)，阶 = 2
+推导：out_shape = in_shape[perm[i]] = (3, 2)
+视图配方：out_strides = in_strides[perm[i]] = (1, 3)
+Verifier 裁决：合法（0 条错误）
+[PASS] 2D 转置 op：打印→解析往返一致
+[PASS] 2D 转置 op：Verifier 通过
+
+四关各自的报错现场（检查顺序 E1→E2→E3→E4，值取自真实构造）：
+  E1 长度: perm=[0, 1, 2] result=[3, 2, 1] ← 排列比输入多一维
+        mini 报错: [E1] 排列长度 3 与输入秩 2 不相等：permutation 必须给每一个输入维安排一个去处
+  E2 值域: perm=[2, 0] result=[3, 2] ← 拿 2 去查 2 维输入的 shape——linalg 在这里读到乱码（段 6）
+        mini 报错: [E2] 排列第 0 项 2 超出输入秩 2 的合法范围 0..1：拒绝，而不是拿它去查维度
+  E3 双射: perm=[1, 1] result=[3, 3] ← 输入维 1 被用了两次，维 0 没了去处
+        mini 报错: [E3] 排列 [1, 1] 不是 2 个维度的双射（重复项 [1]）：同一输入维不能被用两次
+  E4 形状: perm=[1, 0] result=[2, 3] ← 排列合法，但结果类型写错（应为 3x2）
+        mini 报错: [E4] 结果第 0 维应为 3（= 输入第 1 维），实际写的 2：约定 out_shape[i] = in_shape[perm[i]]
+[PASS] 四关全部命中且只报本关错误（E4 可报多个失配维）
+
+恒等排列：合法但什么都没做（今天接受，明天 Day 65 的消除对象）：
+  %t = mini.transpose %in permutation = [0, 1] : (2x3xf32) -> (2x3xf32)  → Verifier: 合法（no-op）
+[PASS] 恒等排列合法（语义正确，收益问题留给 Canonicalizer）
+
+== 3. 判定表：mini 推导 vs numpy 实测 ==
+用例              输入shape      perm       mini推导shape/strides            numpy实测shape/strides          对拍
+T1  2D 交换              (2, 3)     (1, 0)     (3, 2)/(1, 3)         (3, 2)/(1, 3)       ok
+T2  2D 恒等              (2, 3)     (0, 1)     (2, 3)/(3, 1)         (2, 3)/(3, 1)       ok
+T3  3D (1,2,0)      (2, 3, 4)  (1, 2, 0)   (3, 4, 2)/(4, 1, 12)   (3, 4, 2)/(4, 1, 12)   ok
+T4  3D (2,0,1)      (2, 3, 4)  (2, 0, 1)   (4, 2, 3)/(1, 12, 4)   (4, 2, 3)/(1, 12, 4)   ok
+T5  3D (2,1,0)      (2, 3, 4)  (2, 1, 0)   (4, 3, 2)/(1, 4, 12)   (4, 3, 2)/(1, 4, 12)   ok
+T6  3D 只换后两维        (2, 3, 4)  (0, 2, 1)   (2, 4, 3)/(12, 1, 4)   (2, 4, 3)/(12, 1, 4)   ok
+T7  3D 只换前两维        (2, 3, 4)  (1, 0, 2)   (3, 2, 4)/(4, 12, 1)   (3, 2, 4)/(4, 12, 1)   ok
+T8  1D 恒等                (5,)       (0,)       (5,)/(1,)             (5,)/(1,)         ok
+T9  size-1 维           (1, 3)     (1, 0)     (3, 1)/(1, 3)         (3, 1)/(1, 3)       ok
+T10 size-1 维反向         (3, 1)     (1, 0)     (1, 3)/(1, 1)         (1, 3)/(1, 1)       ok
+T11 转置再转置           (3, 4, 2)  (2, 0, 1)   (2, 3, 4)/(12, 4, 1)   (2, 3, 4)/(12, 4, 1)   ok
+T12 先切片再转置             (3, 2)     (1, 0)     (2, 3)/(1, 4)         (2, 3)/(1, 4)       ok
+[PASS] 判定表 12/12：shape、strides、值三方一致
+
+随机对拍（200 组随机张量 + 随机合法排列）：
+[PASS] 随机对拍 200/200：推导 + 视图配方 + 独立参考 + 零拷贝全成立
+
+== 4. 视图的特权与搬家的代价 ==
+与 reshape 的关键差别（第 59 天 try_view 会失败）：转置对任意合法排列
+都能视图化——strides 重排后仍是合法仿射映射，不存在「装不下」的排列。
+[PASS] 100 组随机转置全部零拷贝（视图特权）
+
+搬家代价（2048x2048 f32 = 16 MiB，best-of-20 真实计时）：
+  big.T                     （视图，改账本）:      0.22 µs/次
+  ascontiguousarray(big.T)  （搬家，重排字节）:    42.293 ms/次
+  差距约 190806 倍——同一个『转置』需求，视图是 O(1) 元信息操作，搬家是 O(numel) 数据搬运
+[PASS] 视图与搬家差 3 个数量级以上且语义各自正确
+
+== 5. 排列的性质：恒等 / 对合 / 循环（Day 65 的原料） ==
+  恒等 (0,1)                     逆排列 (0, 1)  阶 1
+[PASS] 性质 恒等 (0,1): 阶 = 1，排列+逆排列复合回原样
+  对合 (1,0)（转两次=恒等）             逆排列 (1, 0)  阶 2
+[PASS] 性质 对合 (1,0)（转两次=恒等）: 阶 = 2，排列+逆排列复合回原样
+  3-循环 (1,2,0)（转三次=恒等）         逆排列 (2, 0, 1)  阶 3
+[PASS] 性质 3-循环 (1,2,0)（转三次=恒等）: 阶 = 3，排列+逆排列复合回原样
+  3-循环 (2,0,1)                 逆排列 (1, 2, 0)  阶 3
+[PASS] 性质 3-循环 (2,0,1): 阶 = 3，排列+逆排列复合回原样
+  4-循环 (1,2,3,0)               逆排列 (3, 0, 1, 2)  阶 4
+[PASS] 性质 4-循环 (1,2,3,0): 阶 = 4，排列+逆排列复合回原样
+
+非对合排列的陷阱（为什么约定必须写进报错）：
+  B(2,3,4) 经 perm (1, 2, 0) → (3, 4, 2)；
+  再做一次同款转置 ≠ 回到 B：3x4x2 经 (1, 2, 0) → (4, 2, 3)（是 (2,3,4) 的另一个循环）
+  必须用逆排列 (2, 0, 1) 才能回去：3x4x2 经 (2, 0, 1) → (2, 3, 4)
+[PASS] 转两次(非对合)≠原样、转『排列+逆排列』=原样
+
+== 6. MLIR 对照：linalg.transpose 的真实裁决（本机 LLVM 18.1.8） ==
+  M1 合法 2D       memref<2x3xf32>    → memref<3x2xf32>    perm [1, 0]      exit=0（预期 0，符合预期）
+  M2 约定A 4x2x3   memref<2x3x4xf32>  → memref<4x2x3xf32>  perm [2, 0, 1]   exit=0（预期 0，符合预期）
+  M3 约定B 3x4x2   memref<2x3x4xf32>  → memref<3x4x2xf32>  perm [2, 0, 1]   exit=1（预期 1，符合预期）
+        报错: 'linalg.transpose' op dim(result, 0) = 3 doesn't match dim(input, permutation[0]) = 4
+  M4 E1 长度       memref<2x3xf32>    → memref<3x2xf32>    perm [0, 1, 2]   exit=1（预期 1，符合预期）
+        报错: 'linalg.transpose' op size of permutation 3 does not match the argument rank 2
+  M5 E3 双射       memref<2x3xf32>    → memref<3x3xf32>    perm [1, 1]      exit=1（预期 1，符合预期）
+        报错: 'linalg.transpose' op permutation is not valid
+  M6 E2 值域       memref<2x3xf32>    → memref<3x2xf32>    perm [2, 0]      exit=1（预期 1，符合预期）
+        报错: 'linalg.transpose' op dim(result, 0) = 3 doesn't match dim(input, permutation[0]) = 187651183044
+  M7 E4 形状       memref<2x3xf32>    → memref<2x3xf32>    perm [1, 0]      exit=1（预期 1，符合预期）
+        报错: 'linalg.transpose' op dim(result, 0) = 2 doesn't match dim(input, permutation[0]) = 3
+  M8 恒等合法        memref<2x3xf32>    → memref<2x3xf32>    perm [0, 1]      exit=0（预期 0，符合预期）
+[PASS] 8 个 MLIR 案例的退出码与预期完全一致
+
+约定钉死（M2 vs M3，只差输出类型的维序）：
+  in 2x3x4, perm [2,0,1] → out 4x2x3 合法（exit=0）；3x4x2 被拒（exit=1）
+  → linalg.transpose 与 numpy 同款约定 out_shape[i] = in_shape[perm[i]]，
+    且 M3 的报错原文直接把约定写在错误里：
+    "dim(result, 0) = 3 doesn't match dim(input, permutation[0]) = 4"
+
+报错质量现场（M6 越界排列，连跑两次观察乱码是否稳定）：
+  第一次: exit=1
+    'linalg.transpose' op dim(result, 0) = 3 doesn't match dim(input, permutation[0]) = 187651783086528
+  第二次: exit=1
+    'linalg.transpose' op dim(result, 0) = 3 doesn't match dim(input, permutation[0]) = 187652031675040
+  两次的『维度』数字不同——排列里的 2 越界后，诊断路径先拿它去查
+  shape，读到未定义值再打印。操作仍被拒绝（exit=1），但报错信息
+  失去了诊断价值。mini 的 E2 关就是为此而生：先查值域，再允许索引。
+[PASS] 越界排列被拒绝且两次报错读到不同的乱码值（值域检查缺失的证据）
+
+命运③的代码形态（linalg.transpose --convert-linalg-to-loops）：
+    scf.for %arg2 = %c0 to %c3 step %c1 {
+    scf.for %arg3 = %c0 to %c2 step %c1 {
+    %0 = memref.load %arg0[%arg3, %arg2] : memref<2x3xf32>
+    memref.store %0, %arg1[%arg2, %arg3] : memref<3x2xf32>
+  （完整输出存 outputs/transpose_2d.loops.mlir）
+[PASS] 降级循环里 load 的下标是交换的（%arg3, %arg2）
+
+==================================================================
+汇总：PASS 21 / FAIL 0
+==================================================================

@@ -1,0 +1,97 @@
+== 1. 接口卡与 D75 扩展（案例库的判据分层）==
+  门（D74 原样）：can_fuse(c: 'FusionCandidate') -> 'LegalityReport' / should_fuse(c: 'FusionCandidate', m: 'Machine') -> 'ProfitReport' / decide(leg: 'LegalityReport', prof: 'ProfitReport | None', policy: 'str' = 'conservative') -> 'Decision'
+  扩展① can_fuse 补 L3b（边形状）/ L6（组内拓扑序）；d74_can_fuse 留作对照
+  扩展② price_recompute：D72 流量公式在「删除＋重算」形式下的推广
+  扩展③ comfort_ok：D73 检查 4f 的舒适区（零 spill＋staging ok＋并发≥3）
+  C1 机器假设卡沿用第 73 天（64 KiB 寄存器堆 / 192 KiB SRAM / 64 通道 / fp32），可整体替换重算；合法性判断不读这张卡
+  C2 keep 形式的 ΔB 与资源账沿用第 72/73/74 天：ΔB = Σ passes·elems·4，资源 = 活集 → 三级容量阶梯 → spill 两趟（下界口径）
+  C3 扩展② 重算形式的流量账（D72 公式的推广）：中间彻底不落盘，ΔB_elim = (1＋组内读＋组外读)·elems·4；代价 = 组外使用者数 × 生产者输入字节数（每重算一遍就把生产者输入重读一遍）；只做流量，不做时间模型
+  C4 扩展③ 舒适区判据来自第 73 天检查 4f：零 spill ＋ staging ok ＋ 并发 ≥ 3；并行度是软代价、当前账本未计价——这是阈值报告，不是计价模型
+  C5 扩展① 合法性补两条：L3b 相邻算子的边形状必须一致（链上边 = 下一算子的第一个输入；隐式 Reshape 不在融合模式里）；L6 组内拓扑序——中间的生产者序号必须小于所有消费者序号（防循环依赖）
+  C6 案例库只构造案例＋记录判据，不替换第 76 天的 Cost Model：R1/R2 用D74 的门原样判，R3 用流量推广公式判，R4 用舒适区阈值判——统一计价是 D76
+  C7 策略语义沿用第 74 天：conservative 拒 spill>0 与收益未知；auto 只看净收益>0；force 只看合法性。「应拒绝」= 三策略中 conservative 与 auto 一致拒绝，或 D75 扩展判据拒绝
+  C8 不计 launch、编译时间、多核竞争与跨核 SRAM 竞争（沿用第 73 天 A8）；MM→MM 沿用 A10 按行块调度模型计（输入分块不建模）
+[PASS] 1a 门接口与 D74 一致：can_fuse 不吃 Machine，should_fuse 吃
+[PASS] 1b 假设清单 C1–C8 共 8 项，覆盖四类负收益与三条扩展
+[PASS] 1c 案例库 16 例：翼 A 结构负例 8 ＋ 翼 B 负收益 8（4 类＋4 对照）
+
+== 2. 翼 A：结构负例 8 例（D74 六类 ＋ D75 新规则两类）==
+  案例                can_fuse  首条理由
+  A1 模式不支持            False    L1 算子链 ('relu', 'matmul') 不在支持的模式里（D50 定义 + 1 个实验模式）
+  A2 副作用算子            False    L2 add 有副作用，不能进融合组（D25 口径）
+  A3 逐元素 Shape 不齐     False    L3 逐元素 add 的 Shape 不完全一致（D40 规则）
+  A4 int8 全链          False    L5 dtype int8 暂不支持（D50 的融合算子只定义了 fp32）
+  A5 偷走中间             False    L4 中间 E 有 1 个组外使用者且未保留落盘（D52：删除中间 = 偷走别人的输入）
+  A6 无使用者             False    L4 中间 C 没有任何使用者（DCE 的事，不该当融合候选）
+  A7 组内循环依赖           False    L6 组内循环依赖：中间 F 由算子2 生产、却被算子[0] 消费——生产者必须先于消费者（拓扑序）
+  A8 边形状不匹配           False    L3b 边形状不匹配：算子0(matmul) 输出 (2, 4) != 算子1(add) 输入 (4, 2)（隐式 Reshape 
+[PASS] 2a 八个结构负例全部被拦
+[PASS] 2b 理由可定位到规则号：A1→L1、A2→L2、A3→L3、A4→L5、A5/A6→L4、A7→L6、A8→L3b
+  —— 两个新负例在 D74 规则集下会漏过（d74_can_fuse 回归对照）——
+  A7 组内循环依赖           D74 门 → True（漏网）  D75 门 → False（拦下）
+  A8 边形状不匹配           D74 门 → True（漏网）  D75 门 → False（拦下）
+[PASS] 2c 两条新规则各拦住一个 D74 漏网案例（循环依赖、隐式 Reshape）
+[PASS] 2d 新规则不误伤：P3 贯穿链 / 放大版 / MM→MM / skinny 全部仍合法
+
+== 3. 翼 B-1 多使用者：R1 —— 一个组外使用者把 +6 MiB 翻成 −2 MiB ==
+   案例                        ΔB        spill流量   净收益     并发  cons    auto
+  R1 MM→MM K1=1024 +1 组外          8 MiB     10 MiB -2,097,152 B    1  refuse  refuse
+  R1ctl MM→MM K1=1024            16 MiB     10 MiB  6,291,456 B    1  refuse  fuse
+[PASS] 3a R1 图结构合法（keep 形式：组外使用者有人喂）
+[PASS] 3b 多使用者把 ΔB 砍半：16,777,216 → 8,388,608 B（写趟被组外使用者钉死，只剩组内读一趟）
+[PASS] 3c 资源账分文未动：spill 流量同为 10,485,760 B——负收益全部来自 ΔB 塌缩
+[PASS] 3d 净收益翻转：+6,291,456 → −2,097,152 B；cons 与 auto 一致拒绝
+[PASS] 3e 不变量：net(对照) − net(R1) = |G|×4 = 8,388,608 B（被钉回来的正是 G 的写趟）
+
+== 4. 翼 B-2 资源超限：R2 —— 不分块的活集顶爆 256 KiB ==
+   案例                        活集          spill     净收益        并发  cons    auto
+  R2 MM→MM K1=64 tile2048        17,301,504 B 17,039,360 B -33,030,144 B    1  refuse  refuse
+  R2ctl MM→MM K1=64 tile64           32,768 B          0 B   1,048,576 B    4  fuse    fuse
+[PASS] 4a R2 图结构合法（实验模式 experimental.matmul_matmul）
+[PASS] 4b 不分块：活集 17,301,504 B，spill 17,039,360 B，净收益 −33,030,144 B（−31.5 MiB）——cons 与 auto 一致拒绝
+[PASS] 4c 同一张图缩 tile=64：活集 32,768 B、零 spill、并发 4、净收益 +1,048,576 B——cons 放行（图没问题，是 tile 的锅）
+[PASS] 4d 拒绝理由来自收益层（前缀「保守策略」），合法性报告干净
+
+== 5. 翼 B-3 重复计算：R3 —— 瘦矩阵上「删除＋重算」必亏 ==
+  R3keep skinny(64,4096)       keep 形式：ΔB 16,384 B，净收益 16,384 B，epilogue 开销 0.05% → fuse
+  R3recompute skinny(64,4096)  重算形式：消除 65,536 B − 重读罚 4,194,304 B = 净收益 -4,128,768 B（64:1）→ refuse
+[PASS] 5a 图结构合法：keep 与重算都不破坏语义（C 有人喂 / 每个使用者重算一份）
+[PASS] 5b keep 账本：ΔB = 1×|C|×4 = 16,384 B（只省组内读一趟），零 spill → 门放行；epilogue 开销 2/4096 ≈ 0.05%
+[PASS] 5c 重算账本：消除 (1+1+2)×16,384 = 65,536 B，重读罚 2×(64×4096+4096×64)×4 = 4,194,304 B
+[PASS] 5d 重算净收益 −4,128,768 B（约 −3.94 MiB）→ 案例库拒绝；同一张图 keep 形式净收益 +16,384 B → 放行
+[PASS] 5e 判据可读：重读罚 / 消除 = 64:1（K=4096 的瘦矩阵：输入远大于输出，每重算一遍就把 2 MiB 输入重读一遍）
+
+== 6. 翼 B-4 并行度下降：R4 —— 占用超寄存器堆，并发 1 < 3（软代价）==
+   案例                  占用        并发   净收益        D74 门     案例库
+  R4 P3 tile128              65,792 B    1   67,108,864 B  fuse      refuse
+  R4ctl P3 tile64            16,640 B    3   67,108,864 B  fuse      fuse
+[PASS] 6a R4 图结构合法、零 spill、净收益 +67,108,864 B——D74 门（cons）放行
+[PASS] 6b 但占用 65,792 B > 寄存器堆 65,536 B → 并发 1 < 3：案例库按 D73 舒适区拒绝
+  未融合基线（MatMul tile=64）：占用 16,384 B → 并发 4
+[PASS] 6c 融合的并行度税如实报告：tile=64 时融合占用 16,640 B 并发 3，未融合 MatMul 占用 16,384 B 并发 4（−25%，账本未计价的软代价）
+[PASS] 6d 对照 tile=64：并发 3 ≥ 3 且净收益不变 67,108,864 B——拒绝坏 tile 一分钱不花
+[PASS] 6e ΔB 与 tile 无关（消除的是中间不是输入分块）：128 与 64 两行相等
+
+== 7. 决策日志（16 行：案例 / 类别 / 合法 / ΔB / spill / 净收益 / 并发 / cons / auto / 库 / 理由）==
+  A1 Relu→MatMul                 L1 模式        False           —           —           —   — refuse refuse refuse 合法性：L1 算子链 ('relu', 'matmul') 不在支持的模式里（D50 定义 + 1 个实验模式）
+  A2 副作用 add                     L2 纯度        False           —           —           —   — refuse refuse refuse 合法性：L2 add 有副作用，不能进融合组（D25 口径）
+  A3 Shape 不一致                   L3 Shape     False           —           —           —   — refuse refuse refuse 合法性：L3 逐元素 add 的 Shape 不完全一致（D40 规则）
+  A4 int8                        L5 dtype     False           —           —           —   — refuse refuse refuse 合法性：L5 dtype int8 暂不支持（D50 的融合算子只定义了 fp32）
+  A5 偷走 E                        L4 使用者       False           —           —           —   — refuse refuse refuse 合法性：L4 中间 E 有 1 个组外使用者且未保留落盘（D52：删除中间 = 偷走别人的输入）
+  A6 无使用者                        L4 死代码       False           —           —           —   — refuse refuse refuse 合法性：L4 中间 C 没有任何使用者（DCE 的事，不该当融合候选）
+  A7 循环依赖                        L6 拓扑序（新）    False           —           —           —   — refuse refuse refuse 合法性：L6 组内循环依赖：中间 F 由算子2 生产、却被算子[0] 消费——生产者必须先于消费者（拓扑序）
+  A8 隐式 Reshape                  L3b 边形状（新）   False           —           —           —   — refuse refuse refuse 合法性：L3b 边形状不匹配：算子0(matmul) 输出 (2, 4) != 算子1(add) 输入 (4, 2)（隐式 Re
+  R1 MM→MM K1=1024 +1 组外         R1 多使用者      True    8,388,608  10,485,760  -2,097,152   1 refuse refuse refuse 保守策略：spill 327,680 B > 0（D73 阶梯第 3 级），净收益按下界 -2,097,152 B
+  R1ctl MM→MM K1=1024            R1 多使用者      True   16,777,216  10,485,760   6,291,456   1 refuse fuse   refuse 保守策略：spill 327,680 B > 0（D73 阶梯第 3 级），净收益按下界 6,291,456 B
+  R2 MM→MM K1=64 tile2048        R2 资源超限      True    1,048,576  34,078,720 -33,030,144   1 refuse refuse refuse 保守策略：spill 17,039,360 B > 0（D73 阶梯第 3 级），净收益按下界 -33,030,144 B
+  R2ctl MM→MM K1=64 tile64       R2 资源超限      True    1,048,576           0   1,048,576   4 fuse   fuse   fuse   合法性通过；净收益 1,048,576 B > 0 且零 spill（落位 reg）
+  R3keep skinny(64,4096)         R3 重复计算      True       16,384           0      16,384   1 fuse   fuse   fuse   合法性通过；净收益 16,384 B > 0 且零 spill（落位 reg）
+  R3recompute skinny(64,4096)    R3 重复计算      True       65,536           0  -4,128,768   1 refuse refuse refuse 重算账：净收益 -4,128,768 B ≤ 0（消除 65,536 B − 重读罚 4,194,304 B）
+  R4 P3 tile128                  R4 并行度       True   67,108,864           0  67,108,864   1 fuse   fuse   refuse 并行度：并发 1 < 3（D73 舒适区；占用 65,792 B，零 spill 但延迟隐藏差）
+  R4ctl P3 tile64                R4 并行度       True   67,108,864           0  67,108,864   3 fuse   fuse   fuse   合法性通过；净收益 67,108,864 B > 0 且零 spill（落位 reg）
+[PASS] 7a 日志 16 行、顺序完整：翼 A 8 行＋翼 B 8 行，无空行
+[PASS] 7b 库判决为 refuse 的行，理由归属可机检：结构负例以「合法性：L…」开头，R1/R2 以「保守策略」或「重算账」开头，R4 以「并行度」开头
+[PASS] 7c 四类负收益各至少一个「图合法但库拒绝」：R1/R2/R3重算/R4
+[PASS] 7d 门与库在 R4 上分歧且如实记录：D74 门 fuse、案例库 refuse——分歧原因是账本没给并行度计价（D76 的输入）
+
+== 结果：30/30 项检查通过 ==

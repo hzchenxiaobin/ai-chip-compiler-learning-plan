@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','楷体',cursive">
+<defs>
+    <filter id="rough" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  <marker id="arrX" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#34322c"/></marker>  </defs>
+  <rect x="4" y="4" width="952" height="652" fill="#fdfaf2" stroke="none"/>
+  <text x="42" y="46" font-size="26" fill="#34322c" font-weight="bold">波动的三种长相：样本抖、run 级漂移、冷启动散布</text>
+  <text x="44" y="72" font-size="14" fill="#6b675c">每行 = n=512 的一个配置：21 个计时样本（蓝点）、run1 中位数（橙线）、冷启动单发（红★）、run2 中位数（绿◆）</text>
+  <line x1="150" y1="580" x2="820" y2="580" stroke="#34322c" stroke-width="2.6" filter="url(#rough)"/>
+  <line x1="160.5" y1="580" x2="160.5" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="160.5" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">2</text>
+  <line x1="265.2" y1="580" x2="265.2" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="265.2" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">4</text>
+  <line x1="369.8" y1="580" x2="369.8" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="369.8" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">6</text>
+  <line x1="474.5" y1="580" x2="474.5" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="474.5" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">8</text>
+  <line x1="579.2" y1="580" x2="579.2" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="579.2" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">10</text>
+  <line x1="683.9" y1="580" x2="683.9" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="683.9" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">12</text>
+  <line x1="788.6" y1="580" x2="788.6" y2="587" stroke="#34322c" stroke-width="2"/>
+  <text x="788.6" y="604" font-size="12.5" fill="#34322c" text-anchor="middle">14</text>
+  <text x="830" y="604" font-size="12.5" fill="#34322c">GFLOPS</text>
+  <text x="138" y="172.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ijk-32</text>
+  <rect x="150" y="138.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="216.5" y="154.0" width="7.3" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="219.2" cy="173.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="219.9" cy="174.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.4" cy="168.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="220.6" cy="156.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.6" cy="173.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="219.9" cy="157.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="220.2" cy="170.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.1" cy="161.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="219.5" cy="161.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="219.9" cy="160.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.3" cy="161.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="220.3" cy="157.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.1" cy="158.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="218.8" cy="167.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="221.4" cy="169.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="220.8" cy="166.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="220.3" cy="161.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="218.2" cy="168.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="218.8" cy="160.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="218.3" cy="169.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="218.2" cy="159.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="220.2" y1="152.0" x2="220.2" y2="182.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 210.5,187.0 L 217.5,194.0 L 210.5,201.0 L 203.5,194.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="219.2" y="145.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="165.0" font-size="11.5" fill="#6b675c">暖中位数 3.14</text>
+  <text x="832" y="181.0" font-size="11.5" fill="#6b675c">run2 2.96（5.9%）</text>
+  <text x="138" y="246.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ijk-64</text>
+  <rect x="150" y="212.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="173.1" y="228.0" width="11.2" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="177.6" cy="251.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="175.2" cy="230.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="176.6" cy="240.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="174.4" cy="231.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="177.6" cy="246.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="175.4" cy="231.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="174.8" cy="248.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="172.9" cy="244.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="173.9" cy="242.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="176.5" cy="239.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="180.5" cy="239.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="179.1" cy="247.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="180.4" cy="236.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="181.2" cy="251.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="177.8" cy="234.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="178.8" cy="241.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="179.8" cy="251.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="180.4" cy="242.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="178.4" cy="240.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="179.9" cy="242.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="177.7" cy="236.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="178.6" y1="226.0" x2="178.6" y2="256.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 178.7,261.0 L 185.7,268.0 L 178.7,275.0 L 171.7,268.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="180.9" y="219.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="239.0" font-size="11.5" fill="#6b675c">暖中位数 2.35</text>
+  <text x="832" y="255.0" font-size="11.5" fill="#6b675c">run2 2.35（0.1%）</text>
+  <text x="138" y="320.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ijk-128</text>
+  <rect x="150" y="286.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="180.3" y="302.0" width="7.3" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="183.4" cy="315.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="186.0" cy="322.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.2" cy="323.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="182.9" cy="324.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.5" cy="320.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="184.3" cy="307.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.5" cy="323.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="182.7" cy="315.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="184.7" cy="324.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="167.6" cy="314.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="175.9" cy="322.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="176.0" cy="310.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="186.3" cy="308.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="184.9" cy="323.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="179.3" cy="309.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.7" cy="309.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="184.0" cy="321.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.9" cy="307.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.3" cy="310.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="183.7" cy="307.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="180.1" cy="316.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="183.9" y1="300.0" x2="183.9" y2="330.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 183.6,335.0 L 190.6,342.0 L 183.6,349.0 L 176.6,342.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="187.2" y="293.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="313.0" font-size="11.5" fill="#6b675c">暖中位数 2.45</text>
+  <text x="832" y="329.0" font-size="11.5" fill="#6b675c">run2 2.44（0.3%）</text>
+  <text x="138" y="394.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ikj-32</text>
+  <rect x="150" y="360.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="685.2" y="376.0" width="7.5" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="687.2" cy="392.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="688.6" cy="380.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="686.8" cy="383.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.9" cy="396.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="687.7" cy="382.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="687.7" cy="378.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="686.9" cy="390.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.7" cy="399.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="691.0" cy="398.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.9" cy="391.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="690.8" cy="399.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="690.6" cy="397.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.9" cy="386.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="690.5" cy="391.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="690.7" cy="387.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.8" cy="399.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="691.0" cy="398.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.5" cy="388.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="687.1" cy="382.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="689.0" cy="383.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="687.7" cy="391.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="688.9" y1="374.0" x2="688.9" y2="404.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 693.3,409.0 L 700.3,416.0 L 693.3,423.0 L 686.3,416.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="686.6" y="367.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="387.0" font-size="11.5" fill="#6b675c">暖中位数 12.10</text>
+  <text x="832" y="403.0" font-size="11.5" fill="#6b675c">run2 12.18（0.7%）</text>
+  <text x="138" y="468.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ikj-64</text>
+  <rect x="150" y="434.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="711.3" y="450.0" width="10.3" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="717.0" cy="453.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="715.7" cy="460.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="715.3" cy="466.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="713.6" cy="455.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="715.0" cy="464.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="715.3" cy="469.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.9" cy="472.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="718.0" cy="471.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="716.8" cy="467.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="718.0" cy="457.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="719.2" cy="473.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.4" cy="464.0" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="714.9" cy="464.8" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="714.6" cy="456.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="714.6" cy="453.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="716.1" cy="463.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.4" cy="468.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.4" cy="452.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="716.9" cy="455.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.3" cy="453.2" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="717.7" cy="468.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="716.4" y1="448.0" x2="716.4" y2="478.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 710.1,483.0 L 717.1,490.0 L 710.1,497.0 L 703.1,490.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="740.4" y="441.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="461.0" font-size="11.5" fill="#6b675c">暖中位数 12.62</text>
+  <text x="832" y="477.0" font-size="11.5" fill="#6b675c">run2 12.50（1.0%）</text>
+  <text x="138" y="542.0" font-size="14" fill="#34322c" text-anchor="end" font-weight="bold">ikj-128</text>
+  <rect x="150" y="508.0" width="670" height="58" rx="10" fill="#f4efe2" stroke="none" opacity="0.55"/>
+  <rect x="759.1" y="524.0" width="15.7" height="26" rx="6" fill="#f0b47a" opacity="0.45" stroke="none"/>
+  <circle cx="768.2" cy="538.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="765.6" cy="531.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="771.1" cy="544.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="768.4" cy="537.4" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="770.7" cy="546.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="766.0" cy="526.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="770.8" cy="531.3" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="769.4" cy="547.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="766.1" cy="536.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="767.2" cy="539.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="760.9" cy="545.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="762.9" cy="542.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="765.3" cy="532.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="766.5" cy="537.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="770.1" cy="527.9" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="767.2" cy="532.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="767.1" cy="533.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="766.6" cy="542.5" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="765.2" cy="530.1" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="762.6" cy="544.6" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <circle cx="764.6" cy="546.7" r="3.4" fill="#8fb3d9" stroke="#4f7cae" stroke-width="1.4"/>
+  <line x1="767.0" y1="522.0" x2="767.0" y2="552.0" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 769.0,557.0 L 776.0,564.0 L 769.0,571.0 L 762.0,564.0 Z" fill="#a9c98f" stroke="#6f9455" stroke-width="1.8"/>
+  <text x="781.7" y="515.0" font-size="16" fill="#b96762" text-anchor="middle" font-weight="bold">★</text>
+  <text x="832" y="535.0" font-size="11.5" fill="#6b675c">暖中位数 13.59</text>
+  <text x="832" y="551.0" font-size="11.5" fill="#6b675c">run2 13.63（0.3%）</text>
+  <circle cx="156" cy="96" r="4" fill="#8fb3d9" stroke="#4f7cae"/>
+  <text x="166" y="101" font-size="12.5" fill="#34322c">计时样本 ×21</text>
+  <line x1="268" y1="96" x2="288" y2="96" stroke="#c98340" stroke-width="4" stroke-linecap="round"/>
+  <text x="296" y="101" font-size="12.5" fill="#34322c">run1 中位数</text>
+  <text x="390" y="101" font-size="14" fill="#b96762" font-weight="bold">★</text>
+  <text x="404" y="101" font-size="12.5" fill="#34322c">冷启动单发</text>
+  <text x="498" y="101" font-size="12.5" fill="#34322c">◆</text>
+  <text x="512" y="101" font-size="12.5" fill="#34322c">run2 中位数</text>
+  <text x="300" y="158.0" font-size="12" fill="#5c2a26">run 内挤成一条线（MAD 0.003），</text>
+  <text x="300" y="174.0" font-size="12" fill="#5c2a26">run2 中位数却漂了 5.9% → run 级波动</text>
+  <path d="M 295,179.0 q -34,4 -55,16" fill="none" stroke="#34322c" stroke-width="1.7" marker-end="url(#arrX)" filter="url(#rough)"/>
+  <text x="205" y="219.0" font-size="12" fill="#1f3a56">同一次运行出现两个平台：</text>
+  <text x="205" y="235.0" font-size="12" fill="#1f3a56">2.25～2.30 跳到 2.35～2.37（调度环境变了）</text>
+  <text x="560" y="433.0" font-size="12" fill="#5c2a26">冷启动单发（★）比暖中位数还快 3.6%：</text>
+  <text x="560" y="449.0" font-size="12" fill="#5c2a26">单发样本两边运气都有，不能当成绩</text>
+  <text x="42" y="646" font-size="12.5" fill="#6b675c">真实数据：outputs/samples-512.csv、samples-512-run2.csv、cold.txt ｜ 蓝点横向散布 = 样本级抖动，绿◆与橙线的距离 = run 级漂移</text>
+</svg>

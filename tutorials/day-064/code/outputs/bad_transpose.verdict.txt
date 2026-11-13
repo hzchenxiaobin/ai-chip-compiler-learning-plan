@@ -1,0 +1,8 @@
+bad_transpose.mlir:14:3: error: 'linalg.transpose' op dim(result, 0) = 2 doesn't match dim(input, permutation[0]) = 3
+  linalg.transpose ins(%in: memref<2x3xf32>)
+  ^
+bad_transpose.mlir:14:3: note: see current operation: 
+"linalg.transpose"(%arg0, %arg1) <{permutation = array<i64: 1, 0>}> ({
+^bb0(%arg2: f32, %arg3: f32):
+  "linalg.yield"(%arg2) : (f32) -> ()
+}) : (memref<2x3xf32>, memref<2x3xf32>) -> ()

@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 580" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .hd { font-size: 15px; font-weight: bold; }
+    .col { font-size: 11px; font-weight: bold; fill: #5a554d; }
+    .opn { font-size: 12.5px; font-weight: bold; }
+    .row { font-size: 11.5px; font-weight: bold; }
+    .mk { font-size: 11px; font-weight: bold; }
+    .sum { font-size: 12.5px; font-weight: bold; }
+    .peakv { font-size: 12.5px; font-weight: bold; fill: #D98484; }
+    .con { font-size: 12px; }
+    .ban { font-size: 15.5px; font-weight: bold; }
+    .ban2 { font-size: 12.5px; fill: #5a554d; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .grid { stroke: #E7DFCE; stroke-width: 1.4; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="572" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="36" text-anchor="middle" class="title">同一张图、同样的算子，只换执行顺序：峰值 320 → 416（+30%）</text>
+  <path d="M 320,46 Q 490,42 660,47" stroke="#E8A87C" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <text x="490" y="63" text-anchor="middle" class="sub">区间条 = [def, last_use]；D 出生 · K 最后使用后死亡；列 = 执行步骤；行末括号 = 元素数</text>
+
+  <!-- 左：顺序 A -->
+  <path class="box" d="M 30,76 Q 250,71 470,76 Q 473,247 470,418 Q 249,423 32,418 Q 28,247 30,76 Z" fill="#F5F0E4"/>
+  <text x="250" y="98" text-anchor="middle" class="hd">顺序 A「主干优先」：t1 → t2 → s → y</text>
+
+  <rect x="216" y="106" width="58" height="236" rx="7" fill="#E8A87C" fill-opacity="0.28" stroke="#D98484" stroke-width="1.6" stroke-dasharray="7 5"/>
+  <rect x="340" y="106" width="58" height="236" rx="7" fill="#E8A87C" fill-opacity="0.28" stroke="#D98484" stroke-width="1.6" stroke-dasharray="7 5"/>
+
+  <text x="121" y="120" text-anchor="middle" class="col">步骤0</text><text x="121" y="134" text-anchor="middle" class="opn">图前</text>
+  <text x="183" y="120" text-anchor="middle" class="col">步骤1</text><text x="183" y="134" text-anchor="middle" class="opn">t1</text>
+  <text x="245" y="120" text-anchor="middle" class="col">步骤2</text><text x="245" y="134" text-anchor="middle" class="opn">t2</text>
+  <text x="307" y="120" text-anchor="middle" class="col">步骤3</text><text x="307" y="134" text-anchor="middle" class="opn">s</text>
+  <text x="369" y="120" text-anchor="middle" class="col">步骤4</text><text x="369" y="134" text-anchor="middle" class="opn">y</text>
+  <text x="431" y="120" text-anchor="middle" class="col">步骤5</text><text x="431" y="134" text-anchor="middle" class="opn">图后</text>
+
+  <text x="44" y="160" class="row">x·32</text>
+  <rect x="92" y="146" width="244" height="20" rx="8" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="328" y="160" text-anchor="end" class="mk">K</text>
+
+  <text x="44" y="196" class="row">t1·256</text>
+  <rect x="154" y="182" width="120" height="20" rx="8" fill="#E8A87C" fill-opacity="0.65" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="164" y="196" class="mk">D</text><text x="266" y="196" text-anchor="end" class="mk">K</text>
+
+  <text x="44" y="232" class="row">t2·32</text>
+  <rect x="216" y="218" width="182" height="20" rx="8" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="226" y="232" class="mk">D</text><text x="390" y="232" text-anchor="end" class="mk">K</text>
+
+  <text x="44" y="268" class="row">s·128</text>
+  <rect x="278" y="254" width="120" height="20" rx="8" fill="#D98484" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="288" y="268" class="mk">D</text><text x="390" y="268" text-anchor="end" class="mk">K</text>
+
+  <text x="44" y="304" class="row">y·160</text>
+  <rect x="340" y="290" width="120" height="20" rx="8" fill="#C9C2B8" fill-opacity="0.7" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="350" y="304" class="mk">D</text><text x="452" y="304" text-anchor="end" class="mk" font-size="10px">输出</text>
+
+  <path d="M 90,316 Q 250,312 462,316" class="grid" fill="none"/>
+  <text x="44" y="338" class="col">合计</text>
+  <text x="121" y="338" text-anchor="middle" class="sum">32</text>
+  <text x="183" y="338" text-anchor="middle" class="sum">288</text>
+  <text x="245" y="338" text-anchor="middle" class="peakv">320</text>
+  <text x="307" y="338" text-anchor="middle" class="sum">192</text>
+  <text x="369" y="338" text-anchor="middle" class="peakv">320</text>
+  <text x="431" y="338" text-anchor="middle" class="sum">160</text>
+
+  <text x="250" y="368" text-anchor="middle" class="con">s 出生在步骤 3——t1（橙）已于步骤 2 谢幕，红色 s 全程没遇上它</text>
+  <text x="250" y="388" text-anchor="middle" class="con">峰值 320 元素（1280 B）@ 步骤 2、4</text>
+  <text x="250" y="408" text-anchor="middle" class="con">步骤 4 的 320 = concat 硬下界：t2+s+y 必须共存</text>
+
+  <!-- 右：顺序 B -->
+  <path class="box" d="M 510,76 Q 730,71 950,76 Q 953,247 950,418 Q 729,423 512,418 Q 508,247 510,76 Z" fill="#F5F0E4"/>
+  <text x="730" y="98" text-anchor="middle" class="hd">顺序 B「捷径优先」：s → t1 → t2 → y</text>
+
+  <rect x="696" y="106" width="118" height="236" rx="7" fill="#E8A87C" fill-opacity="0.28" stroke="#D98484" stroke-width="1.6" stroke-dasharray="7 5"/>
+
+  <text x="601" y="120" text-anchor="middle" class="col">步骤0</text><text x="601" y="134" text-anchor="middle" class="opn">图前</text>
+  <text x="663" y="120" text-anchor="middle" class="col">步骤1</text><text x="663" y="134" text-anchor="middle" class="opn">s</text>
+  <text x="725" y="120" text-anchor="middle" class="col">步骤2</text><text x="725" y="134" text-anchor="middle" class="opn">t1</text>
+  <text x="787" y="120" text-anchor="middle" class="col">步骤3</text><text x="787" y="134" text-anchor="middle" class="opn">t2</text>
+  <text x="849" y="120" text-anchor="middle" class="col">步骤4</text><text x="849" y="134" text-anchor="middle" class="opn">y</text>
+  <text x="911" y="120" text-anchor="middle" class="col">步骤5</text><text x="911" y="134" text-anchor="middle" class="opn">图后</text>
+
+  <text x="524" y="160" class="row">x·32</text>
+  <rect x="572" y="146" width="182" height="20" rx="8" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="744" y="160" text-anchor="end" class="mk">K</text>
+
+  <text x="524" y="196" class="row">t1·256</text>
+  <rect x="696" y="182" width="120" height="20" rx="8" fill="#E8A87C" fill-opacity="0.65" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="706" y="196" class="mk">D</text><text x="806" y="196" text-anchor="end" class="mk">K</text>
+
+  <text x="524" y="232" class="row">t2·32</text>
+  <rect x="758" y="218" width="120" height="20" rx="8" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="768" y="232" class="mk">D</text><text x="868" y="232" text-anchor="end" class="mk">K</text>
+
+  <text x="524" y="268" class="row">s·128</text>
+  <rect x="634" y="254" width="244" height="20" rx="8" fill="#D98484" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="644" y="268" class="mk">D</text><text x="868" y="268" text-anchor="end" class="mk">K</text>
+
+  <text x="524" y="304" class="row">y·160</text>
+  <rect x="820" y="290" width="120" height="20" rx="8" fill="#C9C2B8" fill-opacity="0.7" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="830" y="304" class="mk">D</text><text x="932" y="304" text-anchor="end" class="mk" font-size="10px">输出</text>
+
+  <rect x="692" y="176" width="188" height="104" rx="10" fill="none" stroke="#D98484" stroke-width="2.2" stroke-dasharray="6 5"/>
+  <text x="934" y="212" class="peakv" transform="rotate(90 934 212)">重叠区</text>
+
+  <path d="M 570,316 Q 730,312 942,316" class="grid" fill="none"/>
+  <text x="524" y="338" class="col">合计</text>
+  <text x="601" y="338" text-anchor="middle" class="sum">32</text>
+  <text x="663" y="338" text-anchor="middle" class="sum">160</text>
+  <text x="725" y="338" text-anchor="middle" class="peakv">416</text>
+  <text x="787" y="338" text-anchor="middle" class="peakv">416</text>
+  <text x="849" y="338" text-anchor="middle" class="sum">320</text>
+  <text x="911" y="338" text-anchor="middle" class="sum">160</text>
+
+  <text x="730" y="368" text-anchor="middle" class="con">s 出生在步骤 1，区间 [1,4] 横跨 t1 的 [2,3]——被迫陪跑</text>
+  <text x="730" y="388" text-anchor="middle" class="con">峰值 416 元素（1664 B）@ 步骤 2、3</text>
+  <text x="730" y="408" text-anchor="middle" class="con">多出的 96 = s(128) − t2(32)：t1 身边换了个更重的陪跑员</text>
+
+  <!-- 底部横幅 -->
+  <path class="box" stroke-width="2.5" d="M 90,438 Q 490,433 890,438 Q 893,478 890,512 Q 489,517 92,512 Q 88,475 90,438 Z" fill="#93C6A0" fill-opacity="0.22"/>
+  <text x="490" y="462" text-anchor="middle" class="ban">同一张图 · 同样 5 个动态张量 · 只换顺序：1280 B → 1664 B（+30%）</text>
+  <text x="490" y="486" text-anchor="middle" class="ban2">今天的收获：峰值 = max over 步骤( Σ 存活张量大小 )，而执行顺序决定「谁和谁同时活着」</text>
+  <text x="490" y="506" text-anchor="middle" class="ban2">预览明天：区间不重叠 → 可共享同一块缓冲区；重叠区（红框）正是绝对不能共享的地方</text>
+
+  <text x="490" y="548" text-anchor="middle" class="foot">图中数字全部来自真实运行：tutorials/day-099/code/outputs/main-first.txt 与 skip-first.txt</text>
+  <text x="490" y="566" text-anchor="middle" class="foot">三种合法顺序的完整分布见第 5.4 节（all-orders.txt）：320 / 416 / 416</text>
+</svg>

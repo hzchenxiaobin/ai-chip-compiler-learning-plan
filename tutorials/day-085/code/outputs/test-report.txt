@@ -1,0 +1,56 @@
+Day 85 Lowering 设计·测试计划执行报告（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4；种子 85
+贯穿例子：A(4, 6) @ B(6, 3) -> C(4, 3)
+
+[PASS] TP1 类型完整性
+  A: tensor<4x6xf32> -> memref<4x6xf32, strided<[6, 1]>>  ✓  [96 B, 函数入参（签名降级）]
+  B: tensor<6x3xf32> -> memref<6x3xf32, strided<[3, 1]>>  ✓  [72 B, 函数入参（签名降级）]
+  C: tensor<4x3xf32> -> memref<4x3xf32, strided<[3, 1]>>  ✓  [48 B, memref.alloc（Pattern 构建）]
+
+[PASS] TP2 索引探针
+  A[i,k] @ (i=0,j=0,k=0): addr=0✓
+  B[k,j] @ (i=0,j=0,k=0): addr=0✓
+  C[i,j] @ (i=0,j=0,k=0): addr=0✓
+  A[i,k] @ (i=3,j=2,k=5): addr=23✓
+  B[k,j] @ (i=3,j=2,k=5): addr=17✓
+  C[i,j] @ (i=3,j=2,k=5): addr=11✓
+  A[i,k] @ (i=1,j=1,k=2): addr=8✓
+  B[k,j] @ (i=1,j=1,k=2): addr=7✓
+  C[i,j] @ (i=1,j=1,k=2): addr=4✓
+  A[i,k] @ (i=2,j=0,k=4): addr=16✓
+  B[k,j] @ (i=2,j=0,k=4): addr=12✓
+  C[i,j] @ (i=2,j=0,k=4): addr=6✓
+
+[PASS] TP3 输出初始化
+  策略 = iter_args（方案 B（scf.for iter_args，寄存器累加，C 每元素只写一次））
+  执行 vs 参考：np.array_equal = True
+
+[PASS] TP4 合法性收敛
+  主图（3 op）full 模式：成功 → 14 op，残留非法 op = 无
+    · rewrite mini.matmul -> 12 个目标 op：memref.alloc, arith.constant, arith.constant, scf.for…
+  含 mini.conv 变体 full 模式：按预期整体失败 → 无法合法化 'mini.conv'：没有注册对应的 ConversionPattern（模式=full，整体失败）
+  含 mini.conv 变体 partial 模式：成功但显式残留 ['mini.conv']（交给后续 Pass）
+
+[PASS] TP5 边界缝合
+  设钩子：return 前插入 bufferization.to_tensor（源物化，memref→tensor）
+    终图 op 全部合法：True
+  不设钩子：return 期望 tensor<4x3xf32>，拿到 memref<4x3xf32, strided<[3,1]>>
+    → 诊断：type mismatch（值在'半 tensor 半 memref'的中途状态上断裂）
+
+[PASS] TP6 执行等价
+  循环 IR vs 同序参考：np.array_equal = True（max|diff| = 0.0e+00）
+  循环 IR vs np.matmul：max|diff| = 2.384e-07（顺序不同，只记录不判红绿）
+
+—— 探针矩阵（验证测试计划咬得住人）——
+探针 / TP1 / TP2 / TP3 / TP6
+  P1（B 的 strides 写成 [1, 3]，行主序算反） / 红 / 红 / 红 / 红
+  P2（忘掉输出初始化任务，读改写从垃圾值起步） / 绿 / 绿 / 红 / 红
+  P3（内维 K 的循环上界误用 N） / 绿 / 绿 / 红 / 红
+
+—— 对照实验（输出初始化三策略，真实数据）——
+  方案 B：iter_args 从 0 起步（设计选定）: max|diff| = 0.000000e+00  ← 位等价
+  方案 A：fill 0 + 读改写: max|diff| = 0.000000e+00  ← 位等价
+  A′：什么都不做（探针 P2）: max|diff| = 7.770001e+02  ← 不等价（未定义行为）
+  流量账：方案 A 比 B 多付 2×M×N×4 = 96 B 的读写
+  循环 IR vs np.matmul: max|diff| = 2.384e-07（顺序不同，只记录）
+

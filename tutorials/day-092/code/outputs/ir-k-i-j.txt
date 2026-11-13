@@ -1,0 +1,52 @@
+// 第 92 天：循环顺序 k-i-j（21 op，真实转换输出）
+// 语义与 i-j-k 位等价（OT1）；差别只在访存行为（OT2/OT3）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~91 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<2x2xf32, strided<[2, 1]>> {
+  %c = memref.alloc() : memref<2x2xf32, strided<[2, 1]>>
+  // 输出缓冲 16 B：alloc 不清零（D87）
+  %zero = arith.constant 0.0 : f32
+  // 零起点：k 在最内层时是 iter_args 初值；否则喂给清零 nest
+  %c0 = arith.constant 0 : index
+  %c1 = arith.constant 1 : index
+  %c2 = arith.constant 2 : index
+  %c2' = arith.constant 2 : index
+  %c3 = arith.constant 3 : index
+  scf.for %i = %c0 to %c2 step %c1 {
+    scf.for %j = %c0 to %c2' step %c1 {
+      memref.store %zero, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+      // 清零：C[i,j] ← 0（k 不在最内层 → 累加在内存，零起点要自己铺）
+    }
+    // 四要素：[0,2) step 1，trip = 2
+    // ub 来源：N = B.shape[1] = 2
+  }
+  // 四要素：[0,2) step 1，trip = 2
+  // ub 来源：M = A.shape[0] = 2
+  // 清零 nest：M·N 次 store，沿 C 的行连续
+  scf.for %k = %c0 to %c3 step %c1 {
+    scf.for %i = %c0 to %c2 step %c1 {
+      scf.for %j = %c0 to %c2' step %c1 {
+        %xa = memref.load %a[%i, %k] : memref<2x3xf32, strided<[3, 1]>>
+        // 读 A：A[i,k]（下标不含 j → 最内层扫描时不变）
+        %xb = memref.load %b[%k, %j] : memref<3x2xf32, strided<[2, 1]>>
+        // 读 B：B[k,j]（下标不含 j → 最内层扫描时沿行连续）
+        %cv = memref.load %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+        // 读 C（读-改-写）：k 不在最内层 → 部分和住在内存里
+        %p = arith.mulf %xa, %xb : f32
+        // %p = A[i,k]·B[k,j]
+        %s = arith.addf %cv, %p : f32
+        // %cv ＋ %p → %s（每趟都舍入——加法顺序仍是 k 升序）
+        memref.store %s, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+        // 写 C：本趟部分和落盘（下一趟再读回来加）
+      }
+      // 四要素：[0,2) step 1，trip = 2
+      // ub 来源：N = B.shape[1] = 2
+      // 最内层：j 每步 4 次访存（A、B、C读、C写）
+    }
+    // 四要素：[0,2) step 1，trip = 2
+    // ub 来源：M = A.shape[0] = 2
+  }
+  // 四要素：[0,3) step 1，trip = 3
+  // ub 来源：K = 内维契约 A.shape[1] == B.shape[0] = 3
+  // 最外层：k——k-i-j 顺序（外→内）
+  return %c : memref<2x2xf32, strided<[2, 1]>>
+}

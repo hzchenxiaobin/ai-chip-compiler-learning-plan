@@ -1,0 +1,51 @@
+// 由 unrollgen.py 生成：M=5 N=7 K=3 U=2 variant=unroll_k
+// 有效计算 M*N*K = 105 步；K= floor部分 2 步走主循环、余 1 步走尾部
+module {
+  func.func @matmul(%argA: memref<5x3xf32>, %argB: memref<3x7xf32>, %argC: memref<5x7xf32>) {
+    %c0 = arith.constant 0 : index
+    %c1 = arith.constant 1 : index
+    %cM = arith.constant 5 : index
+    %cN = arith.constant 7 : index
+    %cK = arith.constant 3 : index
+    %cU = arith.constant 2 : index
+    %cMain = arith.constant 2 : index
+    %d1 = arith.constant 1 : index
+    %cf0 = arith.constant 0.0 : f32
+    // 清零 C：精确边界 0..M × 0..N，与展开无关
+    scf.for %zi = %c0 to %cM step %c1 {
+      scf.for %zj = %c0 to %cN step %c1 {
+        memref.store %cf0, %argC[%zi, %zj] : memref<5x7xf32>
+      }
+    }
+    scf.for %i = %c0 to %cM step %c1 {
+      scf.for %j = %c0 to %cN step %c1 {
+        // 主循环：0 到 floor(K/U)*U=2，步长 U，体内 2 份 MAC（k, k+1, …, k+1）
+        scf.for %k = %c0 to %cMain step %cU {
+          %a0 = memref.load %argA[%i, %k] : memref<5x3xf32>
+          %b0 = memref.load %argB[%k, %j] : memref<3x7xf32>
+          %acc0 = memref.load %argC[%i, %j] : memref<5x7xf32>
+          %mul0 = arith.mulf %a0, %b0 : f32
+          %sum0 = arith.addf %acc0, %mul0 : f32
+          memref.store %sum0, %argC[%i, %j] : memref<5x7xf32>
+          %ku1 = arith.addi %k, %d1 : index
+          %a1 = memref.load %argA[%i, %ku1] : memref<5x3xf32>
+          %b1 = memref.load %argB[%ku1, %j] : memref<3x7xf32>
+          %acc1 = memref.load %argC[%i, %j] : memref<5x7xf32>
+          %mul1 = arith.mulf %a1, %b1 : f32
+          %sum1 = arith.addf %acc1, %mul1 : f32
+          memref.store %sum1, %argC[%i, %j] : memref<5x7xf32>
+        }
+        // 尾部循环：2 到 K=3，步长 1，体内 1 份 MAC
+        scf.for %kt = %cMain to %cK step %c1 {
+          %at = memref.load %argA[%i, %kt] : memref<5x3xf32>
+          %bt = memref.load %argB[%kt, %j] : memref<3x7xf32>
+          %ct = memref.load %argC[%i, %j] : memref<5x7xf32>
+          %mult = arith.mulf %at, %bt : f32
+          %sumt = arith.addf %ct, %mult : f32
+          memref.store %sumt, %argC[%i, %j] : memref<5x7xf32>
+        }
+      }
+    }
+    return
+  }
+}

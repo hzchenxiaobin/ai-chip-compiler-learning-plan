@@ -1,0 +1,7 @@
+// Lowering 前（源图 S0）：A(2,3) @ B(3,2) -> C(2,2)
+// 一个图算子 mini.matmul 概括全部语义；类型是 tensor（值语义）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~90 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%x: tensor<2x3xf32>, %w: tensor<3x2xf32>) -> tensor<2x2xf32> {
+  %mm = mini.matmul(%x, %w)
+  return %mm : tensor<2x2xf32>
+}

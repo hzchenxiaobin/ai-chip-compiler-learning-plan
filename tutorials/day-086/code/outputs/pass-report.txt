@@ -1,0 +1,54 @@
+Day 86 骨架版 MatMul Lowering Pass·诊断测试报告（真实运行）
+环境：Linux aarch64, Python 3.11.4; 本机未安装 MLIR（DialectConversion 语义仿真，不伪造 MLIR 行为）
+
+[PASS] DT1 匹配与替换
+  转换前 3 op：func.func, mini.matmul, func.return
+  full 模式：成功——转换完成（模式=full）：终图 12 op，残留非法 op = 无
+  转换后 12 op：func.func + 骨架 10 op（alloc 1 ＋ constant 5 ＋ for 3 ＋ yield 1）＋ func.return
+  op 序列与预期骨架完全一致：True
+  mini 方言残留：无
+  改写日志：rewrite 'mini.matmul' -> 10 个目标 op（MatMulSkeletonPattern）
+
+[PASS] DT2 骨架结构
+  alloc：%c : memref<4x3xf32, strided<[3, 1]>>（48 B，strides 与 Day 85 任务清单①一致）
+  常量值集合 = [0, 1, 3, 4, 6]（下界 0、步长 1、M=4←A.shape[0]、N=3←B.shape[1]、K=6←内维契约）
+  循环边界：i ∈ [0,4)、j ∈ [0,3)、k ∈ [0,6)，全部编译期可知
+  嵌套深度 3：for %i ⊃ for %j ⊃ for %k ⊃ scf.yield（占位，无操作数）
+  三条循环共用下界 %c0 / 步长 %c1，上界分别是 %c4 / %c3 / %c6
+
+[PASS] DT3 类型缝合（adaptor）
+  adaptor 给 Pattern 的操作数：['%a: memref<4x6xf32, strided<[6, 1]>>', '%b: memref<6x3xf32, strided<[3, 1]>>']
+  ——是签名转换后的 %a/%b（memref），不是原始的 %x/%w（tensor）：True
+  终图残留 tensor 类型：无（函数结果类型 ['memref<4x3xf32, strided<[3, 1]>>']）
+  悬空引用（uses 指向已消失的值）：无——延迟替换在 finalize 统一完成
+  func.return 的操作数：%c（memref<4x3xf32, strided<[3, 1]>>）
+
+[PASS] DT4 驱动器级失败
+  full 模式：按预期整体失败 → 无法合法化 'mini.conv'：没有注册对应的 ConversionPattern（模式=full，整体失败）
+  partial 模式：成功，显式残留 ['mini.conv']（mini.matmul 已被转换，conv 留给后续 Pass）
+  失败要大声：full 指名道姓，partial 把残留摆上台面——都不许悄悄吞掉
+
+[PASS] DT5 Pattern 级失败
+  A(4,6) @ B(3,2)（内维 6≠3），full 模式：按预期失败
+  驱动器诊断：无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+  --debug 调试树含拒绝原因（notifyMatchFailure 的 remark）：True
+  普通运行（不带 --debug）不打印拒绝原因：True（展示方式由驱动器决定——这是设计，不是丢消息）
+
+[PASS] DT6 原子性与契约
+  A. [HalfDone(benefit=2) → 拒绝并回滚] ＋ [Skeleton(benefit=1) → 接手]：成功，终图与只用 Skeleton 的结果逐字相同：True
+     回滚证据：调试树里先见 FAILURE（True），终图却无 %bad 半成品残留
+  B. 只注册 HalfDone：full 模式失败 → 无法合法化 'mini.matmul'：已注册的 Pattern 都拒绝了这次匹配（拒绝原因默认只在 --debug 调试树里；模式=full，整体失败）
+     失败后 IR 的 op 序列 = ['func.func', 'mini.matmul', 'func.return']（与转换前相同：True），骨架半成品残留 = 无
+  C. Forgetful 返回成功但忘了 replaceOp：契约硬失败
+     诊断：契约违反：Pattern 'ForgetfulMatMulPattern' 返回成功，但 root op 'mini.matmul' 既未被 replaceOp 也未被 eraseOp（契约：root 必须 in-place 更新/替换/擦除）
+     （真实 MLIR 默认构建不查这条契约，需 -DMLIR_ENABLE_EXPENSIVE_PATTERN_API_CHECKS=ON）
+
+—— 诊断测试 6/6 PASS ——
+
+口径附注：
+  1. op 计数按 SSA op 精确到每个常量：主图 3 op → 终图 12 op（骨架 10 目标 op）。
+     Day 85 的 op 名级仿真记 14 op（5 个 index 常量算 1 条、完整目标含 12 条目）；
+     换算到同一口径：完整目标 = 骨架 10 ＋ 待填 6 = 16 目标 op（全函数 18 op）。
+  2. 今天的验收是结构性的（匹配/骨架/类型/诊断）；骨架不做数值计算，
+     执行等价（TP 系列位等价检查）从 Day 87 起逐块补上。
+  3. 与真实 MLIR 的差异见脚本头部「诚实声明」：rollback 深度、签名转换前置、契约检查策略。

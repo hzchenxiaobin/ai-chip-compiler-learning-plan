@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 680" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 21px; font-weight: bold; }
+    .sub { font-size: 12.5px; fill: #6b6257; }
+    .grp { font-size: 13px; font-weight: bold; fill: #5a554d; }
+    .lab { font-size: 12px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .val { font-size: 11.5px; font-weight: bold; fill: #444; }
+    .inval { font-size: 11.5px; font-weight: bold; fill: #FDFBF6; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .tick { font-size: 10.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+    .bar { stroke: #3B3B3B; stroke-width: 1.9; }
+  </style>
+
+  <rect x="4" y="4" width="972" height="672" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="490" y="32" text-anchor="middle" class="title">不同 Tile 的空间表（双缓冲合计）：12 组配置里唯一住不下的是 FP32·128³</text>
+  <path d="M 300,42 Q 490,37 680,43" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="490" y="58" text-anchor="middle" class="sub">数据来自 outputs/space-table.txt（真实运行）；条内白色刻度＝同配置的单缓冲合计；轴单位 KB（1024 进制）</text>
+
+  <!-- 左面板：32³ 与 64³（0~100 KB） -->
+  <path class="box" fill="#F5F0E4" d="M 40,72 Q 260,68 486,73 Q 489,330 486,560 Q 260,565 42,561 Q 38,316 40,72 Z"/>
+  <text x="263" y="94" text-anchor="middle" class="grp">小 Tile 一侧：轴 0~100 KB（预算 256 KB 远在图外）</text>
+
+  <text x="56" y="124" class="grp">tile = 32³</text>
+
+  <text x="56" y="151" class="det">fp32</text>
+  <rect x="100" y="138" width="74" height="22" rx="4" fill="#7FA8D9" fill-opacity="0.7" class="bar"/>
+  <line x1="145" y1="138" x2="145" y2="160" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="180" y="153" class="val">20,608 B</text>
+
+  <text x="56" y="181" class="det">fp16</text>
+  <rect x="100" y="168" width="45" height="22" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <line x1="130" y1="168" x2="130" y2="190" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="151" y="183" class="val">12,416 B</text>
+
+  <text x="56" y="211" class="det">bf16</text>
+  <rect x="100" y="198" width="45" height="22" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <path d="M 104,209 L 139,209" stroke="#FDFBF6" stroke-width="2" stroke-dasharray="4 3"/>
+  <line x1="130" y1="198" x2="130" y2="220" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="151" y="213" class="val">12,416 B</text>
+
+  <text x="56" y="241" class="det">int8</text>
+  <rect x="100" y="228" width="30" height="22" rx="4" fill="#93C6A0" fill-opacity="0.65" class="bar"/>
+  <line x1="123" y1="228" x2="123" y2="250" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="136" y="243" class="val">8,320 B</text>
+
+  <text x="56" y="274" class="grp">tile = 64³</text>
+
+  <text x="56" y="301" class="det">fp32</text>
+  <rect x="100" y="288" width="297" height="22" rx="4" fill="#7FA8D9" fill-opacity="0.7" class="bar"/>
+  <line x1="279" y1="288" x2="279" y2="310" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="403" y="303" class="val">82,176 B</text>
+
+  <text x="56" y="331" class="det">fp16</text>
+  <rect x="100" y="318" width="179" height="22" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <line x1="219" y1="318" x2="219" y2="340" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="285" y="333" class="val">49,408 B</text>
+
+  <text x="56" y="361" class="det">bf16</text>
+  <rect x="100" y="348" width="179" height="22" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <path d="M 104,359 L 273,359" stroke="#FDFBF6" stroke-width="2" stroke-dasharray="4 3"/>
+  <line x1="219" y1="348" x2="219" y2="370" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="285" y="363" class="val">49,408 B</text>
+
+  <text x="56" y="391" class="det">int8</text>
+  <rect x="100" y="378" width="119" height="22" rx="4" fill="#93C6A0" fill-opacity="0.65" class="bar"/>
+  <line x1="190" y1="378" x2="190" y2="400" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="225" y="393" class="val">33,024 B</text>
+
+  <path d="M 52,424 Q 260,420 470,425" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="100" y="448" class="det">白色刻度＝单缓冲合计：32³ fp32 的 12,416 B、64³ fp32 的 49,408 B……</text>
+  <text x="100" y="466" class="det">看阶梯：fp16 的条＝fp32 的白色刻度；int8 的条＝fp16 的白色刻度</text>
+  <text x="100" y="496" class="det">32³ 只用掉预算的 3.2~7.9%——住得宽松，但片上复用差：</text>
+  <text x="100" y="514" class="det">A+B 流量是 128³ 的 4 倍（见 --reuse）。「住得下」之外还要「住得值」。</text>
+
+  <!-- 左面板刻度 -->
+  <path d="M 100,536 L 470,536" stroke="#3B3B3B" stroke-width="1.8"/>
+  <text x="100" y="552" text-anchor="middle" class="tick">0</text>
+  <text x="175" y="552" text-anchor="middle" class="tick">25</text>
+  <text x="250" y="552" text-anchor="middle" class="tick">50</text>
+  <text x="325" y="552" text-anchor="middle" class="tick">75</text>
+  <text x="400" y="552" text-anchor="middle" class="tick">100 KB</text>
+
+  <!-- 右面板：128³（0~340 KB，含预算线） -->
+  <path class="box" fill="#F5F0E4" d="M 510,72 Q 730,68 958,73 Q 961,330 958,560 Q 729,565 512,561 Q 508,316 510,72 Z"/>
+  <text x="734" y="94" text-anchor="middle" class="grp">大 Tile 一侧：轴 0~340 KB（红色虚线＝256 KB 预算）</text>
+
+  <text x="526" y="126" class="grp">tile = 128³（D97 的冠军 tile）</text>
+
+  <text x="526" y="170" class="det">fp32</text>
+  <rect x="570" y="152" width="271" height="28" rx="4" fill="#7FA8D9" fill-opacity="0.7" class="bar"/>
+  <rect x="841" y="152" width="68" height="28" rx="4" fill="#D98484" fill-opacity="0.8" class="bar"/>
+  <line x1="774" y1="152" x2="774" y2="180" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="903" y="170" text-anchor="end" class="inval">328,192 B</text>
+  <text x="909" y="196" text-anchor="end" class="det" fill="#B03A3A">✗ 溢出 66,048 B（预算外红色段）</text>
+
+  <text x="526" y="220" class="det">fp16</text>
+  <rect x="570" y="202" width="204" height="28" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <line x1="706" y1="202" x2="706" y2="230" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="768" y="220" text-anchor="end" class="inval">197,120 B</text>
+
+  <text x="526" y="270" class="det">bf16</text>
+  <rect x="570" y="252" width="204" height="28" rx="4" fill="#E8A87C" fill-opacity="0.65" class="bar"/>
+  <path d="M 576,266 L 764,266" stroke="#FDFBF6" stroke-width="2" stroke-dasharray="4 3"/>
+  <line x1="706" y1="252" x2="706" y2="280" stroke="#FDFBF6" stroke-width="3"/>
+  <text x="768" y="270" text-anchor="end" class="inval">197,120 B</text>
+
+  <text x="526" y="320" class="det">int8</text>
+  <rect x="570" y="302" width="136" height="28" rx="4" fill="#93C6A0" fill-opacity="0.65" class="bar"/>
+  <text x="700" y="320" text-anchor="end" class="inval">131,584 B</text>
+
+  <!-- 阶梯呼应：int8 条的右端 = fp16 的白色刻度（都是 131,584 B） -->
+  <path d="M 706,230 L 706,302" stroke="#8f887c" stroke-width="1.7" stroke-dasharray="4 4"/>
+  <text x="714" y="262" class="det" fill="#8f887c">int8 条的右端＝fp16 的白色刻度</text>
+  <text x="714" y="276" class="det" fill="#8f887c">＝131,584 B：dtype 降一档，双缓冲＝上一档单缓冲</text>
+
+  <!-- 预算线 -->
+  <path d="M 841,132 L 841,536" stroke="#C0392B" stroke-width="2.2" stroke-dasharray="8 6"/>
+  <text x="841" y="126" text-anchor="middle" class="det" fill="#B03A3A">预算 256 KB = 262,144 B</text>
+
+  <!-- D97 注释框 -->
+  <path d="M 562,356 Q 745,352 926,357 Q 929,400 926,444 Q 744,449 564,445 Q 560,400 562,356 Z" fill="#FDFBF6" stroke="#E8945C" stroke-width="1.9" stroke-dasharray="6 4"/>
+  <text x="576" y="378" class="det" fill="#B0632E">D97 的 CPU 冠军 ikj-128（13.59 GFLOPS）：CPU 的 L2（512 KB/核，</text>
+  <text x="576" y="394" class="det" fill="#B0632E">硬件管理）默默吸收了工作集；SRAM 由编译器显式管理——</text>
+  <text x="576" y="410" class="det" fill="#B0632E">320.5 KB 的它在生成代码之前就该被拒。退路：single＝197,120 B</text>
+  <text x="576" y="426" class="det" fill="#B0632E">（恰好＝fp16 条）、降 Tk、或换低精度 dtype。</text>
+  <path d="M 875,352 Q 872,290 870,184" class="arr" stroke="#B0632E" stroke-width="1.7"/>
+  <path d="M 870,184 l -4,-7 l 8,1 z" fill="#B0632E"/>
+
+  <text x="526" y="478" class="det">这个判定就是 D104 资源过滤器的原型：</text>
+  <text x="526" y="496" class="det">超预算的 Tile 候选在生成代码前出局，</text>
+  <text x="526" y="514" class="det">而不是在真机上溢出之后才发现。</text>
+
+  <!-- 右面板刻度 -->
+  <path d="M 570,536 L 930,536" stroke="#3B3B3B" stroke-width="1.8"/>
+  <text x="570" y="552" text-anchor="middle" class="tick">0</text>
+  <text x="638" y="552" text-anchor="middle" class="tick">64</text>
+  <text x="706" y="552" text-anchor="middle" class="tick">128</text>
+  <text x="773" y="552" text-anchor="middle" class="tick">192</text>
+  <text x="841" y="552" text-anchor="middle" class="tick">256</text>
+  <text x="909" y="552" text-anchor="middle" class="tick">320 KB</text>
+
+  <!-- 底部注脚 -->
+  <text x="70" y="596" class="foot">阶梯规律（左图右图同一条）：dtype 每降一档（4→2→1 B），双缓冲合计恰好＝上一档的单缓冲——A+B 减半、×2 找补，C 与 bias 跟 acc 走；</text>
+  <text x="70" y="614" class="foot">想让 FP32·128³ 住进的旋钮——single 缓冲、降 Tk、换 dtype、砍预算——正是 D104 过滤器与 D106+ 搜索空间要系统处理的自由度。</text>
+  <text x="490" y="648" text-anchor="middle" class="foot">右图 fp32 条超出预算线的红色段＝溢出 66,048 B；全部数字与判定来自 estimator.py --table 的真实输出</text>
+</svg>

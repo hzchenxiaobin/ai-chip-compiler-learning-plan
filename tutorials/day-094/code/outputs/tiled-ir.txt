@@ -1,0 +1,182 @@
+Tiled IR（第 94 天交付物）——两份配置、两份 Tiled 循环、同一个答案
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~93 口径：Python 复刻 DialectConversion 语义仿真）
+
+贯穿例：A(2,3) @ B(3,2) → C(2,2)，种子 94；两份 IR 都与参考位等价（TL2）
+结构：31 op = Day 89 的 18 op ＋ 清零 nest 3 ＋ 块循环上界与点循环骨架 10
+
+==============================================================================
+tile=2x2x1（K 切成 3 块——跨块累加看得见）
+==============================================================================
+// 第 94 天：Tiled MatMul，tile=2x2x1
+// 块循环 ×3（step=块尺寸）→ 点循环 ×3（lb=块起点，ub=addi(起点,块尺寸)）
+// C 流量：12L+12S+4清；与参考位等价 = True
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~93 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<2x2xf32, strided<[2, 1]>> {
+  %c = memref.alloc() : memref<2x2xf32, strided<[2, 1]>>
+  // 输出缓冲 16 B：alloc 不清零（D87）——k 被切块后
+  // 部分和住在 C 里，所以下面还要铺清零 nest
+  %zero = arith.constant 0.0 : f32
+  // 零起点：喂给清零 nest（跨块内存累加的零起点——Day 92 形态 B 的教训）
+  %c0 = arith.constant 0 : index
+  // 常量 0：所有循环的 lb
+  %c1 = arith.constant 1 : index
+  // 常量 1：点循环与清零 nest 的 step
+  %cM = arith.constant 2 : index
+  // 常量 M = 2：i 块循环的 ub
+  %cN = arith.constant 2 : index
+  // 常量 N = 2：j 块循环的 ub
+  %cK = arith.constant 3 : index
+  // 常量 K = 3：k 块循环的 ub（归约维）
+  %cTm = arith.constant 2 : index
+  // 常量 tile_m = 2：i 块尺寸——今天从 LoopOptions.tile 来（Day 93 的字段）
+  %cTn = arith.constant 2 : index
+  // 常量 tile_n = 2：j 块尺寸
+  %cTk = arith.constant 1 : index
+  // 常量 tile_k = 1：k 块尺寸——K/Tk = 3 个 k-块，跨块累加的接力次数
+  scf.for %i = %c0 to %cM step %c1 {
+    scf.for %j = %c0 to %cN step %c1 {
+      memref.store %zero, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+      // 清零：C[i,j] ← 0——第一个 k-块读到的零起点
+    }
+    // 四要素：[0,2) step 1，trip = 2
+  }
+  // 清零 nest：[0,2) step 1，trip = 2——M·N 次 store
+  scf.for %i0 = %c0 to %cM step %cTm {
+    scf.for %j0 = %c0 to %cN step %cTn {
+      scf.for %k0 = %c0 to %cK step %cTk {
+        %ub_i = arith.addi(%i0, %cTm)
+        // %ub_i = %i0 + tile_m（1 个 i-块的边界）
+        scf.for %i = %i0 to %ub_i step %c1 {
+          %ub_j = arith.addi(%j0, %cTn)
+          // %ub_j = %j0 + tile_n（1 个 j-块的边界）
+          scf.for %j = %j0 to %ub_j step %c1 {
+            %cv = memref.load %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+            // 读 C：上一个 k-块留下的部分和——跨块累加的读端
+            // （k0=0 时读到的是清零 nest 铺的 0）
+            %ub_k = arith.addi(%k0, %cTk)
+            // %ub_k = %k0 + tile_k——点循环上界每圈现算（真实 MLIR 同款）
+            %acc = scf.for %k = %k0 to %ub_k step %c1
+                    iter_args(%acc = %cv) -> (f32) {
+              %xa = memref.load %a[%i, %k] : memref<2x3xf32, strided<[3, 1]>>
+              // 读 A：A[i,k]——i、k 都是点循环 iv（块内真实坐标）
+              %xb = memref.load %b[%k, %j] : memref<3x2xf32, strided<[2, 1]>>
+              // 读 B：B[k,j]——与 Day 89 同一公式，换的只是循环骨架
+              %p = arith.mulf %xa, %xb : f32
+              // %p = A[i,k]·B[k,j]
+              %s = arith.addf %acc, %p : f32
+              // %acc（区域参数）＋ %p → %s——k 升序舍入顺序不变
+              scf.yield %s : f32
+              // 写回通道：本趟 %s → 下一趟 %acc（块内寄存器累加）
+            }
+            // 点循环 k：[%k0, %k0+1) step 1，trip = 1（整除契约：块起点+块尺寸 ≤ K=3）
+            // 块内寄存器累加：iter_args 初值 = %cv（上一块的终点）——跨块接力棒
+            memref.store %acc, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+            // 写 C：本块部分和落盘——每个 k-块各写一次（共 K/tile_k 次）
+          }
+          // 点循环 j：[%j0, %j0+2) step 1，trip = 2
+          // 循环体四件事：读部分和 → 算 k 上界 → 块内乘加 → 写回
+        }
+        // 点循环 i：[%i0, %i0+2) step 1，trip = 2
+      }
+      // 块循环：[0,3) step 1，trip = 3
+      // ub 来源：K/tile_k = 3 个 k-块（归约维也被切）
+      // 归约维被切成 3 块——块内寄存器、跨块内存（今天的核心设计）
+    }
+    // 块循环：[0,2) step 2，trip = 1
+    // ub 来源：N/tile_n = 1 个 j-块（step = tile_n）
+    // j0 每跳一格，B 的列面板和 C 的方块都换一批
+  }
+  // 块循环：[0,2) step 2，trip = 1
+  // ub 来源：M/tile_m = 1 个 i-块（step = tile_m）
+  // 最外层块循环 i0：step = tile_m——每圈跳一整块（今天出生的结构）
+  return %c : memref<2x2xf32, strided<[2, 1]>>
+}
+
+==============================================================================
+tile=2x2x3（Day 93 第④道门拒过的配置——单块，K/Tk=1）
+==============================================================================
+// 第 94 天：Tiled MatMul，tile=2x2x3
+// 块循环 ×3（step=块尺寸）→ 点循环 ×3（lb=块起点，ub=addi(起点,块尺寸)）
+// C 流量：4L+4S+4清；与参考位等价 = True
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~93 口径：Python 复刻 DialectConversion 语义仿真）
+func @main(%a: memref<2x3xf32, strided<[3, 1]>>, %b: memref<3x2xf32, strided<[2, 1]>>) -> memref<2x2xf32, strided<[2, 1]>> {
+  %c = memref.alloc() : memref<2x2xf32, strided<[2, 1]>>
+  // 输出缓冲 16 B：alloc 不清零（D87）——k 被切块后
+  // 部分和住在 C 里，所以下面还要铺清零 nest
+  %zero = arith.constant 0.0 : f32
+  // 零起点：喂给清零 nest（跨块内存累加的零起点——Day 92 形态 B 的教训）
+  %c0 = arith.constant 0 : index
+  // 常量 0：所有循环的 lb
+  %c1 = arith.constant 1 : index
+  // 常量 1：点循环与清零 nest 的 step
+  %cM = arith.constant 2 : index
+  // 常量 M = 2：i 块循环的 ub
+  %cN = arith.constant 2 : index
+  // 常量 N = 2：j 块循环的 ub
+  %cK = arith.constant 3 : index
+  // 常量 K = 3：k 块循环的 ub（归约维）
+  %cTm = arith.constant 2 : index
+  // 常量 tile_m = 2：i 块尺寸——今天从 LoopOptions.tile 来（Day 93 的字段）
+  %cTn = arith.constant 2 : index
+  // 常量 tile_n = 2：j 块尺寸
+  %cTk = arith.constant 3 : index
+  // 常量 tile_k = 3：k 块尺寸——K/Tk = 1 个 k-块，跨块累加的接力次数
+  scf.for %i = %c0 to %cM step %c1 {
+    scf.for %j = %c0 to %cN step %c1 {
+      memref.store %zero, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+      // 清零：C[i,j] ← 0——第一个 k-块读到的零起点
+    }
+    // 四要素：[0,2) step 1，trip = 2
+  }
+  // 清零 nest：[0,2) step 1，trip = 2——M·N 次 store
+  scf.for %i0 = %c0 to %cM step %cTm {
+    scf.for %j0 = %c0 to %cN step %cTn {
+      scf.for %k0 = %c0 to %cK step %cTk {
+        %ub_i = arith.addi(%i0, %cTm)
+        // %ub_i = %i0 + tile_m（1 个 i-块的边界）
+        scf.for %i = %i0 to %ub_i step %c1 {
+          %ub_j = arith.addi(%j0, %cTn)
+          // %ub_j = %j0 + tile_n（1 个 j-块的边界）
+          scf.for %j = %j0 to %ub_j step %c1 {
+            %cv = memref.load %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+            // 读 C：上一个 k-块留下的部分和——跨块累加的读端
+            // （k0=0 时读到的是清零 nest 铺的 0）
+            %ub_k = arith.addi(%k0, %cTk)
+            // %ub_k = %k0 + tile_k——点循环上界每圈现算（真实 MLIR 同款）
+            %acc = scf.for %k = %k0 to %ub_k step %c1
+                    iter_args(%acc = %cv) -> (f32) {
+              %xa = memref.load %a[%i, %k] : memref<2x3xf32, strided<[3, 1]>>
+              // 读 A：A[i,k]——i、k 都是点循环 iv（块内真实坐标）
+              %xb = memref.load %b[%k, %j] : memref<3x2xf32, strided<[2, 1]>>
+              // 读 B：B[k,j]——与 Day 89 同一公式，换的只是循环骨架
+              %p = arith.mulf %xa, %xb : f32
+              // %p = A[i,k]·B[k,j]
+              %s = arith.addf %acc, %p : f32
+              // %acc（区域参数）＋ %p → %s——k 升序舍入顺序不变
+              scf.yield %s : f32
+              // 写回通道：本趟 %s → 下一趟 %acc（块内寄存器累加）
+            }
+            // 点循环 k：[%k0, %k0+3) step 1，trip = 3（整除契约：块起点+块尺寸 ≤ K=3）
+            // 块内寄存器累加：iter_args 初值 = %cv（上一块的终点）——跨块接力棒
+            memref.store %acc, %c[%i, %j] : memref<2x2xf32, strided<[2, 1]>>
+            // 写 C：本块部分和落盘——每个 k-块各写一次（共 K/tile_k 次）
+          }
+          // 点循环 j：[%j0, %j0+2) step 1，trip = 2
+          // 循环体四件事：读部分和 → 算 k 上界 → 块内乘加 → 写回
+        }
+        // 点循环 i：[%i0, %i0+2) step 1，trip = 2
+      }
+      // 块循环：[0,3) step 3，trip = 1
+      // ub 来源：K/tile_k = 1 个 k-块（归约维也被切）
+      // 归约维被切成 1 块——块内寄存器、跨块内存（今天的核心设计）
+    }
+    // 块循环：[0,2) step 2，trip = 1
+    // ub 来源：N/tile_n = 1 个 j-块（step = tile_n）
+    // j0 每跳一格，B 的列面板和 C 的方块都换一批
+  }
+  // 块循环：[0,2) step 2，trip = 1
+  // ub 来源：M/tile_m = 1 个 i-块（step = tile_m）
+  // 最外层块循环 i0：step = tile_m——每圈跳一整块（今天出生的结构）
+  return %c : memref<2x2xf32, strided<[2, 1]>>
+}
+

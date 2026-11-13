@@ -1,0 +1,27 @@
+语义条款审计（正确性报告核心）：六条款 × 实现点 × 真实探针
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~90 口径：Python 复刻 DialectConversion 语义仿真）
+
+
+S1 数学定义｜mini.matmul 承诺：C[i,j] 是 K 项完整内积｜循环 IR 实现：三重循环＋load A[i,k]·load B[k,j]→mulf→addf（iter_args 链）｜探针：位等价 = True
+S2 形状契约｜承诺：输出形状 (M,N)、内维 K 必须匹配｜实现：LoopSpec ub ← M/N/K（A.shape[0]/B.shape[1]/内维契约），memref strided<[3,1]>/<[2,1]>/<[2,1]>｜探针：结构检查（RT1）＋ C 实测形状 (2, 2)
+S3 数值语义｜承诺：f32 元素、确定的求和顺序｜实现：iter_args(%acc=%zero) 链，每趟 addf 舍入一次，k 从 0 升到 2｜探针：位等价 = True；np.matmul 差值 1.192e-07（顺序不同属预期）
+S4 边界语义｜承诺：任意非负 M/N/K 合法，K=0 → C 全零｜实现：trip = max(0, ceil((ub-lb)/step))，%zero 是 iter_args 初值｜探针：K=0 回归 C 全零=True、load 0、store 12
+S5 内存语义｜承诺：输出写进独立缓冲，每格终值恰好写一次｜实现：memref.alloc %c；store 位于 k 外 j 内（作用域交集最内层）｜探针：覆盖定律 C×1=True、未初始化读 0
+S6 保守边界｜承诺：静态 Pattern 不猜动态形状｜实现：match 检测 '?' → notifyMatchFailure，事务 Rewriter 回滚｜探针：动态拒绝 = True
+
+审计结论：六条款全部有真实探针背书——语义保持不是一个笼统的「感觉对了」，而是逐条款可验证的清单。
+
+变异 × 复盘例 (2,3,2) 的真实结局（预测在前、实测对账）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（Day 57~90 口径：Python 复刻 DialectConversion 语义仿真）
+
+M1 a_swap：预测 OOB｜实测 OOB｜memref.load %a(2, 0)：第 0 维下标 2 ∉ [0, 2)（shape (2, 3)）｜✓
+    （配对写反：load %a[%k, %i]（A 的行列互换；方阵时算 Aᵀ·B，不越界））
+M2 b_swap：预测 OOB｜实测 OOB｜memref.load %b(0, 2)：第 1 维下标 2 ∉ [0, 2)（shape (3, 2)）；线性地址 2 甚至仍在缓冲区（6 格）内——只查线性地址抓不住这类逻辑越界｜✓
+    （配对写反：load %b[%j, %k]（B 的行列互换；K==N 时算 A·Bᵀ，不越界））
+M3 i_ub_n：预测 SAME｜实测 SAME｜与同序参考逐位相同（隐身）｜✓
+    （边界错绑：i 循环上界绑到 %cN（应绑 %cM）；M==N 时位相同（隐身））
+M4 k_ub_n：预测 NUM｜实测 NUM｜max|C − ref| = 1.172e+00｜✓
+    （边界错绑：k 循环上界绑到 %cN（应绑 %cK）；K==N 时位相同（隐身））
+
+全矩阵回归：  矩阵规模：15 组形状 ≥ 计划要求的 8 组（True）；全部 15/15 通过（True）；  每组检查 11 项：转换成功 · 18 op 结构 · LoopSpec(i<M,j<N,k<K) · 常量多重集{0,1,M,N,K} · 执行无越界 · 同序参考位等价 · load=2MNK · store=MN · 覆盖 A×N/B×M/C×1 · 无未初始化读 · IV 轨迹
+结论：复盘例 (2,3,2) 的位等价全绿抓不住 i_ub_n——正确性报告必须引用形状矩阵整体（Day 90 猎杀矩阵：i_ub_n 被 11/15 组杀死），「单一形状全绿」只是语义保持的必要条件。

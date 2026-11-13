@@ -1,0 +1,178 @@
+==================================================================
+第 66 天主实验：连续 Reshape 合并（numel 守恒 + 中间使用者约束）
+==================================================================
+
+== 0. 环境与主线 ==
+python  3.11.4
+numpy   1.26.4
+arch    aarch64
+mlir-opt /usr/lib/llvm-18/bin/mlir-opt（Ubuntu LLVM version 18.1.8）
+主线：Reshape 链什么时候能合并——元素数量守恒的判据、两个 RewritePattern、被替换/被删除的合法性区别、数值对拍与 MLIR 实测。
+
+== 1. 现场一：reshape 链交给 --canonicalize，stock 管道动不动？==
+  ① tensor.reshape 链（今天的对照主线）
+    --canonicalize exit=0：reshape 2 · collapse 0 · expand 0
+  ② tensor.collapse_shape 连链
+    --canonicalize exit=0：reshape 0 · collapse 1 · expand 0
+  ③ tensor.expand_shape 连链
+    --canonicalize exit=0：reshape 0 · collapse 0 · expand 1
+  ④ expand→collapse 互逆对
+    --canonicalize exit=0：reshape 0 · collapse 0 · expand 0
+  ⑤ collapse→expand 非互逆（→(6,2,2)）
+    --canonicalize exit=0：reshape 0 · collapse 1 · expand 1
+  对照读法：① 原样保留（无规则）；②③ 折叠成单 op（reassociation 组合成 [[0, 1, 2]]）；④ 整体消除为 return %arg0；
+            ⑤ 原样保留——组合出的变换无法用单个 reassociative reshape 表达，stock 也不重写成 tensor.reshape
+[PASS] ① tensor.reshape 链经 --canonicalize 原样保留（LLVM 18 无此规则）
+[PASS] ② collapse 连链折叠成单 op，reassociation 组合为 [[0, 1, 2]]
+[PASS] ③ expand 连链折叠成单 op [[0, 1, 2]]
+[PASS] ④ 互逆对整体消除为 return %arg0
+[PASS] ⑤ 非互逆 collapse→expand 原样保留（2 个 op）
+
+== 2. Reshape 语义：元素数量守恒 + 三关 Verifier ==
+  判据只有一个数：prod(in_shape) == prod(out_shape)（元素数量守恒）
+  verify_reshape((2, 3, 4), (5, 7), 'C') → [E2] 元素数量不守恒：输入 24 ≠ 输出 35
+  verify_reshape((2, 3, 4), (0, 6), 'C') → [E1] 输出第 0 维 0 < 1（mini 每维须为 ≥1 整数）
+  verify_reshape((2, 3, 4), (24,), 'A') → [E3] 未知 order = 'A'（mini 只认 'C' / 'F'）
+[PASS] E1/E2/E3 反例全部被三关 Verifier 拦截
+[PASS] E2 正例：(2,3,4) → (6,4) → (24,) 每跳 numel 都是 24
+
+  物理代价现场（numpy 1.26.4 实测，reshape 是视图还是拷贝？）：
+    连续输入 B --reshape--> (6,4)：shares_memory = True（视图）
+    非连续输入 B.T --reshape--> (6,4)：shares_memory = False（被迫拷贝一次）
+    二跳 (6,4) --reshape--> (24,)：shares_memory = True（视图）
+    合并一步 B.T --reshape--> (24,)：也是一次拷贝，值与两跳相等 = True
+[PASS] C 序链的物理代价：连续输入全视图；非连续输入至多第一跳拷贝一次，合并一步拷贝次数相同
+
+== 3. mini 侧：P1 恒等消除 + P2 链合并的现场 ==
+Pattern 1（恒等消除）：Reshape(x, shape(x)) → x——不需要唯一使用者检查
+Pattern 2（链合并）：Reshape(Reshape(x, s1), s2) → Reshape(x, s2)——中间值唯一使用者
+
+场景 A（恒等单跳，结果被 2 个消费者 + 0 return 使用 → P1 照样消除）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %r = mini.reshape %in shape = [2, 3, 4] order = "C" : (2x3x4xf32) -> (2x3x4xf32)
+  %a = mini.reshape %r shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  %b = mini.reshape %r shape = [4, 6] order = "C" : (2x3x4xf32) -> (4x6xf32)
+  func.return %a, %b
+  %r 的使用者数 = 2（%a、%b 各一）——P1 不看这个
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %a = mini.reshape %in shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  %b = mini.reshape %in shape = [4, 6] order = "C" : (2x3x4xf32) -> (4x6xf32)
+  func.return %a, %b
+[PASS] A：恒等消除不看使用者数（op 数 3→2），%a/%b 全部改道读 %in
+
+场景 B（朴素链 B --(6,4)--> --(24,)-->，P2 合并跳过中间形状）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [24] order = "C" : (6x4xf32) -> (24xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %c = mini.reshape %in shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  func.return %c
+[PASS] B：朴素链合并为单 reshape（op 数 2→1，直读 %in，shape=[24]）
+
+场景 C（绕回链 B --(6,4)--> --(2,3,4)-->，合并成恒等 → 整体消除）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [2, 3, 4] order = "C" : (6x4xf32) -> (2x3x4xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] C：绕回链整体消除（op 数 2→0，链尾形状 == 输入形状）
+
+场景 D（五连链 B→(6,4)→(24,)→(2,12)→(24,1)→(12,2)，迭代到单 op）：
+→ PassManager 5 轮、应用 4 次（每轮合并一对）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t4 = mini.reshape %in shape = [12, 2] order = "C" : (2x3x4xf32) -> (12x2xf32)
+  func.return %t4
+[PASS] D：五连链合并为单 reshape（op 数 5→1，直读 %in，shape=[12,2]）
+
+场景 E（多使用者反例：%t 被 %c、%u 两个消费者用 → P2 拒绝，图不动）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [24] order = "C" : (6x4xf32) -> (24xf32)
+  %u = mini.reshape %t shape = [4, 6] order = "C" : (6x4xf32) -> (4x6xf32)
+  func.return %c, %u
+  %t 的使用者数 = 2（%c、%u 各一）——P2 拒绝
+[PASS] E：多使用者时图不动（3 个 op 原样）且数值不变
+
+场景 F（中间值 %t 被 func.return 导出 → 也是使用者，拒绝）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [24] order = "C" : (6x4xf32) -> (24xf32)
+  func.return %c, %t
+  %t 的使用者数 = 2（%c 一个 + func.return 一个）
+[PASS] F：被 return 的中间值同样拒绝（op 数仍 2）且数值不变
+
+场景 G（混 order 链：内层 C、外层 F → P2 拒绝，图不动）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [24] order = "F" : (6x4xf32) -> (24xf32)
+  func.return %c
+  拒绝理由：F 序 reshape 会重排线性顺序（数值证明见第 5 节）
+[PASS] G：混 order 链拒绝合并（op 数仍 2）且数值不变
+
+== 4. 判定表：12 个场景，优化前后数值对拍 ==
+用例                       输入shape        形状链                              优化后op数  数值对拍
+S1  恒等单跳                      (2, 3, 4)                             [2, 3, 4]       0      ok
+S2  朴素二连                      (2, 3, 4)                         [6, 4] → [24]       1      ok
+S3  绕回二连                      (2, 3, 4)                    [6, 4] → [2, 3, 4]       0      ok
+S4  三连                        (2, 3, 4)                [6, 4] → [24] → [4, 6]       1      ok
+S5  五连                        (2, 3, 4)    [6, 4] → [24] → [2, 12] → [24, 1]…       1      ok
+S6  二连绕回（不同中间）                (2, 3, 4)                      [24] → [2, 3, 4]       0      ok
+S7  单跳非恒等                     (2, 3, 4)                                  [24]       1      ok
+S8  恒等单跳 order=F              (2, 3, 4)                             [2, 3, 4]       0      ok
+S9  4D 长链                  (2, 3, 4, 5)    [6, 4, 5] → [120] → [2, 60] → [10…       1      ok
+S10 标量维参与                     (2, 3, 4)                     [1, 24] → [24, 1]       1      ok
+  （S11–S12 是两张特殊构造的图，单独跑：）
+  S11 分叉链（%t1 被 %t2、%u 共用）：4 op → 3 op——被多使用者切开的两段独立判定：(%t1,%t2) 阻塞、(%u,%v) 照样合并，数值不变
+  S12 %a 被 return 的链：3 op → 1 op（%b 唯一使用者是 %c → (%b,%c) 合并成恒等后整体消除；%a 是图输出所以保留），数值不变
+[PASS] 判定表 12/12：op 数符合预期 + 数值不变 + Verifier 通过
+
+  规律：C 序链的最终 op 数由「链尾形状」一刀决定——链尾 == 输入形状 → 0，否则 → 1（与链长和中间形状无关）。
+
+随机压力对拍（300 组随机链，秩 1..4、链长 1..5、中间形状随机分解）：
+[PASS] 随机对拍 300/300：数值不变、Verifier 通过、op 数 = 链尾判定
+  300 组共 944 个初始 op（平均链长 3），优化后剩 271 个（28.7%）——几乎全部坍缩成单跳
+
+== 5. 激进版现场：「改写 outer 直读 %in」永远合法，删除 %t 才有条件 ==
+  5a. 多使用者图（场景 E 同款）跑激进版（迭代到不动点）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %t shape = [24] order = "C" : (6x4xf32) -> (24xf32)
+  %u = mini.reshape %t shape = [4, 6] order = "C" : (6x4xf32) -> (4x6xf32)
+  func.return %c, %u
+  激进版应用 2 次后：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %c = mini.reshape %in shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  %u = mini.reshape %in shape = [4, 6] order = "C" : (2x3x4xf32) -> (4x6xf32)
+  func.return %c, %u
+  两条消费路径都改写成直读 %in（各自值不变）；内部中间值 %t 的使用者随之归零 → 连带删除（op 数 3→2）
+  ——「必要中间结果」只有图输出（被 return 的值）才真正必要，内部值永远可以被绕过
+[PASS] 5a：激进版把 %c、%u 都改道直读 %in 后删除无人的 %t（op 数 3→2，值不变）
+  5b. 唯一使用者的链（场景 B 同款）跑激进版：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %c = mini.reshape %in shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  func.return %c
+[PASS] 5b：唯一使用者时激进版与保守版殊途同归（%t 删除，op 数 2→1）
+  5c. 中间值被 return 的图（场景 F 同款）跑激进版：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.reshape %in shape = [6, 4] order = "C" : (2x3x4xf32) -> (6x4xf32)
+  %c = mini.reshape %in shape = [24] order = "C" : (2x3x4xf32) -> (24xf32)
+  func.return %c, %t
+  %t 是图输出，必须物化保留；%c 改直读 %in——物理拷贝次数没省，省的是 %c 这条路径的读端与后续 Pattern 的通过性
+[PASS] 5c：被 return 的 %t 保留，%c 仍被改写成直读 %in（op 数仍 2）
+
+== 6. 混 order 终审：为什么 P2 要求两跳都是 C 序 ==
+  C∘F 链的值前 8 个：[0, 4, 8, 12, 16, 20, 1, 5]
+  单个 C 序 reshape：[0, 1, 2, 3, 4, 5, 6, 7]
+  单个 F 序 reshape：[0, 12, 4, 16, 8, 20, 1, 13]
+  C∘F == 单个C？ False；C∘F == 单个F？ False
+[PASS] C∘F 链不等于任何单个 reshape（C 或 F）——混 order 不可合并
+[PASS] C∘C 链对 25 组形状组合全部等于单个 C 序 reshape（合并规则）
+
+==================================================================
+汇总：PASS 22 / FAIL 0
+==================================================================

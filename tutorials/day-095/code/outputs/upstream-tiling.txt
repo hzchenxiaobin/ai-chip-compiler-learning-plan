@@ -1,0 +1,46 @@
+#map = affine_map<(d0) -> (2, -d0 + 5)>
+#map1 = affine_map<(d0) -> (4, -d0 + 7)>
+#map2 = affine_map<(d0) -> (2, -d0 + 3)>
+#map3 = affine_map<(d0) -> (d0 - 1)>
+module {
+  func.func @matmul(%arg0: memref<5x3xf32>, %arg1: memref<3x7xf32>, %arg2: memref<5x7xf32>) {
+    %c0 = arith.constant 0 : index
+    %c5 = arith.constant 5 : index
+    %c2 = arith.constant 2 : index
+    scf.for %arg3 = %c0 to %c5 step %c2 {
+      %c5_0 = arith.constant 5 : index
+      %0 = affine.min #map(%arg3)
+      %c0_1 = arith.constant 0 : index
+      %c7 = arith.constant 7 : index
+      %c4 = arith.constant 4 : index
+      scf.for %arg4 = %c0_1 to %c7 step %c4 {
+        %c7_2 = arith.constant 7 : index
+        %1 = affine.min #map1(%arg4)
+        %c0_3 = arith.constant 0 : index
+        %c3 = arith.constant 3 : index
+        %c2_4 = arith.constant 2 : index
+        scf.for %arg5 = %c0_3 to %c3 step %c2_4 {
+          %c3_5 = arith.constant 3 : index
+          %2 = affine.min #map2(%arg5)
+          %3 = affine.apply #map3(%0)
+          %4 = affine.apply #map3(%1)
+          %5 = affine.apply #map3(%2)
+          %6 = affine.apply #map3(%0)
+          %7 = affine.apply #map3(%2)
+          %8 = affine.apply #map3(%2)
+          %9 = affine.apply #map3(%1)
+          %10 = affine.apply #map3(%0)
+          %11 = affine.apply #map3(%1)
+          %subview = memref.subview %arg0[%arg3, %arg5] [%0, %2] [1, 1] : memref<5x3xf32> to memref<?x?xf32, strided<[3, 1], offset: ?>>
+          %subview_6 = memref.subview %arg1[%arg5, %arg4] [%2, %1] [1, 1] : memref<3x7xf32> to memref<?x?xf32, strided<[7, 1], offset: ?>>
+          %subview_7 = memref.subview %arg2[%arg3, %arg4] [%0, %1] [1, 1] : memref<5x7xf32> to memref<?x?xf32, strided<[7, 1], offset: ?>>
+          linalg.matmul ins(%subview, %subview_6 : memref<?x?xf32, strided<[3, 1], offset: ?>>, memref<?x?xf32, strided<[7, 1], offset: ?>>) outs(%subview_7 : memref<?x?xf32, strided<[7, 1], offset: ?>>)
+        }
+      }
+    }
+    return
+  }
+  module @transforms {
+  }
+}
+

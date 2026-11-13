@@ -1,0 +1,60 @@
+Day 89 生成 Load/Mul/Add/Store·检查测试报告（真实运行）
+环境：Linux aarch64, Python 3.11.4, numpy 1.26.4; 本机未安装 MLIR（DialectConversion 语义仿真＋访存日志解释执行，不伪造 MLIR 行为）
+
+[PASS] AT1 结构与位置
+  转换前 3 op → 转换后 18 op（Day 88 的 13 ＋ 今日 5：load×2/mulf/addf/store；walk 序列与 EXPECTED_BODY 逐项相同（True））
+  k 体（最内层）：['memref.load', 'memref.load', 'arith.mulf', 'arith.addf', 'scf.yield']——%xa/%xb/%p/%s/yield 依次排列（True）；yield 的操作数是 %s（addf 结果），不再是 Day 88 的 %zero（True）
+  addf 的两个操作数：%acc（iter_args 区域参数，读取通道）＋ %p（mulf 结果）——累加值「读」自区域参数（同 yield_ok）
+  store 位置：fj.body = [fk, store]——k 外、j 内；值 = %acc（k 循环结果）、缓冲 = %c、下标 = [%i,%j]（True）；load 只出现在 k 体（2 个）
+  初始化位置：%zero 在三重循环之前、iter_args 初值 = %zero（True）——Day 87 的方案 B 原样落地
+  Day 87/88 栏目回归：alloc 4x3、index 常量 {0,1,3,4,6}、LoopSpec 三条、iter_names %acc（True）
+  回滚回归：HalfDone(先 create alloc+load+mulf 再拒绝) 回滚后，终图与只用Body Pattern 的结果逐字相同（True）
+  mini 方言残留：无
+
+[PASS] AT2 地址映射与覆盖
+  下标配对（结构）：A[%i,%k]、B[%k,%j]、C[%i,%j]——i←行号、k←归约下标、j←列号；三个 iv 都用对了循环（True）
+  地址公式（执行，156 条访存逐条核对）：addr = Σ stride·idx，与np.ravel_multi_index 独立重算全部相等（True）；strides 取自memref 类型：A(6, 1) · B(3, 1) · C(3, 1)
+    样例：%a[0, 0] → 6·0+0 = 0 ； %b[0, 0] → 3·0+0 = 0 ； %a[0, 1] → 6·0+1 = 1 ； %b[1, 0] → 3·1+0 = 3
+  覆盖统计（执行）：A 的 24 格每格恰好读 3 次（72 loads）· B 的 18 格每格恰好读 4 次（72）· C 的 12 格每格恰好写 1 次（12 stores）（True）——Day 88 §3.2 的理论断言今日对账
+  访存总数：load 144 = 2·M·N·K = 2·4·3·6 · store 12 = M·N = 12（True）；下标取值域全部合法（True）
+
+[PASS] AT3 数值与访存统计
+  位等价（执行）：C 与同序参考实现（i/j/k ＋ float32 逐步舍入）逐位相等：np.array_equal = True
+  np.matmul 对照：逐位相等 = False，max|C − np.matmul| = 2.384e-07（单独报告，不算失败——舍入顺序可能不同）
+  访存统计：load 144（= 2·M·N·K）· store 12（= M·N）· alloc 1 · fill 0 ·未初始化读 0（True）
+  首格手算对账：C[0,0] = -0.949548 与手算逐步舍入的-0.949548 相等（True）；C 的 12 格终态全部 written（True）——alloc 的垃圾值被 12 次 store 全部覆盖
+
+[PASS] AT4 边界 shape 端到端
+  7 组形状全部端到端通过（明细见 access-table.txt）：与同序参考实现逐位相等，覆盖统计与 shape 参数一致（True）
+  成员：最小 (1,1,1) · 行向量 (1,5,3) · 内维 1 (5,1,3) · 非方形 (2,3,2)/(3,2,7) · 贯穿例 (4,6,3) · 零趟 (4,0,3)
+  分工：这是「循环体正确性」预飞；Day 90 按计划做 ≥8 组边界 shape 的系统对照（1×N、M×1、小 K、维度 1）与修复
+
+[PASS] AT5 静态前提（动态拒绝）
+  A(?x6) @ B(6x3)（M 动态），full 模式：按预期失败
+  拒绝的焦点（今天视角）：访存的地址映射依赖 memref 类型里的静态 strides（strided<[6,1]> 的 6 就是 K）与 alloc 尺寸——动态 '?' 下无从物化
+  拒绝原因（只在 --debug 调试树，真实文本）：…循环体访存的地址映射依赖memref 类型里的静态 strides 与 alloc 尺寸…宁拒不猜（True）
+  N 动态（A(4x6) @ B(6x?)），partial 模式：成功，显式残留 ['mini.matmul']（交给后续 Pass——动态版 Pattern 走 memref.dim ＋动态 alloc）
+
+[PASS] AT6 反面控制组（探针）
+  P1 配对写反（load %a[%k,%i]，A(4,6) 被当成 6×4 用）：转换成功（结构上完全合法——这正是它阴险的地方），执行探针红（True）
+    执行证据：拦截前读了 A 的 ((0, 0), (1, 0), (2, 0), (3, 0)) ——读的是 A 的第 0 列而不是第 0 行（True）；真实报错：memref.load %a(4, 0)：第 0 维下标 4 ∉ [0, 4)（shape (4, 6)）
+  P2 位置错误（store 放进 k 体、写 %s）：数值**恰好**还对——最后一趟写覆盖前面的部分和，位等价仍成立（True）；但 store 72 次 = 正确形态 12 次的 6 倍（K=6，每格写 6 遍）（True）——写放大不算正确性 bug，但一旦有别的读者/并发就是错
+    结构证据：k 体里出现 store（1 个），j 体只剩 k 循环（True）；正确位置见 AT1——k 外、j 内
+  P3 写回通道断开（yield %p，丢掉累加）：C[i,j] = 最后一项乘积A[i,5]·B[5,j]（与 np.outer 逐位相等，True）——访存计数144/12 全部正常（True），只有数值对照抓得住：
+    max|C − ref| = 5.071e+00（True）——Day 88 的yield %zero 占位如果忘了换，症状是全零（恒等循环）；忘的是 %s则是「只留最后一项」
+  P4 初值来源错误（累加器初值 = load %c[%i,%j]）：结构完全合法，但 12 次**未初始化读**全被 Day 87 的探针记录在案（True），load 总数 156 = 144＋12（True）
+    垃圾值公式 777＋7·addr 混进结果：max|C − ref| = 8.540e+02（True）；正确形态是 %zero（D87 方案 B）——read-modify-write只在 C 已有语义值时才合法（GEMM 的 beta≠0 场景）
+  —— 四个探针全红：配对、位置、写回、初值——今天讲的四件事，每一件都有真实报错作证
+
+—— 检查测试 6/6 PASS ——
+
+口径附注：
+  1. op 计数：主图 3 op → 18 op（Day 88 的 13 ＋ 今日 5：load×2/mulf/addf/store）；
+     Day 88 口径的「目标 op」16 = 18 − func.func − func.return。
+  2. np.matmul 对照：逐位相等 = False，max|diff| = 2.384e-07——
+     位等价的验收对象是「同序参考实现」（i/j/k ＋ float32 逐步舍入）。
+  3. AT4 的 7 组 shape 是循环体正确性预飞；Day 90 按计划做 ≥8 组边界
+     shape 的系统对照（1×N、M×1、小 K、维度 1）与修复。
+  4. 访存日志/地址核对/覆盖统计/按维越界是仿真探针（对应真实工程里的
+     sanitizer/模拟器 trace）；scf/memref 语义依据官方文档（2026-11 核对）；
+     垃圾值是确定性公式（真实语义为未定义行为）。

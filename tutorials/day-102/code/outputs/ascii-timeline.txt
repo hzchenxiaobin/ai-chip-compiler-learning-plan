@@ -1,0 +1,8 @@
+单缓冲时间线（一个输出块，! = 必须同步的位置）
+
+DMA  引擎 |LLLL     LLLL     LLLLL    LLLLL    LLLLL     LLLL     LLLL     LLLLL    SSS|  L=Load b=bias S=Store
+计算单元 |    CCCCC    CCCCC     CCCC     CCCC     CCCCC    CCCCC    CCCCC     CCCC   |  C=Compute
+同步点   |    !    !   !    !    !   !    !   !    !    !   !    !   !    !    !   !  |
+          0                                                                16.5078 µs
+
+DMA 与计算完全错开：一排搬运时另一排在等——每圈 Load 1 µs + Compute 1 µs，没有任何重叠。

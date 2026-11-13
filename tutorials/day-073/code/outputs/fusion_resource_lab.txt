@@ -1,0 +1,86 @@
+== 1. 机器假设卡 + 假设清单（今天的产出之一）==
+  机器：toy-core v0（全部结论只在这张卡上成立，换卡重算）
+  寄存器堆 64 KiB / 片上 SRAM 192 KiB / 并行通道 64 / fp32
+  片上总容量 = 64 KiB + 192 KiB = 256 KiB
+  A1 机器参数是玩具假设（量级参照真实硬件：GPU 一个 SM 的寄存器堆约 256 KiB、共享存储约 48~228 KiB；NPU 的 Cube/Vector 配 Unified Buffer），可整体替换重算
+  A2 活集（live set）= 峰值时刻必须同时在片的中间值字节；输入默认按需流过，不计入活集
+  A3 有数据复用的输入（MatMul 的 A/B 分块）驻 SRAM；无复用的输入（如 bias D，每元素只用一次）流式读、不驻留
+  A4 spill 按每字节一写一读两趟计（下界）；累加器在 K 循环中反复改写的 RMW 放大不计（真实溢出更贵）
+  A5 逐元素 kernel 的活集 = 每通道在飞（输入＋输出）向量，与数据总量无关（流式）
+  A6 MatMul 的累加器块（tile_m × tile_n）常驻寄存器跨 K 循环；融合进来的逐元素 epilogue 复用累加器槽，只额外要每通道 1 个在飞槽
+  A7 并行度 proxy = 资源允许的并发 tile 数 = min(寄存器堆/每 tile 累加器, SRAM/每 tile 输入分块)，下限 1
+  A8 不计 kernel launch、多核分发、跨核 SRAM 竞争、指令缓存与编译时间
+  A9 收益口径沿用第 72 天（无缓存复用、compulsory 理想下界）；净收益 = ΔB − spill 流量
+  A10 MatMul→MatMul 融合假设好调度（中间行块驻 SRAM、消费者横扫输出 tile），不计重算/重读放大；输入分块的 SRAM 需求今天不建模（记在 A8 的不计项里）
+[PASS] 1a 假设清单共 10 项且无空项
+[PASS] 1b 片上总容量 = 寄存器堆 + SRAM = 262,144 B
+
+== 2. 容量阶梯自检：reg → reg+sram → spill ==
+  活集恰等寄存器堆：live  65,536 B → reg       降级 0 B，spill 0 B（流量 0 B）
+  活集超寄存器堆 1 B：live  65,537 B → reg+sram  降级 1 B，spill 0 B（流量 0 B）
+  活集超片上容量 1 B：live 262,145 B → spill     降级 196,608 B，spill 1 B（流量 2 B）
+[PASS] 2a 边界含等号：live == regfile 仍落 reg（降级 0）
+[PASS] 2b 超 1 B 只降级不溢出：live == onchip+1 才 spill 1 B
+[PASS] 2c spill 流量 = 2 × 溢出字节（A4 一写一读下界）
+
+== 3. 贯穿示例 A(2,3)@B(3,2)+D(2,2)→relu：四种计划的资源账 ==
+  计划   kernel 数   各 kernel 活集(reg)     放置   spill   省下(第72天口径)  净收益
+  P0      3        MatMul 16+48staging; Add 768+0staging; Relu 512+0staging   reg    0 B         0 B    0 B
+  P1      2        MatMul 16+48staging; FusedAddReLU 768+0staging   reg    0 B        32 B    32 B
+  P2      2        FusedMatMulBias 272+48staging; Relu 512+0staging   reg    0 B        32 B    32 B
+  P3      1        FusedMatMulBiasReLU 272+48staging              reg    0 B        64 B    64 B
+  峰值片上足迹：P0 768 B → P3 320 B（都远小于寄存器堆 64 KiB：小链资源不设限）
+[PASS] 3a 四种计划全部落 reg、零 spill
+[PASS] 3b epilogue 融合的寄存器增量 = 每通道 1 槽 = 256 B
+[PASS] 3c 净收益 = 各计划省下（第 72 天 ΔB 列）− 0 spill：0/32/32/64 B
+[PASS] 3d D 无复用不驻留：P3 的 SRAM 需求只有 A/B 分块 48 B
+  对照：P3 片上活集 272 B vs P0 的中间值驻 DRAM C+E = 32 B
+  → 融合 = 把中间值从 DRAM 搬进片上活集：代价 = 活集变大（+256 B/通道），收益 = 两遍税消失
+
+== 4. 放大 M=N=2048, K=64：tile 是活集的调节阀 ==
+  全融合的 ΔB（第 72 天公式）= 16·MN = 67,108,864 B = 64 MiB
+  tile      活集(reg)      A/B驻SRAM   放置        spill    staging  并发tile  tile-AI   ΔB兑现
+  2048   16,777,472 B   1,048,576 B      spill  16,515,328 B    short       1    15.52    50.8%
+   256     262,400 B    131,072 B      spill       256 B    short       1    12.80   100.0%
+   128      65,792 B     65,536 B   reg+sram         0 B       ok       1    10.67   100.0%
+    64      16,640 B     32,768 B        reg         0 B       ok       3     8.00   100.0%
+    32       4,352 B     16,384 B        reg         0 B       ok      12     5.33   100.0%
+  （2048 = 不分块的贪心融合：累加器整块 16 MiB 直接顶爆片上 256 KiB）
+[PASS] 4a tile 每减半，tile-AI 单调下降（表序 2048→32：复用随 tile 变小变差）
+[PASS] 4b tile 每减半，并发 tile 数单调不降（并行度随 tile 变小变好）
+[PASS] 4c tile 128×128 累加器恰满寄存器堆，epilogue 的 256 B 把它顶过线（降级 256 B、placement reg+sram）
+[PASS] 4d tile 256×256 开始溢出 256 B 且 staging 挤没（SRAM 全被降级活集占）
+[PASS] 4e 不分块：spill 流量 33,030,656 B = 2×溢出，净收益被砍掉近半（50.8%）
+[PASS] 4f 存在舒适区 tile：spill=0、staging ok、并发 ≥ 3（64×64）
+  临界点：tile 128×128 的 tile-AI = 10.67，仍低于第 71 天机器平衡点 12.54（访存受限）；tile 256 的 12.80 翻过去，但 SRAM 容量先顶爆——容量约束比平衡点先生效
+
+== 5. 反例：融合 MatMul(2048,64)→G(2048,K1)→MatMul(K1,2048) ==
+  消费者输出 tile (128×128) 的累加器 = 64 KiB 恰满寄存器堆；
+  中间 G 行块 (128×K1×4 B) 必须整块驻留——K1 是消费者的归约维，
+  tile_n 缩小救不了它（这就是「不融合时生产者可自由分块、融合后被钉死」）
+   K1    G行块     落位      spill/行块  驻留G   兑现率    ΔB      spill流量    净收益
+     64   32,768 B   reg+sram          0 B  32,768  100.0%    1 MiB        0 B    1 MiB
+    256  131,072 B   reg+sram          0 B  131,072  100.0%    4 MiB        0 B    4 MiB
+   1024  524,288 B      spill    327,680 B  196,608   37.5%   16 MiB     10 MiB    6 MiB
+   4096  2,097,152 B      spill  1,900,544 B  196,608    9.4%   64 MiB     58 MiB    6 MiB
+  净收益封顶 = 2 × 行块数(16) × 可驻留(192 KiB) = 6 MiB：K1 再涨，封顶不动、兑现率一路降
+[PASS] 5a K1 ≤ 384 时 G 行块整块驻留，兑现率 100%
+[PASS] 5b K1=1024：spill 320 KiB/行块，兑现率 = 驻留/G行块 = 37.5%
+[PASS] 5c 净收益封顶：K1=1024 与 K1=4096 的净收益都 = 6 MiB
+[PASS] 5d 兑现率随 K1 单调不升（前两行同为 100%，K1 ≥ 1024 后严格下降）
+[PASS] 5e 溢出全归 G 行块：消费者累加器恰满寄存器堆（64 KiB），spill == G行块 − 驻留
+
+== 6. 指令复杂度：融合并进来的指令占多少 ==
+  每个输出元素：MatMul 需 K 条 MAC 指令；epilogue 需 2 条（bias add + max）
+   K        MAC   epilogue   增量占比
+      3         3      2        66.67%
+      8         8      2        25.00%
+     64        64      2         3.12%
+    512       512      2         0.39%
+   4096      4096      2         0.05%
+[PASS] 6a 增量 = 2/K：K=64 时 3.1%，K=4096 时 0.05%
+[PASS] 6b 贯穿示例 K=3：增量 66.7%——相对大但绝对小（省的是流量，不是指令）
+  → 重计算生产者（K 大）配逐元素 epilogue 指令上近乎免费；
+    但融合让 kernel 无法直接调用高度优化的独立算子库（假设 A8 的不计项）
+
+== 结果：22/22 项检查通过 ==

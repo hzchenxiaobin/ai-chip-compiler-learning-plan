@@ -1,0 +1,28 @@
+// 生成自 lowering_pass.py（Day 86）——骨架版 MatMul Lowering Pass 的输出
+// 结构就位、计算留白：匹配 ✓、骨架 ✓、类型缝合 ✓；数值等价留给 Day 88 之后
+// 与 Day 85 ir-loop.txt 对照：完整目标 = 本骨架 10 op ＋ 待填 6 op（%zero、load×2、mulf、addf、store）
+func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32, strided<[3, 1]>> {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+  // 骨架① 输出缓冲：Day 85 任务清单①的类型表
+  %c0 = arith.constant 0 : index
+  // 下界 0
+  %c1 = arith.constant 1 : index
+  // 步长 1
+  %c4 = arith.constant 4 : index
+  // M ← A.shape[0]
+  %c3 = arith.constant 3 : index
+  // N ← B.shape[1]
+  %c6 = arith.constant 6 : index
+  // K ← 内维契约 A.shape[1]==B.shape[0]
+  scf.for %i = %c0 to %c4 step %c1 {
+    scf.for %j = %c0 to %c3 step %c1 {
+      scf.for %k = %c0 to %c6 step %c1 {
+        scf.yield
+        // 骨架占位：循环体留白
+        // 预留(Day 87 填): %zero = arith.constant 0.0 + iter_args(%acc = %zero)
+        // 预留(Day 88 填): load %a[%i,%k] · load %b[%k,%j] · mulf · addf · yield %s · store %c[%i,%j]
+      }
+    }
+  }
+  return %c : memref<4x3xf32, strided<[3, 1]>>
+}

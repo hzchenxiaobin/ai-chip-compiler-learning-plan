@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="'Comic Sans MS','Kaiti SC','KaiTi','楷体',cursive">
+  <defs>
+    <filter id="rough" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#34322c"/>
+    </marker>
+  </defs>
+
+  <rect x="4" y="4" width="952" height="552" fill="#fdfaf2" stroke="none"/>
+  <text x="42" y="48" font-size="26" fill="#34322c" font-weight="bold">一次可信测量的时间线：先掏冷启动的钱，再开始计分</text>
+  <text x="44" y="74" font-size="15" fill="#6b675c">性能是随机变量，不是常数。协议的作用：把“冷启动”和“瞬时抖动”从成绩单里赶出去。</text>
+
+  <g filter="url(#rough)" stroke-width="2.6">
+    <rect x="40" y="118" width="130" height="66" rx="8" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.6 105 151)"/>
+    <rect x="210" y="112" width="200" height="78" rx="9" fill="#e0938f" stroke="#b96762" stroke-width="3" transform="rotate(0.7 310 151)"/>
+    <rect x="452" y="118" width="160" height="66" rx="8" fill="#d9d2bd" stroke="#9a9380" transform="rotate(-0.5 532 151)"/>
+    <rect x="654" y="118" width="160" height="66" rx="8" fill="#8fb3d9" stroke="#4f7cae" transform="rotate(0.6 734 151)"/>
+    <rect x="856" y="118" width="74" height="66" rx="8" fill="#a9c98f" stroke="#6f9455" transform="rotate(-0.8 893 151)"/>
+    <line x1="172" y1="151" x2="204" y2="151" stroke="#34322c" marker-end="url(#arr2)"/>
+    <line x1="414" y1="151" x2="446" y2="151" stroke="#34322c" marker-end="url(#arr2)"/>
+    <line x1="616" y1="151" x2="648" y2="151" stroke="#34322c" marker-end="url(#arr2)"/>
+    <line x1="818" y1="151" x2="850" y2="151" stroke="#34322c" marker-end="url(#arr2)"/>
+  </g>
+  <text x="105" y="146" font-size="14" fill="#34322c" text-anchor="middle">进程启动</text>
+  <text x="105" y="165" font-size="11.5" fill="#6b675c" text-anchor="middle">calloc 分配 C</text>
+  <text x="310" y="140" font-size="14" fill="#5c2a26" text-anchor="middle" font-weight="bold">第 1 次运行（冷）</text>
+  <text x="310" y="158" font-size="11.5" fill="#7a4640" text-anchor="middle">C 首次缺页 256 页＋指令缓存冷</text>
+  <text x="310" y="175" font-size="11.5" fill="#7a4640" text-anchor="middle">＋分支预测器 / TLB 未热</text>
+  <text x="532" y="146" font-size="14" fill="#55503f" text-anchor="middle">预热 ×3</text>
+  <text x="532" y="165" font-size="11.5" fill="#6b675c" text-anchor="middle">带进稳态，全部丢弃</text>
+  <text x="734" y="146" font-size="14" fill="#1f3a56" text-anchor="middle" font-weight="bold">重复测量 ×21</text>
+  <text x="734" y="165" font-size="11.5" fill="#3d5a76" text-anchor="middle">每个样本 = 有效计算＋噪声</text>
+  <text x="893" y="140" font-size="13.5" fill="#25401a" text-anchor="middle" font-weight="bold">统计</text>
+  <text x="893" y="158" font-size="11.5" fill="#41582f" text-anchor="middle">中位数</text>
+  <text x="893" y="174" font-size="11.5" fill="#41582f" text-anchor="middle">＋MAD</text>
+
+  <g filter="url(#rough)" stroke-width="2.4">
+    <rect x="196" y="212" width="10" height="10" rx="3" fill="#e0938f" stroke="#b96762"/>
+    <rect x="486" y="212" width="10" height="10" rx="3" fill="#d9d2bd" stroke="#9a9380"/>
+    <rect x="692" y="212" width="10" height="10" rx="3" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="880" y="212" width="10" height="10" rx="3" fill="#a9c98f" stroke="#6f9455"/>
+  </g>
+  <text x="214" y="222" font-size="12" fill="#7a4640">不计分</text>
+  <text x="504" y="222" font-size="12" fill="#6b675c">不计分</text>
+  <text x="710" y="222" font-size="12" fill="#3d5a76">计分</text>
+  <text x="898" y="222" font-size="12" fill="#41582f">成绩单</text>
+
+  <text x="42" y="268" font-size="16.5" fill="#34322c" font-weight="bold">一次样本的构成：你测到的“时间”里混着什么</text>
+  <g filter="url(#rough)" stroke-width="2.4">
+    <rect x="60" y="288" width="560" height="34" rx="4" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="620" y="288" width="90" height="34" rx="4" fill="#e0938f" stroke="#b96762" transform="rotate(-0.4 665 305)"/>
+    <rect x="710" y="288" width="60" height="34" rx="4" fill="#f0b47a" stroke="#c98340"/>
+    <rect x="770" y="288" width="72" height="34" rx="4" fill="#c9b8d9" stroke="#9a83b5"/>
+    <path d="M 620,340 q 90,16 160,2 q 70,-12 62,10" fill="none" stroke="#34322c" stroke-width="1.8"/>
+  </g>
+  <text x="340" y="310" font-size="14" fill="#1f3a56" text-anchor="middle">有效计算（内核真正做的事）</text>
+  <text x="665" y="310" font-size="11.5" fill="#5c2a26" text-anchor="middle">调度抖动</text>
+  <text x="740" y="310" font-size="11.5" fill="#7a4f1d" text-anchor="middle">中断</text>
+  <text x="806" y="310" font-size="11.5" fill="#574273" text-anchor="middle">缓存/核迁移</text>
+  <text x="690" y="368" font-size="13.5" fill="#34322c" text-anchor="middle">这三样是噪声：单次测量躲不开，只能靠重复测量＋中位数压住</text>
+
+  <g filter="url(#rough)" stroke-width="2.6">
+    <rect x="42" y="398" width="424" height="132" rx="10" fill="#f7efdd" stroke="#b5a87f" transform="rotate(-0.4 254 464)"/>
+    <rect x="496" y="398" width="424" height="132" rx="10" fill="#f7efdd" stroke="#b5a87f" transform="rotate(0.5 708 464)"/>
+  </g>
+  <text x="62" y="424" font-size="14.5" fill="#34322c" font-weight="bold">本机实测（ikj-128，n=512，aarch64 GCC 9.4）</text>
+  <text x="62" y="448" font-size="12.5" fill="#55503f">· 一次内核 ≈ 19.8 ms，C 首次缺页 256 页 ≈ 0.4 ms（约 2%）</text>
+  <text x="62" y="470" font-size="12.5" fill="#55503f">· 冷启动样本散布在暖中位数 ±4% 以内（单次样本不可当成绩）</text>
+  <text x="62" y="492" font-size="12.5" fill="#55503f">· 内核越短，冷成本占比越大：n=5 主例 105 次 MAC 约 0.1 μs 量级，</text>
+  <text x="62" y="512" font-size="12.5" fill="#55503f">  冷启动能完全盖过有效计算（数量级估算）</text>
+  <text x="516" y="424" font-size="14.5" fill="#34322c" font-weight="bold">中位数的抗离群能力（ijk-128，n=512，真实样本）</text>
+  <text x="516" y="448" font-size="12.5" fill="#55503f">· 21 个样本里混进 2.15 / 2.28 的瞬时离群值</text>
+  <text x="516" y="470" font-size="12.5" fill="#55503f">· 均值会被拖向离群值；中位数 2.448 基本不动</text>
+  <text x="516" y="492" font-size="12.5" fill="#55503f">· 结论口径：差距 &gt; 约 2×波动（MAD）才宣布“谁更快”</text>
+  <text x="516" y="514" font-size="12.5" fill="#55503f">· 两次独立运行里，“第 1 个样本”的排名有 4/6 次翻车</text>
+</svg>

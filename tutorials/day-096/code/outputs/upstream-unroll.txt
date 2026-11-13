@@ -1,0 +1,8 @@
+shape 18x18x18, unroll-factor=4 (18 % 4 = 2，有尾部)
+before: 1121 bytes, arith.mulf x1
+after : 2283 bytes, arith.mulf x5
+展开后 k 循环被拆成（节选）：
+affine.for %arg3 = 0 to 18 {
+affine.for %arg4 = 0 to 18 {
+affine.for %arg5 = 0 to 16 step 4 {
+affine.for %arg5 = 16 to 18 {

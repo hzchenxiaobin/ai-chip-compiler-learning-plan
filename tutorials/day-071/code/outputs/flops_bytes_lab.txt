@@ -1,0 +1,77 @@
+== 1. 口径卡（今天的计数约定） ==
+  FLOP = 一次浮点运算；MAC = 1 乘 + 1 加 = 2 FLOPs
+  MatMul FLOPs = 2·M·N·K（累加器从 0 起，每次 += 记 1 加）
+  Relu 记 1 比较/元素（count_compare=True；记 0 的口径分类不变）
+  字节 = compulsory 理想下界：输入只读一遍 + 输出只写一遍
+  balance = 峰值算力/峰值带宽；A100 SXM 40GB FP32 datasheet：
+            19.5 TFLOPS ÷ 1555 GB/s = 12.54 FLOP/Byte
+  贯穿示例：A(2,3) @ B(3,2) → C(2,2)，fp32
+
+== 2. 公式 vs 仪器化对拍（真的数一遍） ==
+  朴素三重循环 MatMul：乘法 12 次 + 加法 12 次 = 24 FLOPs（公式 2·M·N·K = 24）
+  数值与 numpy 对拍：True，C = [[58.0, 64.0], [139.0, 154.0]]
+[PASS] 2a MatMul 仪器化计数 == 2·M·N·K
+[PASS] 2b 仪器化值 == numpy 值
+  Add：加法 4 次（公式 M·N = 4），E = C+D = [[-2.0, 65.0], [-61.0, 157.0]]
+[PASS] 2c Add 计数 == M·N
+[PASS] 2d Add 值 == numpy
+  Relu：比较 4 次（口径 1/元素），relu(E) = [[0.0, 65.0], [0.0, 157.0]]
+[PASS] 2e Relu 计数 == M·N（口径 1/元素）
+[PASS] 2f Relu 值 == numpy
+[PASS] 2g Relu 记 0 口径可切换
+
+== 3. 字节数 vs numpy nbytes 对账 ==
+  A(2,3): numel 6 × itemsize 4 = 24 B；numpy nbytes = 24 B
+[PASS] 3* A(2,3) nbytes 对账
+  B(3,2): numel 6 × itemsize 4 = 24 B；numpy nbytes = 24 B
+[PASS] 3* B(3,2) nbytes 对账
+  C(2,2): numel 4 × itemsize 4 = 16 B；numpy nbytes = 16 B
+[PASS] 3* C(2,2) nbytes 对账
+  E(2,2): numel 4 × itemsize 4 = 16 B；numpy nbytes = 16 B
+[PASS] 3* E(2,2) nbytes 对账
+  F(2,2): numel 4 × itemsize 4 = 16 B；numpy nbytes = 16 B
+[PASS] 3* F(2,2) nbytes 对账
+
+== 4. 三算子独立账单 + 链账本（代入示例） ==
+  算子    FLOPs   读(B)  写(B)  合计(B)   AI(FLOP/B)
+  MatMul     24     48     16      64    0.375
+  Add         4     32     16      48    0.08333
+  Relu        4     16     16      32    0.125
+  链合计：FLOPs 32，字节 144 B，链 AI = 0.2222 FLOP/B
+  拆账：外部输入+最终输出 = 80 B（A 24 + B 24 + D 16 + F 16）
+        中间 Tensor（C、E 各写一遍+读一遍）= 64 B，占总流量 44.4%
+[PASS] 4a MatMul 账单 24 FLOPs / 64 B
+[PASS] 4b Add 账单 4 FLOPs / 48 B（AI = 1/12）
+[PASS] 4c Relu 账单 4 FLOPs / 32 B（AI = 1/8）
+[PASS] 4d 链总流量 = 各算子之和 = 144 B
+[PASS] 4e 中间 Tensor 流量 = 2 个 × 16 B × 写+读两遍 = 64 B
+[PASS] 4f 拆账闭合：io + intermediates == 总流量
+
+== 5. Shape 扫描数据表（方阵 n×n×n，fp32） ==
+  方阵 MatMul：FLOPs = 2n³，字节 = 12n²，AI = n/6；阈值 = A100 FP32 12.54 FLOP/B
+  n      FLOPs         字节(B)     AI(FLOP/B)   一阶判断
+  16            8,192        3,072        2.67   访存受限
+  64          524,288       49,152       10.67   访存受限
+  256      33,554,432      786,432       42.67   算力受限
+  1024   2,147,483,648   12,582,912      170.67   算力受限
+  4096   137,438,953,472   201,326,592      682.67   算力受限
+  （Add 恒为 1/12 ≈ 0.083，Relu 恒为 1/8 = 0.125，与 n 无关——逐元素算子永远访存受限）
+  临界规模：AI = n/6 ≥ 12.54 需要 n ≥ 6×12.54 = 75.24，即 n ≥ 76
+[PASS] 5a 方阵 AI 律：AI(n) == n/6（扫描内精确成立）
+[PASS] 5b n=64 时 AI = 10.67 < 12.54：仍访存受限
+[PASS] 5c 临界 n = 76（ceil(6×12.54)）
+[PASS] 5d 逐元素算子 AI 与 shape 无关
+
+== 6. 改一个参数再观察：dtype fp32 → fp16 / int8 ==
+  dtype  itemsize  链总字节(B)  MatMul AI  Add AI   Relu AI
+  fp32          4         144      0.375  0.08333    0.125
+  fp16          2          72       0.75  0.1667     0.25
+  bf16          2          72       0.75  0.1667     0.25
+  int8          1          36        1.5  0.3333      0.5
+  （FLOPs 一律不变：24+4+4 = 32；字节随 itemsize 线性缩放，AI 反比）
+[PASS] 6a fp16 链总字节 = fp32 的一半（72 B）
+[PASS] 6b FLOPs 不随 dtype 变化
+[PASS] 6c fp16 MatMul AI = 2× fp32 AI（0.75 vs 0.375）
+[PASS] 6d int8 链总字节 = 36 B
+
+== 汇总：26 PASS / 0 FAIL ==

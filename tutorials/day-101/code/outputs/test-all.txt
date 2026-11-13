@@ -1,0 +1,34 @@
+—— D101 自检：已知账单 / 累加规则 / 对齐 / 预算扫描 / 错误数字 ——
+[PASS] E1a fp32 32³ 单缓冲：12416
+[PASS] E1b fp32 32³ 双缓冲：20608
+[PASS] E1c fp32 64³ 双缓冲：82176
+[PASS] E1d fp32 128³ 单缓冲：197120
+[PASS] E1e fp32 128³ 双缓冲：328192
+[PASS] E1f fp32 128³ 双缓冲 vs 256 KB 溢出：66048
+[PASS] E2a fp16 128³ 双缓冲 = fp32 单缓冲：197120
+[PASS] E2b bf16 128³ 双缓冲：197120
+[PASS] E2c int8 128³ 双缓冲：131584
+[PASS] E2d int8 128³ 双缓冲 = fp16 单缓冲（规律）：131584
+[PASS] E2e acc=auto 映射 int8→int32：int32
+[PASS] E3a align_up(1089, 32)：1120
+[PASS] E3b 33³ int8 单缓冲：6784
+[PASS] E3c 33³ int8 padding = 118：118
+[PASS] E4a fp32 256 KB 最大立方：114
+[PASS] E4b int8 128 KB 最大立方：127
+[PASS] E4c int8 256 KB 最大立方：180
+[PASS] E5a 128³ A+B 流量：8388608
+[PASS] E5b 不切块总流量：3145728
+[PASS] E6a int8 224³ 正确合计（住不下）：402304
+[PASS] E6b int8 224³ acc=int8 错误合计（假象）：251104
+[PASS] E6c fp16 128³ 全 ×2 误杀：262656
+[PASS] E6d fp32 128³ 单缓冲 vs 192 KB：512
+[PASS] E7a tile=64×128×128 fp32 双缓冲：229888
+[PASS] E7b 必做练习手算值 tile=64×128×128：229888
+[PASS] E8 拒绝 tm=0：ValueError
+[PASS] E8 拒绝 tk 负数：ValueError
+[PASS] E8 拒绝 dtype 拼错：ValueError
+[PASS] E8 拒绝 acc 拼错：ValueError
+[PASS] E8 拒绝 buffering 拼错：ValueError
+[PASS] E8 拒绝 align=0：ValueError
+
+31/31 项通过

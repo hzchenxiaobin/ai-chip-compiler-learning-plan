@@ -1,0 +1,106 @@
+== 1. 接口卡：两个函数 + 一个策略（今天的核心产出）==
+  can_fuse(c: 'FusionCandidate') -> 'LegalityReport'   → LegalityReport（结构/语义）
+  should_fuse(c: 'FusionCandidate', m: 'Machine') -> 'ProfitReport'  → ProfitReport（账本）
+  decide(leg: 'LegalityReport', prof: 'ProfitReport | None', policy: 'str' = 'conservative') -> 'Decision'  → Decision（策略）
+  边界：can_fuse 不读机器不算字节；should_fuse 不重查结构；decide 只读报告
+  B1 机器假设卡沿用第 73 天（64 KiB 寄存器堆 / 192 KiB SRAM / 64 通道 / fp32），可整体替换重算；合法性判断不读这张卡
+  B2 ΔB 沿用第 72 天多使用者规则：组外使用者 = 0 时省 (1＋组内数) 趟；组外 > 0 时写与组外读保留，只省组内读
+  B3 资源账沿用第 73 天：活集先填寄存器堆、超出的降级 SRAM、再超出 spill 两趟（下界口径）；spill 成本按 2×溢出字节的下界计，真实更高
+  B4 策略语义：conservative 拒绝 spill > 0 或收益未知的候选（拒绝 = 回到已知正确的基线）；auto 只看净收益 > 0；force 只看合法性（A/B 实验用）
+  B5 epilogue 指令增量 2/K 只报告不设门（软代价）；(add,relu) 与 MatMul→MatMul 的指令增量今天不建模
+  B6 动态维度（-1）的候选：合法性可以通过，但活集/ΔB 无法估算 → 收益未知 → 非 force 策略一律拒绝（D62 的静态特化是后续入口）
+  B7 候选枚举沿用第 52 天：组外有使用者时，拒绝 / 保留中间（keep）两种合法形式，删除中间（不给组外使用者留值）非法；「不融合」是恒可用的基线，净收益记 0
+  B8 沿用第 73 天 A10：MatMul→MatMul 按行块调度模型计（spill 按行块数缩放、输入分块不建模）；MatMul+Bias(+Relu) 按单实例 kernel 计（tile 是实例形状）；不计 launch、编译时间与多核竞争
+[PASS] 1a 接口边界落在签名上：can_fuse 不吃 Machine，should_fuse 吃
+[PASS] 1b decide 只读报告不吃候选：换策略不动前两层
+[PASS] 1c 假设清单 B1–B8 共 8 项且覆盖 ΔB/资源/策略/动态维度
+
+== 2. 合法性 Pattern：贯穿链的合法形式与四个负例 ==
+  P1 FusedAddReLU        → True（mini.fused_add_relu，保留 []）
+  P2 FusedMatMulBias     → True（mini.fused_matmul_bias，保留 ['E']）
+  P3 全融合                 → True（mini.fused_matmul_bias_relu，保留 []）
+[PASS] 2a 贯穿链三种融合形式全部合法：P1/P2/P3
+[PASS] 2b P2 的 E 有组外使用者（relu）且 kept=True → 合法（D52 keep）
+  负例：Relu→MatMul         → False（L1 算子链 ('relu', 'matmul') 不在支持的模式里（D50 定义 + 1 ）
+  负例：副作用                 → False（L2 add 有副作用，不能进融合组（D25 口径））
+  负例：Shape 不一致           → False（L3 逐元素 add 的 Shape 不完全一致（D40 规则））
+  负例：int8                → False（L5 dtype int8 暂不支持（D50 的融合算子只定义了 fp32））
+  负例：偷走 E                → False（L4 中间 E 有 1 个组外使用者且未保留落盘（D52：删除中间 = 偷走别人的输入））
+  负例：无使用者                → False（L4 中间 C 没有任何使用者（DCE 的事，不该当融合候选））
+[PASS] 2c 六个负例全部被拦：模式/纯度/Shape/dtype/偷中间/无使用者
+[PASS] 2d 负例原因可追溯到具体规则号（L1–L5）
+
+== 3. 收益判断：贯穿示例的候选账本（基线恒 0）==
+  候选                ΔB      活集(reg)  落位    spill  净收益  保守门
+  P1 FusedAddReLU       32 B     768 B     reg     0 B     32 B  fuse
+  P2 FusedMatMulBias    32 B     272 B     reg     0 B     32 B  fuse
+  P3 全融合                64 B     272 B     reg     0 B     64 B  fuse
+  基线（不融合）      0 B       —          —       0 B      0 B  refuse
+  → 规划器按净收益排序选最优：P3 全融合（64 B）
+[PASS] 3a ΔB 与 D72 逐位一致：P1=P2=32 B、P3=64 B（多使用者规则内建）
+[PASS] 3b P3 的账本 = D73 的资源账：reg 272 B（累加器 16 + bias 256）、staging 48 B、零 spill
+[PASS] 3c 净收益恒等式：net = ΔB − spill 流量（三个候选都成立）
+[PASS] 3d 保守门全放行（零 spill 且 net > 0），排序选出 P3
+[PASS] 3e epilogue 指令增量如实报告：K=3 → 66.7%（D73 §6 的口径）
+
+== 4. 决策矩阵：P3(M=N=2048, K=64) × tile × 策略（D73 的账本过门）==
+  tile     活集(reg)   落位       spill   净收益(下界)  conservative     auto        force
+  （ΔB = 16·MN = 67,108,864 B = 64 MiB，与 K、tile 无关）
+    32       4,352 B       reg           0 B   67,108,864 B  fuse           fuse         fuse
+    64      16,640 B       reg           0 B   67,108,864 B  fuse           fuse         fuse
+   128      65,792 B  reg+sram           0 B   67,108,864 B  fuse           fuse         fuse
+   256     262,400 B     spill         256 B   67,108,352 B  refuse         fuse         fuse
+  2048  16,777,472 B     spill  16,515,328 B   34,078,208 B  refuse         fuse         fuse
+[PASS] 4a conservative 只收零 spill：32/64/128 融、256/2048 拒
+[PASS] 4b tile 128×128 降级 256 B 但零 spill → conservative 融（落位 reg+sram 不设门）
+[PASS] 4c 2048 不分块：净收益 34,078,208 B（D73 的 50.8%）仍为正，但 conservative 因为 spill 拒绝；auto 接受
+[PASS] 4d 拒绝理由来自收益层而不是合法性层（同一候选合法）
+[PASS] 4e auto 全收（五档 net > 0），force 全收（只看合法）
+  → 同一个合法候选，三个策略三种答案：保守门只问「有没有 spill」，不赌下界成本；
+    2048 的拒绝不是终局——hint 会让你缩小 tile 重试，64 就能过门
+
+== 5. 合法 ≠ 值得：MM→MM(2048,64)→G(2048,K1)→(K1,2048)，tile 128 ==
+   K1    活集    落位      spill/行块  ΔB      净收益   兑现率   保守门    auto门
+     64     98,304 B  reg+sram          0 B   1 MiB    1 MiB   100.0%  fuse      fuse
+    256    196,608 B  reg+sram          0 B   4 MiB    4 MiB   100.0%  fuse      fuse
+   1024    589,824 B     spill    327,680 B  16 MiB    6 MiB    37.5%  refuse    fuse
+   4096  2,162,688 B     spill  1,900,544 B  64 MiB    6 MiB     9.4%  refuse    fuse
+[PASS] 5a 四档全部合法（实验模式）：合法性与 K1 无关——结构不随账本变
+[PASS] 5b K1=64/256 零 spill → 保守门放行（净收益 1/4 MiB）
+[PASS] 5c K1=1024/4096 spill > 0 → 保守门拒绝，尽管净收益（下界）同为 6 MiB
+[PASS] 5d auto 门对四档全放行（net > 0）：保守策略在 K1=4096 上「把 6 MiB 留在桌上」——保守的代价，D75/D76 再细化
+[PASS] 5e K1=4096 的拒绝理由点名 spill（收益层），而合法性报告干净
+
+== 6. 多使用者：E 还被外部 G 读（D72 §5 的 48 B 回到今天）==
+  B: 融合但保留 E         合法 True  净收益   48 B  → fuse（合法性通过；净收益 48 B > 0 且零 spill（落位 reg））
+  C: 融合并删除 E         合法 False 净收益      —  → refuse（合法性：L4 中间 E 有 1 个组外使用者且未保留落盘（D52：删除中间 = 偷走别人的输…）
+  A: 拒绝融合（基线）  合法 True  净收益    0 B  → 基线
+[PASS] 6a 删除 E 被合法性层拦截（L4：组外使用者没人喂）
+[PASS] 6b 保留 E 合法且 ΔB = 48 B = C 两趟 32 + E 一趟 16（D72 §5 逐位一致）
+[PASS] 6c 收益排序：B(48) > A 基线(0) > C(非法，出局)——合法性过滤、收益性选择
+
+== 7. 动态维度：M 未知（D61/D62 的候选今天怎么处理）==
+  策略 conservative  → refuse（收益未知：动态维度算不出活集与 ΔB｜D62：特化成静态 Shape 后重新进门）
+  策略 auto          → refuse（收益未知：动态维度算不出活集与 ΔB｜D62：特化成静态 Shape 后重新进门）
+  策略 force         → fuse（合法性通过；force 模式只看合法性（A/B 实验用））
+[PASS] 7a 合法性不拦动态维度：-1 按 D61 的「未知」通配 → 合法
+[PASS] 7b 收益层如实说「不知道」：known=False（不编造保守猜测值）
+[PASS] 7c 保守与 auto 都拒绝（收益未知 ≠ 收益为负）；force 放行
+[PASS] 7d 拒绝理由带出口：D62 的静态特化是后续入口
+
+== 8. 决策日志（每行一条：候选/策略/合法/净收益/动作/理由）==
+  P3 tile=32               conservative  True    67,108,864 fuse   合法性通过；净收益 67,108,864 B > 0 且零 spill（落位 reg）
+  P3 tile=64               conservative  True    67,108,864 fuse   合法性通过；净收益 67,108,864 B > 0 且零 spill（落位 reg）
+  P3 tile=128              conservative  True    67,108,864 fuse   合法性通过；净收益 67,108,864 B > 0 且零 spill（落位 reg+sram）
+  P3 tile=256              conservative  True    67,108,352 refuse 保守策略：spill 256 B > 0（D73 阶梯第 3 级），净收益按下界 67,108,352 B ｜ spill 成本是下界（D73 A4：真实更贵）；先缩小 tile 再重试
+  P3 tile=2048             conservative  True    34,078,208 refuse 保守策略：spill 16,515,328 B > 0（D73 阶梯第 3 级），净收益按下界 34,078,208 B ｜ spill 成本是下界（D73 A4：真实更贵）；先缩小 tile 再重试
+  MM→MM K1=64              conservative  True     1,048,576 fuse   合法性通过；净收益 1,048,576 B > 0 且零 spill（落位 reg+sram）
+  MM→MM K1=256             conservative  True     4,194,304 fuse   合法性通过；净收益 4,194,304 B > 0 且零 spill（落位 reg+sram）
+  MM→MM K1=1024            conservative  True     6,291,456 refuse 保守策略：spill 327,680 B > 0（D73 阶梯第 3 级），净收益按下界 6,291,456 B ｜ spill 成本是下界（D73 A4：真实更贵）；先缩小 tile 再重试
+  MM→MM K1=4096            conservative  True     6,291,456 refuse 保守策略：spill 1,900,544 B > 0（D73 阶梯第 3 级），净收益按下界 6,291,456 B ｜ spill 成本是下界（D73 A4：真实更贵）；先缩小 tile 再重试
+  B: 融合但保留 E               conservative  True            48 fuse   合法性通过；净收益 48 B > 0 且零 spill（落位 reg）
+  C: 融合并删除 E               conservative  False            — refuse 合法性：L4 中间 E 有 1 个组外使用者且未保留落盘（D52：删除中间 = 偷走别人的输入） ｜ 先修结构/语义，再谈收益（D75 的负例来源）
+[PASS] 8a 日志按序记录 §4 tile 扫描(5 行)＋§5 MM→MM(4 行)＋§6 多使用者(2 行)共 11 条，无空行
+[PASS] 8b 日志行结构完整：动作字段清楚，refuse 行都带出口 hint（｜…）
+
+== 结果：31/31 项检查通过 ==

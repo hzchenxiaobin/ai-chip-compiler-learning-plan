@@ -1,0 +1,123 @@
+==================================================================
+第 65 天主实验：连续 Transpose 消除（互逆消除 + Permutation 合并）
+==================================================================
+
+== 0. 环境与主线 ==
+python  3.11.4
+numpy   1.26.4
+arch    aarch64
+mlir-opt /usr/lib/llvm-18/bin/mlir-opt（Ubuntu LLVM version 18.1.8）
+主线：连续两个（或一串）转置什么时候能消除/合并——组合排列的数学、两个 RewritePattern、多使用者边界、数值对拍与 MLIR 实测对照。
+
+== 1. 现场一：一对互逆转置（合计零语义），mlir-opt 实测 ==
+IR：in 2x3x4 --[1,2,0]--> 3x4x2 --[2,0,1]--> 2x3x4（回到原形状）
+  --canonicalize 退出码 0，输出里 linalg.transpose 仍剩 2 个（输入是 2 个）
+[PASS] 互逆转置对经 --canonicalize 后原样保留（LLVM 18 无此规则）
+  --convert-linalg-to-loops：6 层循环、2 行 load、2 行 store——每行在循环里执行 24 次，共 48 读 + 48 写（数据搬两遍）
+[PASS] 不消除的代价：6 层循环、2 行 load、2 行 store（numel×2 次访存）
+  对照：单个转置降级后是 3 层循环、1 行 load（执行 24 次）——一对互逆转置白付一整次搬运
+[PASS] 单个转置降级为 3 层循环、1 行 load/store
+
+== 2. 组合排列：方向钉死 + 全量对拍 ==
+推导：C = T_q(T_p(A))，C.shape[i] = A.shape[p[q[i]]] → r = compose(p, q)，r[i] = p[q[i]]
+  p = (1, 2, 0)，inv(p) = (2, 0, 1)，compose(p, inv(p)) = (0, 1, 2)（恒等）
+  compose(p, p) = (2, 0, 1)（= inv(p)，3-循环的 p²）
+  B(2,3,4) 经 p 三连：(3, 4, 2) → (4, 2, 3) → (2, 3, 4)（回到原形状）
+[PASS] 36 对 3 元排列全量对拍：T_q∘T_p == T_{compose(p,q)}
+[PASS] 回到原样 ⟺ compose(p,q) 是恒等（⟺ q == inv(p)），36 对验证
+[PASS] 4 元全排列（24 个）：T_p 连做『阶』次回到恒等（k 次自乘 = 恒等）
+
+== 3. mini 侧：两个 RewritePattern 的现场 ==
+Pattern 1（互逆消除）：T_q(T_p(x))，q == inv(p)，中间值唯一使用者 → x
+Pattern 2（一般合并）：T_q(T_p(x))，中间值唯一使用者 → T_{compose(p,q)}(x)（合成恒等则消除）
+
+场景 A（2D 互逆对，T T → x）：
+  %in : shape (2, 3) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.transpose %in permutation = [1, 0] : (2x3xf32) -> (3x2xf32)
+  %c = mini.transpose %t permutation = [1, 0] : (3x2xf32) -> (2x3xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3) （func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] A：2D 互逆对整体消除（op 数 2→0）
+
+场景 B（3D 互逆对，p=(1,2,0)，q=(2,0,1)=inv(p)，→ x）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.transpose %in permutation = [1, 2, 0] : (2x3x4xf32) -> (3x4x2xf32)
+  %c = mini.transpose %t permutation = [2, 0, 1] : (3x4x2xf32) -> (2x3x4xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] B：3D 互逆对整体消除（op 数 2→0）且数值不变
+
+场景 C（3D 一般对，p=q=(1,2,0)，合并 → T_{p²}=T_{inv(p)} 单转置）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.transpose %in permutation = [1, 2, 0] : (2x3x4xf32) -> (3x4x2xf32)
+  %c = mini.transpose %t permutation = [1, 2, 0] : (3x4x2xf32) -> (4x2x3xf32)
+  func.return %c
+→ PassManager 2 轮、应用 1 次：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %c = mini.transpose %in permutation = [2, 0, 1] : (2x3x4xf32) -> (4x2x3xf32)
+  func.return %c
+[PASS] C：一般对合并为单转置（op 数 2→1，perm=(2,0,1)）
+
+场景 D（3-循环三连链 T T T，阶 3 → 两轮 → x）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t1 = mini.transpose %in permutation = [1, 2, 0] : (2x3x4xf32) -> (3x4x2xf32)
+  %t2 = mini.transpose %t1 permutation = [1, 2, 0] : (3x4x2xf32) -> (4x2x3xf32)
+  %c = mini.transpose %t2 permutation = [1, 2, 0] : (4x2x3xf32) -> (2x3x4xf32)
+  func.return %c
+PassManager 3 轮、应用 2 次（轮间 IR 存 trace）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  func.return %in
+[PASS] D：三连链两轮消除为 x（op 数 3→0）且数值不变
+
+场景 E（多使用者反例：%t 被两个消费方用 → Pattern 拒绝，图不动）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.transpose %in permutation = [1, 2, 0] : (2x3x4xf32) -> (3x4x2xf32)
+  %c = mini.transpose %t permutation = [2, 0, 1] : (3x4x2xf32) -> (2x3x4xf32)
+  %u = mini.transpose %t permutation = [0, 2, 1] : (3x4x2xf32) -> (3x2x4xf32)
+  func.return %c, %u
+  %t 的使用者数 = 2（%c、%u 各一）——两个 Pattern 都拒绝
+[PASS] E：多使用者时图不动（3 个 op 原样）且数值不变
+  保守拒绝的理由：删除 %t 会剥夺 %u 的定义；「激进版」可以把 %c 改成直接 T_{compose}(%in) 而 %t 原样保留（选做挑战）
+
+场景 F（中间值 %t 被 func.return → 也是使用者，拒绝）：
+  %in : shape (2, 3, 4) （func 入参，值可由 numpy 提供可见性）
+  %t = mini.transpose %in permutation = [1, 2, 0] : (2x3x4xf32) -> (3x4x2xf32)
+  %c = mini.transpose %t permutation = [2, 0, 1] : (3x4x2xf32) -> (2x3x4xf32)
+  func.return %c, %t
+  %t 的使用者数 = 2（%c 一个 + func.return 一个）
+[PASS] F：被 return 的中间值同样拒绝（op 数仍 2）
+
+== 4. 判定表：12 个链式场景，优化前后数值对拍 ==
+用例                   输入shape     排列链                    优化后op数  数值对拍
+S1  2D TT（对合）                (2, 3)                     [1, 0] → [1, 0]       0      ok
+S2  2D 恒等对                   (2, 3)                     [0, 1] → [1, 0]       1      ok
+S3  3D 互逆对                (2, 3, 4)               [1, 2, 0] → [2, 0, 1]       0      ok
+S4  3D 一般对 p=q            (2, 3, 4)               [1, 2, 0] → [1, 2, 0]       1      ok
+S5  3D 一般对 p≠q            (2, 3, 4)               [1, 2, 0] → [0, 2, 1]       1      ok
+S6  3D 三连链（阶 3）           (2, 3, 4)   [1, 2, 0] → [1, 2, 0] → [1, 2, 0]       0      ok
+S7  3D 四连链（阶 3）           (2, 3, 4)    [1, 2, 0] → [1, 2, 0] → [1, 2, …       1      ok
+S8  4D 互逆对             (2, 3, 4, 5)         [3, 2, 1, 0] → [3, 2, 1, 0]       0      ok
+S9  4D 长链 5 个          (2, 3, 4, 5)    [1, 2, 3, 0] → [1, 2, 3, 0] → […       1      ok
+S10 单转置（无链可配）                (2, 3)                              [1, 0]       1      ok
+S11 恒等单转置                    (2, 3)                              [0, 1]       1      ok
+S12 交错链 4 个            (2, 3, 4, 5)    [1, 0, 2, 3] → [0, 2, 1, 3] → […       1      ok
+[PASS] 判定表 12/12：op 数符合预期 + 数值不变 + Verifier 通过
+
+随机压力对拍（300 组随机链，秩 1..5、链长 1..5）：
+[PASS] 随机对拍 300/300：数值不变、Verifier 通过、op 数不增
+  300 组共 900 个初始 op（平均链长 3），优化后剩 254 个（28.2%）——消除与合并都在干活
+
+== 5. 错误实现现场：组合方向写成 q[p[i]]（2D 测试发现不了）==
+  p=q=(1,0)（2D 对合）：正确 (0, 1)，错误 (0, 1)——碰巧都是恒等，2D 全绿
+  p=(1,2,0), q=(0,2,1)（3D）：正确 (1, 0, 2)，错误 (2, 1, 0)
+  链的真实终点 (3, 2, 4)；正确合并 (3, 2, 4)；错误合并 (4, 3, 2)（对不上）
+[PASS] 错误方向在 3D 链上撞出错误 shape（正确方向推导与链终点一致）
+[PASS] 数值终审：T_q∘T_p 的值 == T_{compose(p,q)} 的值（正确方向）
+
+==================================================================
+汇总：PASS 16 / FAIL 0
+==================================================================

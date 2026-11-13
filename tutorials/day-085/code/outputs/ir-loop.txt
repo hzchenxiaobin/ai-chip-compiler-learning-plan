@@ -1,0 +1,27 @@
+// 生成自 lowering_design.py（Day 85）——mini.matmul 的循环表示
+// 形状 A(4,6) @ B(6,3) -> C(4,3)；循环边界全部来自静态 shape，编译期已知
+// 任务标注：[类型] [索引] [初始化] 对应设计文档 §3 的三张任务清单
+func @main(%a: memref<4x6xf32, strided<[6, 1]>>,
+           %b: memref<6x3xf32, strided<[3, 1]>>) -> memref<4x3xf32> {
+  %c = memref.alloc() : memref<4x3xf32, strided<[3, 1]>          // [类型] 结果缓冲，48 B
+  %zero = arith.constant 0.0 : f32
+  %c0 = arith.constant 0 : index
+  %c1 = arith.constant 1 : index
+  %c4 = arith.constant 4 : index                               // [索引] M 来自 A.shape[0]
+  %c3 = arith.constant 3 : index                               // [索引] N 来自 B.shape[1]
+  %c6 = arith.constant 6 : index                               // [索引] K 来自 A.shape[1]==B.shape[0]
+  scf.for %i = %c0 to %c4 step %c1 {
+    scf.for %j = %c0 to %c3 step %c1 {
+      %acc = scf.for %k = %c0 to %c6 step %c1
+                  iter_args(%acc = %zero) -> (f32) {               // [初始化] 方案 B：iter_args 从 0 起步
+        %xa = memref.load %a[%i, %k]     // addr = 6*%i + 1*%k   // [索引]
+        %xb = memref.load %b[%k, %j]     // addr = 3*%k + 1*%j   // [索引]
+        %p  = arith.mulf %xa, %xb : f32
+        %s  = arith.addf %acc, %p : f32
+        scf.yield %s : f32
+      }
+      memref.store %acc, %c[%i, %j]      // addr = 3*%i + 1*%j   // [索引]
+    }
+  }
+  return %c : memref<4x3xf32>
+}
