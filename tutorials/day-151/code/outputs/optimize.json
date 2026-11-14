@@ -1,0 +1,25 @@
+{
+  "baseline": {
+    "ms": 29.52,
+    "gflops": 0.278,
+    "correct": true
+  },
+  "expA_O2": {
+    "ms": 5.49,
+    "gflops": 1.491,
+    "speedup": 5.4,
+    "correct": true
+  },
+  "expB_tile": {
+    "best_tile": "(64, 64)",
+    "ms": 70.03,
+    "gflops": 0.117,
+    "speedup": 0.4
+  },
+  "expC_combo": {
+    "ms": 9.21,
+    "gflops": 0.889,
+    "speedup": 3.2,
+    "correct": true
+  }
+}
