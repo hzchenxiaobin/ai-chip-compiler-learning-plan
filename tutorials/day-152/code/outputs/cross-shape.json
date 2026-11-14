@@ -1,0 +1,65 @@
+[
+  {
+    "shape": "32x32x32",
+    "o0_ms": 0.17,
+    "o2_ms": 0.01,
+    "speedup": 12.0,
+    "o0_gf": 0.384,
+    "o2_gf": 4.612,
+    "correct": true
+  },
+  {
+    "shape": "64x64x64",
+    "o0_ms": 1.2,
+    "o2_ms": 0.13,
+    "speedup": 9.4,
+    "o0_gf": 0.438,
+    "o2_gf": 4.097,
+    "correct": true
+  },
+  {
+    "shape": "96x96x96",
+    "o0_ms": 5.35,
+    "o2_ms": 2.13,
+    "speedup": 2.5,
+    "o0_gf": 0.331,
+    "o2_gf": 0.831,
+    "correct": true
+  },
+  {
+    "shape": "128x128x128",
+    "o0_ms": 12.09,
+    "o2_ms": 2.96,
+    "speedup": 4.1,
+    "o0_gf": 0.347,
+    "o2_gf": 1.416,
+    "correct": true
+  },
+  {
+    "shape": "160x160x160",
+    "o0_ms": 34.88,
+    "o2_ms": 5.48,
+    "speedup": 6.4,
+    "o0_gf": 0.235,
+    "o2_gf": 1.496,
+    "correct": true
+  },
+  {
+    "shape": "64x160x32",
+    "o0_ms": 3.67,
+    "o2_ms": 0.21,
+    "speedup": 17.8,
+    "o0_gf": 0.179,
+    "o2_gf": 3.182,
+    "correct": true
+  },
+  {
+    "shape": "32x32x160",
+    "o0_ms": 0.68,
+    "o2_ms": 0.07,
+    "speedup": 10.4,
+    "o0_gf": 0.481,
+    "o2_gf": 4.981,
+    "correct": true
+  }
+]
