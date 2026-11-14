@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC',KaiTi,楷体,cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="660" fill="#fffdf5"/>
+
+  <!-- 标题 -->
+  <text x="36" y="52" font-size="27" fill="#1e1e1e" transform="rotate(-0.6 36 52)">mini-opt 的内部：三道关卡 ＋ 两张注册表</text>
+  <path d="M38 64 q 220 8 430 2" stroke="#e8590c" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#wob2)"/>
+
+  <!-- ======== 上半泳道：主流程 ======== -->
+  <text x="40" y="104" font-size="16" fill="#8a8a8a" transform="rotate(-0.4 40 104)">主流程：一张 IR 走完 mini-opt 的一生</text>
+
+  <!-- 输入文件（便签形） -->
+  <g filter="url(#wob)">
+    <path d="M52 140 L188 132 L194 252 L58 258 Z" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+    <path d="M170 134 L170 148 L188 146" stroke="#e8590c" stroke-width="2" fill="none"/>
+  </g>
+  <text x="72" y="172" font-size="15" fill="#1e1e1e" transform="rotate(-1.2 72 172)">target_graph.mlir</text>
+  <text x="72" y="194" font-size="13" fill="#5c5c5c" transform="rotate(-1.2 72 194)">MatMul→Add→Relu</text>
+  <text x="72" y="214" font-size="13" fill="#5c5c5c" transform="rotate(-1.2 72 214)">（文本）</text>
+
+  <!-- 箭头 helper：横线 + 箭头 -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M200 196 q 24 2 46 0"/>
+    <path d="M240 190 L252 196 L239 203"/>
+  </g>
+
+  <!-- ① 解析 -->
+  <g filter="url(#wob)">
+    <rect x="254" y="146" width="128" height="100" rx="12" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.4"/>
+  </g>
+  <text x="284" y="184" font-size="20" fill="#1e1e1e" transform="rotate(-0.8 284 184)">① 解析</text>
+  <text x="272" y="212" font-size="13" fill="#42566b" transform="rotate(-0.8 272 212)">文本 → Operation 树</text>
+  <text x="290" y="232" font-size="12" fill="#42566b">(Parse)</text>
+
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M388 196 q 24 2 46 0"/>
+    <path d="M428 190 L440 196 L427 203"/>
+  </g>
+
+  <!-- ② 验证 -->
+  <g filter="url(#wob)">
+    <rect x="442" y="146" width="158" height="100" rx="12" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.4"/>
+  </g>
+  <text x="472" y="180" font-size="20" fill="#1e1e1e" transform="rotate(-0.8 472 180)">② 验证</text>
+  <text x="456" y="204" font-size="13" fill="#42566b" transform="rotate(-0.8 456 204)">ODS 约束 ＋ Day39/40</text>
+  <text x="462" y="224" font-size="13" fill="#42566b" transform="rotate(-0.8 462 224)">手写 verify()</text>
+  <text x="484" y="242" font-size="12" fill="#42566b">(Verify)</text>
+
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M606 196 q 24 2 46 0"/>
+    <path d="M646 190 L658 196 L645 203"/>
+  </g>
+
+  <!-- ③ Pass 流水线 -->
+  <g filter="url(#wob)">
+    <rect x="660" y="146" width="136" height="100" rx="12" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2.4"/>
+  </g>
+  <text x="676" y="184" font-size="19" fill="#1e1e1e" transform="rotate(-0.8 676 184)">③ Pass 流水线</text>
+  <text x="678" y="208" font-size="13" fill="#2b5a35" transform="rotate(-0.8 678 208)">-cse</text>
+  <text x="672" y="228" font-size="13" fill="#2b5a35" transform="rotate(-0.8 672 228)">-mini-count-ops</text>
+
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M802 196 q 20 2 38 0"/>
+    <path d="M833 190 L844 196 L832 203"/>
+  </g>
+
+  <!-- ④ 打印 + rc -->
+  <g filter="url(#wob)">
+    <rect x="848" y="146" width="112" height="100" rx="12" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.4"/>
+  </g>
+  <text x="872" y="184" font-size="20" fill="#1e1e1e" transform="rotate(-0.8 872 184)">④ 打印</text>
+  <text x="864" y="210" font-size="13" fill="#42566b" transform="rotate(-0.8 864 210)">round-trip</text>
+  <text x="888" y="232" font-size="13" fill="#2f9e44" font-weight="bold" transform="rotate(-0.8 888 232)">rc=0</text>
+
+  <!-- ======== 下半：两张注册表 ======== -->
+  <text x="40" y="322" font-size="16" fill="#8a8a8a" transform="rotate(-0.4 40 322)">两张独立的注册表：谁注册，谁可用</text>
+
+  <!-- Dialect 注册表 -->
+  <g filter="url(#wob)">
+    <rect x="60" y="348" width="380" height="250" rx="16" fill="#ffffff" stroke="#1971c2" stroke-width="2.6" stroke-dasharray="10 6"/>
+  </g>
+  <text x="92" y="386" font-size="19" fill="#1971c2" transform="rotate(-0.6 92 386)">Dialect 注册表</text>
+  <text x="240" y="386" font-size="13" fill="#8a8a8a" transform="rotate(-0.6 240 386)">(DialectRegistry)</text>
+
+  <g filter="url(#wob2)">
+    <rect x="88" y="404" width="324" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+    <rect x="88" y="458" width="324" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+    <rect x="88" y="512" width="324" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+  </g>
+  <text x="104" y="432" font-size="15" fill="#1e1e1e" transform="rotate(-0.5 104 432)">"mini" → mini::MiniDialect</text>
+  <text x="104" y="486" font-size="15" fill="#1e1e1e" transform="rotate(-0.5 104 486)">"func" → mlir::func::FuncDialect</text>
+  <text x="104" y="540" font-size="15" fill="#c92a2a" transform="rotate(-0.5 104 540)">"mini" 没报名的：一律查无此人</text>
+  <text x="92" y="586" font-size="15" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.5 92 586)">决定：谁能被解析</text>
+
+  <!-- Pass 注册表 -->
+  <g filter="url(#wob)">
+    <rect x="540" y="348" width="400" height="250" rx="16" fill="#ffffff" stroke="#2f9e44" stroke-width="2.6" stroke-dasharray="10 6"/>
+  </g>
+  <text x="572" y="386" font-size="19" fill="#2f9e44" transform="rotate(-0.6 572 386)">Pass 注册表</text>
+  <text x="702" y="386" font-size="13" fill="#8a8a8a" transform="rotate(-0.6 702 386)">(PassRegistry · registerPass)</text>
+
+  <g filter="url(#wob2)">
+    <rect x="568" y="404" width="344" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+    <rect x="568" y="458" width="344" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+    <rect x="568" y="512" width="344" height="44" rx="8" fill="#fff" stroke="#1e1e1e" stroke-width="2"/>
+  </g>
+  <text x="584" y="432" font-size="15" fill="#1e1e1e" transform="rotate(-0.5 584 432)">"-cse" → CSE Pass</text>
+  <text x="584" y="486" font-size="15" fill="#1e1e1e" transform="rotate(-0.5 584 486)">"-mini-count-ops" → CountOpsPass</text>
+  <text x="584" y="540" font-size="15" fill="#c92a2a" transform="rotate(-0.5 584 540)">没注册的：Unknown argument '-cse'</text>
+  <text x="572" y="586" font-size="15" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.5 572 586)">决定：哪些 Pass 可用</text>
+
+  <!-- 注册表 → 关卡 的连线 -->
+  <g stroke="#1971c2" stroke-width="2.2" fill="none" filter="url(#wob2)">
+    <path d="M250 344 q -20 -40 -10 -94" stroke-dasharray="7 6"/>
+    <path d="M243 256 L240 244 L250 254"/>
+  </g>
+  <text x="200" y="308" font-size="13" fill="#1971c2" transform="rotate(24 200 308)">查这张表</text>
+
+  <g stroke="#2f9e44" stroke-width="2.2" fill="none" filter="url(#wob2)">
+    <path d="M712 344 q 24 -36 8 -94" stroke-dasharray="7 6"/>
+    <path d="M725 256 L720 244 L712 252"/>
+  </g>
+  <text x="748" y="308" font-size="13" fill="#2f9e44" transform="rotate(-20 748 308)">命令行查这张表</text>
+
+  <!-- 底部提示 -->
+  <text x="60" y="634" font-size="14" fill="#8a8a8a" transform="rotate(-0.3 60 634)">两张表互不相干：方言注册了但 Pass 没注册 → 能 round-trip，但没有 -cse 可用（5.7 节实验 B）</text>
+</svg>

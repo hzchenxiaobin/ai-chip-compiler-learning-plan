@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC',KaiTi,楷体,cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="23" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="640" fill="#fffdf5"/>
+
+  <!-- 标题 -->
+  <text x="36" y="48" font-size="25" fill="#1e1e1e" transform="rotate(-0.5 36 48)">target_graph.mlir：MatMul → Add → Relu 的数据流</text>
+  <path d="M38 60 q 260 8 500 2" stroke="#1971c2" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#wob2)"/>
+  <text x="620" y="52" font-size="14" fill="#8a8a8a" transform="rotate(-0.4 620 52)">框＝Operation，箭头＝SSA 值</text>
+
+  <!-- ======== ① 三个常量（源头，无入边） ======== -->
+  <text x="48" y="102" font-size="16" fill="#e8590c" font-weight="bold" transform="rotate(-0.6 48 102)">①</text>
+  <text x="72" y="102" font-size="14" fill="#8a8a8a" transform="rotate(-0.6 72 102)">数据装在 value 属性里，所以没有入边</text>
+
+  <!-- %a -->
+  <g filter="url(#wob)">
+    <rect x="50" y="118" width="212" height="76" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="66" y="144" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 66 144)">%a  A = [[1,2,3],</text>
+  <text x="102" y="164" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 102 164)">[4,5,6]]</text>
+  <text x="66" y="184" font-size="14" fill="#b3541e" transform="rotate(-0.7 66 184)">tensor&lt;2×3×f32&gt;</text>
+
+  <!-- %b -->
+  <g filter="url(#wob)">
+    <rect x="50" y="228" width="212" height="76" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="66" y="254" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 66 254)">%b  B = [[7,8],[9,10],</text>
+  <text x="102" y="274" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 102 274)">[11,12]]</text>
+  <text x="66" y="294" font-size="14" fill="#b3541e" transform="rotate(-0.7 66 294)">tensor&lt;3×2×f32&gt;</text>
+
+  <!-- %bias -->
+  <g filter="url(#wob)">
+    <rect x="50" y="398" width="212" height="76" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="66" y="424" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 66 424)">%bias  [[-100, 0],</text>
+  <text x="102" y="444" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 102 444)">[-1, -200]]</text>
+  <text x="66" y="464" font-size="14" fill="#b3541e" transform="rotate(-0.7 66 464)">tensor&lt;2×2×f32&gt;</text>
+
+  <!-- ======== ② mini.matmul ======== -->
+  <g filter="url(#wob)">
+    <rect x="360" y="158" width="170" height="90" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.6"/>
+  </g>
+  <text x="378" y="194" font-size="16" fill="#1971c2" font-weight="bold" transform="rotate(-0.8 378 194)">② mini.matmul</text>
+  <text x="394" y="220" font-size="13" fill="#42566b" transform="rotate(-0.8 394 220)">矩阵乘 · Pure</text>
+
+  <!-- %a → matmul -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M264 156 q 50 -8 92 14"/>
+    <path d="M352 164 L362 172 L348 176"/>
+  </g>
+  <text x="286" y="140" font-size="13" fill="#5c5c5c" transform="rotate(-6 286 140)">2×3</text>
+
+  <!-- %b → matmul -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M264 264 q 50 4 92 -26"/>
+    <path d="M352 242 L362 236 L350 230"/>
+  </g>
+  <text x="286" y="282" font-size="13" fill="#5c5c5c" transform="rotate(8 286 282)">3×2</text>
+
+  <!-- matmul 数值注释 -->
+  <g filter="url(#wob2)">
+    <rect x="332" y="278" width="238" height="56" rx="10" fill="#ffffff" stroke="#8a8a8a" stroke-width="1.8" stroke-dasharray="6 5"/>
+  </g>
+  <text x="348" y="300" font-size="14" fill="#42566b" transform="rotate(-0.5 348 300)">M = A·B = [[58, 64],</text>
+  <text x="384" y="320" font-size="14" fill="#42566b" transform="rotate(-0.5 384 320)">[139, 154]]</text>
+
+  <!-- matmul → add -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M530 203 q 44 14 76 40"/>
+    <path d="M600 238 L610 246 L596 250"/>
+  </g>
+  <text x="540" y="228" font-size="13" fill="#5c5c5c" transform="rotate(12 540 228)">%m : 2×2</text>
+
+  <!-- 内维提示 -->
+  <text x="356" y="132" font-size="13" fill="#c92a2a" transform="rotate(-1 356 132)">内维 3 被消耗：[2,3]·[3,2] → [2,2]</text>
+  <g stroke="#c92a2a" stroke-width="1.8" fill="none" filter="url(#wob2)">
+    <path d="M434 138 q 10 8 4 20"/>
+  </g>
+
+  <!-- ======== ③ mini.add ======== -->
+  <g filter="url(#wob)">
+    <rect x="612" y="250" width="150" height="90" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.6"/>
+  </g>
+  <text x="632" y="286" font-size="16" fill="#1971c2" font-weight="bold" transform="rotate(-0.8 632 286)">③ mini.add</text>
+  <text x="638" y="312" font-size="13" fill="#42566b" transform="rotate(-0.8 638 312)">加 bias · 相同 shape</text>
+
+  <!-- %bias → add -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M264 436 q 150 6 244 -108"/>
+    <path d="M502 336 L512 330 L498 326"/>
+  </g>
+  <text x="330" y="392" font-size="13" fill="#5c5c5c" transform="rotate(4 330 392)">%bias : 2×2（1×2 会被拒：BroadcastOnly）</text>
+
+  <!-- add 数值注释 -->
+  <g filter="url(#wob2)">
+    <rect x="600" y="360" width="196" height="54" rx="10" fill="#ffffff" stroke="#8a8a8a" stroke-width="1.8" stroke-dasharray="6 5"/>
+  </g>
+  <text x="614" y="382" font-size="14" fill="#42566b" transform="rotate(-0.5 614 382)">M + bias = [[-42, 64],</text>
+  <text x="644" y="402" font-size="14" fill="#42566b" transform="rotate(-0.5 644 402)">[138, -46]]</text>
+
+  <!-- ======== ④ mini.relu ======== -->
+  <g filter="url(#wob)">
+    <rect x="640" y="148" width="150" height="84" rx="14" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2.6"/>
+  </g>
+  <text x="662" y="182" font-size="16" fill="#2f9e44" font-weight="bold" transform="rotate(-0.8 662 182)">④ mini.relu</text>
+  <text x="668" y="208" font-size="13" fill="#2b5a35" transform="rotate(-0.8 668 208)">max(x,0) · shape 恒等</text>
+
+  <!-- add → relu -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M687 246 q -4 -14 -6 -20"/>
+    <path d="M675 232 L681 224 L687 234"/>
+  </g>
+
+  <!-- ======== ⑤ func.return ======== -->
+  <g filter="url(#wob)">
+    <rect x="826" y="150" width="128" height="80" rx="12" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="846" y="184" font-size="15" fill="#1e1e1e" transform="rotate(-0.7 846 184)">⑤ func.return</text>
+  <text x="850" y="208" font-size="14" fill="#b3541e" transform="rotate(-0.7 850 208)">→ 2×2</text>
+
+  <!-- relu → return -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M790 190 q 16 0 30 -2"/>
+    <path d="M812 184 L824 188 L812 196"/>
+  </g>
+  <text x="772" y="176" font-size="13" fill="#5c5c5c" transform="rotate(-2 772 176)">%r : 2×2</text>
+
+  <!-- relu 数值注释（结果） -->
+  <g filter="url(#wob2)">
+    <rect x="770" y="360" width="192" height="54" rx="10" fill="#d3f9d8" stroke="#2f9e44" stroke-width="2"/>
+  </g>
+  <text x="786" y="382" font-size="14" fill="#1e1e1e" transform="rotate(-0.5 786 382)">relu = [[0, 64],</text>
+  <text x="812" y="402" font-size="14" fill="#1e1e1e" transform="rotate(-0.5 812 402)">[138, 0]]</text>
+  <g stroke="#2f9e44" stroke-width="1.8" fill="none" filter="url(#wob2)">
+    <path d="M864 354 q 2 -70 -14 -130"/>
+  </g>
+
+  <!-- 底部一句话 -->
+  <text x="50" y="500" font-size="15" fill="#1e1e1e" transform="rotate(-0.4 50 500)">把三个 constant 换成函数入参 → target_graph_args.mlir（权重来自外部，IR 只描述结构）。</text>
+  <text x="50" y="528" font-size="15" fill="#1e1e1e" transform="rotate(-0.4 50 528)">每个箭头上的类型都要过验证关：ODS 先查"是不是 f32 张量"，手写 Verifier 再查"维数对不对得上"。</text>
+
+  <!-- 图例 -->
+  <g filter="url(#wob2)">
+    <rect x="50" y="556" width="18" height="14" fill="#ffec99" stroke="#e8590c" stroke-width="1.6"/>
+    <rect x="230" y="556" width="18" height="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="1.6"/>
+    <rect x="410" y="556" width="18" height="14" fill="#b2f2bb" stroke="#2f9e44" stroke-width="1.6"/>
+  </g>
+  <text x="76" y="568" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 76 568)">常量/输入输出</text>
+  <text x="256" y="568" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 256 568)">计算节点</text>
+  <text x="436" y="568" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 436 568)">激活节点</text>
+  <text x="560" y="568" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 560 568)">虚线框 ＝ 数值注释（Day 45 之后才落地执行）</text>
+</svg>

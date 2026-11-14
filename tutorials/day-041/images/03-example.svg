@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC',KaiTi,楷体,cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="29" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="660" fill="#fffdf5"/>
+
+  <!-- 标题 -->
+  <text x="36" y="48" font-size="25" fill="#1e1e1e" transform="rotate(-0.5 36 48)">-cse 前后：重复的计算被合并（真实输出）</text>
+  <path d="M38 60 q 300 8 560 2" stroke="#2f9e44" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#wob2)"/>
+
+  <!-- ======== 左面板：跑 -cse 之前 ======== -->
+  <g filter="url(#wob)">
+    <rect x="40" y="96" width="420" height="470" rx="14" fill="#ffffff" stroke="#1e1e1e" stroke-width="2.6"/>
+  </g>
+  <text x="120" y="130" font-size="19" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.6 120 130)">跑 -cse 之前（10 个 op 行）</text>
+
+  <!-- 代码行 -->
+  <text x="66" y="168" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 66 168)">func.func @dup() {</text>
+  <text x="80" y="196" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 196)">%a    = constant A   : 2×3</text>
+  <text x="80" y="224" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 224)">%b    = constant B   : 3×2</text>
+  <text x="80" y="252" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 252)">%bias = constant ... : 2×2</text>
+  <text x="80" y="280" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 280)">%m1 = matmul %a, %b : 2×2</text>
+  <text x="80" y="308" font-size="14" fill="#c92a2a" transform="rotate(-0.4 80 308)">%m2 = matmul %a, %b : 2×2</text>
+  <text x="80" y="336" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 336)">%s1 = add %m1, %bias</text>
+  <text x="80" y="364" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 364)">%r1 = relu %s1</text>
+  <text x="80" y="392" font-size="14" fill="#c92a2a" transform="rotate(-0.4 80 392)">%s2 = add %m2, %bias</text>
+  <text x="80" y="420" font-size="14" fill="#c92a2a" transform="rotate(-0.4 80 420)">%r2 = relu %s2</text>
+  <text x="80" y="448" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 80 448)">return %r1, %r2</text>
+  <text x="66" y="476" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 66 476)">}</text>
+
+  <!-- 红色波浪下划线：三行重复 -->
+  <g stroke="#c92a2a" stroke-width="2" fill="none" filter="url(#wob2)">
+    <path d="M79 314 q 30 5 60 1 q 30 -4 60 1 q 30 4 60 0"/>
+    <path d="M79 398 q 30 5 60 1 q 30 -4 60 1"/>
+    <path d="M79 426 q 30 5 60 1 q 30 -4 60 1"/>
+  </g>
+  <text x="266" y="322" font-size="13" fill="#c92a2a" transform="rotate(-1 266 322)">← 完全一样</text>
+  <text x="266" y="406" font-size="13" fill="#c92a2a" transform="rotate(-1 266 406)">← 重复链</text>
+  <text x="252" y="434" font-size="13" fill="#c92a2a" transform="rotate(-1 252 434)">← 重复链</text>
+
+  <!-- ops 徽章 -->
+  <g filter="url(#wob)">
+    <ellipse cx="140" cy="524" rx="64" ry="24" fill="#ffc9c9" stroke="#c92a2a" stroke-width="2.2"/>
+  </g>
+  <text x="108" y="530" font-size="16" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.8 108 530)">11 ops</text>
+  <text x="222" y="530" font-size="13" fill="#8a8a8a" transform="rotate(-0.8 222 530)">matmul×2 add×2 relu×2</text>
+
+  <!-- ======== 中间箭头 ======== -->
+  <g filter="url(#wob2)">
+    <path d="M466 300 q 22 8 40 0" stroke="#1e1e1e" stroke-width="3" fill="none"/>
+    <path d="M500 292 L514 300 L499 310" stroke="#1e1e1e" stroke-width="3" fill="none"/>
+  </g>
+  <g filter="url(#wob)">
+    <rect x="446" y="196" width="70" height="46" rx="10" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2.4"/>
+  </g>
+  <text x="462" y="224" font-size="16" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.8 462 224)">-cse</text>
+  <text x="492" y="560" font-size="13" fill="#2f9e44" transform="rotate(-90 492 560)">合并条件：操作数相同 ＋ 属性相同 ＋ Pure（无副作用）</text>
+
+  <!-- ======== 右面板：跑 -cse 之后 ======== -->
+  <g filter="url(#wob)">
+    <rect x="520" y="96" width="440" height="470" rx="14" fill="#ffffff" stroke="#1e1e1e" stroke-width="2.6"/>
+  </g>
+  <text x="600" y="130" font-size="19" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.6 600 130)">跑 -cse 之后（7 个 op 行）</text>
+
+  <!-- 代码行（真实输出的形状） -->
+  <text x="546" y="168" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 546 168)">func.func @dup() {</text>
+  <text x="560" y="208" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 208)">%0 = constant A     : 2×3</text>
+  <text x="560" y="240" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 240)">%1 = constant B     : 3×2</text>
+  <text x="560" y="272" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 272)">%2 = matmul %0, %1  : 2×2</text>
+  <text x="560" y="304" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 304)">%3 = constant bias  : 2×2</text>
+  <text x="560" y="336" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 336)">%4 = add %2, %3</text>
+  <text x="560" y="368" font-size="14" fill="#1e1e1e" transform="rotate(-0.4 560 368)">%5 = relu %4</text>
+  <text x="560" y="412" font-size="14" fill="#2f9e44" font-weight="bold" transform="rotate(-0.4 560 412)">return %5, %5</text>
+  <text x="546" y="448" font-size="14" fill="#5c5c5c" transform="rotate(-0.4 546 448)">}</text>
+
+  <!-- 划掉的行注释 -->
+  <g stroke="#c92a2a" stroke-width="1.8" fill="none" filter="url(#wob2)">
+    <path d="M436 300 q 60 90 82 8"/>
+  </g>
+  <text x="436" y="290" font-size="12" fill="#c92a2a" transform="rotate(-14 436 290)">%m2 %s2 %r2 消失</text>
+
+  <!-- 绿色对勾：同一个值返回两遍 -->
+  <g stroke="#2f9e44" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M744 400 q -6 14 -14 18 q -8 4 -18 -16 q -6 -12 -16 -18"/>
+  </g>
+  <text x="716" y="436" font-size="13" fill="#2f9e44" transform="rotate(-1 716 436)">两个返回值是同一个 %5</text>
+
+  <!-- ops 徽章 -->
+  <g filter="url(#wob)">
+    <ellipse cx="620" cy="524" rx="60" ry="24" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2.2"/>
+  </g>
+  <text x="592" y="530" font-size="16" fill="#1e1e1e" font-weight="bold" transform="rotate(-0.8 592 530)">8 ops</text>
+  <text x="700" y="530" font-size="13" fill="#8a8a8a" transform="rotate(-0.8 700 530)">matmul×1 add×1 relu×1</text>
+
+  <!-- 底部结论 -->
+  <g filter="url(#wob2)">
+    <rect x="40" y="584" width="920" height="58" rx="12" fill="#fff3bf" stroke="#e8590c" stroke-width="2"/>
+  </g>
+  <text x="60" y="608" font-size="15" fill="#1e1e1e" transform="rotate(-0.3 60 608)">结论：CSE 不认识"矩阵乘"的含义，它只看"两个 op 的操作数、属性、副作用是否全同"——</text>
+  <text x="60" y="630" font-size="15" fill="#1e1e1e" transform="rotate(-0.3 60 630)">mini.matmul / add / relu 挂了 Pure trait（无副作用），所以敢合并。这正是第 5.5 节真实实验的输出（11 ops → 8 ops，-mini-count-ops 实测）。</text>
+</svg>
