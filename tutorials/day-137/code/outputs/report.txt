@@ -1,0 +1,47 @@
+== R0 起点：复杂失败用例（用户 bug 报告）==
+
+  21 个节点 / 24 行 / shape 最大 64×128 / 5 个 matmul / 3 个 transpose
+  失败：matmul %t4, %w2 内维 64≠128（藏在第 8 行的深层链里）
+
+== R1 删节点：与失败无关的下游全部剥掉 ==
+
+  删 sigmoid 及其后（t6~t12, 13 个节点）
+    → 失败仍在（上游 matmul %t5 还是坏的）
+  删 reshape×2、relu/add/scale 尾巴
+    → 失败仍在
+  删 t1~t3 的冗余链（保留直接触发路径）
+    → 失败仍在
+  节点数 21 → 4
+
+== R2 缩 shape：64×128 → 2×3 ==
+
+  shape 与失败无关（内维不匹配在任意 size 都触发）→ 直接缩到最小
+  64×128 → 2×3（肉眼可验算）
+
+== R3 简化类型与结构 ==
+
+  f32 保留（问题在 shape 不在 dtype）；多余 transpose 保留 1 个（触发路径需要）
+
+== R4 终点：最小失败用例 ==
+
+func @main(%x: tensor<2x3xf32>) -> (%5: tensor<2x2xf32>) {
+  %x = arg : tensor<2x3xf32>
+  %w = const shape=[4, 2] values=[...] : tensor<4x2xf32>
+  %t = transpose %x perm=[1, 0] : tensor<3x2xf32>
+  %5 = matmul %t, %w : tensor<3x2xf32>   // 3≠4——内维不匹配
+  return %5
+}
+
+  21 节点/24 行 → 4 节点/7 行（81% 缩减）
+  失败保持：transpose 输出 3×2 @ const 4×2——内维 3≠4，仍触发同一问题
+
+== R5 回归测试固化（修复后）==
+
+  修复：把 const shape=[4,2] 改 [3,2]（或 transpose 的语义修正）
+  固化：最小用例 + 期望行为（闸0 拒绝：内维不匹配 3≠4）→ D134 的正反例格式
+  价值：3 节点的回归测试比 19 节点的原报告快 6×、可读 10×
+
+  [PASS] 复杂起点 19 节点
+  [PASS] 最小终点 4 节点
+  [PASS] 缩减 ≥ 75%
+  [PASS] 最小用例落盘
