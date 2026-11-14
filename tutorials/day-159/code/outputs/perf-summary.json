@@ -1,0 +1,69 @@
+{
+  "标题": "minic 性能材料汇总",
+  "数据源": [
+    {
+      "name": "基线",
+      "path": "day-148/outputs/baseline.json",
+      "keys": [
+        "shape",
+        "median_ms",
+        "gflops",
+        "kernel",
+        "rounds",
+        "inner_calls"
+      ]
+    },
+    {
+      "name": "拆解",
+      "path": "day-149/outputs/breakdown.json",
+      "keys": [
+        "t_compile_ms",
+        "t_exec_ms",
+        "t_overhead_ms",
+        "exec_pct"
+      ]
+    },
+    {
+      "name": "Roofline",
+      "path": "day-150/outputs/roofline.json",
+      "keys": [
+        "flop_m",
+        "ai_worst",
+        "ai_cached",
+        "knee",
+        "measured_gflops",
+        "dist_to_compute"
+      ]
+    },
+    {
+      "name": "优化",
+      "path": "day-151/outputs/optimize.json",
+      "keys": [
+        "baseline",
+        "expA_O2",
+        "expB_tile",
+        "expC_combo"
+      ]
+    },
+    {
+      "name": "分布",
+      "path": "day-152/outputs/cross-shape.json",
+      "keys": "list[7]"
+    },
+    {
+      "name": "反例",
+      "path": "day-153/outputs/counterexample.json",
+      "keys": [
+        "ce1",
+        "ce2_ref",
+        "ce3_ref"
+      ]
+    }
+  ],
+  "结论": "160³ 朴素 kernel 基线 20.9ms/0.39GF（离峰值百倍）；稳态执行占 100%（嫌疑唯一）；Roofline 两屋顶都远（执行效率瓶颈）；O2 展开 8.4×（H1 成立）、tile 0.3×（H2 证伪）；跨 7 shape 分布 1.7~14.1×；反例是环境函数（LLVM 18 vs 23）。",
+  "口径声明": {
+    "基线五要素": "shape 160³/朴素 O0/7×3 中位/arm64 Darwin/复现命令",
+    "统计": "中位数抗离群＋P90 尾部（D138 口径）",
+    "环境戳": "所有结论带版本/平台声明（D153 教训）"
+  }
+}
