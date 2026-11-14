@@ -1,0 +1,9 @@
+func @main(%x: tensor<2x12xf32>) -> (%10: tensor<4x3xf32>) {
+  %x = arg : tensor<2x12xf32>
+  %1 = const shape=[6,3] values=[0.296875,0.4375,0.375,-0.25,-0.3125,-0.4375,0.125,0.25,0.0625,-0.5,-0.125,0.25,0.0625,0.5,-0.1875,0.1875,0.0,0.3125] : tensor<6x3xf32>
+  %5 = reshape %x new_shape=[24] : tensor<24xf32>
+  %6 = reshape %5 new_shape=[4, 6] : tensor<4x6xf32>
+  %8 = const shape=[3] values=[0.125,-0.25,0.5] : tensor<3xf32>
+  %10 = fused_matmul_bias_relu %6, %1, %8 : tensor<4x3xf32>
+  return %10
+}

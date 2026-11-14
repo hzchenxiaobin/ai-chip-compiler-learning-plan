@@ -1,0 +1,53 @@
+{
+  "version": "minic 0.2.0 (day-121: S1 graph passes)",
+  "input": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-121/code/main.graph",
+  "output_dir": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-121/code/outputs/sw-9762",
+  "opt_level": 0,
+  "tile": [
+    32,
+    32,
+    32
+  ],
+  "emit": "exec",
+  "dump_ir": false,
+  "s1_switches": {
+    "qdq_clean": true,
+    "layout_simp": true,
+    "reshape_merge": true,
+    "fuse": true,
+    "fixpoint_max": 8
+  },
+  "verify": "",
+  "stages": [
+    {
+      "id": "S0",
+      "note": "读入 main.graph：15 行、约 14 条 op"
+    },
+    {
+      "id": "S1",
+      "note": "图优化：11 → 11 节点（[闸0] 合法性检查通过（11 个节点）；[S1] 清理不动点 1 轮收敛，终图 11 个节点）"
+    },
+    {
+      "id": "S2",
+      "note": "循环生成：D122 接入（fused → scf.for 展开）"
+    },
+    {
+      "id": "S3",
+      "note": "Tiling：-O0 跳过（tile 参数→边界常量＋min 钳制（D122 接入））"
+    },
+    {
+      "id": "S4",
+      "note": "LLVM Lowering：骨架（七 pass 管道（D122 接入））"
+    },
+    {
+      "id": "S5",
+      "note": "代码生成：骨架（mlir-translate→.ll→llc/clang（D122 接入））"
+    },
+    {
+      "id": "S6",
+      "note": "验证：骨架（golden 逐点 bitwise（D124 接入））"
+    }
+  ],
+  "diags": [],
+  "exit_code": 0
+}

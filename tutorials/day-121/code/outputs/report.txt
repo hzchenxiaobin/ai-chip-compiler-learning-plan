@@ -1,0 +1,44 @@
+第 121 天：minic S1 图优化——真机报告 2026-11-14 21:16
+环境：Python 3.9.6｜Darwin arm64
+
+[TP1] 主线：贯穿图 11 → 5 节点（与 D83 集成验收对账）
+  [PASS] minic main.graph 退出码 0
+  [PASS] S1 终图 5 节点（11→5，与 D83 report.txt 一致）
+  [PASS] 融合算子 in place（fused_matmul_bias_relu）
+  [PASS] QDQ 已清（R04 折叠生效）
+
+[TP2] 开关对照矩阵：关一个 Pass，看图退化成什么样
+  [PASS] all-on → 5 节点（期望 5）
+  [PASS] no-fuse → 7 节点（期望 7）
+  [PASS] no-qdq → 8 节点（期望 8）
+  [PASS] no-layout → 6 节点（期望 6）
+  [PASS] no-reshape → 6 节点（期望 6）
+  [PASS] O0 → 11 节点（期望 11）
+
+[TP3] 开关语义：审计日志逐条核对
+  [PASS] no-fuse：闸4 未执行（manifest 审计无闸4）
+  [PASS] no-qdq：QDQ 保留在终图
+  [PASS] -O0：11 节点原样（全部 Pass 关闭）
+
+[TP4] 不动点轮数：--fixpoint-max 1 vs 8
+  fixpoint-max=1 → 5 节点
+  [PASS] 单轮结果在 5~7 区间（机会可能未挖尽）
+
+[TP5] 合同回归：D120 的四份合同仍然成立
+  [PASS] --help 含 usage: minic
+  [PASS] --help 含 --tile
+  [PASS] --help 含 --emit
+  [PASS] --help 含 --verify
+  [PASS] --help 含 示例
+  [PASS] 新开关 --no-qdq-clean 在帮助文本
+  [PASS] 新开关 --no-fuse 在帮助文本
+  [PASS] 新开关 --fixpoint-max 在帮助文本
+  [PASS] E101 退出码 2（合同不退化）
+  [PASS] manifest 新字段 s1_switches 就位
+
+[TP6] 位等价：S1 优化前后随机输入逐位一致（numpy 验证）
+  [PASS] 3×10000 随机输入位等价（容差=0）
+
+汇总
+  PASS: 25  FAIL: 0
+  环境：Darwin arm64｜2026-11-14
