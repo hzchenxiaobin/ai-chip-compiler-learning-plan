@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""第 167 天：20 分钟项目模拟讲解＋10 分钟问答。"""
+from __future__ import annotations
+import os
+
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs")
+
+TALK = """# 20 分钟项目讲解提纲
+
+## 开场（2 分钟）：问题背景
+  「我做了什么」：一个端到端的教学编译器 minic——从 mini 图 IR 到
+  可执行机器码，含图优化、Lowering、Runtime 三件套、性能归因。
+  「一句话定位」：把 AI 编译器的核心链路（TVM/MLIR 的骨架）在
+  教学尺度走了一遍——≈250 项测试判定背书。
+
+## 第一幕（5 分钟）：架构与主线
+  六层数据流（图 IR→S1→S2→S4→S5→S6）＋三份合同（C/manifest/诊断）
+  ＋运行时三件套（特化/回退/池化）——指着架构图讲。
+  数字锚点：12/12 bitwise｜四份合同 25 项｜七 pass 胶水 0。
+
+## 第二幕（5 分钟）：三个技术难点
+  ① 动态 Shape（六件事＋三件套——fmul 18→2 的收缩与 2→18 的特化补回）
+  ② 性能归因（Roofline 第三种瓶颈——两屋顶都远的实测＋O2 8.4× 验证）
+  ③ k0 bug 的发现（形态对执行错——集成测试抓住部分和覆盖）
+
+## 第三幕（5 分钟）：量化结果
+  正确性：200 组 fuzz 全对｜性能：分布 1.7~14.1×（不只报最好）｜
+  反例：0.3×/环境函数（诚实边界）｜工程：250 项测试＋8/8 文档走查。
+
+## 收尾（3 分钟）：限制与下一步
+  限制：教学 CPU 规模（L1 全命中——融合收益归零）；tile 教学版
+  负优化（完整版是 future）；单机单线程。
+  下一步：四选一深入（MLIR 图编译/LLVM 后端/自动调度/芯片工具链）。
+
+## Q&A 预案（10 分钟）
+  高频追问 → 标答索引：
+  「为什么多层 IR」→ D162；「融合什么时候失效」→ D163；
+  「动态 Shape 难在哪」→ D164；「Tile 怎么选」→ D165；
+  「怎么调试 Pass 错」→ D166；「数值差异怎么判」→ D166。
+  卡壳预案：不知道就「这个我没测过——我的推测是……但需要实验」
+  ——诚实比编造加分。
+"""
+
+STUCK = """被卡住的问题清单（诚实自查）
+  · SIMD/向量化为什么教学版没做（H3 依赖链——但向量化原理没细讲）
+  · MLIR 的 rewrite 机制细节（Pattern 的 matchAndRewrite 生命周期）
+  · 多线程编译（pass 并行）
+  → 每条的应对：承认边界＋给推测＋指出学过的最接近概念
+"""
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    open(os.path.join(OUT, "talk-outline.md"), "w").write(TALK)
+    open(os.path.join(OUT, "stuck-list.txt"), "w").write(STUCK)
+    checks = [
+        ("提纲五幕", TALK.count("## ") >= 6),
+        ("数字锚点", "12/12" in TALK and "8.4" in TALK and "250" in TALK),
+        ("Q&A 预案", "D162" in TALK and "D166" in TALK),
+        ("卡壳清单", len(STUCK) > 100),
+    ]
+    for n, okk in checks:
+        print(f"  [{'PASS' if okk else 'FAIL'}] {n}")
+    return 0 if all(o for _, o in checks) else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
