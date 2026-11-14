@@ -1,0 +1,52 @@
+第 124 天：端到端 MatMul+Bias+Relu——真机报告 2026-11-14 21:40
+环境：Python 3.9.6｜Darwin arm64｜Homebrew clang version 23.1.5
+
+[TP1] 端到端：11 节点图 → 执行 → 12/12 bitwise（本日主产出）
+  S1 图优化：11 → 5 节点（融合 matmul+bias+relu → fused）
+  S2 循环生成：34 行（点循环写全：load/mulf/addf/store）
+  S4/S5：七 pass 全过、胶水 0 → stage-5.ll（126 行）
+    C[0]=22.1250 (golden 22.1250)
+    C[1]=24.2500 (golden 24.2500)
+    C[2]=27.5000 (golden 27.5000)
+    C[3]=51.1250 (golden 51.1250)
+    C[4]=56.7500 (golden 56.7500)
+    C[5]=63.5000 (golden 63.5000)
+    C[6]=49.1250 (golden 49.1250)
+    C[7]=51.2500 (golden 51.2500)
+    C[8]=54.5000 (golden 54.5000)
+    C[9]=23.1250 (golden 23.1250)
+    C[10]=24.7500 (golden 24.7500)
+    C[11]=27.5000 (golden 27.5000)
+    12/12 点 bitwise 一致
+  S6 验证：PASS（12/12 点 bitwise 一致）
+  [PASS] 端到端全链路：图 IR → 机器码 → 12/12 bitwise
+
+[TP2] 融合语义：relu 真的在 kernel 里（cmpf+select）
+  [PASS] S2 IR 含 arith.cmpf（relu 的条件）
+  [PASS] S2 IR 含 arith.select（relu 的选择）
+  [PASS] relu 活到了 .ll（fcmp/select）
+
+[TP3] bias 融在 k=0 圈：iter_args 初值是 bias
+  [PASS] k 循环初值 = %bj（bias 融 k=0——D85~90 任务单语义）
+
+[TP4] golden 口径：k 序累加（与 kernel 逐位同序）
+  [PASS] golden 按 k 序计算（bias 先进 acc）——bitwise 判据的口径正确
+
+[TP5] C 合同：_mlir_ciface 四指针（out/a/b/bias）
+  [PASS] ciface 四指针签名（D118 合同的 bias 扩展）
+
+[TP6] -O0 vs 默认：图优化开关的端到端差异
+  -O0 终图 11 节点；S2 拒收（E202 S2 点循环展开：不支持的算子 quantize（节点 %2）...）
+  —— 关掉 QDQ 清理的连锁：S2 支持集不含 quantize → E202
+  —— 开关的端到端影响不只是性能：有的是正确管道的前提
+  默认终图 5 节点；S2 循环含 relu（融合进 kernel）
+  [PASS] 开关×端到端的影响已记录（D125 将量化）
+
+[TP7] 合同回归：D120~D123 全部不退化
+  [PASS] minic 主管道退出码 0
+  [PASS] E101 退出码 2
+  [PASS] manifest 合同完整
+
+汇总
+  PASS: 11  FAIL: 0
+  环境：Darwin arm64｜2026-11-14
