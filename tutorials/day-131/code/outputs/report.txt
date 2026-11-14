@@ -1,0 +1,40 @@
+第 131 天：内存分配与复用——真机报告 2026-11-14 22:21
+环境：Python 3.9.6｜Darwin arm64
+
+[TP1~TP3] 三实验：泄漏实测/池化/生命周期
+== E1 泄漏实测：连续调 N 次 kernel，RSS 增长 ==
+  2000 次调用：RSS 29072 → 29232 KB（Δ=160 KB）
+  理论泄漏：2000×48B = 94 KB（C 堆只涨不跌——kernel 无 free）
+  结论：机制性泄漏存在；教学规模（94KB）淹没在 RSS 噪声里；
+        真实服务（100 万次/秒）= 48MB/s——这就是 D118 挂的债
+
+== E2 池化分配器：acquire/release 复用 ==
+  100 次 acquire/release：hit=99 miss=1 release=100
+  → 100 次只分配 1 次（首次），其余复用
+  池内缓冲区：1 个（destroy 前常驻）
+  累计分配：48 B（裸模式 = 100×48=4800B）
+  混合 shape 5 次：hit=3 miss=2
+  → 同 shape 第二次起命中；不同 shape 各自首次 miss
+
+== E3 生命周期：三层职责 ==
+  分配：Pool.acquire（miss 时 numpy 分配）——运行时
+  归还：调用方用完 release（放回池，不 free）——调用方职责
+  释放：Pool.destroy 或进程退出（Python GC）——池的职责
+  → D127 审计表「内存释放=NONE」的空格今天填上：池管理生命周期
+  destroy 后池内：0（全清）
+
+== 结账：D118 的 malloc 债务 ==
+  债务：kernel 每次 malloc(48) 从不 free（D118 TP5 挂账）
+  还法：Python 侧池化（今天 E2）——kernel 的 malloc 在 C 层，
+        教学版从调用方侧解决（输出缓冲区由池预分配）；
+        工程版改 kernel 签名（out 参数化——D124 的 mini.matmul 任务单形态）
+  债务状态：已结清（教学口径）
+  [PASS] E1 泄漏机制确认（2000 次 94KB——真实服务 48MB/s）
+  [PASS] E2 池化复用 99%（100 次只分配 1 次）
+  [PASS] E2 分配量对比：48B vs 4800B（100 倍）
+  [PASS] E2 混合 shape 分桶命中
+  [PASS] E3 生命周期完整（destroy 全清）
+  [PASS] D118 malloc 债务结清声明
+
+汇总
+  PASS: 6  FAIL: 0
