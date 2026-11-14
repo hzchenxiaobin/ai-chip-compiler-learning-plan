@@ -1,0 +1,34 @@
+[
+  {
+    "variant": "A",
+    "label": "无优化",
+    "graph_nodes": 7,
+    "ll_lines": 111,
+    "fmul": 1,
+    "phi": 4
+  },
+  {
+    "variant": "B",
+    "label": "仅图优化",
+    "graph_nodes": 5,
+    "ll_lines": 111,
+    "fmul": 1,
+    "phi": 4
+  },
+  {
+    "variant": "C",
+    "label": "图+Tiling",
+    "graph_nodes": 5,
+    "ll_lines": 111,
+    "fmul": 1,
+    "phi": 4
+  },
+  {
+    "variant": "D",
+    "label": "完整优化",
+    "graph_nodes": 5,
+    "ll_lines": 111,
+    "fmul": 1,
+    "phi": 4
+  }
+]
