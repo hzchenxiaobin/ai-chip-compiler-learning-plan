@@ -1,0 +1,15 @@
+{
+  "shape": "160x160x160",
+  "median_ms": 21.95,
+  "gflops": 0.3732,
+  "kernel": "naive matmul+bias+relu（无 tile）",
+  "rounds": 7,
+  "inner_calls": 3,
+  "env": {
+    "machine": "arm64 Darwin",
+    "python": "3.9.6",
+    "llvm": "Homebrew clang version 23.1.5",
+    "date": "2026-11-14 23:15"
+  },
+  "repro": "cd tutorials/day-148/code && python3 baseline.py"
+}

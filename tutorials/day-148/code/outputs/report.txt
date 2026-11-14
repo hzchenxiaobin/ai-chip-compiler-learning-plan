@@ -1,0 +1,16 @@
+== B1 选型：候选 shape 扫描（朴素 kernel）==
+  128x128x128: 11.2 ms｜0.374 GFLOPS
+  160x160x160: 23.2 ms｜0.354 GFLOPS
+  96x160x160: 13.0 ms｜0.379 GFLOPS
+
+  选定慢用例：(160, 160, 160)（23.2 ms）
+
+== B2 基线：多轮计时（中位数）＋GFLOPS＋环境 ==
+  中位数：21.95 ms｜GFLOPS：0.3732
+  环境：arm64 Darwin｜Homebrew clang version 23.1.5
+
+== B3 复现 ==
+  cd tutorials/day-148/code && python3 baseline.py
+  基线落盘 baseline.json
+
+判定：选定成立（明显慢——第 22 周的归因对象）
