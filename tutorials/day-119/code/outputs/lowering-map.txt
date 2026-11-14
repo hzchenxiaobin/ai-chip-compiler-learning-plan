@@ -1,0 +1,74 @@
+第 119 天：完整 Lowering 图——七层表示的信息对账表
+========================================================================
+
+层 1｜图/算子层（D57~D112（源流））
+  形态：mini 算子图（mini.matmul 等）
+  证据：mini.matmul → scf 循环的 Lowering 任务单（D85~D90）
+  实测：D114 残留对照：mini.* 无模式、残留即报错
+  保留 → 算子语义（MatMul+Bias+Relu）；图拓扑（谁消费谁）；shape 与 dtype；融合决策；Tile 决策；布局决策
+  丢失 ✗ （源层，无）
+  新增 ★ 领域语义（这是'矩阵乘'——不是三层 for）
+
+层 2｜循环层（scf）（D85~D90 / D117 源）
+  形态：scf.for 嵌套＋arith＋memref
+  证据：gemm.mlir（21 op：scf.for×3＋scf.yield×1）
+  实测：census：21 op（func 1、arith 10、scf 4、memref 4、return 1...）
+  保留 → 循环边界/步长（静态可算）；累加初值（iter_args）；迭代依赖（yield 链）；memref 下标表达式
+  丢失 ✗ 算子语义——三层 for 不再'是'MatMul；融合边界——bias 加在 k=0 圈还是逐元素，图上才知道
+  新增 ★ 显式循环序（i/j/k 顺序＝性能决策的落点）
+
+层 3｜cf 层（控制流拍平）（D117 阶段 1）
+  形态：cf.br/cond_br＋块参数
+  证据：gemm-1-scf-to-cf.mlir（D117 冻结）
+  实测：D117 实测：9 块、3 cond_br（四块×3 循环）
+  保留 → 块参数（phi 前身）；显式跳转目标；循环不变量在块间显式流动
+  丢失 ✗ scf.for 的结构语义——'这是循环'变成'这是一堆块＋回跳边'；iter_args 的初值/步进配对——拆散进 init/header/latch 四块
+  新增 ★ 入口/出口块显式化（LLVM 块模型的预演）
+
+层 4｜LLVM Dialect（MLIR 内）（D117 阶段 2）
+  形态：llvm.* 纯方言（reconcile 后）
+  证据：gemm-2-llvm-dialect.mlir（D117 冻结）
+  实测：D117 实测：94 op（reconcile 后）；胶水 6→0
+  保留 → 描述符字段操作（extractvalue/insertvalue）；gep 地址算术；malloc 调用；包装函数 _mlir_ciface
+  丢失 ✗ memref 类型——'张量视图'语义换成 5 字段裸结构体；index 类型——统一 i64（D114 兑换表）；strides 的'张量含义'——只剩整数乘加
+  新增 ★ C ABI 合同（sret＋按值聚合拆参数）；运行库符号依赖（declare malloc）
+
+层 5｜LLVM IR（.ll）（D117 阶段 3 / D113 对照）
+  形态：define/phi/getelementptr
+  证据：gemm-3.ll（62 SSA、4 phi、21 insertvalue）
+  实测：gemm-3.ll：62 SSA / 4 phi / malloc×1 / insertvalue×21
+  保留 → SSA 值与槽位编号；phi 节点；类型系统（ptr/i64/f32）
+  丢失 ✗ MLIR 的名字——%c1a 变 %14、^merge 变 10:（D113 R1 重编号）；常量的'来历'——llvm.mlir.constant 变成立即数内联（R2）；块参数——变 phi（R3），传值信息从 br 挪进块首
+  新增 ★ 寄存器级别的直线 SSA（优化器的输入形态）；值域注记（range——LLVM 22 的 sccp 长出来的，D113 实测）
+
+层 6｜目标无关优化后 IR（D113 / D117 对照）
+  形态：opt -O2（instcombine/sccp/simplifycfg...）
+  证据：gemm-O2.ll（D117 冻结；step: 4块→1块）
+  实测：step：11→5 指令、7→4 SSA；gemm：fmul 1→18（循环展开）
+  保留 → 语义（优化的合法性合同）；调用图
+  丢失 ✗ 结构——D113 实测 step 菱形折叠成 select（4 块→1 块）；朴素形态——D117 实测 O2 后 SSA 62→67 但 fmul/fadd 1→18（展开）；'作者意图'——优化器不知道哪些循环是你想保留的
+  新增 ★ 常量折叠结果、死代码消除结果、值域/溢出注记（nuw）
+
+层 7｜机器码（汇编/执行）（D118（四条路线））
+  形态：aarch64/arm64 目标码
+  证据：gemm-3.s（D117 llc）＋D118 四路线 12/12
+  实测：D118：四路线×12 点 bitwise；gemm-3.s 循环深度可读
+  保留 → 语义（bitwise 对账的唯一裁判）
+  丢失 ✗ SSA——寄存器复用抹掉值的历史；块结构——基本块融合进指令流；类型——机器码只有位宽没有 f32/i64 之分；malloc 语义——call 变 bl，'谁负责 free'合同消失
+  新增 ★ 真实地址/寄存器/指令调度；可运行性（D118：12 PASS / 0 FAIL）
+
+========================================================================
+面试口径：为什么不能只看最终 LLVM IR 理解整个编译器？
+
+  1) 信息只减不增（每层都在消费上层语义）：最终 IR 里没有"这是融合过的
+     MatMul+Bias"——bias 加在 k=0 圈的决策在图层做出、在循环层消费；
+     没有"Tile 32×64 是搜索出来的"——Tile 决策在图层做出、在循环层
+     变成边界常量。看 IR 只见"三层 for"，不见"为什么恰好这三层"。
+  2) 新增信息有出处（每层都在长出新合同）：描述符 5 字段来自 D115 的
+     ABI 决策；malloc 依赖来自 D117 的 alloc 转换；sret 包装来自 C ABI
+     合同。不看中间层，这些"凭空出现"的结构无从解释也无法 debug。
+  3) 优化会抹平朴素形态（LLVM 侧还有一层）：O2 把 fmul 1→18 条（循环
+     展开）——展开是优化器的决定，不是作者的意图；反向从机器码推
+     "编译器做了什么"会同时看到作者决策＋优化器决策，无法区分。
+  结论：每一层的 IR 都是"带上下文的决策记录"；只看最终 IR＝只看账本
+  最后一页。编译器的可观测性（D123 IR Dump）正是为此存在。

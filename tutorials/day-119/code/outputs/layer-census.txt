@@ -1,0 +1,13 @@
+第 17 周各层机器计数（census.py 口径对齐 D114~D117）
+统计环境：3.9.6｜Darwin arm64
+
+gemm.mlir（源·循环层）
+  /Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-119/code/gemm.mlir: total 21 op（胶水 0 条，llvm.* 0，非 llvm 残账 20）
+gemm-0-optimized.mlir（MLIR 优化后）
+  /Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-119/code/../../day-117/code/outputs/gemm-0-optimized.mlir: total 18 op（胶水 0 条，llvm.* 0，非 llvm 残账 17）
+gemm-1-scf-to-cf.mlir（cf 层）
+  /Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-119/code/../../day-117/code/outputs/gemm-1-scf-to-cf.mlir: total 29 op（胶水 0 条，llvm.* 0，非 llvm 残账 28）
+gemm-2-llvm-dialect.mlir（LLVM 方言）
+  /Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-119/code/../../day-117/code/outputs/gemm-2-llvm-dialect.mlir: total 94 op（胶水 0 条，llvm.* 94，非 llvm 残账 0）
+gemm-3.ll（LLVM IR）
+  total 62 个 SSA 赋值行；phi 4；insertvalue 21

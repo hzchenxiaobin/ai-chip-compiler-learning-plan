@@ -1,0 +1,20 @@
+第 119 天：第 17 周复盘——真机报告 2026-11-14 20:23
+环境：Python 3.9.6｜Darwin arm64
+
+[1] map_layers.py：七层信息对账表
+layer-census.txt: 5 层实测
+lowering-map.txt: 7 层对账表
+information-test.txt: 样例 10/12
+self-check: 8/8
+
+[2] 跨版本对账：本机 LLVM 23 重跑 D117 管道（gemm.mlir → LLVM 方言）
+  本机 LLVM 23：total 97 op（胶水 0 条，llvm.* 97，非 llvm 残账 0）｜胶水 0 条
+  D117 冻结（LLVM 18）：total 94 op（胶水 0 条，llvm.* 94，非 llvm 残账 0）｜胶水 0 条
+  [PASS] 胶水均为 0——reconcile 语义跨 5 个大版本一致
+
+汇总：  合计：8/8
+
+[附] 跨版本 op 分布差异（LLVM 23 vs 18，census 逐行 diff）：
+  llvm.extractvalue x14 → x17（+3：LLVM 23 重建描述符多 3 次字段提取）
+  llvm.mlir.undef x3 → llvm.mlir.poison x3（LLVM 15+ 起 undef 全面让位 poison）
+  其余 op 逐行相同——结构语义跨 5 个大版本一致（判据：胶水均 0、非 llvm 残账均 0）
