@@ -1,0 +1,1 @@
+minic 0.1.0 (day-120: CLI skeleton)

@@ -1,0 +1,44 @@
+第 120 天：minic CLI 骨架——合同测试报告 2026-11-14 21:06
+环境：Python 3.9.6｜Darwin arm64
+
+[TP1] --help：选项清单与示例齐全
+  [PASS] --help 含 usage: minic
+  [PASS] --help 含 -O
+  [PASS] --help 含 --tile
+  [PASS] --help 含 --emit
+  [PASS] --help 含 --dump-ir
+  [PASS] --help 含 --verify
+  [PASS] --help 含 --llvm-bin
+  [PASS] --help 含 示例
+  [PASS] --version 输出版本号
+
+[TP2] 退出码合同（与 clang/gcc 同族）
+  [PASS] 合法输入 → 退出码 0
+  [PASS] E101 输入不存在 → 退出码 2
+  [PASS] E104 tile 格式错 → 退出码 2
+
+[TP3] 诊断体系：E101~E107 逐条触发
+  [PASS] E101 触发（文件不存在）
+  [PASS] E101 带修复建议
+  [PASS] E102 触发（扩展名不支持）
+  [PASS] E104 触发（非数字）
+  [PASS] E104 触发（四维）
+  [PASS] E105/argparse 拦截非法 -O
+  [PASS] E107 触发（golden 不存在）
+
+[TP4] manifest.json：机器可读的编译记录
+  [PASS] manifest.json 生成
+  [PASS] manifest 字段齐全（version/input/tile/stages/exit_code）
+
+[TP5] 优化开关与警告路径
+  [PASS] W102 触发（-O0 下 --tile 仍传了值）
+  [PASS] -O0 正常退出 0（S1/S3 记录为跳过）
+  [PASS] manifest 记录跳过原因
+
+[TP6] CLI 参数说明固化（help.txt 即合同快照）
+  help.txt 含 10 个选项行（快照入档）
+  [PASS] 选项数量 ≥10（CLI 合同完整）
+
+汇总
+  PASS: 25  FAIL: 0
+  环境：Darwin arm64｜2026-11-14

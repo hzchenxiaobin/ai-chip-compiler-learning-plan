@@ -1,0 +1,4 @@
+usage: minic [-h] [-o DIR] [-O N] [--tile M,N,K] [--emit {exec,obj,ir,dump}]
+             [--dump-ir] [--verify FILE] [--llvm-bin DIR] [-q] [--version]
+             input
+minic: error: argument -O: invalid choice: 9 (choose from 0, 1, 2, 3)

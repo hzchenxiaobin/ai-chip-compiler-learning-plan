@@ -1,0 +1,2 @@
+E107 [minic] --verify 的 golden 文件不存在：no-gold.txt
+       修复建议：verify 需要一份 numpy 参考输出（.npy 或 12 行 C[i]=v 文本）

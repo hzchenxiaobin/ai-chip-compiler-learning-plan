@@ -1,0 +1,50 @@
+{
+  "version": "minic 0.1.0 (day-120: CLI skeleton)",
+  "input": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-120/code/gemm.mlir",
+  "output_dir": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-120/code/outputs/case-ok",
+  "opt_level": 2,
+  "tile": [
+    32,
+    32,
+    32
+  ],
+  "emit": "exec",
+  "dump_ir": false,
+  "verify": "",
+  "stages": [
+    {
+      "id": "S0",
+      "note": "读入 gemm.mlir：38 行、约 30 条 op"
+    },
+    {
+      "id": "S3",
+      "note": "tile=(32,32,32)——D122 接入边界钳制"
+    },
+    {
+      "id": "S1",
+      "note": "图优化：骨架（shape 推导＋图简化＋融合（D121 接入））"
+    },
+    {
+      "id": "S2",
+      "note": "循环生成：骨架（mini.matmul→scf.for 三重循环（D122 接入））"
+    },
+    {
+      "id": "S3",
+      "note": "Tiling：骨架（tile 参数→边界常量＋min 钳制（D122 接入））"
+    },
+    {
+      "id": "S4",
+      "note": "LLVM Lowering：骨架（七 pass 管道（D122 接入））"
+    },
+    {
+      "id": "S5",
+      "note": "代码生成：骨架（mlir-translate→.ll→llc/clang（D122 接入））"
+    },
+    {
+      "id": "S6",
+      "note": "验证：骨架（golden 逐点 bitwise（D124 接入））"
+    }
+  ],
+  "diags": [],
+  "exit_code": 0
+}

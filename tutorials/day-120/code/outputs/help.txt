@@ -1,0 +1,28 @@
+usage: minic [-h] [-o DIR] [-O N] [--tile M,N,K] [--emit {exec,obj,ir,dump}]
+             [--dump-ir] [--verify FILE] [--llvm-bin DIR] [-q] [--version]
+             input
+
+minic——mini 图编译器的统一入口（第 18 周逐日长成）
+
+positional arguments:
+  input                 输入 MLIR 文本文件（图/循环 IR，.mlir）
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o DIR, --output-dir DIR
+                        输出目录（默认 out/；会按需创建）
+  -O N                  优化级别：0 关闭 / 1 图优化 / 2 +Tiling+CG（默认）/ 3 激进
+  --tile M,N,K          tile 三维（默认 32,32,32；逗号分隔的三个正整数）
+  --emit {exec,obj,ir,dump}
+                        产物形态：exec 可执行 / obj 目标文件 / ir LLVM IR / dump 全部
+  --dump-ir             每阶段 IR 落盘到 DIR/stage-N-name.mlir（D123 展开）
+  --verify FILE         golden 参考输出（12 行 C[i]=v 文本）；提供则编译后自动验证
+  --llvm-bin DIR        LLVM 工具目录（默认 PATH；如 /opt/homebrew/opt/llvm/bin）
+  -q, --quiet           只输出诊断与错误
+  --version             show program's version number and exit
+
+示例：
+  minic gemm.mlir -o out/                    # 全流程到可执行
+  minic gemm.mlir -O2 --tile 32,32,32        # 指定 tile
+  minic gemm.mlir --emit ir --dump-ir        # 只到 LLVM IR＋逐阶段 dump
+  minic gemm.mlir --verify golden.txt        # 编译后与参考对照
