@@ -1,0 +1,4 @@
+  [PASS] 四份 Pass 文档
+  [PASS] 五要素齐全
+  [PASS] 前后 IR 示例
+  [PASS] 出处可追溯
