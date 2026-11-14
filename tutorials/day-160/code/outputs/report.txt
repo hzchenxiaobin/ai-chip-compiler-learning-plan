@@ -1,0 +1,15 @@
+== 干净复现走查（新人按文档跑的模拟）==
+
+  [✓] 架构文档: tutorials/day-155/code/outputs/architecture.txt
+  [✓] Pass 文档×4: tutorials/day-156/code/outputs/pass-fusion.md
+  [✓] Lowering 文档: tutorials/day-157/code/outputs/lowering-doc.md
+  [✓] 测试文档: tutorials/day-158/code/outputs/test-doc.md
+  [✓] 性能汇总: tutorials/day-159/code/outputs/perf-summary.json
+  [✓] 核心链产物: tutorials/day-126/code/outputs/rebuild-log.txt
+  [✓] 基线 json: tutorials/day-148/code/outputs/baseline.json
+  [✓] 冻结验收: tutorials/day-139/code/outputs/issue-list.txt
+
+文档与产物走查：8/8
+  S6 端到端产物：✓ 在位（12/12 的证据链）
+
+判定：PASS——文档可用性验证通过（新人可按图索骥）
