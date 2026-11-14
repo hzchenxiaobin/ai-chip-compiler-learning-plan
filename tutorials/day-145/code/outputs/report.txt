@@ -1,0 +1,16 @@
+== I1＋I4 全管道：tile 参数端到端 ==
+  tile=(2, 2, 3): PASS（全管道＋数值正确）
+  tile=(4, 6, 3): PASS（全管道＋数值正确）
+  tile=(1, 1, 1): PASS（全管道＋数值正确）
+
+== I2 分发器：(shape,tile) key 注册 ==
+  注册 3 个 (shape,tile) 特化——分发 key 从 shape 扩到 (shape,tile)
+  keys: [(1, 1, 1), (2, 2, 3), (4, 6, 3)]
+  三个 tile 特化全部数值正确 ✓——分发可用
+
+== I3 fuzz 扩容：shape×tile 组合 ==
+  30 组随机数据×轮换 tile：30/30 全对
+  [PASS] I1 tile 端到端
+  [PASS] I2 分发 key 扩展
+  [PASS] I3 fuzz 扩容
+  [PASS] I4 全管道数值正确
