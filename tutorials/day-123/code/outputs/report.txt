@@ -1,0 +1,46 @@
+第 123 天：IR Dump 与可观测性——真机报告 2026-11-14 21:32
+环境：Python 3.9.6｜Darwin arm64
+
+[TP1] dump 粒度四级：off=0 / stages=2 / passes=11 / full=11+记录
+  off:    files=0  dumps=0  rewrites=0
+  stages: files=2  dumps=2  rewrites=0
+  passes: files=11  dumps=11  rewrites=8
+  full:   files=11  dumps=11  rewrites=8
+  [PASS] off 级零文件（CI 常规跑）
+  [PASS] stages 级 2 个文件（stage-5.ll/.s）
+  [PASS] passes 级 11 个文件（D122 全量）
+
+[TP2] 改写记录：每条 pass 一句话（op 增删）
+  canonicalize+csi: 16→3 op（arith.constant -9, scf.for -4, func.return -1）
+  convert-scf-to-cf: 3→3 op（结构无变化）
+  finalize-memref-to-llvm: 3→21 op（llvm.struct +9, llvm.insertvalue +7, llvm.ptr +6, llvm.mlir.constant +5）
+  convert-func-to-llvm: 21→48 op（llvm.struct +26, llvm.ptr +20, llvm.extractvalue +19, llvm.load +3）
+  convert-cf-to-llvm: 48→48 op（结构无变化）
+  convert-arith-to-llvm: 48→48 op（结构无变化）
+  convert-index-to-llvm: 48→48 op（结构无变化）
+  reconcile-unrealized-casts: 48→47 op（llvm.struct -1）
+  [PASS] canonicalize 的改写被记录（16→3，常量折叠）
+  [PASS] memref 转换的膨胀被记录（3→21，描述符展开）
+  [PASS] 无操作 pass 也如实记录（'结构无变化'）
+
+[TP3] 时间线：11 个计时点进 manifest
+  计时点 11 个，管道总耗时 ≈ 390 ms
+  [S2] S2 循环生成: 4.6 ms
+  [S4] pass canonicalize+csi: 45.7 ms
+  [S4] pass convert-scf-to-cf: 39.7 ms
+  [S4] pass finalize-memref-to-llvm: 37.9 ms
+  ...（全部 11 点见 outputs/timeline.txt）
+  [PASS] 时间线落盘 timeline.txt（11 个计时点）
+
+[TP4] 观测点与调试场景的对应（每条记录回答一个真实问题）
+  [PASS] 「常量都折叠了吗」→ canonicalize 记录 arith.constant -9
+  [PASS] 「描述符何时进场」→ finalize-memref 记录 llvm.struct +9
+  [PASS] 「哪条 pass 最贵」→ 时间线可查（教学量级 ~40-55ms/条）
+
+[TP5] minic 集成：--dump-ir=off/stages/passes/full
+  [PASS] 四级枚举可编程消费
+  [PASS] 粒度×代价矩阵入档 level-matrix.json
+
+汇总
+  PASS: 12  FAIL: 0
+  环境：Darwin arm64｜2026-11-14

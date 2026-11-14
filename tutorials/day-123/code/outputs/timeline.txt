@@ -1,0 +1,79 @@
+[
+ {
+  "stage": "S2",
+  "kind": "timing",
+  "note": "S2 循环生成: 4.6 ms",
+  "what": "S2 循环生成",
+  "ms": 4.6
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass canonicalize+csi: 45.7 ms",
+  "what": "pass canonicalize+csi",
+  "ms": 45.7
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass convert-scf-to-cf: 39.7 ms",
+  "what": "pass convert-scf-to-cf",
+  "ms": 39.7
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass finalize-memref-to-llvm: 37.9 ms",
+  "what": "pass finalize-memref-to-llvm",
+  "ms": 37.9
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass convert-func-to-llvm: 43.7 ms",
+  "what": "pass convert-func-to-llvm",
+  "ms": 43.7
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass convert-cf-to-llvm: 39.9 ms",
+  "what": "pass convert-cf-to-llvm",
+  "ms": 39.9
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass convert-arith-to-llvm: 39.7 ms",
+  "what": "pass convert-arith-to-llvm",
+  "ms": 39.7
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass convert-index-to-llvm: 38.4 ms",
+  "what": "pass convert-index-to-llvm",
+  "ms": 38.4
+ },
+ {
+  "stage": "S4",
+  "kind": "timing",
+  "note": "pass reconcile-unrealized-casts: 37.7 ms",
+  "what": "pass reconcile-unrealized-casts",
+  "ms": 37.7
+ },
+ {
+  "stage": "S5",
+  "kind": "timing",
+  "note": "mlir-translate: 39.7 ms",
+  "what": "mlir-translate",
+  "ms": 39.7
+ },
+ {
+  "stage": "S5",
+  "kind": "timing",
+  "note": "llc: 22.5 ms",
+  "what": "llc",
+  "ms": 22.5
+ }
+]

@@ -1,0 +1,22 @@
+{
+  "off": {
+    "files": 0,
+    "dumps": 0,
+    "rewrites": 0
+  },
+  "stages": {
+    "files": 2,
+    "dumps": 2,
+    "rewrites": 0
+  },
+  "passes": {
+    "files": 11,
+    "dumps": 11,
+    "rewrites": 8
+  },
+  "full": {
+    "files": 11,
+    "dumps": 11,
+    "rewrites": 8
+  }
+}
