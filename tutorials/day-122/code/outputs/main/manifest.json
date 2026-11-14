@@ -1,0 +1,93 @@
+{
+  "version": "minic 0.2.0 (day-121: S1 graph passes)",
+  "input": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-122/code/main.graph",
+  "output_dir": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-122/code/outputs/main",
+  "opt_level": 2,
+  "tile": [
+    2,
+    3,
+    6
+  ],
+  "emit": "exec",
+  "dump_ir": true,
+  "s1_switches": {
+    "qdq_clean": true,
+    "layout_simp": true,
+    "reshape_merge": true,
+    "fuse": true,
+    "fixpoint_max": 8
+  },
+  "verify": "",
+  "stages": [
+    {
+      "id": "S0",
+      "note": "读入 main.graph：15 行、约 14 条 op"
+    },
+    {
+      "id": "S1",
+      "note": "图优化：11 → 5 节点（[闸0] 合法性检查通过（11 个节点）；[闸1] R04 @ %3：DQ(Q(const)) 折叠成常量（值逐位不变）；[闸2] 转置常量折叠 @ %4：transpose(const) → 常量（运行时少一次数据移动）；[闸3] Reshape 合并 @ %6：reshape(reshape(x)) → 一次到 [4, 6]；[闸4] 融合 @ %7+%9+%10 → %10（单使用者 ✓ bias const ✓ → fused_matmul_bias_relu）；[S1] 清理不动点 2 轮收敛，终图 5 个节点）"
+    },
+    {
+      "id": "S2",
+      "note": "循环生成：fused/matmul → scf.for 三重循环（M/N/K 推断自图）"
+    },
+    {
+      "id": "S3",
+      "note": "Tiling：tile 参数进循环步长（(2, 3, 6)，min 钳制接边界）"
+    },
+    {
+      "id": "S2",
+      "note": "循环 IR 落盘 stage-2-loop.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass canonicalize+csi ✓ → stage-4-03-canonicalize+csi.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass convert-scf-to-cf ✓ → stage-4-04-convert-scf-to-cf.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass finalize-memref-to-llvm ✓ → stage-4-05-finalize-memref-to-llvm.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass convert-func-to-llvm ✓ → stage-4-06-convert-func-to-llvm.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass convert-cf-to-llvm ✓ → stage-4-07-convert-cf-to-llvm.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass convert-arith-to-llvm ✓ → stage-4-08-convert-arith-to-llvm.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass convert-index-to-llvm ✓ → stage-4-09-convert-index-to-llvm.mlir"
+    },
+    {
+      "id": "S4",
+      "note": "pass reconcile-unrealized-casts ✓ → stage-4-10-reconcile-unrealized-casts.mlir"
+    },
+    {
+      "id": "S5",
+      "note": "mlir-translate → stage-5.ll"
+    },
+    {
+      "id": "S5",
+      "note": "llc → stage-5.s（可编译证明）"
+    },
+    {
+      "id": "S4",
+      "note": "胶水清点：0 条 unrealized_conversion_cast（0 = reconcile 干净）"
+    },
+    {
+      "id": "S6",
+      "note": "验证：骨架（golden 逐点 bitwise（D124 接入））——D124 接入"
+    }
+  ],
+  "diags": [],
+  "exit_code": 0
+}

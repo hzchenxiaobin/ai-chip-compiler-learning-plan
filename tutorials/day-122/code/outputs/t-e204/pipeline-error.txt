@@ -1,0 +1,7 @@
+失败的 pass：canonicalize+csi（--canonicalize --cse）
+
+stderr 全文：
+outputs/t-e204/stage-2-loop.mlir:5:10: error: custom op 'vector.reduce' is unknown
+    %r = vector.reduce %v : vector<4xf32> into f32
+         ^
+

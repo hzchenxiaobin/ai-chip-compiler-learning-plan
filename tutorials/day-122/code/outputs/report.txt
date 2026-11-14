@@ -1,0 +1,48 @@
+第 122 天：minic S2~S5 循环＋LLVM Lowering——真机报告 2026-11-14 21:25
+环境：Python 3.9.6｜Darwin arm64｜mlir-opt 23.1.5
+
+[TP1] 主线：main.graph 一条命令到汇编
+  [PASS] minic main.graph 退出码 0（S1~S5 全真实）
+  [PASS] S2 产物 stage-2-loop.mlir 落盘
+  [PASS] S2 是 scf.for 三重循环
+  [PASS] 签名带 llvm.emit_c_interface（D117 ABI）
+  [PASS] S5 产物 stage-5.ll（LLVM IR）
+  [PASS] S5 产物 stage-5.s（汇编·可编译证明）
+  [PASS] 包装函数 _mlir_ciface 在 .ll 里（D118 合同延续）
+  [PASS] 胶水 0 条（reconcile 干净——D117 结论在 minic 复现）
+
+[TP2] IR Dump 阶段序列（stage-2 + stage-4-03..10 + stage-5）
+  stage 文件数：11
+  [PASS] 阶段序列完整（≥10 个文件，文件名含阶段序号）
+
+[TP3] tile 参数进循环步长
+  [PASS] 外层循环步长来自 tile（%cTM）
+  [PASS] --tile 2,2,2 生效（常量 2 进 IR）
+
+[TP4] 失败路径 A：E202 不支持的算子，现场保留
+  [PASS] E202 → 退出码 1（编译失败）
+  [PASS] manifest 记录失败（exit_code=1 + E202 诊断在 stages）
+
+[TP5] 失败路径 B：E204 pass 失败，stderr 全文保留
+  [PASS] E204 触发：vector 残账被 pass 拒收（D114 暂不支持清单）
+  [PASS] stderr 全文落盘 pipeline-error.txt
+  [PASS] 报错指认具体 op（vector.reduce is unknown）
+
+[TP6] 失败现场：失败前的 stage 文件保留（调试不从头再来）
+  [PASS] E204 现场保留 stage-2-loop.mlir
+  [PASS] 二次运行失败时旧产物已清（现场只属于本次）
+
+[TP7] 合同回归：D120/D121 的合同不退化
+  [PASS] --help 含 usage: minic
+  [PASS] --help 含 --tile
+  [PASS] --help 含 --emit
+  [PASS] --help 含 --no-fuse
+  [PASS] E101 退出码 2（用法错误三态不乱）
+  [PASS] manifest 合同字段齐全
+
+[TP8] 跨天对账：minic S4 产物 vs D117 冻结产物（同构性）
+  [PASS] D117 的 gemm.mlir 经 minic S4 管道：七 pass 全过 + 胶水 0
+
+汇总
+  PASS: 25  FAIL: 0
+  环境：Darwin arm64｜2026-11-14

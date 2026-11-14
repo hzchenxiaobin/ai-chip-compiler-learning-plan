@@ -1,0 +1,41 @@
+{
+  "version": "minic 0.2.0 (day-121: S1 graph passes)",
+  "input": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-122/code/outputs/conv.graph",
+  "output_dir": "/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-122/code/outputs/t-e202",
+  "opt_level": 2,
+  "tile": [
+    32,
+    32,
+    32
+  ],
+  "emit": "exec",
+  "dump_ir": false,
+  "s1_switches": {
+    "qdq_clean": true,
+    "layout_simp": true,
+    "reshape_merge": true,
+    "fuse": true,
+    "fixpoint_max": 8
+  },
+  "verify": "",
+  "stages": [
+    {
+      "id": "S0",
+      "note": "读入 /Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-122/code/outputs/conv.graph：5 行、约 5 条 op"
+    },
+    {
+      "id": "S1",
+      "note": "图优化：2 → 2 节点（[闸0] 合法性检查通过（2 个节点）；[S1] 清理不动点 1 轮收敛，终图 2 个节点）"
+    },
+    {
+      "id": "S6",
+      "note": "验证：骨架（golden 逐点 bitwise（D124 接入））——D124 接入"
+    },
+    {
+      "id": "PIPE",
+      "note": "E202 S2 循环生成失败：不支持的算子 conv2d（节点 %2）——支持集 ['add', 'arg', 'const', 'fused_matmul_bias_relu', 'matmul', 'relu', 'reshape']"
+    }
+  ],
+  "diags": [],
+  "exit_code": 1
+}
