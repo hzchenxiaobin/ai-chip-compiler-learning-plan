@@ -1,0 +1,79 @@
+[
+  {
+    "item": "Shape 确定（M/N/K）",
+    "owner": "COMPILE",
+    "evidence": "S2 从图推断：const.shape/arg.tensor/reshape.new_shape 三来源（loop_lower._infer_shape）",
+    "real": "TVM: 编译期全静态；PyTorch: 运行期动态 shape（每次推理现推）",
+    "note": "minic 是『纯静态派』——图 IR 里 shape 是属性不是输入"
+  },
+  {
+    "item": "Stride/布局确定",
+    "owner": "COMPILE",
+    "evidence": "S2 签名 strided<[K,1]> 写死行主序（gen_loop_ir_full）",
+    "real": "TVM: layout 自由变换；cuDNN: 运行期选 NHWC/NCHW",
+    "note": "D57~D68 的布局课在 minic 里退化为固定行主序——教学取舍"
+  },
+  {
+    "item": "Tile 参数选择",
+    "owner": "COMPILE",
+    "evidence": "CLI --tile 传入，manifest.tile 记录（但 D125 证明教学版不消费）",
+    "real": "TVM/Ansor: 搜索空间+代价模型；AutoTVM: 运行期 autotune",
+    "note": "D106~D111 的调优管道是它的真身"
+  },
+  {
+    "item": "Kernel 选择（哪个实现）",
+    "owner": "COMPILE",
+    "evidence": "S1 融合决策 + S2 单一展开路径（无备选）",
+    "real": "cuDNN: 运行期 heuristic 按 shape 选 kernel；Triton: JIT 缓存",
+    "note": "minic 无备选——D129/D130 的特化/回退将引入『两个实现』"
+  },
+  {
+    "item": "内存分配（输出缓冲区）",
+    "owner": "RUNTIME",
+    "evidence": "kernel 内 memref.alloc → malloc(48)，每次调用都分配（stage-5.ll: %20 = call @malloc）",
+    "real": "TVM: 运行时 TVMArray 从 allocators 拿；CUDA: cudaMalloc 或池",
+    "note": "D118 挂账的 malloc 债务——D131 结清（分配器/池）"
+  },
+  {
+    "item": "内存释放",
+    "owner": "NONE",
+    "evidence": "kernel 不 free——泄漏（教学规模无所谓，D118 诚实声明）",
+    "real": "真实 Runtime 必须管生命周期（引用计数/arena/池）",
+    "note": "『没人负责』也是一种划分——真实系统不能这么选"
+  },
+  {
+    "item": "输入数据搬运",
+    "owner": "CALLER",
+    "evidence": "driver 的 desc_t 构造把 A/B 地址传给 kernel（verify_driver.c）",
+    "real": "GPU: cudaMemcpyAsync/H2D；CPU: 零拷贝（指针直传）",
+    "note": "CPU 教学版天然零拷贝——GPU 版的搬运是 Runtime 大头"
+  },
+  {
+    "item": "同步（何时算完）",
+    "owner": "IMPLICIT",
+    "evidence": "C 函数调用返回＝完成（同步语义，D118 AOT 路线）",
+    "real": "CUDA: stream+event；异步 Launch 后 host 侧 sync",
+    "note": "D132 的主题——CPU 的隐式同步在 GPU 上显式化"
+  },
+  {
+    "item": "验证（结果对不对）",
+    "owner": "TEST",
+    "evidence": "S6 golden bitwise（verify_e2e，12/12）",
+    "real": "真实系统：UT 层面做，运行期不做逐次验证（太慢）",
+    "note": "验证是『开发期职责』不是运行期——但 CI 里它守着每次提交"
+  },
+  {
+    "item": "Kernel 缓存（编译结果复用）",
+    "owner": "NONE",
+    "evidence": "每次 minic 调用都全管道重跑（无缓存）",
+    "real": "Triton: @lru_cache 按 (shape,dtype) 缓存；TVM: 本地磁盘缓存",
+    "note": "D129 特化将引入『按 shape 缓存』的雏形"
+  },
+  {
+    "item": "错误诊断与恢复",
+    "owner": "COMPILE",
+    "evidence": "E1xx/E2xx 诊断体系（minic.py DIAG_CODES）",
+    "real": "运行期错误（OOM/超时）由 Runtime 兜底重试或降级",
+    "note": "编译期诊断已完备；运行期恢复（D130 回退）下周见"
+  }
+]

@@ -1,0 +1,22 @@
+第 127 天：Compiler/Runtime 职责——真机报告 2026-11-14 21:59
+环境：Python 3.9.6｜Darwin arm64
+
+[TP1] 职责划分表：11 个决策点
+  [PASS] 职责表生成＋自检 5/5
+  [PASS] 表含 COMPILE 归属
+  [PASS] malloc 债务条目在表
+
+[TP2] 运行期行为实测：malloc 的证据（分配真在运行期发生）
+  [PASS] stage-5.ll 含 1 处 malloc（分配发生在 kernel 运行时）
+  [PASS] 零处 free——「释放=NONE」的铁证
+
+[TP3] 编译期证据：shape 固化在签名里（S2 的 MLIR 签名）
+  [PASS] stride 编译期固化（S2 签名 strided<[6,1]>）
+  [PASS] 输出 shape 编译期固化（memref<4x3>）
+  [PASS] shape 内联成 .ll 的循环边界常量（icmp slt）
+
+[TP4] 决策点与下周排期的对应
+  [PASS] 下周排期对应完整
+
+汇总
+  PASS: 9  FAIL: 0

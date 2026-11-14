@@ -1,0 +1,6 @@
+  [PASS] 11 个决策点
+  [PASS] 归属枚举合法
+  [PASS] COMPILE ≥ 4（静态派）
+  [PASS] NONE 恰 2（释放+缓存）
+  [PASS] JSON 与表一致
+  合计：5/5
