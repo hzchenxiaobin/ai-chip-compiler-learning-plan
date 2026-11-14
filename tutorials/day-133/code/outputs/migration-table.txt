@@ -1,0 +1,24 @@
+第 19 周：职责迁移表（D127 审计 → 今天）
+
+决策点              周一(D127)    周五(今天)      翻转日    证据
+─────────────────────────────────────────────────────────────────
+Shape 确定          COMPILE       RUNTIME        D128     memref<?x?x>＋dim 读回
+                                                              一份 .ll 三 shape
+Stride/布局         COMPILE       COMPILE        —        未动（教学取舍）
+Tile 参数           COMPILE       COMPILE        —        未动（D125 空变量）
+Kernel 选择         COMPILE       SPLIT          D129     两层分发＋fmul 2→18
+内存分配            RUNTIME       RUNTIME        —        语义不变＋池化（D131）
+内存释放            NONE          RUNTIME        D131     BufferPool.destroy
+输入搬运            CALLER        CALLER         —        未动
+同步                IMPLICIT      显式化路径      D132     Stream/Event 仿真
+验证                TEST          TEST           —        未动
+Kernel 缓存        NONE          雏形           D129     幂等 register
+错误诊断与恢复      COMPILE       COMPILE+RUNTIME D130    E301/E302/E303
+─────────────────────────────────────────────────────────────────
+翻转统计：5 格实质翻转＋1 格补全（释放）＋1 格路径清晰（同步）
+         3 格保持（教学取舍的诚实记录）
+
+「为什么动态 Shape 不只是把常量改成变量」——第 19 周的标准回答：
+  不是一格翻转——是一串涟漪（D128 六件事：签名/读回/分配/边界/验证/性能语义），
+  且每格翻转要配平三件事（D129 特化拿性能＋D130 回退兜正确＋D131 池管内存）——
+  动态化的完整成本是「整个 Runtime 层」，不是改个类型标注。

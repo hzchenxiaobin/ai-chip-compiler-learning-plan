@@ -1,0 +1,16 @@
+第 19 周：职责迁移表（D127 审计 → 今天）
+
+决策点              周一(D127)    周五(今天)      翻转日    证据
+─────────────────────────────────────────────────────────────────
+Shape 确定          COMPILE       RUNTIME        D128     memref<?x?x>＋dim 读回
+                                                              一份 .ll 三 shape
+Stride/布局         COMPILE       COMPILE        —        未动（教学取舍）
+Tile 参数           COMPILE       COMPILE        —        未动（D125 空变量）
+Kernel 选择         COMPILE       SPLIT          D129     两层分发＋fmul 2→18
+内存分配            RUNTIME       RUNTIME        —        语义不变＋池化（D131）
+内存释放            NONE         
+...
+week-ledger.txt 已生成
+  [PASS] 迁移表含翻转行
+  [PASS] 账本 10 问
+  [PASS] 标准回答在账本
