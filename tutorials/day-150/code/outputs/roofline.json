@@ -1,0 +1,15 @@
+{
+  "flop_m": 8.2,
+  "ai_worst": 0.25,
+  "ai_cached": 0.25,
+  "knee": 1.0,
+  "measured_gflops": 0.392,
+  "dist_to_compute": 128,
+  "dist_to_mem_worst": 32,
+  "verdict": "执行效率瓶颈（循环开销/复用/ILP）——非纯计算或纯访存",
+  "hypotheses": [
+    "H1 循环控制开销（展开可救）",
+    "H2 数据复用不足（tile 可救）",
+    "H3 依赖链限制 ILP（重排可救·不做）"
+  ]
+}
