@@ -1,0 +1,30 @@
+第 128 天：运行期参数与 Shape——真机报告 2026-11-14 22:06
+环境：Python 3.9.6｜Darwin arm64｜Homebrew clang version 23.1.5
+
+[TP1] E1 静态基线：shape 固化的形态
+== E1 静态基线（D124 原版语义）==
+  ok=True｜.ll 95 行、ssa 65、extractvalue 17、icmp 3
+== E2 动态签名（shape 进描述符）==
+  ok=True｜.ll 104 行、ssa 74、extractvalue 23、icmp 3
+  —— 动态版代价：多 23 次描述符读回（静态版 0）
+  [PASS] 静态管道全通（.ll 95 行）
+
+[TP2] E2 动态签名：shape 进描述符的代价
+  [PASS] 动态管道全通（.ll 104 行）
+  [PASS] icmp 操作数从常量翻成 SSA（运行期读）
+
+[TP3] E3 多 shape 执行：一份 .ll 吃三种 shape
+shape 4x6@6x3: PASS（C[0][1]=24.5 vs golden 24.5）
+shape 3x4@4x2: PASS（C[0][1]=6.0 vs golden 6.0）
+shape 8x8@8x8 : PASS（对角×2 缩放，C[3][5]=58.0 vs golden 58.0）
+三组 shape 全过：一份 .ll 吃三种 shape——「运行期参数」的实现证明
+  [PASS] 4x6@6x3 / 3x4@4x2 / 8x8@8x8 三组全对
+
+[TP4] 动态代价量化：指令数对照
+  .ll 行数：静态 95 → 动态 104（+9%）
+  extractvalue：17 → 23（+6——3 个 dim 各读 2 处）
+  核心循环指令（phi/fmul）：不变——动态化只加头部开销
+  [PASS] 代价量化入档（+9 行、+6 extractvalue、循环体不变）
+
+汇总
+  PASS: 5  FAIL: 0
