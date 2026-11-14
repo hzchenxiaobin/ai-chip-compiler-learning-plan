@@ -1,0 +1,43 @@
+minic 项目架构（职责与数据流版）
+
+━━ 数据流（一条主链）━━
+
+  mini 图 IR（.graph 文本）
+      ↓ S1 图优化（五道闸：合法性→QDQ 清理→布局简化→reshape 合并→融合）
+  优化后图（5 节点：arg+reshape+const×2+fused_matmul_bias_relu）
+      ↓ S2 循环生成（shape 三来源推断＋tile 参数化块循环）
+  循环 IR（scf.for 嵌套＋memref＋arith——D117 形态）
+      ↓ S4 LLVM Lowering（七 pass：canonicalize→scf→cf→memref→func→cf→arith→index→reconcile）
+  LLVM Dialect（纯 llvm.*——胶水 0）
+      ↓ S5 代码生成（mlir-translate→.ll→llc/clang）
+  机器码（.s→.o→lib.so——_mlir_ciface 四指针包装）
+      ↓ S6 验证（AOT 执行＋k 序 golden bitwise）
+  12/12 全对 ✓
+
+━━ 模块职责表 ━━
+
+| 模块 | 职责 | 关键决策 | 出处 |
+|---|---|---|---|
+| graph_passes.py | S1 五道闸 | 破坏性从弱到强的顺序合同＋不动点 | D121 |
+| e2e.py::gen_loop_ir_full | S2 朴素循环 | bias 融 k=0＋k 序累加 | D124 |
+| constraints.py::gen_block_v2 | S2 块循环 | tile 参数化＋validate_tile 校验 | D143~46 |
+| loop_lower.py::run_s45 | S4/S5 管道 | 每条 pass 单独跑（失败指认到条） | D122 |
+| observability.py | 可观测层 | 四级 dump＋改写记录＋时间线 | D123 |
+| minic.py | CLI 入口 | 四份合同（help/退出码/诊断/manifest） | D120 |
+| specialize.py | 特化分发 | (shape,tile) key＋两层分发 | D129 |
+| fallback.py | 回退链 | E301/302/303 四级降级 | D130 |
+| allocator.py | 缓冲池 | 档位分桶＋99% 复用 | D131 |
+| async_model.py | 异步仿真 | Stream/Event（CPU→GPU 映射） | D132 |
+
+━━ 运行时层（S6 之后）━━
+
+  调用方（driver/ctypes）→ BufferPool.acquire → Dispatcher.run
+    → 命中特化？→ 是：特化 kernel（O2 展开）
+    → 否/异常：动态 kernel 兜底（E302 回退）
+  → RuntimeWithFallback 四级降级链 → 结果
+
+━━ 关键接口（合同）━━
+
+  · C 合同：_mlir_ciface(out, a, b, bias)——56B 描述符×N
+  · manifest 合同：version/input/tile/stages/exit_code
+  · 诊断合同：E1xx 用法/E2xx 编译/E3xx 运行时/W1xx 警告
