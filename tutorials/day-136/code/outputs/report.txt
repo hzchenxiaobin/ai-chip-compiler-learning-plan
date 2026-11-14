@@ -1,0 +1,26 @@
+== B1 全开基线（不注入——确认干净）==
+  八条全开：前 8 条跑完，语义好
+
+== B2 注入错误（第 4 条 pass 后 addf→subf）==
+  八条全开＋注入：前 8 条跑完，语义坏——错误存在（fsub 冒充 fadd）
+
+== B3 二分定位（前缀递增法）==
+  前 0 条（末条 (原始)）：语义 ✓好
+  前 1 条（末条 canonicalize+csi）：语义 ✓好
+  前 2 条（末条 convert-scf-to-cf）：语义 ✓好
+  前 3 条（末条 finalize-memref-to-llvm）：语义 ✓好
+  前 4 条（末条 convert-func-to-llvm）：语义 ✗坏
+  前 5 条（末条 convert-cf-to-llvm）：语义 ✗坏
+  前 6 条（末条 convert-arith-to-llvm）：语义 ✗坏
+  前 7 条（末条 convert-index-to-llvm）：语义 ✗坏
+  前 8 条（末条 reconcile-unrealized-casts）：语义 ✗坏
+
+  定位结果：错误首次出现在前 4 条之后——嫌疑 pass：convert-func-to-llvm
+  （注入点确实是第 4 条（convert-func-to-llvm）——定位正确！）
+
+== B4 定位效率对比 ==
+  暴力法（逐条重跑全管道）：O(n²)＝8×8=64 次 pass 执行
+  前缀法（本次）：36 次 pass 执行
+  真二分（好/坏判定二分）：~8*log2(8)≈24 次——教学规模差距小，pass 数百条时二分是唯一选择
+
+结论：注入的错误被精确定位到「convert-func-to-llvm」——PASS
