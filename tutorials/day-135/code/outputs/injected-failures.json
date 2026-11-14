@@ -1,0 +1,145 @@
+{
+  "seed": 20261116,
+  "failures": [
+    {
+      "trial": 0,
+      "M": 6,
+      "K": 4,
+      "N": 16,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 1,
+      "M": 8,
+      "K": 14,
+      "N": 5,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 2,
+      "M": 11,
+      "K": 7,
+      "N": 12,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 3,
+      "M": 7,
+      "K": 3,
+      "N": 3,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 4,
+      "M": 8,
+      "K": 14,
+      "N": 6,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 5,
+      "M": 5,
+      "K": 6,
+      "N": 4,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 6,
+      "M": 4,
+      "K": 8,
+      "N": 6,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 7,
+      "M": 4,
+      "K": 13,
+      "N": 3,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 8,
+      "M": 8,
+      "K": 5,
+      "N": 16,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 9,
+      "M": 14,
+      "K": 9,
+      "N": 15,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 10,
+      "M": 13,
+      "K": 16,
+      "N": 4,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 11,
+      "M": 16,
+      "K": 14,
+      "N": 8,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 12,
+      "M": 3,
+      "K": 3,
+      "N": 7,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 13,
+      "M": 12,
+      "K": 10,
+      "N": 6,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 14,
+      "M": 2,
+      "K": 3,
+      "N": 9,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 15,
+      "M": 15,
+      "K": 9,
+      "N": 15,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 16,
+      "M": 8,
+      "K": 15,
+      "N": 7,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 17,
+      "M": 11,
+      "K": 15,
+      "N": 11,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 18,
+      "M": 9,
+      "K": 14,
+      "N": 11,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    },
+    {
+      "trial": 19,
+      "M": 6,
+      "K": 9,
+      "N": 13,
+      "note": "k 少一圈的 golden vs 正确 kernel"
+    }
+  ]
+}
