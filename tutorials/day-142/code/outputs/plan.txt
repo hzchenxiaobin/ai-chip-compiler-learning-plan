@@ -1,0 +1,26 @@
+第 142 天：实现方案（施工图）
+
+一、影响分析（计划条目：IR/Pass/Lowering/Runtime/测试 五个面）
+  IR      ：S2 生成新形态（块循环壳＋点循环）——S4/S5 的 pass 不用改
+            （scf.for 语义相同，多两层循环而已）
+  Pass    ：零修改！scf→cf/memref/func 转换对循环层数无感
+  Lowering：零修改（同上）
+  Runtime ：ciface 签名不变（tile 是编译期决策不进运行时）
+  测试    ：正确性沿用 D135 fuzz（块循环也过 200 组）；
+            性能用 D125 kernel_timing（tile 版 vs 朴素版对照）
+
+二、修改点与数据流
+  e2e.py 的 gen_loop_ir_full()：
+    加 tile 参数 → 生成块循环版（外层壳＋min 钳制）
+    tile=None 或 tile==shape → 朴素版（向后兼容！）
+  数据流不变：graph → S1 → S2（新形态）→ S4 → S5 → S6
+
+三、最小可运行切片（D143 的目标）
+  gen_loop_ir_full(g, tile=(2,2,3)) 生成上方的 blueprint 形态
+  → 七 pass 全通 → 与朴素版 bitwise 对照（同 golden）
+
+四、测试计划
+  正确性：blueprint 能过管道（今天已验）＋ D143 起逐 tile 对比
+  边界：tile=(1,1,1)（退化=朴素）/ tile=shape（单块）/ tile>shape（钳制）
+  性能：D146 验收时对照（教学规模的预期：差异小、方向不定——
+        反例是合法结果）
