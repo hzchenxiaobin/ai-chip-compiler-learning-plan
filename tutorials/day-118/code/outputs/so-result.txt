@@ -1,0 +1,3 @@
+第一轮: kernel 返回缓冲区 12/12 点 bitwise 一致（C[0][1]=24.50 vs golden 24.50）
+第二轮: kernel 返回缓冲区 12/12 点 bitwise 一致（C[0][1]=24.50 vs golden 24.50）
+同一进程两轮调用均 12/12：kernel 无状态、可复用

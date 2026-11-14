@@ -1,0 +1,38 @@
+第 118 天：JIT 或 AOT 执行——真机报告 2026-11-14 20:08
+工具链：Homebrew clang version 23.1.5
+Python：Python 3.9.6  numpy：1.26.4
+
+[TP0] 冻结产物盘点（D117 的起跑线）
+  gemm-3.ll: 2 个 define、核心循环在 @gemm、包装在 @_mlir_ciface_gemm（sret 三指针合同）
+  [PASS] 包装函数在位（D116 手写包装的真工具版）
+
+[TP1] 路线 1 AOT-静态：clang 编 .ll + driver.c -> 可执行文件
+  [PASS] 编译链接成功（警告 -Woverride-module 见 build log，无害）
+  [PASS] 12/12 点与 golden 一致
+  产物大小：50248 B（含启动代码，非 kernel 本体）
+
+[TP2] 路线 2 AOT-共享库：.ll -> .o -> libgemm.dylib/so；ctypes 调用
+  [PASS] 共享库编译成功 [/Users/chenbinbin/GitHub/ai-chip-compiler-learning-plan/tutorials/day-118/code/outputs/libgemm.dylib]
+  [PASS] ctypes 按 C 合同调用：12/12 点 bitwise 一致
+  [PASS] 同一进程第二轮调用 12/12（kernel 无状态、可复用）
+
+[TP3] 路线 3 JIT-lli：jit_main.ll 拼 gemm-3.ll，lli 解释执行（零产物文件）
+  [PASS] lli 执行：12/12 点打印（C[0]=22.00 ... C[11]=27.00）
+  [PASS] JIT(lli) 与 AOT 输出逐行一致——两条执行路线殊途同归
+
+[TP4] 路线 4 JIT-MCJIT：C++ 驱动内嵌 LLVM JIT API（真实引擎路径，配 -O2）
+  [PASS] MCJIT 驱动编译成功（链接 libLLVM 动态库）
+  [PASS] MCJIT：12/12 点一致（opt -O2 后 JIT 编译执行）
+
+[TP5] 执行语义实验：malloc 债务与 out 缓冲区误区
+  [PASS] 错误示范未崩但读到空指针/垃圾——语义正确的失败
+
+[TP6] 时间口径初测（教学规模：诚实声明——µs 级、无统计意义，只看相对量级）
+  AOT 进程级端到端（含 fork+exec）：中位 2.5 ms / 5 次
+  ——注意：进程启动 ~1ms 量级远大于 4x6x3 kernel 本体（~百 ns）；
+    真正的 kernel 级计时在 D125 优化开关对照实验里做（同进程反复调用）
+  [PASS] 时间口径记录完成（教学规模，判据是相对量级）
+
+汇总
+  PASS: 12  FAIL: 0
+  环境：Darwin arm64｜2026-11-14

@@ -1,0 +1,2 @@
+C 数组 = 0.00 0.00 0.00 ...（全 0：kernel 从未写这里）
+dc.alloc=0x104c0d100（kernel malloc 的新缓冲区，不是 C）
