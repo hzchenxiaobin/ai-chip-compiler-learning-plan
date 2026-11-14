@@ -1,0 +1,43 @@
+第 132 天：异步与同步模型——真机报告 2026-11-14 22:25
+== E1 同步基线：调用＝执行＝返回（CPU 语义）==
+  k1: 30ms ＋ k2: 30ms ＝ 总 60ms（调用方全程阻塞）
+
+== E2 异步仿真：launch 立即返回＋event 同步 ==
+  launch k1：耗时 0.01ms（入队即返回——不等执行）
+  launch k2：又 0.01ms（同 stream 排队）
+  两个 30ms kernel 总耗时 60ms（stream 内串行——同 GPU 语义）
+  launch 开销：0.01ms vs 执行 60ms
+  → 调用方从「等 60ms」变「等 0.1ms＋自由 60ms」——异步的全部收益
+
+  双 stream 并行：两个 30ms kernel 总 43ms（<60ms——真并行）
+  → 单 stream 串行、多 stream 并行——GPU 的执行模型
+
+== E3 依赖分析：MatMul→Bias→Relu 链的同步点标注 ==
+  场景 A（minic 现状·融合后）：
+    fused_kernel [launch] → event → 调用方读结果
+    同步点：1 个（融合把三个算子打进一个 kernel——无中间依赖）
+  场景 B（假想·未融合）：
+    matmul [launch] → event? → bias [launch] → event? → relu [launch] → event
+    依赖：bias 读 matmul 输出、relu 读 bias 输出
+    同一 stream：自动按序——无需显式 event（顺序执行语义保证）
+    跨 stream：必须 event——bias_stream.wait_event(matmul_event)
+  场景 C（池化内存的交互——D131 的伏笔）：
+    release(buf) 必须等读 buf 的最后一个 kernel 完成！
+    → 池的归还语义在异步世界要加 event 依赖——否则数据竞争
+
+  Compiler/Runtime 分工（异步版）：
+    Compiler：算子依赖图（静态已知）→ launch 顺序（拓扑序）
+    Runtime ：stream 分配、event 创建/等待、内存生命周期（event 触发 release）
+    调用方 ：最终同步（wait 最后一个 event）＋读结果
+
+  E2 数据汇总：
+    同步串行 60ms ｜ 异步单 stream ~60ms（串行）｜ 异步双 stream ~43ms（并行）
+    双 stream 加速比：1.4x
+  [PASS] E1 同步基线（60ms 阻塞）
+  [PASS] E2 launch 立即返回（0.01ms）
+  [PASS] E2 双 stream 并行验证
+  [PASS] E3 依赖与同步点分析（含 D131 伏笔）
+  [PASS] 分工说明产出（计划条目）
+  [PASS] 双 stream 加速比 1.4x 实测
+
+汇总：PASS 6 / FAIL 0
