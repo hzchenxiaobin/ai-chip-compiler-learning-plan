@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 780" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.1,2.7 Q 510.5,1.2 1017.0,2.6 Q 1018.1,390.6 1015.7,774.6 Q 510.8,777.5 4.7,777.1 Q 5.3,391.7 4.1,2.7  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">机制：一条函数签名怎么过海关——类型兑换、字节布局、胶水与 ABI</text>
+<path d="M 310.0,44.3 Q 507.3,43.7 701.1,43.7" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 50.0,66.2 Q 241.4,65.9 429.5,65.4 Q 431.1,113.1 430.6,163.5 Q 239.4,162.5 51.0,163.5 Q 49.2,112.7 50.0,66.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="62" y="85" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">源：func @gemm（循环 IR 的函数头）</text>
+<text x="62" y="102.0" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">%a: memref&lt;4x6xf32, strided&lt;[6,1]&gt;&gt;</text>
+<text x="62" y="116.5" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">%b: memref&lt;6x3xf32, strided&lt;[3,1]&gt;&gt;</text>
+<text x="62" y="131.0" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">-&gt; memref&lt;4x3xf32, strided&lt;[3,1]&gt;&gt;</text>
+<path d="M 479.4,65.6 Q 585.7,66.2 690.3,66.0 Q 690.3,115.1 690.0,162.5 Q 584.0,164.1 479.5,161.9 Q 479.1,113.1 479.4,65.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="585.0" y="85" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">TypeConverter</text>
+<text x="585.0" y="102" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">逐参数查兑换表</text>
+<text x="585.0" y="118" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">查 DataLayout 记字节账</text>
+<text x="585.0" y="134" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">结果 0/1/≥2 →</text>
+<text x="585.0" y="150" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">void / 直返 / 打包 struct</text>
+<path d="M 740.3,66.2 Q 861.2,64.2 981.5,64.9 Q 983.0,114.5 980.8,161.2 Q 857.5,163.8 738.5,162.0 Q 739.1,116.1 740.3,66.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="752" y="85" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">目标：llvm.func @gemm</text>
+<text x="752" y="102.0" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">%a: !llvm.struct&lt;(ptr,ptr,i64,</text>
+<text x="752" y="116.5" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">  array&lt;2xi64&gt;,array&lt;2xi64&gt;)&gt;</text>
+<text x="752" y="131.0" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">%b: 同上</text>
+<text x="752" y="145.5" font-family="'Courier New',monospace" font-size="9.3" fill="#6b6257" text-anchor="start">-&gt; !llvm.struct&lt;...&gt;（56B）</text>
+<path d="M 431.4,112.9 Q 454.7,115.7 478.0,114.0 M 464.5,116.1 L 478.0,114.0 L 464.5,111.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/><text x="455.0" y="106.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">F1</text>
+<path d="M 692.0,113.9 Q 713.9,114.6 738.0,114.0 M 724.5,116.1 L 738.0,114.0 L 724.5,111.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="510" y="190" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#6b6257" text-anchor="middle">拒收清单（两道闸之一）：tensor（必须先 bufferize）｜动态 shape memref｜未知类型——签名当场失败，函数进不了海关</text>
+<text x="50" y="224" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">描述符解剖：5 个字段按顺序排好，56 字节（与真机 LLVM TargetData 逐项对账）</text>
+<path d="M 151.1,238.9 Q 188.0,240.6 222.2,239.4 Q 222.6,267.3 220.7,293.5 Q 186.1,294.6 149.0,294.7 Q 148.7,265.9 151.1,238.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="186.0" y="260" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">allocated</text>
+<text x="186.0" y="276" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">8B</text>
+<text x="186.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">@0</text>
+<path d="M 222.2,240.1 Q 256.5,242.3 293.0,241.3 Q 294.3,267.4 294.2,294.2 Q 259.5,295.5 222.5,293.3 Q 222.2,268.4 222.2,240.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="258.0" y="260" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">aligned</text>
+<text x="258.0" y="276" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">8B</text>
+<text x="258.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">@8</text>
+<path d="M 294.2,239.3 Q 332.3,237.1 366.6,239.4 Q 367.9,268.2 365.6,294.9 Q 329.0,293.2 294.4,294.6 Q 292.7,267.3 294.2,239.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="330.0" y="260" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">offset</text>
+<text x="330.0" y="276" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">8B</text>
+<text x="330.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">@16</text>
+<path d="M 367.0,239.5 Q 438.3,241.7 510.6,240.4 Q 511.9,269.5 510.6,295.2 Q 437.3,293.3 367.2,293.4 Q 365.8,268.1 367.0,239.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="438.0" y="260" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">sizes[2]</text>
+<text x="438.0" y="276" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">16B</text>
+<text x="438.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">@24</text>
+<path d="M 509.3,240.4 Q 583.6,241.4 655.5,240.6 Q 652.8,268.4 653.6,293.9 Q 579.9,294.5 509.9,292.9 Q 507.9,267.7 509.3,240.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="582.0" y="260" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">strides[2]</text>
+<text x="582.0" y="276" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">16B</text>
+<text x="582.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">@40</text>
+<text x="50" y="314" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#6b6257" text-anchor="start">总大小 56B，ABI 对齐 8；rank1=40B、rank3=72B——数组字段的对齐是元素对齐（8B），不是整块大小</text>
+<path d="M 48.9,341.3 Q 263.2,342.3 480.2,341.4 Q 481.0,434.5 479.4,529.8 Q 264.2,530.8 50.1,530.9 Q 50.5,437.8 48.9,341.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="62" y="359" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">半转换产物里的 8 条胶水（unrealized_conversion_cast）</text>
+<text x="62" y="376" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">入口参数已换新类型，残留 op 还要旧值 → 源物化：</text>
+<text x="62" y="392" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  %a_m = cast %a : !llvm.struct&lt;...&gt; -&gt; memref&lt;...&gt;   ×2</text>
+<text x="62" y="408" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  %c0_i = cast %c0 : i64 -&gt; index   ×5（scf.for 还要 index）</text>
+<text x="62" y="424" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">返回值要新类型，旧值要换新 → 目标物化：</text>
+<text x="62" y="440" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  %c_d = cast %c : memref&lt;...&gt; -&gt; !llvm.struct&lt;...&gt;   ×1</text>
+<text x="62" y="456" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">账本：D116 的 M1~M3/A2~A3 逐条消费这些旧值；</text>
+<text x="62" y="472" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">D117 导出前由 reconcile-unrealized-casts 清零</text>
+<path d="M 511.0,341.0 Q 740.4,340.5 973.6,341.2 Q 975.2,438.2 974.5,530.8 Q 741.4,531.2 509.6,528.5 Q 511.6,434.8 511.0,341.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="522" y="359" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">ABI 三形态：同一个 offset=42 的真机实测（aarch64）</text>
+<text x="522" y="376" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">✓ define @f(ptr %d)＋ctypes 传 &amp;desc → 读到 42</text>
+<text x="522" y="392" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  C ABI 上 &gt;16B 聚合本来就'间接传'：gcc 实测 getoff_c(按值)</text>
+<text x="522" y="408" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  与 getoff_p(指针) 汇编一字不差：ldr x0,[x0,16]</text>
+<text x="522" y="424" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">✗ define @f(ptr byval(%desc) %d) → 错位（LLVM 从参数栈区读）</text>
+<text x="522" y="440" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">✗ define @f({ptr,ptr,i64,...} %d) → 错位（LLVM 自行拆传）</text>
+<text x="522" y="456" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">结论：JIT 边界签名必须与调用方约定同一份 ABI</text>
+<text x="50" y="560" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">GEMM 的 ABI 账单（来自签名转换表的字节账）</text>
+<path d="M 50.6,576.8 Q 161.5,577.6 272.5,576.4 Q 272.8,618.2 272.2,663.2 Q 162.7,662.1 50.1,662.6 Q 48.7,618.1 50.6,576.8  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.4"/>
+<text x="161.0" y="596" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">参数 %a</text>
+<text x="161.0" y="614" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">56B 描述符</text>
+<text x="161.0" y="634" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">调用方复制，x0 传副本地址</text>
+<path d="M 275.4,576.0 Q 385.4,575.1 498.2,575.8 Q 495.9,621.2 496.7,662.9 Q 385.9,662.5 274.7,663.0 Q 275.9,620.0 275.4,576.0  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.4"/>
+<text x="387.0" y="596" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">参数 %b</text>
+<text x="387.0" y="614" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">56B 描述符</text>
+<text x="387.0" y="634" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">x1 传副本地址</text>
+<text x="500" y="614" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#6b6257" text-anchor="middle">＋</text>
+<path d="M 502.5,576.9 Q 613.9,577.0 724.8,577.0 Q 725.3,618.8 722.5,660.5 Q 612.3,663.6 502.8,663.5 Q 502.2,619.8 502.5,576.9  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.4"/>
+<text x="613.0" y="596" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">参数合计</text>
+<text x="613.0" y="614" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">112B</text>
+<text x="613.0" y="634" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">D114'56 字节按值传参'伏笔的兑现</text>
+<path d="M 728.8,577.4 Q 839.0,577.0 950.9,575.0 Q 949.2,618.0 950.4,660.6 Q 840.4,659.3 728.3,662.3 Q 729.1,619.2 728.8,577.4  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.4"/>
+<text x="839.0" y="596" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">返回 %c</text>
+<text x="839.0" y="614" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">56B 描述符</text>
+<text x="839.0" y="634" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">大聚合返回：x8 隐式结果指针（sret）</text>
+<path d="M 55.8,685.0 Q 512.1,684.3 966.0,686.4" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="510" y="708" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">多结果函数：≥2 个结果在 MLIR 层打包成 !llvm.struct&lt;(...)&gt;（S9 例：struct&lt;(desc,desc)&gt;＝112B，align 8）</text>
+<text x="510" y="728" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">真机验证：peek 用 ptr 签名读连续/转置布局全点 bitwise 对；mul2_out 演示 sret 式双出口</text>
+</svg>

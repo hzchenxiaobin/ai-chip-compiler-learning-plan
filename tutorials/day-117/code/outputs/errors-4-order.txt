@@ -1,0 +1,4 @@
+gemm.mlir:18:11: error: failed to legalize operation 'builtin.unrealized_conversion_cast' that was explicitly marked illegal
+    %lb = arith.subi %c6, %c6 : index
+          ^
+gemm.mlir:18:11: note: see current operation: %44 = "builtin.unrealized_conversion_cast"(%43) : (i64) -> index

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.5,4.6 Q 489.7,3.8 977.5,3.2 Q 978.5,319.0 975.1,635.5 Q 489.1,636.1 3.5,637.3 Q 3.2,320.2 4.5,4.6 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">硬件映射一页图：块 C[0,0] 从片外加载到结果写回</text>
+<path d="M 37.1,64.4 Q 150.8,65.4 266.6,67.0 Q 267.0,276.8 268.7,485.8 Q 151.6,486.2 35.9,485.9 Q 34.5,277.3 37.1,64.4 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="152" y="90" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">HBM（片外）</text>
+<path d="M 50.4,103.9 Q 149.7,103.6 251.6,102.8 Q 254.8,125.4 253.5,143.8 Q 151.1,144.6 51.0,143.4 Q 51.0,124.8 50.4,103.9 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="152" y="122" font-size="11.5" fill="#3B3B3B" text-anchor="middle">x  512×512</text>
+<text x="152" y="136" font-size="10" fill="#6b6257" text-anchor="middle">1 MiB</text>
+<path d="M 50.9,154.5 Q 149.4,157.9 250.8,157.3 Q 249.3,177.1 250.6,194.5 Q 152.7,194.4 51.9,194.6 Q 51.1,173.3 50.9,154.5 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="152" y="174" font-size="11.5" fill="#3B3B3B" text-anchor="middle">w  512×512</text>
+<text x="152" y="188" font-size="10" fill="#6b6257" text-anchor="middle">1 MiB · 常驻</text>
+<path d="M 51.4,208.1 Q 151.7,209.6 252.2,208.1 Q 252.4,229.7 251.6,249.2 Q 153.1,247.8 51.9,247.6 Q 52.6,226.1 51.4,208.1 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="152" y="226" font-size="11.5" fill="#3B3B3B" text-anchor="middle">bias  512</text>
+<text x="152" y="240" font-size="10" fill="#6b6257" text-anchor="middle">2 KiB</text>
+<path d="M 51.9,261.9 Q 153.4,263.0 251.6,260.9 Q 250.9,325.7 253.0,391.5 Q 151.4,389.8 51.7,390.8 Q 53.3,326.8 51.9,261.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="152" y="280" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">workspace 2 MiB（D100）</text>
+<path d="M 65.3,290.6 Q 151.5,290.8 239.5,290.9 Q 237.4,307.8 238.7,328.3 Q 151.9,329.6 64.0,326.7 Q 65.1,310.8 65.3,290.6 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="152" y="307" font-size="10.5" fill="#3B3B3B" text-anchor="middle">x → y 共享（区间不重叠）</text>
+<text x="152" y="321" font-size="9.5" fill="#6b6257" text-anchor="middle">偏移 0，各 1 MiB</text>
+<path d="M 64.0,332.7 Q 152.6,333.5 238.9,333.9 Q 238.6,358.6 241.2,383.0 Q 152.4,384.0 65.5,382.3 Q 66.1,356.3 64.0,332.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="152" y="351" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">t 的房间（偏移 1 MiB）</text>
+<path d="M 68.8,357.3 Q 109.3,359.4 152.5,357.0 Q 154.3,367.7 155.5,377.4 Q 111.7,375.1 69.8,377.2 Q 69.5,367.8 68.8,357.3 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.8"/>
+<text x="112" y="371" font-size="8.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">C[0,0]→16,384 B</text>
+<text x="205" y="371" font-size="9.5" fill="#6b6257" text-anchor="middle">开头</text>
+<text x="152" y="438" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">③ 末圈算完 → S3 → 写回这里</text>
+<text x="152" y="456" font-size="10" fill="#6b6257" text-anchor="middle">64 个块轮流住进这 1 MiB</text>
+<path d="M 300.7,150.9 Q 363.8,149.2 431.4,148.5 Q 432.5,198.3 430.6,244.7 Q 367.7,245.5 301.1,246.1 Q 301.7,199.3 300.7,150.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="365" y="182" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">DMA 引擎</text>
+<text x="365" y="201" font-size="11" fill="#6b6257" text-anchor="middle">32,768 B/µs</text>
+<text x="365" y="219" font-size="9.5" fill="#6b6257" text-anchor="middle">单引擎·按提交顺序</text>
+<path d="M 266.9,189.1 Q 308.0,184.1 348.0,176.0 M 335.7,181.2 L 348.0,176.0 L 334.7,175.3" stroke="#A9C4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="300" y="158" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② Load 流入</text>
+<path d="M 353.5,242.6 Q 312.5,252.0 272.0,258.0 M 284.3,252.8 L 272.0,258.0 L 285.3,258.7" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="306" y="272" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ Store 写回</text>
+<path d="M 471.6,65.4 Q 622.1,65.6 769.6,66.6 Q 769.5,193.2 771.6,317.1 Q 619.3,317.6 469.7,319.3 Q 468.5,191.1 471.6,65.4 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="620" y="90" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">SRAM（片上，预算 256 KiB）</text>
+<path d="M 485.8,102.0 Q 579.9,104.2 676.9,102.4 Q 677.3,117.6 675.1,129.7 Q 581.1,128.2 485.2,128.8 Q 486.6,115.6 485.8,102.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="121" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">A 槽0   16,384 B</text>
+<text x="690" y="121" font-size="9.5" fill="#6b6257" text-anchor="end">乒乓←A 偶数圈</text>
+<path d="M 486.9,136.3 Q 582.4,135.1 676.4,134.8 Q 675.6,150.9 677.2,164.7 Q 582.6,165.3 486.2,163.2 Q 488.7,149.3 486.9,136.3 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="155" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">A 槽1   16,384 B</text>
+<text x="690" y="155" font-size="9.5" fill="#6b6257" text-anchor="end">乒乓←A 奇数圈</text>
+<path d="M 486.3,168.7 Q 580.0,170.9 676.5,171.0 Q 675.7,183.8 675.7,196.5 Q 581.7,196.9 486.7,197.7 Q 487.3,182.2 486.3,168.7 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="189" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">B 槽0   16,384 B</text>
+<text x="690" y="189" font-size="9.5" fill="#6b6257" text-anchor="end">乒乓←B 偶数圈</text>
+<path d="M 485.1,203.9 Q 580.9,204.0 677.0,203.4 Q 678.2,215.5 675.0,231.2 Q 579.2,229.5 485.5,230.9 Q 484.8,218.9 485.1,203.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="223" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">B 槽1   16,384 B</text>
+<text x="690" y="223" font-size="9.5" fill="#6b6257" text-anchor="end">乒乓←B 奇数圈</text>
+<path d="M 484.9,238.0 Q 581.6,236.9 675.8,239.1 Q 674.3,255.4 676.2,267.6 Q 580.3,265.6 487.2,267.3 Q 486.5,253.1 484.9,238.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="257" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">C 槽    16,384 B</text>
+<text x="690" y="257" font-size="9.5" fill="#6b6257" text-anchor="end">累加器·常驻 ×1</text>
+<path d="M 484.9,271.8 Q 581.9,274.0 675.7,271.9 Q 673.6,286.5 675.6,298.8 Q 582.1,298.2 486.5,299.5 Q 486.1,284.7 484.9,271.8 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="496" y="291" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">bias    256 B</text>
+<text x="690" y="291" font-size="9.5" fill="#6b6257" text-anchor="end">k=0 圈加一次</text>
+<path d="M 487.2,305.5 Q 551.4,306.2 616.5,305.2 Q 616.4,311.4 617.2,315.1 Q 550.9,317.2 487.4,314.9 Q 487.4,311.9 487.2,305.5 Z" stroke="#3B3B3B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.7"/>
+<path d="M 485.0,305.7 Q 513.6,305.0 546.0,307.4 Q 547.9,309.8 547.6,315.7 Q 518.1,315.3 485.7,315.5 Q 483.9,309.8 485.0,305.7 Z" stroke="#3B3B3B" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.9"/>
+<text x="700" y="314" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">合计 82,176 B = 预算的 31.3%</text>
+<path d="M 615.2,296.4 Q 614.1,309.7 615.8,322.4" stroke="#C97B7B" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="620" y="300" font-size="9.5" fill="#C97B7B" text-anchor="start">预算 262,144 B</text>
+<path d="M 808.7,130.8 Q 878.0,130.9 947.0,129.8 Q 950.3,194.7 949.4,261.6 Q 877.6,261.0 810.1,259.9 Q 808.7,195.3 808.7,130.8 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="879" y="160" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">计算单元</text>
+<text x="879" y="180" font-size="10.5" fill="#6b6257" text-anchor="middle">262,144 MAC/µs</text>
+<text x="879" y="200" font-size="10" fill="#6b6257" text-anchor="middle">每圈 64³=1 µs</text>
+<text x="879" y="219" font-size="9.5" fill="#6b6257" text-anchor="middle">读槽 k%2 → 累加进 C</text>
+<path d="M 773.5,177.2 Q 815.0,174.5 856.0,176.0 M 843.0,179.0 L 856.0,176.0 L 843.0,173.0" stroke="#9CBF8E" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="812" y="160" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">S1</text>
+<path d="M 856.3,213.3 Q 815.3,214.8 774.0,214.0 M 787.0,211.0 L 774.0,214.0 L 787.0,217.0" stroke="#C97B7B" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="815" y="233" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">S2</text>
+<path d="M 282.8,318.2 Q 373.0,317.6 458.9,318.2 Q 459.6,362.0 461.3,408.5 Q 374.4,407.5 285.1,410.3 Q 282.5,363.2 282.8,318.2 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="372" y="336" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">四个同步点（D102）</text>
+<path d="M 300.4,344.4 Q 374.3,346.7 443.4,345.6" stroke="#6b6257" stroke-width="1" stroke-linecap="round" fill="none"/>
+<text x="292" y="362" font-size="9.5" fill="#3B3B3B" text-anchor="start">S1 RAW：计算等搬运完工</text>
+<text x="292" y="378" font-size="9.5" fill="#3B3B3B" text-anchor="start">S2 WAR：覆盖槽前等上上圈</text>
+<text x="292" y="392" font-size="9.5" fill="#3B3B3B" text-anchor="start">     读者（距离 1→2）</text>
+<text x="292" y="408" font-size="9.5" fill="#3B3B3B" text-anchor="start">S3 RAW：写回等累加完工</text>
+<text x="292" y="424" font-size="9.5" fill="#3B3B3B" text-anchor="start">S4 WAR：C 槽复用等写回</text>
+<path d="M 162.4,479.6 C 168,472 168,488 159.9,479.1 C 154,488 154,472 160.7,479.5 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="161" y="485" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">①</text>
+<path d="M 308.4,120.1 C 316,112 316,128 310.4,120.4 C 302,128 302,112 308.5,119.9 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="309" y="125" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">②</text>
+<path d="M 886.9,101.3 C 895,92 895,108 886.5,100.2 C 881,108 881,92 888.9,100.6 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="888" y="105" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③</text>
+<path d="M 283.5,292.9 C 292,284 292,300 284.8,292.9 C 278,300 278,284 283.7,292.0 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="285" y="297" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④</text>
+<path d="M 566.4,340.8 C 572,334 572,350 566.2,342.0 C 558,350 558,334 564.8,340.9 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="565" y="347" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑤</text>
+<path d="M 665.0,340.7 C 672,334 672,350 663.8,340.6 C 658,350 658,334 663.9,342.3 Z" stroke="#3B3B3B" stroke-width="1.5" fill="#E8A87C" fill-opacity="0.85"/>
+<text x="665" y="347" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑥</text>
+<text x="815" y="247" font-size="9" fill="#6b6257" text-anchor="start">白等 448 µs → 0</text>
+<text x="178" y="486" font-size="10.5" fill="#6b6257" text-anchor="start">出生：清单排好（bias+A/B 切片+C 槽）</text>
+<text x="322" y="126" font-size="10.5" fill="#6b6257" text-anchor="start">入住：搬 bias＋首圈 A/B（填充 1.0078 µs）</text>
+<text x="879" y="118" font-size="10.5" fill="#6b6257" text-anchor="middle">成长：8 圈累加</text>
+<text x="292" y="298" font-size="10.5" fill="#6b6257" text-anchor="start">写回：S3→Store 0.5 µs</text>
+<text x="575" y="348" font-size="10.5" fill="#6b6257" text-anchor="start">让位：S4 后 C 槽交给块 1</text>
+<path d="M 469.6,369.1 Q 618.2,370.1 769.1,367.2 Q 770.7,397.4 770.8,426.2 Q 618.8,427.5 468.7,426.1 Q 470.4,398.2 469.6,369.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="620" y="388" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑥ 交班：末圈计算时，DMA 已在预取块 1 的 A[1,0]/B[1,0]</text>
+<text x="620" y="404" font-size="9.5" fill="#6b6257" text-anchor="middle">填充/排空从每块一次 → 全 kernel 一次（26.38%→0.28%）</text>
+<text x="620" y="418" font-size="9.5" fill="#6b6257" text-anchor="middle">块 0 让位时刻：store[0] 9.0078–9.5078 ‖ 预取 8.0078 起</text>
+<path d="M 35.7,494.9 Q 492.8,492.2 947.6,492.8 Q 947.7,551.4 947.6,611.5 Q 494.2,611.4 36.4,610.9 Q 34.9,551.8 35.7,494.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="492" y="516" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">时间账（真实运行，µs）：块 C[0,0]</text>
+<path d="M 95.4,528.4 Q 132.1,527.9 169.4,529.5 Q 169.7,540.8 170.9,553.0 Q 134.5,551.5 94.4,552.6 Q 97.0,542.0 95.4,528.4 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.8"/>
+<path d="M 171.4,527.9 Q 466.7,525.7 757.9,528.0 Q 759.0,542.5 759.1,553.9 Q 463.3,553.4 168.6,553.1 Q 170.0,538.6 171.4,527.9 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.7"/>
+<path d="M 758.8,529.3 Q 775.7,528.6 794.7,527.1 Q 796.5,539.2 796.2,555.0 Q 777.2,553.8 759.3,554.5 Q 757.9,542.3 758.8,529.3 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.9"/>
+<text x="114" y="545" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">填充 1.0078</text>
+<text x="446" y="545" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">稳态 8×1.0 双忙（算 k 圈 ‖ 搬 k+1 圈）</text>
+<text x="796" y="545" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">写回 0.5</text>
+<text x="96" y="572" font-size="10.5" fill="#6b6257" text-anchor="start">单缓冲同块 16.5078（轮流值班）；内核总账 1056.5 / 608.5 / 545.5 µs → 1.74× / 1.94×，距理想下界 544.5 仅 1 µs</text>
+<text x="96" y="592" font-size="10.5" fill="#6b6257" text-anchor="start">空间账：82,176 B 全程不变——住得下就一直住着；闸门在第二幕就判完，运行期不再变</text>
+</svg>

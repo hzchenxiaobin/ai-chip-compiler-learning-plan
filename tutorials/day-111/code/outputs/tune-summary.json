@@ -1,0 +1,233 @@
+{
+ "schema": "d111.tune-summary/1",
+ "runs": [
+  {
+   "schema": "d111.tune-summary/1",
+   "input": "matmul-bias-s1-64x64x64.mini",
+   "shape_id": "S1",
+   "M": 64,
+   "N": 64,
+   "K": 64,
+   "has_d108_base": true,
+   "n_space_raw": 144,
+   "n_naive": 50331648,
+   "n_param_pruned": 0,
+   "n_resource_pruned": 0,
+   "n_survivors": 144,
+   "model_ms": 1.5,
+   "model_top5": [
+    "64³ ikj U=1",
+    "64³ kij U=1",
+    "64³ ijk U=1",
+    "64³ jik U=1",
+    "64³ ikj U=2"
+   ],
+   "champion": "64³ ikj U=1",
+   "champion_ms": 15.699,
+   "measured_detail": [
+    [
+     "64³ ikj U=1",
+     15.699
+    ],
+    [
+     "64³ kij U=1",
+     17.098
+    ],
+    [
+     "64³ jik U=1",
+     17.604
+    ],
+    [
+     "64³ ikj U=2",
+     17.635
+    ],
+    [
+     "64³ ijk U=1",
+     17.64
+    ],
+    [
+     "32³ ijk U=1",
+     18.98
+    ]
+   ],
+   "measured": 9,
+   "bench_wall_ms": 2858.5,
+   "wall_ms": 2866.7,
+   "d108_champion": "64³ kij U=1",
+   "d108_champion_ms": 15.799,
+   "agree": false,
+   "timestamp": "2026-11-13T13:12:07+0800"
+  },
+  {
+   "schema": "d111.tune-summary/1",
+   "input": "matmul-bias-s2-96x96x96.mini",
+   "shape_id": "S2",
+   "M": 96,
+   "N": 96,
+   "K": 96,
+   "has_d108_base": true,
+   "n_space_raw": 486,
+   "n_naive": 169869312,
+   "n_param_pruned": 0,
+   "n_resource_pruned": 0,
+   "n_survivors": 486,
+   "model_ms": 8.7,
+   "model_top5": [
+    "96³ ikj U=1",
+    "96³ kij U=1",
+    "96³ ijk U=1",
+    "96³ jik U=1",
+    "96³ ikj U=2"
+   ],
+   "champion": "96³ ikj U=1",
+   "champion_ms": 50.975,
+   "measured_detail": [
+    [
+     "96³ ikj U=1",
+     50.975
+    ],
+    [
+     "96³ kij U=1",
+     55.579
+    ],
+    [
+     "96³ jik U=1",
+     57.446
+    ],
+    [
+     "96³ ikj U=2",
+     57.572
+    ],
+    [
+     "96³ ijk U=1",
+     57.903
+    ],
+    [
+     "32³ ijk U=1",
+     64.507
+    ]
+   ],
+   "measured": 9,
+   "bench_wall_ms": 9343.0,
+   "wall_ms": 9361.7,
+   "d108_champion": "96³ kij U=1",
+   "d108_champion_ms": 51.535,
+   "agree": false,
+   "timestamp": "2026-11-13T13:12:16+0800"
+  },
+  {
+   "schema": "d111.tune-summary/1",
+   "input": "matmul-bias-s3-90x96x64.mini",
+   "shape_id": "S3",
+   "M": 90,
+   "N": 96,
+   "K": 64,
+   "has_d108_base": true,
+   "n_space_raw": 234,
+   "n_naive": 106168320,
+   "n_param_pruned": 0,
+   "n_resource_pruned": 0,
+   "n_survivors": 234,
+   "model_ms": 4.0,
+   "model_top5": [
+    "90×96×64 ikj U=1",
+    "90×96×64 kij U=1",
+    "90×96×64 ikj U=2",
+    "90×96×64 kij U=2",
+    "90×96×64 ijk U=1"
+   ],
+   "champion": "90×96×64 ikj U=1",
+   "champion_ms": 31.557,
+   "measured_detail": [
+    [
+     "90×96×64 ikj U=1",
+     31.557
+    ],
+    [
+     "90×96×64 kij U=1",
+     35.245
+    ],
+    [
+     "90×96×64 ikj U=2",
+     35.925
+    ],
+    [
+     "90×96×64 kij U=2",
+     36.872
+    ],
+    [
+     "90×96×64 ijk U=1",
+     37.159
+    ],
+    [
+     "32³ ijk U=1",
+     40.649
+    ]
+   ],
+   "measured": 9,
+   "bench_wall_ms": 5883.3,
+   "wall_ms": 5895.8,
+   "d108_champion": "90×96×64 kij U=1",
+   "d108_champion_ms": 32.057,
+   "agree": false,
+   "timestamp": "2026-11-13T13:12:22+0800"
+  },
+  {
+   "schema": "d111.tune-summary/1",
+   "input": "matmul-bias-s4-160x160x160.mini",
+   "shape_id": "N160x160x160",
+   "M": 160,
+   "N": 160,
+   "K": 160,
+   "has_d108_base": false,
+   "n_space_raw": 2250,
+   "n_naive": 786432000,
+   "n_param_pruned": 0,
+   "n_resource_pruned": 72,
+   "n_survivors": 2178,
+   "model_ms": 77.0,
+   "model_top5": [
+    "96×160×160 ikj U=1",
+    "160×160×96 kij U=1",
+    "96×160×160 ijk U=1",
+    "160×96×160 jik U=1",
+    "96×160×160 ikj U=2"
+   ],
+   "champion": "96×160×160 ikj U=1",
+   "champion_ms": 233.683,
+   "measured_detail": [
+    [
+     "96×160×160 ikj U=1",
+     233.683
+    ],
+    [
+     "160×160×96 kij U=1",
+     256.587
+    ],
+    [
+     "96×160×160 ikj U=2",
+     264.748
+    ],
+    [
+     "160×96×160 jik U=1",
+     278.053
+    ],
+    [
+     "96×160×160 ijk U=1",
+     288.455
+    ],
+    [
+     "32³ ijk U=1",
+     304.895
+    ]
+   ],
+   "measured": 9,
+   "bench_wall_ms": 43721.4,
+   "wall_ms": 43822.0,
+   "d108_champion": null,
+   "d108_champion_ms": null,
+   "agree": null,
+   "timestamp": "2026-11-13T13:13:06+0800"
+  }
+ ]
+}

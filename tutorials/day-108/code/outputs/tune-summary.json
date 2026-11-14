@@ -1,0 +1,31 @@
+{
+ "schema": "d108.tune-summary/1",
+ "runs": [
+  {
+   "wall_s": 7.98,
+   "measured": 28,
+   "skipped": 0,
+   "slots_seen": 25,
+   "compile_misses": 24,
+   "compile_hits": 4,
+   "compile_ms": 7.31,
+   "invocations": 364,
+   "bench_wall_s": 7.97,
+   "budget_hit": true,
+   "timestamp": "2026-11-13T11:21:04+0800"
+  },
+  {
+   "wall_s": 60.69,
+   "measured": 82,
+   "skipped": 28,
+   "slots_seen": 98,
+   "compile_misses": 50,
+   "compile_hits": 32,
+   "compile_ms": 15.63,
+   "invocations": 994,
+   "bench_wall_s": 60.63,
+   "budget_hit": false,
+   "timestamp": "2026-11-13T11:22:05+0800"
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.4,3.2 Q 487.7,4.5 975.3,3.5 Q 974.8,319.2 975.4,636.6 Q 489.1,635.3 5.4,636.6 Q 6.9,319.8 4.4,3.2  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">v0.1 循环里，三种时间各在哪里付（数字全部实测）</text>
+<path d="M 281.0,46.6 Q 491.4,44.1 701.3,47.5" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="76" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">一个候选过循环（S2·96³ 为例）</text>
+<path d="M 53.1,89.4 Q 108.2,88.9 161.0,91.6 Q 158.1,123.5 159.4,155.9 Q 105.8,157.7 52.8,157.4 Q 53.1,123.7 53.1,89.4  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="106" y="111" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">编译</text>
+<text x="106" y="128" font-size="9.5" fill="#3B3B3B" text-anchor="middle">0.31 ms</text>
+<text x="106" y="145" font-size="9" fill="#6b6257" text-anchor="middle">一次性</text>
+<path d="M 161.6,123.0 Q 166.3,121.3 172.0,123.0 M 159.0,126.0 L 172.0,123.0 L 159.0,120.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 174.2,90.9 Q 229.6,89.7 282.4,90.9 Q 282.3,123.3 281.8,156.4 Q 228.5,155.2 173.5,156.6 Q 174.3,122.3 174.2,90.9  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.4"/>
+<text x="228" y="111" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">门</text>
+<text x="228" y="128" font-size="9.5" fill="#3B3B3B" text-anchor="middle">1 次调用</text>
+<text x="228" y="145" font-size="9" fill="#6b6257" text-anchor="middle">逐位比对</text>
+<path d="M 283.6,123.3 Q 290.6,121.6 294.0,123.0 M 281.0,126.0 L 294.0,123.0 L 281.0,120.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 296.8,91.3 Q 349.9,92.0 402.7,88.9 Q 404.3,124.6 404.1,157.0 Q 352.0,158.7 297.6,157.4 Q 297.2,124.5 296.8,91.3  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="350" y="111" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">预热 ×3</text>
+<text x="350" y="128" font-size="9.5" fill="#3B3B3B" text-anchor="middle">丢弃</text>
+<text x="350" y="145" font-size="9" fill="#6b6257" text-anchor="middle">烧冷启动</text>
+<path d="M 407.6,121.4 Q 409.9,125.0 416.0,123.0 M 403.0,126.0 L 416.0,123.0 L 403.0,120.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 418.9,91.4 Q 471.0,91.8 526.8,91.4 Q 525.0,126.0 527.3,156.5 Q 471.5,158.4 416.4,157.1 Q 419.2,123.0 418.9,91.4  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="472" y="111" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">筛选计时 ×7</text>
+<text x="472" y="128" font-size="9.5" fill="#3B3B3B" text-anchor="middle">3+7 轻协议</text>
+<text x="472" y="145" font-size="9" fill="#6b6257" text-anchor="middle">median 排名</text>
+<path d="M 174.7,158.1 Q 175.0,178.8 174.0,196.0 M 171.0,183.0 L 174.0,196.0 L 177.0,183.0" stroke="#C97B7B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 94.5,197.2 Q 173.0,196.5 253.1,198.6 Q 254.1,225.2 251.6,254.6 Q 173.0,256.5 96.2,255.6 Q 96.6,226.9 94.5,197.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.45"/>
+<text x="174" y="219" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">被拒 → 死因台账</text>
+<text x="174" y="235" font-size="9.5" fill="#3B3B3B" text-anchor="middle">0 次计时（投毒走这条路）</text>
+<text x="174" y="249" font-size="9" fill="#6b6257" text-anchor="middle">错误版快 2.7~7.3% 也不许进表</text>
+<path d="M 47.0,270.4 Q 283.1,273.5 521.0,274.3" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="5 5"/>
+<text x="60" y="294" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">进决赛的候选（top-3 ∪ 缺省）</text>
+<path d="M 51.6,306.9 Q 107.4,307.9 160.4,307.5 Q 162.5,336.3 161.4,367.0 Q 108.6,364.5 52.3,365.9 Q 52.9,335.0 51.6,306.9  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="106" y="326" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">复用编译缓存</text>
+<text x="106" y="344" font-size="9.5" fill="#3B3B3B" text-anchor="middle">0 ms（命中）</text>
+
+<path d="M 161.2,334.5 Q 167.2,337.0 172.0,336.0 M 159.0,339.0 L 172.0,336.0 L 159.0,333.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 174.7,305.2 Q 229.3,304.7 280.6,304.5 Q 280.0,335.6 282.3,366.3 Q 228.4,364.1 175.6,365.6 Q 177.1,334.8 174.7,305.2  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="228" y="326" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">门+预热×3</text>
+<text x="228" y="344" font-size="9.5" fill="#3B3B3B" text-anchor="middle">同一流水线</text>
+
+<path d="M 284.9,337.2 Q 288.0,337.9 294.0,336.0 M 281.0,339.0 L 294.0,336.0 L 281.0,333.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 295.0,306.4 Q 348.9,308.3 403.9,306.5 Q 404.7,335.9 404.8,365.5 Q 351.0,365.4 297.5,364.6 Q 294.1,336.5 295.0,306.4  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="350" y="326" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">决赛计时 ×21</text>
+<text x="350" y="344" font-size="9.5" fill="#3B3B3B" text-anchor="middle">恢复 D107 全协议</text>
+<text x="350" y="358" font-size="9" fill="#6b6257" text-anchor="middle">决赛 15.8~65.1 ms/次</text>
+<path d="M 405.8,334.8 Q 410.6,335.1 416.0,336.0 M 403.0,339.0 L 416.0,336.0 L 403.0,333.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 419.4,306.5 Q 473.9,304.2 525.2,304.5 Q 526.1,335.8 526.4,367.0 Q 469.8,367.5 416.8,366.3 Q 416.8,338.0 419.4,306.5  Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="472" y="326" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">决赛排名</text>
+<text x="472" y="344" font-size="9.5" fill="#3B3B3B" text-anchor="middle">冠军 = median 最小</text>
+
+<text x="286" y="388" font-size="9.5" fill="#6b6257" text-anchor="middle">筛选粗：把 90+ 个进不了决赛的候选挡在 3+7 的便宜协议后面；决赛精：只在同协议下宣布冠军</text>
+<text x="560" y="76" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">三种时间的账本（今天的核心概念）</text>
+<path d="M 547.3,89.2 Q 747.9,91.0 948.3,90.1 Q 948.6,149.0 949.1,207.3 Q 750.2,206.6 547.7,206.6 Q 546.1,147.7 547.3,89.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="748.0" y="110" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">编译时间 compile time（一次性/候选）</text>
+<text x="748.0" y="130" font-size="9.8" fill="#3B3B3B" text-anchor="middle">实测均值 0.31 ms/候选 × 74 次 = 22.9 ms</text>
+<text x="748.0" y="147" font-size="9.8" fill="#3B3B3B" text-anchor="middle">缓存命中 36 次：同一配置跨 shape、跨段不重编</text>
+<text x="748.0" y="164" font-size="9.8" fill="#3B3B3B" text-anchor="middle">真实 MLIR/LLVM 后端 0.1~10 s/候选：Σ编译 = 74 s</text>
+<text x="748.0" y="181" font-size="9.8" fill="#3B3B3B" text-anchor="middle">直接反超 Σ测量——循环结构不变，账全变</text>
+<path d="M 547.6,216.5 Q 748.0,215.0 948.8,216.4 Q 949.5,269.6 947.2,319.1 Q 748.0,316.7 549.2,316.8 Q 547.8,266.9 547.6,216.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="748.0" y="238" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">执行时间 execution time（每次调用都付）</text>
+<text x="748.0" y="258" font-size="9.8" fill="#3B3B3B" text-anchor="middle">排名唯一依据：median of 21（D107 口径）</text>
+<text x="748.0" y="275" font-size="9.8" fill="#3B3B3B" text-anchor="middle">决赛中位数 15.8~65.1 ms/次</text>
+<text x="748.0" y="292" font-size="9.8" fill="#3B3B3B" text-anchor="middle">S2 冠军 51.53 ms；缺省 65.12 ms；每次省 13.59 ms</text>
+<path d="M 549.6,326.6 Q 747.7,328.5 949.4,329.5 Q 949.3,380.0 948.4,434.6 Q 748.6,436.6 547.6,436.7 Q 547.2,380.2 549.6,326.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="748.0" y="348" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">搜索成本 search cost（整场一次性）</text>
+<text x="748.0" y="368" font-size="9.8" fill="#3B3B3B" text-anchor="middle">68.7 s = Σ编译 0.02 s + 筛选 57.1 s + 决赛 11.5 s + 记账</text>
+<text x="748.0" y="385" font-size="9.8" fill="#3B3B3B" text-anchor="middle">内核调用 1,358 次（逐条记录数 = 分段记账数）</text>
+<text x="748.0" y="402" font-size="9.8" fill="#3B3B3B" text-anchor="middle">按 (shape, 机器, 环境) 一次性；换 shape/换机器要重付</text>
+<path d="M 51.3,450.4 Q 500.4,449.7 947.5,451.6 Q 949.3,499.7 946.9,544.5 Q 497.9,543.5 52.9,543.4 Q 52.8,498.0 51.3,450.4  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.7"/>
+<text x="500" y="476" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">摊销账：N_break-even = 搜索成本分摊 ÷ 每次省下的执行时间</text>
+<text x="240" y="500" font-size="10.5" fill="#3B3B3B" text-anchor="middle">S1：8.0 s ÷ 3.28 ms ≈ 2,433 次</text>
+<text x="500" y="500" font-size="10.5" fill="#3B3B3B" text-anchor="middle">S2：37.0 s ÷ 13.59 ms ≈ 2,720 次</text>
+<text x="762" y="500" font-size="10.5" fill="#3B3B3B" text-anchor="middle">S3：23.7 s ÷ 9.97 ms ≈ 2,377 次</text>
+<text x="500" y="528" font-size="10" fill="#C97B7B" text-anchor="middle">百万次/天的推理服务几分钟回本；一天一次的脚本永不回本——两种时间不能混着报</text>
+</svg>

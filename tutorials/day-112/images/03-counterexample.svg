@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.4,3.4 Q 501.9,5.2 996.9,4.2 Q 997.2,331.4 997.4,657.4 Q 501.3,656.2 3.8,654.9 Q 2.7,328.7 3.4,3.4  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="500.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">性能反例结账（数字全部来自 outputs/，2026-11-13 13:52 冻结运行）</text>
+<path d="M 321.3,45.4 Q 502.0,46.4 680.0,44.5" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 41.2,62.4 Q 266.2,62.2 491.2,62.5 Q 492.5,196.2 490.6,330.6 Q 266.3,332.5 39.4,330.7 Q 42.3,195.8 41.2,62.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.24"/>
+<text x="52" y="83" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 分辨率 vs 稳定度（exp a/b）</text>
+<text x="52" y="102.0" font-size="10" fill="#3B3B3B" text-anchor="start">模型预测差：S1 = 0.10%，W1 = 0.01%（并列）</text>
+<text x="52" y="118.5" font-size="10" fill="#3B3B3B" text-anchor="start">窗口内实测差：5.85% ~ 7.81%（5 轮 A/B）</text>
+<text x="52" y="135.0" font-size="10" fill="#3B3B3B" text-anchor="start">→ 分辨率低世界 1~2 个数量级，近对名次 = 掷硬币</text>
+<text x="52" y="151.5" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="52" y="168.0" font-size="10" fill="#3B3B3B" text-anchor="start">画廊（同一对内核，谁快随窗口变）：</text>
+<text x="52" y="184.5" font-size="10" fill="#3B3B3B" text-anchor="start">　D110 进程：kij 快 6.5%　 D111 进程：ikj 快 8.2%</text>
+<text x="52" y="201.0" font-size="10" fill="#3B3B3B" text-anchor="start">　本进程·窗口 a（全测）：kij 快 6.4%</text>
+<text x="52" y="217.5" font-size="10" fill="#3B3B3B" text-anchor="start">　本进程·窗口 b（5 轮 A/B）：ikj 快 6.7% ←同进程翻号</text>
+<text x="52" y="234.0" font-size="10" fill="#3B3B3B" text-anchor="start">　子进程 #1 / #2（今天）：ikj 快 8.02% / 7.84%</text>
+<path d="M 511.4,63.1 Q 737.4,65.0 959.8,65.3 Q 962.1,198.9 960.2,331.1 Q 737.1,329.8 509.7,331.4 Q 510.2,195.8 511.4,63.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.24"/>
+<text x="522" y="83" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">② K=1 的账：今天两枚硬币都输（exp a/d）</text>
+<text x="522" y="102.0" font-size="10" fill="#3B3B3B" text-anchor="start">S1 64³：模型 top-1 = ikj（预测差 0.10%）</text>
+<text x="522" y="118.5" font-size="10" fill="#3B3B3B" text-anchor="start">　决赛：kij 15.99 vs ikj 17.01 ms → K=1 付 +6.4%</text>
+<text x="522" y="135.0" font-size="10" fill="#3B3B3B" text-anchor="start">W1 64×512×64：两表对近对并列（0.01%）</text>
+<text x="522" y="151.5" font-size="10" fill="#3B3B3B" text-anchor="start">　决赛：kij 130.92 vs ikj 139.42 ms → K=1 付 +6.5%</text>
+<text x="522" y="168.0" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="522" y="184.5" font-size="10" fill="#3B3B3B" text-anchor="start">D110 记录（topk-sensitivity）：K=1 三连错，</text>
+<text x="522" y="201.0" font-size="10" fill="#3B3B3B" text-anchor="start">　+4.8% / +6.6% / +8.1%——加上今天，五连错</text>
+<text x="522" y="217.5" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="522" y="234.0" font-size="10" fill="#3B3B3B" text-anchor="start">→ 模型选错不是『可能』，是 K=1 政策的常态；</text>
+<text x="522" y="250.5" font-size="10" fill="#3B3B3B" text-anchor="start">　 好消息：top-5＋同窗口决赛把损失归零（同批读数）</text>
+<path d="M 39.9,352.0 Q 264.7,352.2 491.2,352.4 Q 490.1,479.3 490.4,610.2 Q 264.7,609.7 41.2,611.1 Q 42.3,483.7 39.9,352.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.24"/>
+<text x="52" y="371" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ regime 把家族符号翻了面（exp c）</text>
+<text x="52" y="390.0" font-size="10" fill="#3B3B3B" text-anchor="start">窄表　j0−k0 = −4.6 ns（j 家族占优，ρ=0.985）</text>
+<text x="52" y="406.5" font-size="10" fill="#3B3B3B" text-anchor="start">宽表#1 j0−k0 = −2.3 ns（塌向零，ρ=0.945）</text>
+<text x="52" y="423.0" font-size="10" fill="#3B3B3B" text-anchor="start">宽表#2 j0−k0 = +4.3 ns（翻面！ρ=0.883）</text>
+<text x="52" y="439.5" font-size="10" fill="#3B3B3B" text-anchor="start">　→ 同一进程、同款探针、量两遍，符号不一致</text>
+<text x="52" y="456.0" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="52" y="472.5" font-size="10" fill="#3B3B3B" text-anchor="start">宽表#2 重排 S1：top-1 翻到 64³ ijk（另一家族）</text>
+<text x="52" y="489.0" font-size="10" fill="#3B3B3B" text-anchor="start">　实测慢 +10.6%，真冠军掉到第 4 名</text>
+<text x="52" y="505.5" font-size="10" fill="#3B3B3B" text-anchor="start">单价漂移：j0 +7.5%、ju +15.9%、loop +85.3%</text>
+<text x="52" y="522.0" font-size="10" fill="#3B3B3B" text-anchor="start">　（loop：宽 regime 里 v≥257 要现场分配整数对象）</text>
+<path d="M 508.8,351.5 Q 736.1,349.9 960.5,350.8 Q 958.8,480.0 959.8,609.7 Q 735.2,611.4 510.5,611.5 Q 510.6,482.7 508.8,351.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.24"/>
+<text x="522" y="371" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 出域对照：W1 64×512×64 全测 36 候选（exp d）</text>
+<text x="522" y="390.0" font-size="10" fill="#3B3B3B" text-anchor="start">闸门 domain_check 亮灯：512 &gt; 校准边界 256</text>
+<text x="522" y="406.5" font-size="10" fill="#3B3B3B" text-anchor="start">　→ 窄表预测属外推：重校准或加大 K</text>
+<text x="522" y="423.0" font-size="10" fill="#3B3B3B" text-anchor="start">正确性门：36/36 bitwise 通过（语义链稳如泰山）</text>
+<text x="522" y="439.5" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="522" y="456.0" font-size="10" fill="#3B3B3B" text-anchor="start">结构排序皮实：两表 top-1 都是大 tile j 内层家族</text>
+<text x="522" y="472.5" font-size="10" fill="#3B3B3B" text-anchor="start">　但冠军是它的近对 kij：122.04 vs 132.52 ms</text>
+<text x="522" y="489.0" font-size="10" fill="#3B3B3B" text-anchor="start">　近对预测差 0.01% —— 结构能排，近对只能并列</text>
+<text x="522" y="505.5" font-size="10" fill="#3B3B3B" text-anchor="start"></text>
+<text x="522" y="522.0" font-size="10" fill="#3B3B3B" text-anchor="start">→ 出域腐蚀的是分辨率；闸门的价值：</text>
+<text x="522" y="538.5" font-size="10" fill="#3B3B3B" text-anchor="start">　 不指望模型自己发现自己在外推</text>
+<text x="500.0" y="640" font-size="10" fill="#6b6257" text-anchor="middle">复盘答案：Cost Model 选错 = 分辨率失效（近对）× 偏差失效（绝对值）× regime 失效（符号）——工程答案分别是 top-K、决赛、闸门</text>
+</svg>

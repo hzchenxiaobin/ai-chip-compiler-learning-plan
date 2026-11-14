@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.4,3.3 Q 489.8,5.4 975.0,3.1 Q 976.5,319.4 976.5,634.7 Q 490.5,635.2 2.9,635.6 Q 2.3,321.1 4.4,3.3 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">同一个生成器，两种 shape 命运：512 整除模式，516 尾部模式</text>
+<path d="M 329.4,47.6 Q 491.9,45.7 650.0,49.5" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 40.1,60.8 Q 260.8,60.3 480.8,59.0 Q 480.9,226.0 480.7,390.3 Q 258.0,389.0 38.9,390.8 Q 39.0,227.8 40.1,60.8 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="261" y="84" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">512³ · div 模式</text>
+<text x="261" y="104" font-size="10.5" fill="#6b6257" text-anchor="middle">512 = 2⁹：因子全是 2 的幂</text>
+<path d="M 64.5,116.7 Q 261.9,113.7 456.7,114.8 Q 456.3,139.8 458.1,161.2 Q 261.4,160.0 64.4,158.8 Q 63.9,139.7 64.5,116.7 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="261" y="136" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">tile 池（每维 7 个）</text>
+<text x="261" y="153" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">{8, 16, 32, 64, 128, 256, 512}</text>
+<path d="M 84.0,179.5 Q 262.0,177.5 436.7,178.8 Q 439.5,196.7 438.4,211.1 Q 261.9,209.7 83.4,211.4 Q 83.7,195.6 84.0,179.5 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="96" y="201" font-size="10.5" fill="#3B3B3B" text-anchor="start">值域原始</text>
+<text x="428" y="201" font-size="12" fill="#6b6257" text-anchor="end" font-weight="bold">20,580</text>
+<path d="M 260.8,214.9 Q 260.8,215.9 261.0,218.0 M 247.8,219.9 L 261.0,218.0 L 248.3,213.9" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 84.5,220.4 Q 260.0,220.1 437.5,219.3 Q 437.3,235.1 438.1,250.9 Q 260.4,252.4 83.9,251.5 Q 85.7,235.4 84.5,220.4 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="96" y="241" font-size="10.5" fill="#3B3B3B" text-anchor="start">参数剪 588（死展开）</text>
+<text x="428" y="241" font-size="12" fill="#6b6257" text-anchor="end" font-weight="bold">19,992</text>
+<path d="M 262.4,255.2 Q 261.6,257.0 261.0,258.0 M 248.2,254.1 L 261.0,258.0 L 251.2,248.9" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 82.8,260.9 Q 261.5,258.8 436.9,258.4 Q 438.3,274.3 438.1,291.1 Q 259.5,292.9 82.5,292.4 Q 84.2,276.0 82.8,260.9 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="96" y="281" font-size="10.5" fill="#3B3B3B" text-anchor="start">资源剪 7,022（超预算）</text>
+<text x="428" y="281" font-size="12" fill="#3B3B3B" text-anchor="end" font-weight="bold">12,970</text>
+<text x="261" y="316" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存 12,970 个配置 · 242 种 tile</text>
+<text x="261" y="336" font-size="10" fill="#6b6257" text-anchor="middle">128³ 只剩 single；64³ 全配置 60 个都在</text>
+<text x="261" y="356" font-size="10" fill="#9CBF8E" text-anchor="middle">D97 冠军 128³·ikj 留在名单（single 版；double 被 D104 拦）</text>
+<path d="M 496.8,60.6 Q 719.8,58.7 941.1,59.9 Q 940.9,227.4 941.3,390.9 Q 717.7,388.3 497.0,389.6 Q 498.9,226.6 496.8,60.6 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="719" y="84" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">516³ · 先撞空集警报</text>
+<text x="719" y="104" font-size="10.5" fill="#6b6257" text-anchor="middle">516 = 2²·3·43：8 的倍数里没有它的因子</text>
+<path d="M 521.4,115.0 Q 718.7,114.6 915.4,115.8 Q 915.9,136.7 916.2,158.6 Q 717.8,160.0 521.4,158.5 Q 521.3,138.5 521.4,115.0 Z" stroke="#C97B7B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.35"/>
+<text x="719" y="136" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">div 模式 tile 池 = 空 ∅</text>
+<text x="719" y="153" font-size="9.5" fill="#C97B7B" text-anchor="middle">值域剪过头不是省钱，是断粮</text>
+<path d="M 719.5,165.5 Q 720.9,169.5 719.0,178.0 M 705.9,180.7 L 719.0,178.0 L 706.1,174.7" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<text x="719" y="192" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">逃生门：降级 tail 模式（D95 尾部机制接住）</text>
+<path d="M 522.9,201.2 Q 718.0,200.1 915.5,200.9 Q 914.1,217.2 915.1,234.8 Q 720.3,235.3 521.5,233.6 Q 520.0,219.6 522.9,201.2 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="719" y="222" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">tile 池 {32, 64, 96, 128, 160, 256}（6 个/维）</text>
+<path d="M 541.4,248.4 Q 719.7,247.8 897.0,248.6 Q 895.3,263.3 896.1,277.3 Q 718.1,276.2 541.6,274.5 Q 541.8,260.0 541.4,248.4 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="554" y="267" font-size="9.5" fill="#3B3B3B" text-anchor="start">值域原始 216 tile · 全带尾部</text>
+<text x="886" y="267" font-size="11" fill="#6b6257" text-anchor="end" font-weight="bold">12,960</text>
+<path d="M 542.3,283.7 Q 720.2,284.6 896.7,283.1 Q 894.7,296.7 897.0,313.1 Q 717.0,312.1 540.6,310.6 Q 540.9,296.6 542.3,283.7 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="554" y="303" font-size="9.5" fill="#3B3B3B" text-anchor="start">参数剪 0（最小 32 ≥ 最大 U 16）</text>
+<text x="886" y="303" font-size="11" fill="#6b6257" text-anchor="end" font-weight="bold">12,960</text>
+<path d="M 540.7,320.3 Q 718.3,320.5 897.5,319.7 Q 895.9,333.9 897.0,346.7 Q 720.8,347.9 543.4,347.8 Q 541.9,333.3 540.7,320.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="554" y="339" font-size="9.5" fill="#3B3B3B" text-anchor="start">资源剪 4,620（超预算）</text>
+<text x="886" y="339" font-size="11" fill="#3B3B3B" text-anchor="end" font-weight="bold">8,340</text>
+<text x="719" y="366" font-size="10" fill="#9CBF8E" text-anchor="middle">老朋友回来了：96³ = 184,704 B ✓ · 160×128×64 = 229,888 B ✓</text>
+<text x="719" y="384" font-size="9.5" fill="#6b6257" text-anchor="middle">D97 冠军翻转（ikj-64）的现场就在这类带尾 shape 上</text>
+<text x="60" y="416" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">预算扫描（512³ · div）：预算决定 tile 上限，不是直觉</text>
+<path d="M 90.9,443.5 Q 139.8,443.9 185.0,442.8 Q 186.7,483.1 186.5,519.8 Q 139.7,520.6 89.7,519.7 Q 89.2,480.6 90.9,443.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="138.0" y="434.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">15,570</text>
+<text x="138.0" y="538" font-size="10" fill="#6b6257" text-anchor="middle">512 KiB</text>
+<path d="M 237.8,455.2 Q 285.4,454.6 333.5,453.9 Q 331.5,485.7 333.1,518.7 Q 284.2,517.3 239.3,519.1 Q 239.2,486.2 237.8,455.2 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="286.0" y="447.02504816955684" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">12,970</text>
+<text x="286.0" y="538" font-size="10" fill="#3B3B3B" text-anchor="middle">256 KiB</text>
+<path d="M 386.7,457.7 Q 433.7,456.3 481.3,459.0 Q 483.3,488.3 482.5,520.7 Q 432.5,518.8 385.7,518.5 Q 386.7,487.3 386.7,457.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="434.0" y="451.23314065510596" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">12,130</text>
+<text x="434.0" y="538" font-size="10" fill="#6b6257" text-anchor="middle">192 KiB</text>
+<path d="M 534.0,470.5 Q 579.7,473.1 628.4,472.1 Q 628.9,495.9 630.7,518.6 Q 583.6,521.6 534.1,521.0 Q 534.6,495.4 534.0,470.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="582.0" y="462.54489402697493" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">9,872</text>
+<text x="582.0" y="538" font-size="10" fill="#6b6257" text-anchor="middle">128 KiB</text>
+<path d="M 680.7,485.1 Q 730.6,486.4 776.9,485.7 Q 776.7,502.1 776.8,520.6 Q 732.2,518.4 683.6,518.7 Q 680.4,503.8 680.7,485.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="730.0" y="476.31136801541425" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">7,124</text>
+<text x="730.0" y="538" font-size="10" fill="#6b6257" text-anchor="middle">64 KiB</text>
+<path d="M 69.6,523.5 Q 498.8,520.0 931.5,520.2" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<text x="60" y="560" font-size="10" fill="#6b6257" text-anchor="start">观察点：预算从 512K 砍到 64K（1/8），幸存者只砍掉 54%——</text>
+<text x="60" y="578" font-size="10" fill="#6b6257" text-anchor="start">顺序 / 展开 / 缓冲的搭配数几乎不动；先死的永远是『住不下』，不是『跑得慢』</text>
+<text x="920" y="416" font-size="9.5" fill="#6b6257" text-anchor="end">数字全部来自 outputs/budget-sweep.txt</text>
+</svg>

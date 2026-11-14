@@ -1,0 +1,32 @@
+{
+  "input": "outputs/step_dead.ll",
+  "tag": "dead",
+  "llvm_version": "22.1.0",
+  "python": "3.11.4",
+  "machine": "aarch64",
+  "passes": [
+    "instcombine",
+    "sccp",
+    "simplifycfg"
+  ],
+  "before": [
+    {
+      "function": "step_dead",
+      "blocks": 4,
+      "instructions": 12,
+      "ssa_values": 8
+    }
+  ],
+  "after": [
+    {
+      "function": "step_dead",
+      "blocks": 1,
+      "instructions": 5,
+      "ssa_values": 4
+    }
+  ],
+  "asm_instruction_lines": {
+    "aarch64-unknown-linux-gnu": 4,
+    "x86_64-unknown-linux-gnu": 5
+  }
+}

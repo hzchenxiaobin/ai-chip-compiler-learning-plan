@@ -1,0 +1,7 @@
+// mini 图 IR：matmul + bias 广播加
+// shape：A 90x64 · B 64x96 · bias 96 → C 90x96   —— D108 的 S3（非方形＋边界 tile）
+func @matmul_bias(%A: tensor<90x64xf32>, %B: tensor<64x96xf32>, %bias: tensor<96xf32>) -> tensor<90x96xf32> {
+  %mm = mini.matmul %A, %B    : (90x64, 64x96) -> 90x96
+  %C  = mini.add %mm, %bias   : (90x96, 96) -> 90x96, broadcast row
+  return %C : tensor<90x96xf32>
+}

@@ -1,0 +1,8 @@
+// mini 图 IR：matmul + bias 广播加
+// shape：A 32x32 · B 32x32 · bias 32 → C 32x32 —— 验收用小负载 S0
+// （空间只有 18 个候选：全测对照与引导搜索的同进程比较用它）
+func @matmul_bias(%A: tensor<32x32xf32>, %B: tensor<32x32xf32>, %bias: tensor<32xf32>) -> tensor<32x32xf32> {
+  %mm = mini.matmul %A, %B    : (32x32, 32x32) -> 32x32
+  %C  = mini.add %mm, %bias   : (32x32, 32) -> 32x32, broadcast row
+  return %C : tensor<32x32xf32>
+}

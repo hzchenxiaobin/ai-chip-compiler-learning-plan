@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.3,4.7 Q 488.2,6.2 974.4,5.4 Q 977.4,321.9 975.9,636.3 Q 492.0,636.0 3.7,635.1 Q 3.1,320.1 4.3,4.7 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">搜索空间三层漏斗：值域剪枝 → 跨轴参数约束 → D104 资源闸门</text>
+<path d="M 328.6,47.1 Q 487.9,45.2 651.3,48.1" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 46.0,62.3 Q 318.3,60.4 590.6,62.6 Q 592.4,110.3 593.1,156.5 Q 321.9,156.1 47.3,158.3 Q 45.7,112.3 46.0,62.3 Z" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.9"/>
+<text x="70" y="86" font-size="12.5" fill="#6b6257" text-anchor="start" font-weight="bold">naive 枚举（反面教材）</text>
+<text x="70" y="110" font-size="13" fill="#6b6257" text-anchor="start" font-weight="bold">25,769,803,776 = 512³ × 6 × 16 × 2</text>
+<text x="70" y="132" font-size="10" fill="#6b6257" text-anchor="start">随便抓一个必然踩雷：</text>
+<text x="230" y="132" font-size="10" fill="#C97B7B" text-anchor="start">奇数维 87.5% · 非整除 100% · 不满对齐 99.8% · 死展开 1.5%</text>
+<text x="628" y="86" font-size="11" fill="#6b6257" text-anchor="start">它们没有错，</text>
+<text x="628" y="104" font-size="11" fill="#6b6257" text-anchor="start">只是不配消耗一次</text>
+<text x="628" y="122" font-size="11" fill="#6b6257" text-anchor="start">编译 ＋ 一次测量</text>
+<path d="M -98.4,169.8 Q 123.0,168.1 340.5,169.0 Q 342.0,207.6 340.9,245.5 Q 121.2,244.3 -101.0,243.5 Q -97.6,208.0 -98.4,169.8 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="120" y="192" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">值域剪枝（生成之前就不造傻值）</text>
+<text x="120" y="218" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">20,580</text>
+<path d="M 121.4,247.6 Q 120.6,259.0 120.0,274.0 M 132.0,268.3 L 120.0,274.0 L 133.3,274.1" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="186" y="266" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">−588</text>
+<path d="M -44.9,274.6 Q 120.6,277.1 284.6,276.4 Q 286.1,314.5 286.2,351.4 Q 120.2,351.9 -44.9,349.8 Q -45.8,311.3 -44.9,274.6 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="120" y="298" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">跨轴参数约束（便宜，先跑）</text>
+<text x="120" y="324" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">19,992</text>
+<path d="M 118.5,353.2 Q 118.5,366.5 120.0,380.0 M 132.6,375.5 L 120.0,380.0 L 133.3,381.4" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="186" y="372" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">−7,022</text>
+<path d="M 4.5,383.0 Q 121.7,381.6 235.2,380.6 Q 235.8,419.1 236.4,456.3 Q 119.4,455.0 5.4,457.2 Q 4.2,421.8 4.5,383.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="120" y="404" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D104 资源闸门（贵，后跑）</text>
+<text x="120" y="430" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">12,970</text>
+<text x="120" y="476" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存者：12,970 个候选，242 种 tile</text>
+<text x="120" y="496" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">缩减比 1,986,878 倍</text>
+<text x="740" y="66" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">每层剪掉谁（真实例子）</text>
+<path d="M 601.3,79.3 Q 768.3,79.1 935.5,78.5 Q 934.7,106.5 932.9,137.9 Q 766.1,135.8 600.4,137.8 Q 602.1,107.9 601.3,79.3 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="767" y="98" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">值域层拦在门外：tm=511</text>
+<text x="767" y="116" font-size="9.5" fill="#6b6257" text-anchor="middle">奇数 → 三项 padding 税（D104 对齐扫描）</text>
+<text x="767" y="132" font-size="9.5" fill="#6b6257" text-anchor="middle">511 ∤ 512 → 凭空多一套尾部（D95）</text>
+<path d="M 600.9,186.9 Q 767.8,185.5 933.7,186.5 Q 933.3,226.0 934.9,261.6 Q 765.5,264.0 599.1,262.7 Q 600.4,226.5 600.9,186.9 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="767" y="208" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">参数层：✗ 8³ ijk U=16</text>
+<text x="767" y="226" font-size="9.5" fill="#6b6257" text-anchor="middle">U=16 > 最内层 k 的圈数 8</text>
+<text x="767" y="244" font-size="9.5" fill="#6b6257" text-anchor="middle">主循环 0 圈 + 尾部循环干全部活</text>
+<text x="767" y="258" font-size="9.5" fill="#6b6257" text-anchor="middle">= 比不展开还多背一份代码体积</text>
+<path d="M 601.1,313.1 Q 766.4,314.4 933.4,313.3 Q 932.4,361.0 933.0,409.1 Q 768.0,409.5 601.2,408.3 Q 601.0,362.5 601.1,313.1 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.3"/>
+<text x="767" y="332" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">资源层：✗ 8×64×512 ijk U=1 double</text>
+<text x="767" y="352" font-size="9.5" fill="#6b6257" text-anchor="middle">A 16,384×2 + B 131,072×2 + C 2,048</text>
+<text x="767" y="368" font-size="9.5" fill="#6b6257" text-anchor="middle">+ bias 256 = 297,216 B 超 35,072 B</text>
+<text x="767" y="392" font-size="10" fill="#5a7d4e" text-anchor="middle">对照 ✓ 128×256×64 single = 230,400 B</text>
+<text x="767" y="406" font-size="9.5" fill="#6b6257" text-anchor="middle">（幸存者里住得最挤，利用率 87.9%）</text>
+<path d="M 44.8,516.8 Q 491.4,517.2 934.3,515.7 Q 934.0,562.8 932.7,611.0 Q 488.7,609.3 45.4,610.4 Q 45.8,563.4 44.8,516.8 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="490" y="538" font-size="9.5" fill="#6b6257" text-anchor="middle">幸存者的内部结构（为什么差 4 个：顺序不改空间账，但参数约束按『最内层是谁』剪，而账本对三根维不对称——A/B 才 ×2、bias 只住 tn）</text>
+<text x="70" y="562" font-size="10.5" fill="#3B3B3B" text-anchor="start">按顺序：ijk=2159  jik=2159（k 结尾各少 4）  ikj=jki=kij=kji=2163</text>
+<text x="70" y="584" font-size="10.5" fill="#3B3B3B" text-anchor="start">按缓冲：single=7002  double=5968（×2 流入项先送命）</text>
+<text x="70" y="604" font-size="10.5" fill="#3B3B3B" text-anchor="start">tile=128³：只剩 single 的 30 个；double 的 30 个全灭（328,192 B）</text>
+<text x="920" y="584" font-size="10" fill="#C97B7B" text-anchor="end" font-weight="bold">D107 的协议在等它们</text>
+</svg>

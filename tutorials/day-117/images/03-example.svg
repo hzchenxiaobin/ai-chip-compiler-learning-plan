@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 780" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.5,5.2 Q 507.8,4.6 1015.7,2.4 Q 1014.0,386.4 1016.5,774.6 Q 507.7,773.1 2.6,775.0 Q 2.9,390.6 3.5,5.2  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">真实运行结果：优化前后、两条路收敛、O2 展开、账本清零与四个错误的层</text>
+<path d="M 299.8,43.4 Q 507.7,46.6 721.2,43.9" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="48" y="74" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 优化前后 MLIR（组 1）——canonicalize＋cse 真实折叠</text>
+<path d="M 53.4,84.8 Q 155.3,83.2 256.3,84.5 Q 254.9,132.0 254.1,177.1 Q 153.1,175.8 55.4,177.9 Q 54.0,133.4 53.4,84.8  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="155" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">gemm.mlir（前）</text>
+<text x="155" y="128" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="15" fill="#3B3B3B" text-anchor="middle" font-weight="bold">21 op</text>
+<text x="155" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">下界 6−6·上界 2×2</text>
+<text x="155" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.6" fill="#6b6257" text-anchor="middle">3+(6−6)·重复常量 %c1a/%c1b</text>
+<path d="M 259.8,132.1 Q 284.3,132.4 305.0,132.0 M 291.5,134.1 L 305.0,132.0 L 291.5,129.9" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/><text x="282.5" y="124.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">折叠</text>
+<path d="M 311.2,86.1 Q 411.0,86.1 510.4,86.5 Q 511.5,131.7 510.8,178.9 Q 412.0,178.9 309.6,176.4 Q 309.1,129.3 311.2,86.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="410" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">gemm-0-optimized（后）</text>
+<text x="410" y="128" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="15" fill="#3B3B3B" text-anchor="middle" font-weight="bold">18 op</text>
+<text x="410" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">subi/muli/addi 全消失</text>
+<text x="410" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.6" fill="#6b6257" text-anchor="middle">常量只剩 0/4/3/6/1/0.0</text>
+<path d="M 525.8,84.7 Q 741.6,83.0 956.0,85.0 Q 953.9,132.3 953.9,177.1 Q 737.9,178.5 523.7,177.2 Q 524.1,130.3 525.8,84.7  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="740" y="106" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.8" fill="#3B3B3B" text-anchor="middle" font-weight="bold">为什么值得单独存两份文件？</text>
+<text x="740" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">优化在 MLIR 层真实发生（21→18 op）；对照 A 证明：跳过它直接转换，</text>
+<text x="740" y="144" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">两条路的 .ll 逐字节一致——转换 pass（arith/index）自带常量折叠，</text>
+<text x="740" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">但 MLIR 优化层仍更早暴露形态（消冗余不是只在最后一层兜底）</text>
+<text x="48" y="214" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">② 两条路收敛·③ opt -O2 之后（gemm-3.ll → gemm-O2.ll）</text>
+<path d="M 53.7,226.2 Q 268.7,225.4 483.7,226.5 Q 484.7,282.0 486.6,333.4 Q 272.7,332.7 55.4,335.6 Q 55.9,281.7 53.7,226.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="270" y="248" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">导出物体检阅（62 条 SSA 指令）</text>
+<text x="270" y="270" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">define 2 个：@gemm（14 参数）＋_mlir_ciface_gemm（3 指针）</text>
+<text x="270" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">declare @malloc＋call malloc（M3 真身）＋insertvalue×7（描述符）</text>
+<text x="270" y="306" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">phi×4：3 个循环变量＋1 个 f32 累加器</text>
+<text x="270" y="324" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#9CBF8E" text-anchor="middle" font-weight="bold">先优化/不优化两条路：.ll diff 为空（逐字节一致）</text>
+<path d="M 525.9,224.6 Q 740.5,224.2 956.4,225.8 Q 955.3,280.6 955.9,332.9 Q 739.6,332.8 524.9,332.4 Q 526.2,280.5 525.9,224.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.3"/>
+<text x="740" y="248" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">opt -O2（LLVM 优化器的世界）</text>
+<text x="740" y="270" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="middle">SSA 62 → 67 条；fmul 1 → 18·fadd 1 → 18</text>
+<text x="740" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.4" fill="#6b6257" text-anchor="middle">小循环被展开：指令变多、循环开销与分支变少</text>
+<text x="740" y="306" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.4" fill="#6b6257" text-anchor="middle">malloc 标注 noalias＋dereferenceable_or_null(48)</text>
+<text x="740" y="324" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.4" fill="#6b6257" text-anchor="middle">对比：MLIR 折叠常量·LLVM 展开循环——两层优化各管一段</text>
+<text x="48" y="362" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 账本清零（D116 排期 → D117 兑现）</text>
+<path d="M 54.1,373.1 Q 505.4,373.2 953.9,374.2 Q 953.1,420.7 954.8,464.5 Q 504.8,463.1 56.2,466.0 Q 55.5,420.1 54.1,373.1  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="505" y="396" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">14/18＋残账 C1×4＋胶水 5 条（D116 结束时）</text>
+<path d="M 506.4,403.4 Q 504.6,412.5 505.0,418.0 M 502.9,404.5 L 505.0,418.0 L 507.1,404.5" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="505" y="436" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="middle">18/18：C1×4（scf.for×3＋scf.yield×1）由 --convert-scf-to-cf 转掉；i64↔index 胶水由 index 转换＋reconcile 清零</text>
+<text x="505" y="456" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="middle">tight 版（18 op）过同一条管道：纯 LLVM 方言 74 op·残账 0·胶水 0——两个源在同一条真管道上都清零</text>
+<text x="48" y="496" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">⑤ 四个真实错误的层（outputs/errors-*.txt 存档）</text>
+<path d="M 54.5,508.7 Q 161.4,511.1 270.7,509.1 Q 270.1,557.2 271.8,603.0 Q 163.3,602.7 56.6,603.9 Q 56.4,557.3 54.5,508.7  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.3"/>
+<text x="163" y="528" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="middle" font-weight="bold">strided alloc·多 pass</text>
+<text x="163" y="548" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">finalize-memref 拒绝非 identity 布局的 alloc</text>
+<text x="163" y="566" font-family="'Courier New',monospace" font-size="8.4" fill="#C97B7B" text-anchor="middle">“failed to legalize cast”</text>
+<text x="163" y="586" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">转换层当场抓</text>
+<path d="M 283.2,508.5 Q 391.0,506.3 498.2,507.6 Q 496.3,555.4 498.4,604.5 Q 389.0,603.2 281.5,604.2 Q 282.5,555.2 283.2,508.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.3"/>
+<text x="391" y="528" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="middle" font-weight="bold">strided alloc·one-shot</text>
+<text x="391" y="548" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">convert-to-llvm 静默漏掉 memref.alloc</text>
+<text x="391" y="566" font-family="'Courier New',monospace" font-size="8.4" fill="#C97B7B" text-anchor="middle">“Dialect 'memref' not found”</text>
+<text x="391" y="586" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">translate 层才抓</text>
+<path d="M 511.7,508.2 Q 618.6,506.6 728.5,508.5 Q 727.0,554.8 725.6,605.5 Q 618.2,605.8 510.4,604.4 Q 510.1,558.2 511.7,508.2  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.3"/>
+<text x="619" y="528" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="middle" font-weight="bold">忘 reconcile</text>
+<text x="619" y="548" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">胶水 6 条留在纯度门口</text>
+<text x="619" y="566" font-family="'Courier New',monospace" font-size="8.4" fill="#C97B7B" text-anchor="middle">“LLVM Translation failed”</text>
+<text x="619" y="586" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">导出层抓</text>
+<path d="M 739.1,509.2 Q 845.9,509.6 954.9,509.2 Q 952.9,555.4 955.2,604.5 Q 848.9,604.5 739.8,605.2 Q 739.7,558.9 739.1,509.2  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.3"/>
+<text x="847" y="528" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="middle" font-weight="bold">pass 顺序错</text>
+<text x="847" y="548" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#6b6257" text-anchor="middle">func 先于 scf/memref 跑</text>
+<text x="847" y="566" font-family="'Courier New',monospace" font-size="8.4" fill="#C97B7B" text-anchor="middle">“failed to legalize”</text>
+<text x="847" y="586" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">中途翻车</text>
+<text x="505" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="middle">共同教训：多 pass 手排顺序＝让每个转换 pass 自带类型转换器——胶水在 pass 之间堆积，顺序错一处就翻车；</text>
+<text x="505" y="644" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="middle">一次成型（--convert-to-llvm 或 Toy 教程的单一 full conversion）能躲开大部分顺序问题，但 alloc 的 identity 检查躲不开</text>
+<text x="505" y="684" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">三组文件入口：gemm.mlir＋gemm-0-optimized.mlir（组1）·gemm-2-llvm-dialect.mlir（组2）·gemm-3.ll（组3）</text>
+<text x="505" y="704" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#6b6257" text-anchor="middle">双线验证：llvm-as＋opt -passes=verify＋llc（18.1.8）＋llvmlite parse/verify（22.1）全部通过</text>
+<text x="505" y="724" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#9CBF8E" text-anchor="middle" font-weight="bold">复现：cd code &amp;&amp; ./run_all.sh —— 22/22 PASS（2026-11-13 冻结）</text>
+</svg>

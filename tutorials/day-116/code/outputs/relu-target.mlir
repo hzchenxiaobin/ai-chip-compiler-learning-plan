@@ -1,0 +1,112 @@
+llvm.func @relu(%x: !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)>) -> !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> {
+  %zero = llvm.mlir.constant(0.0 : f32) : f32
+  %b_r = llvm.mlir.constant(16 : i64) : i64
+  %mem_r = llvm.call @malloc(%b_r : i64) : (i64) -> !llvm.ptr
+  %u_r = llvm.mlir.undef : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)>
+  %off_r = llvm.mlir.constant(0 : i64) : i64
+  %s0_r = llvm.mlir.constant(2 : i64) : i64
+  %s1_r = llvm.mlir.constant(2 : i64) : i64
+  %t0_r = llvm.mlir.constant(2 : i64) : i64
+  %t1_r = llvm.mlir.constant(1 : i64) : i64
+  %i0_r = llvm.insertvalue %mem_r, %u_r[0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %i1_r = llvm.insertvalue %mem_r, %i0_r[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %i2_r = llvm.insertvalue %off_r, %i1_r[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %i3_r = llvm.insertvalue %s0_r, %i2_r[3, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %i4_r = llvm.insertvalue %s1_r, %i3_r[3, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %i5_r = llvm.insertvalue %t0_r, %i4_r[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %r = llvm.insertvalue %t1_r, %i5_r[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %c0 = llvm.mlir.constant(0 : i64) : i64
+  %c1 = llvm.mlir.constant(1 : i64) : i64
+  %x00_al = llvm.extractvalue %x[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %x00_off = llvm.extractvalue %x[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x00_s0 = llvm.extractvalue %x[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x00_s1 = llvm.extractvalue %x[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x00_m0 = llvm.mul %c0, %x00_s0 : i64
+  %x00_a0 = llvm.add %x00_off, %x00_m0 : i64
+  %x00_m1 = llvm.mul %c0, %x00_s1 : i64
+  %x00_a1 = llvm.add %x00_a0, %x00_m1 : i64
+  %x00_p = llvm.getelementptr %x00_al[%x00_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  %x00 = llvm.load %x00_p : !llvm.ptr -> f32
+  %g00 = llvm.fcmp "ogt" %x00, %zero : f32
+  %m00 = llvm.select %g00, %x00, %zero : i1, f32
+  %m00_dst_al = llvm.extractvalue %r[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %m00_dst_off = llvm.extractvalue %r[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m00_dst_s0 = llvm.extractvalue %r[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m00_dst_s1 = llvm.extractvalue %r[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m00_dst_m0 = llvm.mul %c0, %m00_dst_s0 : i64
+  %m00_dst_a0 = llvm.add %m00_dst_off, %m00_dst_m0 : i64
+  %m00_dst_m1 = llvm.mul %c0, %m00_dst_s1 : i64
+  %m00_dst_a1 = llvm.add %m00_dst_a0, %m00_dst_m1 : i64
+  %m00_dst_p = llvm.getelementptr %m00_dst_al[%m00_dst_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  llvm.store %m00, %m00_dst_p : f32, !llvm.ptr
+  %x01_al = llvm.extractvalue %x[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %x01_off = llvm.extractvalue %x[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x01_s0 = llvm.extractvalue %x[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x01_s1 = llvm.extractvalue %x[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x01_m0 = llvm.mul %c0, %x01_s0 : i64
+  %x01_a0 = llvm.add %x01_off, %x01_m0 : i64
+  %x01_m1 = llvm.mul %c1, %x01_s1 : i64
+  %x01_a1 = llvm.add %x01_a0, %x01_m1 : i64
+  %x01_p = llvm.getelementptr %x01_al[%x01_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  %x01 = llvm.load %x01_p : !llvm.ptr -> f32
+  %g01 = llvm.fcmp "ogt" %x01, %zero : f32
+  %m01 = llvm.select %g01, %x01, %zero : i1, f32
+  %m01_dst_al = llvm.extractvalue %r[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %m01_dst_off = llvm.extractvalue %r[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m01_dst_s0 = llvm.extractvalue %r[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m01_dst_s1 = llvm.extractvalue %r[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m01_dst_m0 = llvm.mul %c0, %m01_dst_s0 : i64
+  %m01_dst_a0 = llvm.add %m01_dst_off, %m01_dst_m0 : i64
+  %m01_dst_m1 = llvm.mul %c1, %m01_dst_s1 : i64
+  %m01_dst_a1 = llvm.add %m01_dst_a0, %m01_dst_m1 : i64
+  %m01_dst_p = llvm.getelementptr %m01_dst_al[%m01_dst_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  llvm.store %m01, %m01_dst_p : f32, !llvm.ptr
+  %x10_al = llvm.extractvalue %x[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %x10_off = llvm.extractvalue %x[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x10_s0 = llvm.extractvalue %x[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x10_s1 = llvm.extractvalue %x[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x10_m0 = llvm.mul %c1, %x10_s0 : i64
+  %x10_a0 = llvm.add %x10_off, %x10_m0 : i64
+  %x10_m1 = llvm.mul %c0, %x10_s1 : i64
+  %x10_a1 = llvm.add %x10_a0, %x10_m1 : i64
+  %x10_p = llvm.getelementptr %x10_al[%x10_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  %x10 = llvm.load %x10_p : !llvm.ptr -> f32
+  %g10 = llvm.fcmp "ogt" %x10, %zero : f32
+  %m10 = llvm.select %g10, %x10, %zero : i1, f32
+  %m10_dst_al = llvm.extractvalue %r[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %m10_dst_off = llvm.extractvalue %r[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m10_dst_s0 = llvm.extractvalue %r[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m10_dst_s1 = llvm.extractvalue %r[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m10_dst_m0 = llvm.mul %c1, %m10_dst_s0 : i64
+  %m10_dst_a0 = llvm.add %m10_dst_off, %m10_dst_m0 : i64
+  %m10_dst_m1 = llvm.mul %c0, %m10_dst_s1 : i64
+  %m10_dst_a1 = llvm.add %m10_dst_a0, %m10_dst_m1 : i64
+  %m10_dst_p = llvm.getelementptr %m10_dst_al[%m10_dst_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  llvm.store %m10, %m10_dst_p : f32, !llvm.ptr
+  %x11_al = llvm.extractvalue %x[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %x11_off = llvm.extractvalue %x[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x11_s0 = llvm.extractvalue %x[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x11_s1 = llvm.extractvalue %x[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %x11_m0 = llvm.mul %c1, %x11_s0 : i64
+  %x11_a0 = llvm.add %x11_off, %x11_m0 : i64
+  %x11_m1 = llvm.mul %c1, %x11_s1 : i64
+  %x11_a1 = llvm.add %x11_a0, %x11_m1 : i64
+  %x11_p = llvm.getelementptr %x11_al[%x11_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  %x11 = llvm.load %x11_p : !llvm.ptr -> f32
+  %g11 = llvm.fcmp "ogt" %x11, %zero : f32
+  %m11 = llvm.select %g11, %x11, %zero : i1, f32
+  %m11_dst_al = llvm.extractvalue %r[1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> ptr
+  %m11_dst_off = llvm.extractvalue %r[2] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m11_dst_s0 = llvm.extractvalue %r[4, 0] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m11_dst_s1 = llvm.extractvalue %r[4, 1] : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> -> i64
+  %m11_dst_m0 = llvm.mul %c1, %m11_dst_s0 : i64
+  %m11_dst_a0 = llvm.add %m11_dst_off, %m11_dst_m0 : i64
+  %m11_dst_m1 = llvm.mul %c1, %m11_dst_s1 : i64
+  %m11_dst_a1 = llvm.add %m11_dst_a0, %m11_dst_m1 : i64
+  %m11_dst_p = llvm.getelementptr %m11_dst_al[%m11_dst_a1] : (!llvm.ptr, i64) -> !llvm.ptr, f32
+  llvm.store %m11, %m11_dst_p : f32, !llvm.ptr
+  llvm.return %r : !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)>
+}
+
+// 运行库符号：真实 MLIR 由 MemRefToLLVM 自动声明 malloc
+llvm.func @malloc(i64) -> !llvm.ptr

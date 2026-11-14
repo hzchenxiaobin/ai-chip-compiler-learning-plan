@@ -1,0 +1,97 @@
+第 117 天导出 LLVM IR：真机报告 2026-11-13 16:36
+工具链：Ubuntu LLVM version 18.1.8
+
+[TP0] 工具链盘点（教训：PATH 里没有，不等于机器上没有）
+  which mlir-opt mlir-translate: (空——不在 PATH)
+  /usr/lib/llvm-18/bin/mlir-opt: Ubuntu LLVM version 18.1.8
+  /usr/lib/llvm-18/bin/mlir-translate: Ubuntu LLVM version 18.1.8
+  /usr/lib/llvm-18/bin/llvm-as: Ubuntu LLVM version 18.1.8
+  /usr/lib/llvm-18/bin/opt: Ubuntu LLVM version 18.1.8
+  /usr/lib/llvm-18/bin/llc: Ubuntu LLVM version 18.1.8
+  [PASS] 全套 MLIR/LLVM 工具真实可用
+
+[TP1] 源 IR 账本（census.py，口径对齐 D114~D116：func.func 记 1 条）
+gemm.mlir: total 21 op（胶水 0 条，llvm.* 0，非 llvm 残账 20）
+    arith.addf       x1
+    arith.addi       x1
+    arith.constant   x6
+    arith.mulf       x1
+    arith.muli       x1
+    arith.subi       x1
+    func.func        x1
+    func.return      x1
+    memref.alloc     x1
+    memref.load      x2
+    memref.store     x1
+    scf.for          x3
+    scf.yield        x1
+gemm_tight.mlir: total 18 op（胶水 0 条，llvm.* 0，非 llvm 残账 17）
+    arith.addf       x1
+    arith.constant   x6
+    arith.mulf       x1
+    func.func        x1
+    func.return      x1
+    memref.alloc     x1
+    memref.load      x2
+    memref.store     x1
+    scf.for          x3
+    scf.yield        x1
+  [PASS] gemm_tight 是 D116 口径 18 op（残账 C1×4 待清）
+
+[TP2] 优化前后 MLIR（组 1）：管道阶段 0 的 --canonicalize --cse
+outputs/gemm-0-optimized.mlir: total 18 op（胶水 0 条，llvm.* 0，非 llvm 残账 17）
+    arith.addf       x1
+    arith.constant   x6
+    arith.mulf       x1
+    func.func        x1
+    func.return      x1
+    memref.alloc     x1
+    memref.load      x2
+    memref.store     x1
+    scf.for          x3
+    scf.yield        x1
+  [PASS] 优化后 op 数减少：21 -> 18
+  [PASS] 朴素冗余全部折叠：下界 6-6、上界 2x2、3+(6-6) 变成常量
+
+[TP3] C1 落地（阶段 1）：--convert-scf-to-cf 把 scf.for 拆成四块
+  [PASS] scf.* 清零；新块 9 个、cf.cond_br 3 条
+  [PASS] 归纳变量/累加器变成块参数（bb(...): index, f32——phi 的前身）
+
+[TP4] 完整转换（组 2）：五个转换 pass + reconcile（阶段 2）
+  reconcile 前胶水 6 条；reconcile 后 0 条（i64->index x3、struct->memref x3）
+  [PASS] 胶水清零——reconcile-unrealized-casts 清掉 6 条
+  非 llvm.* 残账（不含 module）：0
+  [PASS] 残账 0——全部转成 LLVM 方言
+
+[TP5] 导出 LLVM IR（组 3）：mlir-translate + 真 LLVM 三连验证
+  gemm-3.ll：SSA 指令 62 条、define 2 个（@gemm + @_mlir_ciface_gemm；另有 declare @malloc）、phi 4 条
+  [PASS] 导出成功：@gemm ＋自动生成的 _mlir_ciface_gemm 包装
+  [PASS] phi 4 条——R3（块参数->phi）在真输出里兑现
+  [PASS] malloc 调用在 .ll 里（M3 的真身）
+  [PASS] insertvalue 填描述符（M3/D115 的 56B 结构体真身）
+  [PASS] llvm-as + opt -passes=verify + llc 全部通过（lower.sh 阶段 4）
+
+[TP6] 双线验证：llvm-18 工具 + llvmlite（LLVM 22.1，跨版本）
+  llvmlite(内嵌 LLVM 22.1) parse+verify: OK；函数 ['malloc', 'gemm', '_mlir_ciface_gemm']
+  [PASS] 跨版本双线验证：18.1.8 导出的 .ll 被 22.1 接受
+
+[TP7] 对照 A：朴素源跳过阶段 0 直接转换——两条路是否收敛
+  [PASS] 收敛：先优化/不优化两条路的 .ll 完全一致（转换 pass 自带常量折叠）
+
+[TP8] 对照 B：LLVM 级优化 opt -O2（LLVM 优化器的世界）
+  SSA 指令 62 -> 67 条；fmul 1 -> 18（循环展开：指令变多、循环开销变少）
+  [PASS] O2 展开循环：fmul 1->18
+
+[TP9] D116 账本清零回归：tight 版（18 op，残账 C1×4）过同一条管道
+outputs/tight-2-llvm-dialect.mlir: total 74 op（胶水 0 条，llvm.* 74，非 llvm 残账 0）
+  [PASS] 18/18 清零：C1×4 由 --convert-scf-to-cf 转掉，非 llvm 残账 0
+  [PASS] D116 排期给今天的最后一笔（C1 + reconcile）全部兑现
+
+[TP10] 常见错误复现（真实报错存档 errors-*.txt）
+  [PASS] 错误1复现：strided alloc 多 pass 管道 -> failed to legalize cast
+  [PASS] 错误1变体复现：one-shot 静默漏掉 memref.alloc，translate 才报错
+  [PASS] 错误2复现：忘了 reconcile -> LLVM Translation failed for unrealized_conversion_cast
+  [PASS] 错误3复现：pass 顺序错（func 先于 scf/memref）-> 转换中途翻车
+
+汇总：22 PASS / 0 FAIL
+全部通过：三组文件已冻结（优化前后 MLIR / LLVM Dialect / LLVM IR）

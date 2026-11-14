@@ -1,0 +1,81 @@
+第 115 天：转换函数与类型——真机报告（2026-11-13 15:41）
+环境：Python 3.11.4 / numpy 1.26.4 / llvmlite 0.50.0（LLVM 22.1.0） / triple aarch64-unknown-linux-gnu / gcc 9.4.0
+输入：GEMM 4×6×3 的循环 IR（18 op）
+
+[TP1] DataLayout 对账：教学计算 vs 真机 LLVM TargetData
+       f32: 教学 4/4 B  真机 4/4 B  OK
+       f64: 教学 8/8 B  真机 8/8 B  OK
+       i32: 教学 4/4 B  真机 4/4 B  OK
+       i64: 教学 8/8 B  真机 8/8 B  OK
+        i1: 教学 1/1 B  真机 1/1 B  OK
+      index -> i64（位宽随目标指针宽度 64 位）
+      ptr  : 教学 8/8 B  真机 8/8 B
+      rank1 描述符: 教学 40B/align8 offsets[0, 8, 16, 24, 32]  真机 40B offsets[0, 8, 16, 24, 32]  OK
+      rank2 描述符: 教学 56B/align8 offsets[0, 8, 16, 24, 40]  真机 56B offsets[0, 8, 16, 24, 40]  OK
+      rank3 描述符: 教学 72B/align8 offsets[0, 8, 16, 24, 48]  真机 72B offsets[0, 8, 16, 24, 48]  OK
+      结论：全部一致——56B/align8/偏移 0,8,16,24,40 不是背出来的，是 LLVM 算出来的
+
+[TP2] 签名转换表（类型测试主体）：10 组样例
+      S1 GEMM: 参数 112B，结果 56B
+      S2 Relu: 参数 4B，结果 4B
+      S3 Add: 参数 8B，结果 4B
+      S4 init: 参数 0B，结果 0B
+      S5 scale: 参数 16B，结果 4B
+      S6 rank1 点积: 参数 40B，结果 4B
+      S7 rank3 求和: 参数 72B，结果 4B
+      S8 双结果: 参数 60B，结果 8B（打包 struct）
+      S9 双 memref 结果: 参数 56B，结果 112B（打包 struct）
+      S10 混合标量: 参数 16B，结果 4B
+      S8 struct<(f32,f32)>: 教学 8B/align4  真机 8B/align4  OK
+      S9 struct<(desc,desc)>: 教学 112B/align8  真机 112B/align8  OK
+
+[TP3] 两道闸（D114 对照实验 B 的执行版）
+      tensor 参数: 拒收 OK —— tensor<4x6xf32>：tensor 是值语义类型，兑换表里没有目标类型——必须先经过第一段 Lowering（bufferize，D85~D105）
+      动态 memref 参数: 拒收 OK —— memref<?x?xf32>：动态 shape 暂不支持（'暂不支持'第 1 条，D114 清单第四节）
+      未知标量 bf16: 拒收 OK —— bf16：未知类型，兑换表拒收
+      mini.* 方言闸：残账命中 1 条非法方言（无排期、'不做'）
+
+[TP4] partial 驱动：8/18 转换，残账 10 条，结论 SUCCESS
+      残账：scf.for ×3 —— 模式 C1 未实现（排期 D117）
+      残账：memref.load ×2 —— 模式 M1 未实现（排期 D116）
+      残账：arith.mulf/addf ×2 —— 模式 A3 未实现（排期 D116）
+      残账：memref.alloc ×1 —— 模式 M3 未实现（排期 D116）
+      残账：scf.yield ×1 —— 模式 C1 未实现（排期 D117）
+      残账：memref.store ×1 —— 模式 M2 未实现（排期 D116）
+      full 驱动：同配置残账 10 条 -> FAIL（整批退回，D117 导出前的门）
+
+[TP5] 胶水账：partial-ir.mlir 共 8 条 unrealized_conversion_cast
+      desc->memref: 2 条
+      i64->index: 5 条
+      memref->desc: 1 条
+      产出中 llvm.* op：8 行（llvm.func 1 + llvm.mlir.constant 6 + llvm.return 1）
+
+[TP6] 真机 ABI（正确路径：描述符经 ptr 传递，C ABI 间接传副本的等价形式）
+      peek 连续布局 4×6（strides [6,1]）：24/24 点 bitwise 一致
+      peek 转置视图 4×3（元素 strides (1, 4)；numpy .strides=(4, 16) 是字节）：12/12 点 bitwise 一致
+      mul2_out（sret 式双出口）：ret=23.0（23.0） out=46.0（46.0） bitwise OK
+      echo：x0 直通指针（回传 0xaaaaf1634670 == 传入 0xaaaaf1634670）OK
+
+[TP7] C ABI 证据链（本机 gcc -O2 -S）
+      getoff_c（56B 按值）汇编体：ldr	x0, [x0, 16] ; ret
+      getoff_p（指针）与按值版一致——>16B 聚合在 C ABI 上按'间接'传（x0=调用方副本地址）
+      make_desc（返回 56B struct）：adrp	x0, .LANCHOR0 ; add	x0, x0, :lo12:.LANCHOR0 ; ldp	x2, x3, [x0] ; stp	x2, x3, [x8] ; ldp	x2, x3, [x0, 16] ; stp	x2, x3, [x8, 16] ; ldp	x2, x3, [x0, 32] ; stp	x2, x3, [x8, 32] ; ldr	x0, [x0, 48] ; str	x0, [x8, 48] ; ret
+      返回值经 x8 隐式结果指针（sret）：OK
+      sizeof(struct desc)：程序退出码 56（期望 56）OK
+
+[TP8] ABI 误用探针：三种签名形态＋两个填表 bug（真机实测）
+      同一个 offset=42：ptr 形态读到 42；byval 形态读到 281474228691920；直接聚合形态读到 281474228691856
+      ——byval（LLVM 22/aarch64 上 callee 从参数栈区读）与直接聚合（LLVM 自行拆传）都不等于 C ABI 的'间接传'；错位值随环境变化，但'错'是确定的
+      P1 strides 填反（[6,1]写成[1,6]）：20/24 点错，max|diff| = 25（对角线 3 点碰巧读对——巧合不等于正确）
+      P2 offset 错填 8：24/24 点错，max|diff| = 8（确定性）
+
+汇总：
+  TP1: PASS
+  TP2: PASS
+  TP3: PASS
+  TP4: PASS
+  TP5: PASS
+  TP6: PASS
+  TP7: PASS
+  TP8: PASS
+8/8 PASS

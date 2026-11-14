@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.7,3.0 Q 487.4,0.9 975.1,2.8 Q 974.4,319.2 975.0,636.9 Q 490.5,635.8 2.5,635.7 Q 4.9,321.5 3.7,3.0  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Roofline 机制解剖：两个屋顶、一个屋脊点、两片受限区</text>
+<path d="M 321.2,45.3 Q 490.0,44.3 661.6,44.1" stroke="#A9C4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 90.1,519.5 Q 324.1,520.3 558.8,519.7" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 89.5,101.4 Q 91.9,309.4 88.6,519.3" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 555.3,519.4 Q 560.7,519.2 570.0,520.0 M 557.0,523.0 L 570.0,520.0 L 557.0,517.0" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 89.8,112.6 Q 89.4,103.0 90.0,94.0 M 93.0,107.0 L 90.0,94.0 L 87.0,107.0" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="564" y="542" font-size="10.5" fill="#3B3B3B" text-anchor="end">算术强度 AI (FLOP/B)，log</text>
+<text x="78" y="96" font-size="10.5" fill="#3B3B3B" text-anchor="start" transform="rotate(-38 78 96)">可达性能 (GFLOPS)，log</text>
+<path d="M 109.8,501.2 Q 156.5,443.4 198.7,386.5 Q 264.7,308.2 330.8,229.1 " stroke="#9CBF8E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<path d="M 329.8,229.5 Q 389.8,230.5 451.1,231.3 Q 499.2,233.8 547.5,234.8 " stroke="#A9C4D4" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<circle cx="330.1" cy="230.6" r="6" fill="#C97B7B" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="338" y="218" font-size="11" fill="#C97B7B" text-anchor="start" font-weight="bold">屋脊点 AI* = P ÷ BW</text>
+<path d="M 331.3,235.0 Q 330.5,379.7 330.7,521.3" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="330" y="536" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">AI*</text>
+<text x="170" y="470" font-size="11" fill="#9CBF8E" text-anchor="middle" font-weight="bold">带宽受限区</text>
+<text x="170" y="486" font-size="9.5" fill="#6b6257" text-anchor="middle">AI &lt; AI*：涨 AI 才涨速度</text>
+<text x="455" y="320" font-size="11" fill="#A9C4D4" text-anchor="middle" font-weight="bold">算力受限区</text>
+<text x="455" y="336" font-size="9.5" fill="#6b6257" text-anchor="middle">AI ≥ AI*：AI 再高也没用</text>
+<circle cx="462.2" cy="300.1" r="6" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.3"/>
+<path d="M 461.2,308.7 Q 460.2,415.1 460.4,520.5" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="462" y="536" font-size="10" fill="#3B3B3B" text-anchor="middle">内核点的 AI</text>
+<path d="M 461.5,292.2 Q 463.2,265.2 463.1,234.2" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="386" y="268" font-size="9.8" fill="#6b6257" text-anchor="start">离屋顶的倍数＝优化余量</text>
+<text x="200" y="435" font-size="10.5" fill="#9CBF8E" text-anchor="start" font-weight="bold">带宽屋顶 = BW × AI（斜线）</text>
+<text x="360" y="214" font-size="10.5" fill="#A9C4D4" text-anchor="start" font-weight="bold">算力屋顶 P（水平线）</text>
+<path d="M 589.7,91.4 Q 763.4,89.3 939.1,90.2 Q 939.7,143.1 939.8,196.9 Q 763.0,199.1 588.9,198.7 Q 588.6,145.4 589.7,91.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="765.0" y="109" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">两条公式</text>
+<text x="765.0" y="128.0" font-size="10" fill="#3B3B3B" text-anchor="middle">可达性能 attainable = min(P, BW × AI)</text>
+<text x="765.0" y="144.5" font-size="10" fill="#3B3B3B" text-anchor="middle">屋脊点 AI* = P ÷ BW</text>
+<text x="765.0" y="161.0" font-size="10" fill="#3B3B3B" text-anchor="middle">AI &lt; AI* → 被带宽卡住；AI ≥ AI* → 被算力卡住</text>
+<text x="765.0" y="177.5" font-size="10" fill="#3B3B3B" text-anchor="middle">速度的上限＝两个屋顶的较低者</text>
+<path d="M 591.4,212.3 Q 767.2,213.0 939.4,210.8 Q 939.6,263.8 939.8,320.8 Q 762.4,323.3 588.7,321.6 Q 588.1,265.4 591.4,212.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="765.0" y="231" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">三步定位法</text>
+<text x="765.0" y="250.0" font-size="10" fill="#3B3B3B" text-anchor="middle">① 量屋顶：探针与内核必须同一执行层</text>
+<text x="765.0" y="266.5" font-size="10" fill="#3B3B3B" text-anchor="middle">   （拿硬件屋顶解释 CPython 内核＝跨层归因）</text>
+<text x="765.0" y="283.0" font-size="10" fill="#3B3B3B" text-anchor="middle">② 算 AI：flops ÷ 名义搬运字节（n/6）</text>
+<text x="765.0" y="299.5" font-size="10" fill="#3B3B3B" text-anchor="middle">③ 看点：落在屋脊哪一边＋离屋顶几倍</text>
+<path d="M 590.7,334.7 Q 767.8,333.2 940.6,333.9 Q 939.4,389.1 939.3,443.5 Q 766.8,441.4 591.1,440.7 Q 590.9,386.0 590.7,334.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="765.0" y="353" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">名义 AI 的边界（诚实条款）</text>
+<text x="765.0" y="372.0" font-size="10" fill="#3B3B3B" text-anchor="middle">名义 AI 假设每个元素只搬运一遍</text>
+<text x="765.0" y="388.5" font-size="10" fill="#3B3B3B" text-anchor="middle">tiled 内核实际重读 → 实际 AI 更低</text>
+<text x="765.0" y="405.0" font-size="10" fill="#3B3B3B" text-anchor="middle">C 的读-改-写重访也按单遍计</text>
+<text x="765.0" y="421.5" font-size="10" fill="#3B3B3B" text-anchor="middle">余量大（75~113×）时，结论对它稳健</text>
+<path d="M 55.2,470.9 Q 499.6,468.9 940.0,468.8 Q 941.9,500.7 941.5,535.5 Q 500.2,534.0 54.7,534.7 Q 53.3,502.9 55.2,470.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.85"/>
+<text x="498" y="494" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">本环境代入（实测）：P_int = 0.0547 GFLOPS，BW = 0.385 GB/s → AI* ≈ 0.142 FLOP/B；</text>
+<text x="498" y="514" font-size="11.5" fill="#3B3B3B" text-anchor="middle">matmul 的 AI = 10.67 / 13.46 / 16.00 → 全部在屋脊右侧 75~113 倍 → 统一标记『解释受限』</text>
+<text x="498" y="552" font-size="10.5" fill="#6b6257" text-anchor="middle">屋脊两侧的分界只由两个屋顶的比值决定——带宽和算力谁卡住你，不是猜出来的，是 P ÷ BW 算出来的</text>
+</svg>

@@ -1,0 +1,32 @@
+{
+  "input": "outputs/step_const5.ll",
+  "tag": "const5",
+  "llvm_version": "22.1.0",
+  "python": "3.11.4",
+  "machine": "aarch64",
+  "passes": [
+    "instcombine",
+    "sccp",
+    "simplifycfg"
+  ],
+  "before": [
+    {
+      "function": "step5",
+      "blocks": 4,
+      "instructions": 11,
+      "ssa_values": 7
+    }
+  ],
+  "after": [
+    {
+      "function": "step5",
+      "blocks": 1,
+      "instructions": 5,
+      "ssa_values": 4
+    }
+  ],
+  "asm_instruction_lines": {
+    "aarch64-unknown-linux-gnu": 4,
+    "x86_64-unknown-linux-gnu": 5
+  }
+}

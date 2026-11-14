@@ -1,0 +1,26 @@
+读取 results-d108.jsonl：110 条记录，sha256 校验通过（与 D108 outputs/results.jsonl 逐字节一致）
+==============================================================================
+ 对照 A：mean 口径 vs median 口径的有效 GFLOPS（读 D108 记录，零重跑）
+==============================================================================
+ [S1] 决赛 4 条：
+   tiled-matmul/64³ kij U=1       median=  33.2 MF  mean=  33.2 MF  Δ=+0.03%
+   tiled-matmul/64³ ikj U=1       median=  30.7 MF  mean=  30.7 MF  Δ=+0.04%
+   tiled-matmul/64³ ijk U=1       median=  29.6 MF  mean=  29.6 MF  Δ=-0.02%
+   tiled-matmul/32³ ijk U=1       median=  27.5 MF  mean=  27.5 MF  Δ=-0.05%
+   排名按 median 与按 mean 一致：True
+ [S2] 决赛 4 条：
+   tiled-matmul/96³ kij U=1       median=  34.3 MF  mean=  34.3 MF  Δ=-0.08%
+   tiled-matmul/64³ kij U=1       median=  32.0 MF  mean=  31.9 MF  Δ=-0.11%
+   tiled-matmul/96³ ikj U=1       median=  31.8 MF  mean=  31.8 MF  Δ=-0.01%
+   tiled-matmul/32³ ijk U=1       median=  27.2 MF  mean=  27.2 MF  Δ=-0.04%
+   排名按 median 与按 mean 一致：True
+ [S3] 决赛 4 条：
+   tiled-matmul/90×96×64 kij U=1  median=  34.5 MF  mean=  34.5 MF  Δ=+0.00%
+   tiled-matmul/64³ kij U=1       median=  32.1 MF  mean=  32.0 MF  Δ=-0.02%
+   tiled-matmul/90×96×64 ikj U=1  median=  31.7 MF  mean=  31.7 MF  Δ=-0.00%
+   tiled-matmul/32³ ijk U=1       median=  26.3 MF  mean=  26.2 MF  Δ=-0.29%
+   排名按 median 与按 mean 一致：True
+
+ 结论：GFLOPS 排名对口径稳健（D107 稳定性实验的速率版）；
+ 换算单位不改变排序，只改变每行的读数——口径必须写进表头，数值才能被复用。
+

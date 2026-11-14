@@ -1,0 +1,4 @@
+outputs/errors-2-strided-oneshot.mlir:19:14: error: Dialect `memref' not found for custom op 'memref.alloc' 
+    %alloc = memref.alloc() : memref<4x3xf32, strided<[3, 1]>>
+             ^
+outputs/errors-2-strided-oneshot.mlir:19:14: note: Registered dialects: acc, amx, arm_neon, arm_sme, arm_sve, builtin, dlti, func, gpu, llvm, nvvm, omp, rocdl, spirv, x86vector ; for more info on dialect registration see https://mlir.llvm.org/getting_started/Faq/#registered-loaded-dependent-whats-up-with-dialects-management

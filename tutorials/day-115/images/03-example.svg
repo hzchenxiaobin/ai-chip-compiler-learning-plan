@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 730" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.4,2.5 Q 508.6,1.2 1015.0,2.6 Q 1016.8,363.4 1017.4,726.8 Q 512.4,728.8 5.5,727.4 Q 3.9,363.0 5.4,2.5  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">真实运行结果：残账、两道闸、真机 ABI 证据与探针（全部本机冻结数字）</text>
+<path d="M 299.5,43.9 Q 510.1,43.4 719.5,45.3" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 45.5,60.7 Q 194.1,63.6 344.7,62.2 Q 343.4,187.9 345.2,311.9 Q 194.1,314.4 44.2,313.5 Q 44.8,187.9 45.5,60.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="57" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① partial 账本：8/18，SUCCESS</text>
+<text x="57" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">今天转换 8：F1×1＋A1×6＋R1×1</text>
+<text x="57" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">残账 10（各带排期）：</text>
+<text x="57" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  scf.for ×3 ＋ yield ×1 → C1（D117）</text>
+<text x="57" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  memref.load ×2 → M1（D116）</text>
+<text x="57" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  memref.store ×1 → M2（D116）</text>
+<text x="57" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  memref.alloc ×1 → M3（D116）</text>
+<text x="57" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  arith.mulf/addf ×2 → A3（D116）</text>
+<text x="57" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">full 模式：同账本 → 整体 FAIL</text>
+<text x="57" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">（D117 导出前的门，非今天的失败）</text>
+<text x="57" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">胶水 8 条：desc→memref×2，</text>
+<text x="57" y="258" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">i64→index×5，memref→desc×1</text>
+<path d="M 371.1,62.1 Q 519.4,63.2 669.6,60.6 Q 669.3,186.7 670.5,313.0 Q 520.1,311.4 370.8,313.5 Q 370.5,187.2 371.1,62.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="382" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">② 两道闸：D114 实验 B 的执行版</text>
+<text x="382" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">类型闸（TypeConverter，当场失败）：</text>
+<text x="382" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  tensor&lt;4x6xf32&gt; → 拒收（先 bufferize）</text>
+<text x="382" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  memref&lt;?x?xf32&gt; → 拒收（动态 shape）</text>
+<text x="382" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  bf16 → 拒收（未知类型）</text>
+<text x="382" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">方言闸（ConversionTarget，op 级）：</text>
+<text x="382" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  mini.relu ×1 → 非法方言（无排期）</text>
+<text x="382" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  '必须在第一段 Lowering 处理'</text>
+<text x="382" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">换形状对照（2×3×2）：计数不变</text>
+<text x="382" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">8/18＋10；类型文本随形状变</text>
+<text x="382" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">（A strides [3,1]）——转换按 op</text>
+<text x="382" y="258" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">生效，与形状无关</text>
+<path d="M 695.5,60.9 Q 843.3,62.4 989.1,61.7 Q 989.7,188.7 988.8,311.8 Q 841.2,313.0 695.2,311.4 Q 696.0,187.0 695.5,60.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="707" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ 真机证据链（LLVM 22＋gcc）</text>
+<text x="707" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">JIT peek（ptr 签名，bitwise 全对）：</text>
+<text x="707" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  连续 4×6：24/24 点</text>
+<text x="707" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  转置 4×3（strides (1,4)）：12/12 点</text>
+<text x="707" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  mul2_out：ret=23，out=46 双出口对</text>
+<text x="707" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">gcc -O2 -S（C ABI ground truth）：</text>
+<text x="707" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  getoff_c ≡ getoff_p：ldr x0,[x0,16]</text>
+<text x="707" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  → &gt;16B 聚合'间接传'，按值＝指针</text>
+<text x="707" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  make_desc 写 [x8] → sret 返回</text>
+<text x="707" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  sizeof(struct desc)＝退出码 56</text>
+<text x="707" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">TargetData 对账：56B/align8/</text>
+<text x="707" y="258" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">偏移 0,8,16,24,40；rank1/3＝40/72B</text>
+<text x="50" y="348" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">探针与误用对照：故意犯的错，真机咬得住</text>
+<path d="M 44.5,363.3 Q 273.6,362.1 505.9,364.3 Q 504.5,458.8 505.5,552.6 Q 275.8,555.0 44.5,555.1 Q 45.2,459.6 44.5,363.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="57" y="383" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 描述符填错（ABI 版探针，确定性错值）</text>
+<text x="57" y="400" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">P1 strides 填反（[6,1] 写成 [1,6]）：20/24 点错，max|diff|=25</text>
+<text x="57" y="416" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  ——对角线 3 点碰巧读对：巧合不等于正确（i=j 时地址恰好相同）</text>
+<text x="57" y="432" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">P2 offset 错填 8：24/24 点错，max|diff|=8</text>
+<text x="57" y="448" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">  ——整体错位 8 个元素，全局读偏</text>
+<text x="57" y="464" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">两例都真机可复现；对照 D114 P1（仿真层面 2 个 NaN＋120.13）：</text>
+<text x="57" y="480" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">描述符错误在任何一层都会暴露——填表、翻译、调用一回事</text>
+<path d="M 530.6,363.0 Q 762.9,364.9 991.6,363.8 Q 991.7,456.6 989.4,552.8 Q 760.0,551.1 530.7,552.4 Q 531.5,456.5 530.6,363.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="542" y="383" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">⑤ ABI 形态误用（错位，值随环境变化）</text>
+<text x="542" y="400" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">byval 形态读到 281474053336576（一次运行的实测值，非确定）</text>
+<text x="542" y="416" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">直接聚合形态读到 281474053336512（同上）</text>
+<text x="542" y="432" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">正确形态（ptr）读到 42 —— 三种形态读同一个字段</text>
+<text x="542" y="448" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">错位值是栈上残留内容，随调用环境变化；</text>
+<text x="542" y="464" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">但'错'本身是确定的：签名形态＝ABI 合同，双方必须一致</text>
+<text x="542" y="480" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#3B3B3B" text-anchor="start">这也是 MLIR 在 C 边界提供 _mlir_ciface 包装的原因之一</text>
+<path d="M 46.2,576.4 Q 519.3,575.6 989.5,578.1 Q 987.4,643.6 989.1,708.5 Q 518.0,707.4 43.6,708.5 Q 45.8,640.4 46.2,576.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.5"/>
+<text x="510" y="604" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今日验收对照：8/8 PASS（主运行）＋9/9 PASS（换形状对照）</text>
+<text x="190" y="632" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP1 布局对账</text>
+<text x="510" y="632" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP2 签名表</text>
+<text x="830" y="632" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP3 两道闸</text>
+<text x="190" y="654" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP4 partial/full</text>
+<text x="510" y="654" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP5 胶水账</text>
+<text x="830" y="654" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP6 真机 ABI</text>
+<text x="190" y="676" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP7 gcc 证据链</text>
+<text x="510" y="676" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP8 探针</text>
+<text x="830" y="676" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP9 形状对照</text>
+<text x="510" y="696" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#6b6257" text-anchor="middle">环境：Python 3.11.4 / numpy 1.26.4 / llvmlite 0.50.0（LLVM 22.1.0）/ gcc 9.4.0 / aarch64 Linux · 2026-11-13 冻结运行</text>
+</svg>

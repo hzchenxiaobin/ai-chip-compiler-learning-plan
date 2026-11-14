@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.3,3.9 Q 491.0,3.1 976.2,2.7 Q 975.1,321.6 976.0,637.5 Q 488.6,638.5 4.2,636.1 Q 5.4,320.2 3.3,3.9  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 109 天定位：GFLOPS 与算术强度——Auto-tuning 的冠军表第一次有了参照系</text>
+<path d="M 299.0,44.9 Q 495.1,42.3 690.7,45.4" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="56" y="68" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">调优主线</text>
+<path d="M 54.8,80.7 Q 124.2,83.0 197.6,81.2 Q 196.6,105.0 196.5,129.8 Q 126.1,131.5 55.8,128.9 Q 57.1,105.6 54.8,80.7  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="126" y="101" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Tiling·展开</text>
+<text x="126" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D92~96</text>
+<path d="M 198.5,103.9 Q 204.1,103.1 208.0,103.0 M 195.0,106.0 L 208.0,103.0 L 195.0,100.0" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 210.5,78.6 Q 280.1,80.7 349.9,80.3 Q 351.3,105.2 350.6,131.4 Q 280.3,131.1 210.9,129.7 Q 210.7,104.9 210.5,78.6  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="280" y="101" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">候选生成</text>
+<text x="280" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D106</text>
+<path d="M 352.3,102.0 Q 358.4,102.7 362.0,103.0 M 349.0,106.0 L 362.0,103.0 L 349.0,100.0" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 365.0,80.6 Q 435.0,81.6 504.3,79.5 Q 505.4,103.3 502.7,129.2 Q 431.4,131.0 363.2,130.9 Q 363.8,107.2 365.0,80.6  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="434" y="101" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">统一 Benchmark</text>
+<text x="434" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D107</text>
+<path d="M 507.4,103.8 Q 510.8,101.9 516.0,103.0 M 503.0,106.0 L 516.0,103.0 L 503.0,100.0" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 519.0,80.7 Q 589.2,81.9 659.4,81.2 Q 656.3,103.5 656.6,128.6 Q 588.3,130.3 516.5,130.8 Q 516.2,104.0 519.0,80.7  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="588" y="101" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Auto-tuning v0.1</text>
+<text x="588" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D108</text>
+<path d="M 658.8,104.5 Q 666.2,104.4 670.0,103.0 M 657.0,106.0 L 670.0,103.0 L 657.0,100.0" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 670.8,75.6 Q 739.7,77.1 812.4,77.0 Q 811.2,102.4 813.2,128.5 Q 743.0,129.9 671.2,128.8 Q 671.2,103.1 670.8,75.6  Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="742" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">GFLOPS·AI·Roofline</text>
+<text x="742" y="120" font-size="10" fill="#C97B7B" text-anchor="middle">D109 今天</text>
+<path d="M 813.1,104.5 Q 819.6,101.9 824.0,103.0 M 811.0,106.0 L 824.0,103.0 L 811.0,100.0" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 825.2,81.3 Q 896.6,81.1 964.6,79.4 Q 967.1,102.7 966.6,129.1 Q 896.5,128.6 827.6,130.4 Q 825.9,104.2 825.2,81.3  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="896" y="101" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Cost Model 预剪</text>
+<text x="896" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D110</text>
+<text x="56" y="158" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">今天的分析流水线：把 110 条记录放进三个坐标系</text>
+<path d="M 54.8,170.0 Q 138.6,170.4 221.4,170.5 Q 219.5,215.1 220.5,263.3 Q 139.9,262.6 56.3,262.2 Q 56.9,214.2 54.8,170.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="138" y="189" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 读记录</text>
+<text x="138" y="207" font-size="9.6" fill="#3B3B3B" text-anchor="middle">D108 results.jsonl</text>
+<text x="138" y="223" font-size="9.6" fill="#3B3B3B" text-anchor="middle">110 条 · flops_nominal</text>
+<text x="138" y="239" font-size="9.6" fill="#3B3B3B" text-anchor="middle">sha256 血统校验</text>
+<path d="M 220.4,217.5 Q 227.5,217.7 233.0,216.0 M 220.0,219.0 L 233.0,216.0 L 220.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 234.5,170.0 Q 314.8,172.3 399.4,170.3 Q 397.8,216.2 398.4,263.4 Q 316.8,262.0 234.4,260.4 Q 233.8,216.2 234.5,170.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="317" y="189" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 有效 GFLOPS</text>
+<text x="317" y="207" font-size="9.6" fill="#3B3B3B" text-anchor="middle">flops ÷ 实测 median</text>
+<text x="317" y="223" font-size="9.6" fill="#3B3B3B" text-anchor="middle">毫秒 → 速率</text>
+<text x="317" y="239" font-size="9.6" fill="#3B3B3B" text-anchor="middle">跨 shape 才可比</text>
+<path d="M 401.7,216.6 Q 406.8,214.4 412.0,216.0 M 399.0,219.0 L 412.0,216.0 L 399.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 414.8,170.7 Q 497.2,170.5 576.5,168.6 Q 575.8,216.4 579.2,261.2 Q 496.9,263.9 415.6,263.6 Q 417.1,215.2 414.8,170.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="496" y="189" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ 算术强度 AI</text>
+<text x="496" y="207" font-size="9.6" fill="#3B3B3B" text-anchor="middle">flops ÷ bytes_min</text>
+<text x="496" y="223" font-size="9.6" fill="#3B3B3B" text-anchor="middle">立方捷径 n/6</text>
+<text x="496" y="239" font-size="9.6" fill="#3B3B3B" text-anchor="middle">算法+shape 属性</text>
+<path d="M 578.9,217.4 Q 585.0,215.1 591.0,216.0 M 578.0,219.0 L 591.0,216.0 L 578.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 593.6,170.2 Q 677.1,169.3 757.8,170.2 Q 757.1,217.3 755.5,262.2 Q 674.2,264.4 593.6,262.7 Q 592.8,216.5 593.6,170.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="675" y="189" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ 机器模型探针</text>
+<text x="675" y="207" font-size="9.6" fill="#3B3B3B" text-anchor="middle">解释屋顶 54.7 MFLOPS</text>
+<text x="675" y="223" font-size="9.6" fill="#3B3B3B" text-anchor="middle">Python 级 0.385 GB/s</text>
+<text x="675" y="239" font-size="9.6" fill="#3B3B3B" text-anchor="middle">C 级 2.68 GB/s</text>
+<path d="M 760.1,216.7 Q 764.2,217.6 770.0,216.0 M 757.0,219.0 L 770.0,216.0 L 757.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 772.6,170.3 Q 855.0,168.2 936.7,169.4 Q 933.6,216.5 934.7,261.8 Q 854.8,260.1 773.5,260.6 Q 773.4,215.7 772.6,170.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="854" y="189" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑤ 屋脊点+瓶颈标记</text>
+<text x="854" y="207" font-size="9.6" fill="#3B3B3B" text-anchor="middle">AI* = P ÷ BW ≈ 0.142</text>
+<text x="854" y="223" font-size="9.6" fill="#3B3B3B" text-anchor="middle">AI 在右侧 75~113×</text>
+<text x="854" y="239" font-size="9.6" fill="#3B3B3B" text-anchor="middle">全部『解释受限』</text>
+<text x="56" y="292" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">输入输出账（数字全部出自 outputs/）</text>
+<path d="M 56.0,302.7 Q 197.5,301.4 340.9,302.9 Q 341.4,358.4 340.3,411.4 Q 201.0,413.0 57.5,410.8 Q 56.3,354.9 56.0,302.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="198.0" y="321" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">输入：D108 的落盘记录</text>
+<text x="198.0" y="340.0" font-size="10" fill="#3B3B3B" text-anchor="middle">98 筛选 + 12 决赛 + 2 投毒被拒</text>
+<text x="198.0" y="356.5" font-size="10" fill="#3B3B3B" text-anchor="middle">flops_nominal（2·M·N·K）随记录走</text>
+<text x="198.0" y="373.0" font-size="10" fill="#3B3B3B" text-anchor="middle">kernel 时间不重测（中位数口径）</text>
+<text x="198.0" y="389.5" font-size="10" fill="#3B3B3B" text-anchor="middle">两个 no-tail 继续不进任何性能表</text>
+<path d="M 356.4,302.1 Q 498.2,302.2 640.5,301.0 Q 641.8,354.3 640.3,410.4 Q 499.4,408.3 354.4,408.7 Q 357.5,354.2 356.4,302.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="498.0" y="321" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">机器模型：三个探针实测（屋顶同层纪律）</text>
+<text x="498.0" y="340.0" font-size="10" fill="#3B3B3B" text-anchor="middle">A 解释屋顶 0.0547 GFLOPS（标量 FMA）</text>
+<text x="498.0" y="356.5" font-size="10" fill="#3B3B3B" text-anchor="middle">B Python 级流读 0.385 GB/s（迭代式）</text>
+<text x="498.0" y="373.0" font-size="10" fill="#3B3B3B" text-anchor="middle">C C 级扫描 2.68 GB/s（adler32·64MB）</text>
+<text x="498.0" y="389.5" font-size="10" fill="#3B3B3B" text-anchor="middle">屋脊点 AI* = 0.0547 ÷ 0.385 ≈ 0.142</text>
+<path d="M 656.5,303.2 Q 799.6,302.2 939.0,301.6 Q 938.9,357.7 941.3,410.8 Q 799.0,411.1 656.9,408.7 Q 658.2,353.9 656.5,303.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="798.0" y="321" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">输出：性能分析表 + Roofline 报告</text>
+<text x="798.0" y="340.0" font-size="10" fill="#3B3B3B" text-anchor="middle">108 条通过记录逐条标瓶颈</text>
+<text x="798.0" y="356.5" font-size="10" fill="#3B3B3B" text-anchor="middle">冠军距屋顶 1.59~1.65×（六成）</text>
+<text x="798.0" y="373.0" font-size="10" fill="#3B3B3B" text-anchor="middle">无一带宽受限：AI 右侧 75~113×</text>
+<text x="798.0" y="389.5" font-size="10" fill="#3B3B3B" text-anchor="middle">解释税 861~1,248×（下界）</text>
+<path d="M 55.2,436.5 Q 498.2,435.2 938.8,434.9 Q 939.0,467.3 940.4,499.1 Q 499.8,498.7 55.0,496.9 Q 54.7,466.4 55.2,436.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.8"/>
+<text x="498" y="460" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">一句话定位：D106 候选从哪来 → D107 怎么测才算数 → D108 谁是冠军，</text>
+<text x="498" y="480" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今天回答『离极限多远、瓶颈在哪、下一步往哪推』→ D110 用这些数字给候选预剪</text>
+<text x="56" y="540" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">冠军汇总（决赛 3+21 中位数，跨 shape 只有速率可比）</text>
+<path d="M 56.2,549.2 Q 500.1,551.5 941.0,549.8" stroke="#E7DFCE" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<text x="150" y="567" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S1 64×64×64</text>
+<text x="310" y="567" font-size="10.5" fill="#6b6257" text-anchor="start">AI 10.67</text>
+<text x="490" y="567" font-size="10.5" fill="#3B3B3B" text-anchor="start">15.80 ms → 33.2 MFLOPS</text>
+<text x="800" y="567" font-size="10.5" fill="#C97B7B" text-anchor="start">距屋顶 1.65×</text>
+<text x="150" y="589" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S2 96×96×96</text>
+<text x="310" y="589" font-size="10.5" fill="#6b6257" text-anchor="start">AI 16.00</text>
+<text x="490" y="589" font-size="10.5" fill="#3B3B3B" text-anchor="start">51.53 ms → 34.3 MFLOPS</text>
+<text x="800" y="589" font-size="10.5" fill="#C97B7B" text-anchor="start">距屋顶 1.59×</text>
+<text x="150" y="611" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S3 90×96×64</text>
+<text x="310" y="611" font-size="10.5" fill="#6b6257" text-anchor="start">AI 13.46</text>
+<text x="490" y="611" font-size="10.5" fill="#3B3B3B" text-anchor="start">32.06 ms → 34.5 MFLOPS</text>
+<text x="800" y="611" font-size="10.5" fill="#C97B7B" text-anchor="start">距屋顶 1.59×</text>
+<text x="498" y="634" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">三 shape 冠军速率几乎平——工作量差 3.4×，速率只差 4%：『解释受限』的数据指纹</text>
+</svg>

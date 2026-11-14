@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.1,3.2 Q 490.1,4.5 975.6,2.7 Q 975.7,318.0 975.2,634.7 Q 488.5,637.0 3.1,636.4 Q 1.5,318.3 4.1,3.2 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">过滤器内部：纸面最优 128³ fp32·double 走完一遍检查链</text>
+<path d="M 309.7,45.9 Q 489.7,45.7 670.4,49.2" stroke="#9CBF8E" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 43.7,88.9 Q 149.6,88.1 252.4,86.7 Q 252.2,208.0 252.9,328.9 Q 148.8,329.0 43.3,328.2 Q 43.7,206.9 43.7,88.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="149" y="114" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">候选卡片</text>
+<text x="60" y="140" font-size="10.5" fill="#6b6257" text-anchor="start">tm / tn / tk</text>
+<text x="244" y="140" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">128 / 128 / 128</text>
+<text x="60" y="162" font-size="10.5" fill="#6b6257" text-anchor="start">dtype_in</text>
+<text x="244" y="162" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">fp32</text>
+<text x="60" y="184" font-size="10.5" fill="#6b6257" text-anchor="start">buffering</text>
+<text x="244" y="184" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">double</text>
+<text x="60" y="206" font-size="10.5" fill="#6b6257" text-anchor="start">bias</text>
+<text x="244" y="206" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">True</text>
+<text x="60" y="228" font-size="10.5" fill="#6b6257" text-anchor="start">staging</text>
+<text x="244" y="228" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">False</text>
+<path d="M 61.2,246.9 Q 151.4,247.6 237.1,246.8" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="149" y="266" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">D97 的 CPU 冠军</text>
+<text x="149" y="284" font-size="10" fill="#6b6257" text-anchor="middle">D103 量出 1.32× 纸面加速</text>
+<text x="149" y="302" font-size="9.5" fill="#6b6257" text-anchor="middle">搜索空间（D106）会喂来更多</text>
+<path d="M 259.0,195.0 Q 282.4,193.7 306.0,195.0 M 293.0,198.0 L 306.0,195.0 L 293.0,192.0" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 310.3,93.3 Q 476.9,93.0 639.4,91.5 Q 641.2,124.7 640.3,156.7 Q 474.0,156.3 309.2,157.1 Q 311.7,125.7 310.3,93.3 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.25"/>
+<text x="475" y="116" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 参数校验（便宜，先跑）</text>
+<text x="475" y="138" font-size="9.5" fill="#6b6257" text-anchor="middle">全是正整数？dtype 认识？缓冲策略认识？→ ✓ 通过</text>
+<path d="M 476.3,159.1 Q 475.4,167.7 475.0,176.0 M 472.0,163.0 L 475.0,176.0 L 478.0,163.0" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 311.2,178.6 Q 477.5,180.3 640.7,179.6 Q 639.2,226.2 640.0,270.1 Q 472.8,271.0 309.7,270.6 Q 309.0,223.8 311.2,178.6 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="475" y="202" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 空间估算（贵，后跑）</text>
+<text x="475" y="222" font-size="10" fill="#3B3B3B" text-anchor="middle">A 65,536×2 + B 65,536×2 + C 65,536</text>
+<text x="475" y="240" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">+ bias 512  =  合计 328,192 B</text>
+<text x="475" y="258" font-size="9.5" fill="#6b6257" text-anchor="middle">×2 只加在 A/B 流入项；C 恒按 4 B 记</text>
+<path d="M 475.7,272.5 Q 475.3,278.6 475.0,288.0 M 472.0,275.0 L 475.0,288.0 L 478.0,275.0" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 310.9,289.9 Q 475.0,288.8 641.1,290.8 Q 641.1,350.5 640.1,406.5 Q 474.5,404.9 309.2,406.3 Q 310.7,346.8 310.9,289.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.18"/>
+<text x="475" y="314" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ 预算判定（≤，绝不约等于）</text>
+<path d="M 330.5,330.8 Q 452.1,332.0 572.9,329.4 Q 572.0,339.8 573.6,352.5 Q 454.2,354.2 330.6,353.5 Q 330.1,340.2 330.5,330.8 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<path d="M 523.9,329.7 Q 547.7,330.5 572.3,330.3 Q 572.8,338.9 575.1,351.5 Q 547.8,353.3 524.2,351.3 Q 524.8,338.9 523.9,329.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.8"/>
+<path d="M 524.4,324.5 Q 524.3,343.3 526.3,359.6" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none" stroke-dasharray="6 4"/>
+<text x="524.7355428571428" y="326" font-size="9.5" fill="#3B3B3B" text-anchor="end">预算 262,144 B</text>
+<text x="344" y="346" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">合计 328,192 B</text>
+<text x="581.7997714285714" y="346" font-size="9.5" fill="#C97B7B" text-anchor="start" font-weight="bold">超 66,048</text>
+<text x="475" y="380" font-size="9.5" fill="#6b6257" text-anchor="middle">贴线也是放行：合计 == 预算 → ✓（判定用 ≤）</text>
+<path d="M 644.6,349.9 Q 666.8,348.6 690.0,350.0 M 677.0,353.0 L 690.0,350.0 L 677.0,347.0" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 694.1,91.4 Q 818.8,90.5 944.4,92.3 Q 943.5,248.2 945.3,406.9 Q 820.5,404.1 692.7,404.8 Q 694.7,248.0 694.1,91.4 Z" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.15"/>
+<text x="819" y="118" font-size="14" fill="#C97B7B" text-anchor="middle" font-weight="bold">Verdict：✗ 拒绝</text>
+<text x="819" y="140" font-size="11" fill="#3B3B3B" text-anchor="middle">拒绝码 SRAM_OVERFLOW</text>
+<text x="712" y="166" font-size="10" fill="#6b6257" text-anchor="start">合计</text>
+<text x="926" y="166" font-size="10" fill="#3B3B3B" text-anchor="end" font-weight="bold">328,192 B</text>
+<text x="712" y="190" font-size="10" fill="#6b6257" text-anchor="start">预算</text>
+<text x="926" y="190" font-size="10" fill="#3B3B3B" text-anchor="end" font-weight="bold">262,144 B</text>
+<text x="712" y="214" font-size="10" fill="#6b6257" text-anchor="start">超出</text>
+<text x="926" y="214" font-size="10" fill="#3B3B3B" text-anchor="end" font-weight="bold">66,048 B（25.2%）</text>
+<path d="M 711.1,243.7 Q 820.2,244.3 927.3,245.9" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="819" y="266" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">出路（每条重新过同一道闸门）</text>
+<text x="712" y="290" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">a) 退单缓冲</text>
+<text x="926" y="290" font-size="10" fill="#4d7c4f" text-anchor="end" font-weight="bold">197,120 B ✓</text>
+<text x="712" y="306" font-size="9.5" fill="#6b6257" text-anchor="start">代价轴=时间（丢 D103 的重叠）</text>
+<text x="712" y="330" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">b) 缩 tile 64³</text>
+<text x="926" y="330" font-size="10" fill="#4d7c4f" text-anchor="end" font-weight="bold">82,176 B ✓</text>
+<text x="712" y="346" font-size="9.5" fill="#6b6257" text-anchor="start">代价轴=空间（复用↓ HBM 流量↑）</text>
+<text x="712" y="370" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">c) 降 dtype bf16</text>
+<text x="926" y="370" font-size="10" fill="#4d7c4f" text-anchor="end" font-weight="bold">197,120 B ✓</text>
+<text x="712" y="386" font-size="9.5" fill="#6b6257" text-anchor="start">代价轴=精度（D78~81 把关）</text>
+<path d="M 70.5,441.7 Q 279.1,440.3 490.8,440.9 Q 490.6,488.3 489.9,537.6 Q 281.6,538.0 69.7,539.0 Q 67.9,489.4 70.5,441.7 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.2"/>
+<text x="280" y="468" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">fail-closed：不认识的输入一律拒绝</text>
+<text x="280" y="490" font-size="10" fill="#3B3B3B" text-anchor="middle">p3 dtype=fp64 → ✗ BAD_PARAM，列出 5 个可选值</text>
+<text x="280" y="510" font-size="10" fill="#6b6257" text-anchor="middle">绝不静默猜默认值继续编译（D95 消费门同款）</text>
+<path d="M 509.3,441.7 Q 718.0,444.3 928.4,443.4 Q 927.5,491.1 929.8,538.7 Q 718.8,537.4 509.9,537.9 Q 507.8,491.8 509.3,441.7 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.2"/>
+<text x="720" y="468" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">短路可观测：便宜先行</text>
+<text x="720" y="490" font-size="10" fill="#3B3B3B" text-anchor="middle">4 个非法参数：参数校验 4 次，空间估算 0 次</text>
+<text x="720" y="510" font-size="10" fill="#6b6257" text-anchor="middle">贵的检查往后追加，前面的结论不变</text>
+<text x="490" y="572" font-size="10.5" fill="#6b6257" text-anchor="middle">诊断必须带数字：拒绝码＋明细＋超出字节＋三条出路；排序留给 D110 Cost Model（D74 分离原则）</text>
+<text x="490" y="598" font-size="10.5" fill="#6b6257" text-anchor="middle">数字来自 code/outputs/filter-table.txt 与 fallback.txt 的真实运行</text>
+</svg>

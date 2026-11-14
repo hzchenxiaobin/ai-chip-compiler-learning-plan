@@ -1,0 +1,50 @@
+==============================================================================
+ 自检：47/47 项断言通过
+==============================================================================
+  ✓ median 奇数长度
+  ✓ MAD 手算
+  ✓ 无离群（阈值 3.5×1.4826×2≈10.4）
+  ✓ median 偶数长度（两中点取均值）
+  ✓ 离群规则抓住 100
+  ✓ 均值被 100 拖走
+  ✓ MAD 手算（偶数长度）
+  ✓ MAD=0 规则退化为不报离群（已知行为）
+  ✓ repeats=21 的中位数是第 11 个次序统计量
+  ✓ median_of_prefix k=1 = 第一个样本
+  ✓ trimmed_mean 两端各 10%
+  ✓ spread% = (max−min)/median
+  ✓ mean−median% 为正在此例
+  ✓ 同一 seed 两次生成逐元素相等
+  ✓ 换 seed 得到不同数据
+  ✓ 好内核过门（逐位）
+  ✓ 好内核 max_abs_err 为 0
+  ✓ no-tail 内核被拒
+  ✓ 被拒配置不计时（samples 为 None）
+  ✓ 被拒配置不产统计（stats 为 None）
+  ✓ 被拒记录照样落盘且带错误量
+  ✓ 记录含 schema
+  ✓ 记录含 kernel
+  ✓ 记录含 workload
+  ✓ 记录含 env
+  ✓ 记录含 protocol
+  ✓ 记录含 correctness
+  ✓ 记录含 stats_ms
+  ✓ 记录含 samples_ms
+  ✓ 记录含 timestamp
+  ✓ schema 版本号
+  ✓ JSON 往返逐字段相等
+  ✓ 样本数 = repeats
+  ✓ workload 名义 flops = 2·M·N·K
+  ✓ 环境快照在记录里（python/cpu_count）
+  ✓ 协议在记录里（warmup/repeats/gc）
+  ✓ 记录不收主机名/用户名（性能要户口不要隐私）
+  ✓ 默认 warmup=3（D97 遗产）
+  ✓ 默认 repeats=21
+  ✓ 默认排除口径 gc=off
+  ✓ 默认门=bitwise
+  ✓ MAD 阈值常数 = 3.5×1.4826
+  ✓ order 非排列被拒
+  ✓ unroll=0 被拒
+  ✓ 统一入口真跑出统计
+  ✓ 中位数落在 min..max
+  ✓ wall_ms 覆盖全链路（门+预热+计时）

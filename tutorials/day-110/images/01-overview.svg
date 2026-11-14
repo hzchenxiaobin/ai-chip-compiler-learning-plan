@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.4,3.6 Q 490.8,2.6 977.0,3.2 Q 974.5,320.6 975.9,635.3 Q 491.9,633.4 4.1,634.6 Q 5.3,319.3 5.4,3.6  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 110 天定位：Cost Model 排序——把『逐个实测』换成『先算后测』</text>
+<path d="M 250.5,43.3 Q 489.6,45.0 729.6,45.0" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="52" y="70" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">调优主线（第四阶段）</text>
+<path d="M 53.6,83.4 Q 121.8,81.4 190.9,81.9 Q 190.9,110.3 191.3,135.5 Q 122.2,133.5 53.2,133.0 Q 51.9,106.6 53.6,83.4  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="121" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">候选生成</text>
+<text x="121" y="118" font-size="10" fill="#6b6257" text-anchor="middle">D106 · 12,970</text>
+<path d="M 193.2,104.4 Q 197.8,107.8 201.0,106.0 M 188.0,109.0 L 201.0,106.0 L 188.0,103.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 201.3,80.9 Q 270.6,78.9 339.9,81.0 Q 341.9,107.1 340.0,133.8 Q 272.8,133.2 202.4,134.0 Q 200.0,109.6 201.3,80.9  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="271" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">测量纪律 3+7/3+21</text>
+<text x="271" y="118" font-size="10" fill="#6b6257" text-anchor="middle">D107</text>
+<path d="M 343.5,107.4 Q 346.5,104.7 351.0,106.0 M 338.0,109.0 L 351.0,106.0 L 338.0,103.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 350.8,83.4 Q 420.7,81.2 488.8,80.8 Q 486.9,106.2 488.9,135.2 Q 419.5,135.1 352.3,134.2 Q 349.7,106.8 350.8,83.4  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="421" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">全测搜索 v0.1</text>
+<text x="421" y="118" font-size="10" fill="#6b6257" text-anchor="middle">D108 · 98 槽</text>
+<path d="M 490.6,104.8 Q 495.3,104.0 501.0,106.0 M 488.0,109.0 L 501.0,106.0 L 488.0,103.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 500.8,81.5 Q 570.8,82.2 641.1,82.5 Q 640.7,108.2 638.4,132.6 Q 568.8,132.2 501.5,133.9 Q 503.3,107.8 500.8,81.5  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="571" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">Roofline 参照系</text>
+<text x="571" y="118" font-size="10" fill="#6b6257" text-anchor="middle">D109</text>
+<path d="M 643.0,106.4 Q 648.2,107.7 651.0,106.0 M 638.0,109.0 L 651.0,106.0 L 638.0,103.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 652.8,77.3 Q 718.8,75.9 789.1,77.7 Q 790.1,104.3 789.0,135.0 Q 720.8,135.9 650.8,135.0 Q 650.3,106.0 652.8,77.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="721" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Cost Model 预剪</text>
+<text x="721" y="118" font-size="10" fill="#3B3B3B" text-anchor="middle">D110 今天</text>
+<path d="M 792.4,104.8 Q 796.9,107.8 801.0,106.0 M 788.0,109.0 L 801.0,106.0 L 788.0,103.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 800.6,81.0 Q 868.5,82.0 938.8,83.0 Q 938.8,107.5 941.1,132.7 Q 873.2,132.7 802.9,135.3 Q 801.7,108.7 800.6,81.0  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="871" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">集成验收</text>
+<text x="871" y="118" font-size="10" fill="#6b6257" text-anchor="middle">D111 明天</text>
+<text x="52" y="176" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">今天的流水线：排序是『算』出来的，实测只留给前几名</text>
+<path d="M 53.2,189.5 Q 122.7,190.6 191.3,187.7 Q 188.8,229.1 189.5,273.3 Q 122.5,272.2 53.2,273.0 Q 53.7,231.6 53.2,189.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.55"/>
+<text x="121.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">候选空间</text>
+<text x="121.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">S1 24 / S2 36 / S3 36+2 投毒</text>
+<text x="121.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">共 96 个正确候选</text>
+<path d="M 192.5,230.2 Q 196.5,229.1 201.0,230.0 M 188.0,233.0 L 201.0,230.0 L 188.0,227.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 200.4,187.4 Q 270.0,190.1 340.1,189.2 Q 340.4,232.8 340.4,273.4 Q 272.4,273.8 201.4,270.6 Q 200.9,226.9 200.4,187.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="271.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 校准（一次）</text>
+<text x="271.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">16 根语句行单价</text>
+<text x="271.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">微基准 ~2 s，三 shape 共用</text>
+<path d="M 340.6,229.1 Q 346.3,228.4 351.0,230.0 M 338.0,233.0 L 351.0,230.0 L 338.0,227.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 351.6,187.9 Q 420.6,188.4 490.6,189.5 Q 489.0,231.1 491.1,273.0 Q 423.0,274.3 350.9,272.3 Q 352.7,228.3 351.6,187.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="421.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 静态排序</text>
+<text x="421.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">count_ops × 单价</text>
+<text x="421.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">28 µs/候选 · 零内核执行</text>
+<path d="M 490.5,230.0 Q 497.4,229.6 501.0,230.0 M 488.0,233.0 L 501.0,230.0 L 488.0,227.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 501.4,187.2 Q 569.3,187.1 641.3,188.3 Q 642.2,228.2 639.9,272.1 Q 569.3,273.1 500.6,270.7 Q 499.7,229.0 501.4,187.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="571.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ 只实测 top-5</text>
+<text x="571.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">3+7 协议 · 过正确性门</text>
+<text x="571.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">投毒内核由门拒收</text>
+<path d="M 640.7,229.4 Q 647.6,231.1 651.0,230.0 M 638.0,233.0 L 651.0,230.0 L 638.0,227.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 651.3,187.5 Q 721.5,186.2 791.6,188.3 Q 792.6,228.6 789.8,273.4 Q 720.2,270.2 651.7,271.1 Q 650.2,230.9 651.3,187.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="721.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ 决赛 top-3∪缺省</text>
+<text x="721.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">3+21 复测</text>
+<text x="721.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">冠军 vs 缺省同进程</text>
+<path d="M 791.5,228.6 Q 794.6,231.1 801.0,230.0 M 788.0,233.0 L 801.0,230.0 L 788.0,227.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 803.5,186.6 Q 872.8,186.5 941.1,189.5 Q 938.8,229.0 939.7,271.6 Q 868.8,270.3 801.6,272.6 Q 802.5,228.0 803.5,186.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="871.0" y="207" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军 + 账本</text>
+<text x="871.0" y="226.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">guided-results.jsonl</text>
+<text x="871.0" y="242.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">预测值随记录落盘</text>
+<text x="490.0" y="296" font-size="10.5" fill="#6b6257" text-anchor="middle">校准和排序都不执行被测内核——『测』发生在名单被砍短之后</text>
+<text x="52" y="326" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">两条路线的搜索成本账（同一候选空间，真实运行记录）</text>
+<path d="M 52.6,337.4 Q 261.6,338.9 473.4,336.6 Q 472.8,396.6 472.4,457.9 Q 260.8,457.5 52.8,456.5 Q 54.7,397.5 52.6,337.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.38"/>
+<text x="262.0" y="357" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D108 路线：全测（实测 98 筛选槽 + 12 决赛）</text>
+<text x="262.0" y="376.0" font-size="10" fill="#3B3B3B" text-anchor="middle">筛选 Σwall 57.1 s ＋ 决赛 Σwall 11.5 s → 共 68.6 s</text>
+<text x="262.0" y="392.5" font-size="10" fill="#3B3B3B" text-anchor="middle">外推 D106 全空间 12,970 候选：</text>
+<text x="262.0" y="409.0" font-size="10" fill="#3B3B3B" text-anchor="middle">  · 96³ 口径 ≈ 12,970 × 0.86 s ≈ 3.1 小时</text>
+<text x="262.0" y="425.5" font-size="10" fill="#3B3B3B" text-anchor="middle">  · 512³ 口径 ≈ 13 天（D108 第四节外推，非实测）</text>
+<path d="M 509.5,338.4 Q 716.3,338.1 926.5,338.4 Q 928.5,399.1 928.2,459.5 Q 718.9,457.3 508.9,458.7 Q 509.3,396.7 509.5,338.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="718.0" y="357" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D110 路线：Cost Model 预剪（本次真实运行）</text>
+<text x="718.0" y="376.0" font-size="10" fill="#3B3B3B" text-anchor="middle">校准 ~2 s（一次性）＋ 静态分析 2.0 ms ＋ 实测 27 次</text>
+<text x="718.0" y="392.5" font-size="10" fill="#3B3B3B" text-anchor="middle">→ 引导搜索 20.0 s，冠军与 D108 全测 3/3 同配置</text>
+<text x="718.0" y="409.0" font-size="10" fill="#3B3B3B" text-anchor="middle">外推同一空间 ≈ 15 s（校准 0.2 + 分析 0.4 + 实测 15 s）</text>
+<text x="718.0" y="425.5" font-size="10" fill="#3B3B3B" text-anchor="middle">搜索成本从『天』压到『分钟』——提速 3.4×（小空间）</text>
+<path d="M 473.7,397.1 Q 488.1,398.9 506.0,398.0 M 493.0,401.0 L 506.0,398.0 L 493.0,395.0" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="490" y="388" font-size="12" fill="#3B3B3B" text-anchor="middle">换</text>
+<path d="M 52.4,487.5 Q 489.8,484.4 929.0,488.2" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 120.6,503.5 Q 488.7,503.2 859.7,500.8 Q 858.8,552.9 859.0,606.4 Q 487.3,607.8 119.1,606.8 Q 118.7,556.8 120.6,503.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="490.0" y="521" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今天的前提与 KPI（先记两句话，正文展开）</text>
+<text x="490.0" y="540.0" font-size="10.2" fill="#3B3B3B" text-anchor="middle">模型把 96 个候选按预测时间排好序，只把 top-5 交给实测——</text>
+<text x="490.0" y="556.5" font-size="10.2" fill="#3B3B3B" text-anchor="middle">模型的 KPI 不是猜中第 1 名，而是 recall@K：把真冠军留在名额里</text>
+<text x="490.0" y="573.0" font-size="10.2" fill="#3B3B3B" text-anchor="middle">（本次三个 shape 的真冠军都在模型第 2 名，K=2 起就进名额）。</text>
+<text x="490.0" y="589.5" font-size="10.2" fill="#3B3B3B" text-anchor="middle">错放一个近对不致命：预测只差 0.4% 的 ikj/kij，谁第 1 由同进程实测定。</text>
+</svg>

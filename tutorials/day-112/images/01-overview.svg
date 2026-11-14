@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.9,4.5 Q 500.0,4.1 996.4,4.6 Q 998.9,331.7 997.3,656.8 Q 500.0,655.3 2.9,655.1 Q 2.2,330.3 3.9,4.5  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="500.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 112 天定位：第四阶段收官复盘——把四周装进『两条信息链』</text>
+<path d="M 299.8,43.5 Q 502.1,42.8 700.4,44.2" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="48" y="70" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">第四阶段的链路（D85~D112，每站都有各自验收）</text>
+<path d="M 46.6,82.6 Q 150.1,81.4 257.4,82.5 Q 259.1,141.3 259.3,200.3 Q 152.1,202.0 49.3,201.0 Q 48.6,141.5 46.6,82.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="153.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 13 周｜Lowering</text>
+<text x="153.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">mini.matmul → 三重循环</text>
+<text x="153.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">输出初始化 / 尾部 / 边界</text>
+<text x="153.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">D90：8 组 Shape 对照</text>
+<path d="M 280.5,83.4 Q 385.3,80.9 489.1,81.2 Q 487.8,142.3 490.2,201.2 Q 385.1,200.8 278.9,199.7 Q 279.9,139.8 280.5,83.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="385.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 14 周｜Tiling</text>
+<text x="385.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">循环顺序家族（j/k/i 内层）</text>
+<text x="385.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">Tile 外壳 + 点循环 + min 钳制</text>
+<text x="385.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">Unroll / 多配置实验</text>
+<path d="M 510.6,82.1 Q 616.6,83.0 722.6,82.5 Q 724.6,139.3 723.4,199.6 Q 617.9,200.7 511.7,199.5 Q 512.2,140.5 510.6,82.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="617.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 15 周｜内存</text>
+<text x="617.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">生命周期 → 复用（峰值 −30%）</text>
+<text x="617.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">片上空间 256 KiB fail-closed</text>
+<text x="617.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">DMA 依赖 / 双缓冲</text>
+<path d="M 743.1,81.4 Q 849.6,80.0 953.6,80.6 Q 956.5,141.5 955.5,199.5 Q 849.9,200.3 743.8,201.5 Q 745.0,143.3 743.1,81.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.4"/>
+<text x="849.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 16 周｜自动调优</text>
+<text x="849.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">25.77B → 12,970 候选</text>
+<text x="849.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">3+7 / 3+21 测量纪律</text>
+<text x="849.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">Cost Model ρ≈0.97 · 引导 20.0 s</text>
+<path d="M 250.5,257.4 Q 500.6,258.4 751.2,258.5 Q 752.4,318.5 751.4,379.0 Q 499.4,380.6 250.6,379.3 Q 250.7,318.2 250.5,257.4  Z" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="500.0" y="282" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D112 · 第 16 周复盘（今天）</text>
+<text x="500.0" y="304" font-size="10.8" fill="#3B3B3B" text-anchor="middle">学习：『生成正确代码』和『生成高性能代码』需要的信息不一样</text>
+<text x="500.0" y="323" font-size="10.8" fill="#3B3B3B" text-anchor="middle">实践：准备性能反例——Cost Model 为什么可能选错（a/b/c/d 四组实验）</text>
+<text x="500.0" y="342" font-size="10.8" fill="#3B3B3B" text-anchor="middle">产出：第四阶段总结 + 性能调优标准回答 + 本周复盘</text>
+<text x="500.0" y="364" font-size="10.2" fill="#6b6257" text-anchor="middle">结账对象：D111 验收 ③ 的 agree=false 3/3（冠军 ikj vs D108 kij）</text>
+<text x="508.0" y="222" font-size="9.5" fill="#6b6257" text-anchor="start">四周攒下的零件，今天拆开看『信息』</text>
+<text x="48" y="424" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">复盘落点：同样的编译器，两种信息、两种交付物</text>
+<path d="M 47.2,438.4 Q 268.2,436.9 488.0,437.4 Q 485.4,525.7 486.7,617.8 Q 267.4,619.9 47.7,618.2 Q 48.5,530.2 47.2,438.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.34"/>
+<text x="60" y="457" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">正确性信息（语义链）：编译期可判定，与环境无关</text>
+<text x="60" y="476.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">输入：Shape / 类型 / 循环边界 / 累加序 / 尾部 / use-def</text>
+<text x="60" y="492.5" font-size="9.8" fill="#3B3B3B" text-anchor="start">判定：Verifier + 正确性门（bitwise ==，先于计时）</text>
+<text x="60" y="509.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">证据：今天 S1 24/24、W1 36/36 全过门——</text>
+<text x="60" y="525.5" font-size="9.8" fill="#3B3B3B" text-anchor="start">　　哪个进程、哪个时间窗测，答案都逐位相同</text>
+<text x="60" y="542.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">类比：数学证明——谁看都一样（但证明不保证快）</text>
+<path d="M 510.9,437.1 Q 730.4,437.8 952.7,437.7 Q 952.9,528.7 951.7,619.1 Q 732.1,618.4 510.7,619.4 Q 509.6,528.9 510.9,437.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.34"/>
+<text x="524" y="457" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">性能信息（环境链）：必须测量，绑定 (进程, regime, 窗口)</text>
+<text x="524" y="476.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">输入：结构差（语句行数）× 单价（校准 = 测量）</text>
+<text x="524" y="492.5" font-size="9.8" fill="#3B3B3B" text-anchor="start">纪律：3+7 / 3+21、中位数、MAD、Roofline 参照</text>
+<text x="524" y="509.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">证据：j0 窄 55.7 → 宽 59.9 ns（+7.5%）、loop +85%</text>
+<text x="524" y="525.5" font-size="9.8" fill="#3B3B3B" text-anchor="start">　　近对符号 j0−k0：−4.6 → −2.3 → +4.3 ns（翻面）</text>
+<text x="524" y="542.0" font-size="9.8" fill="#3B3B3B" text-anchor="start">类比：体重秤——每台每天读数都不同，要的是纪律</text>
+<text x="500" y="646" font-size="10.5" fill="#6b6257" text-anchor="middle">结论预告：正确性靠推理可以『证』，性能只能『测＋管理不确定度』——这就是模型会选错的根源</text>
+</svg>

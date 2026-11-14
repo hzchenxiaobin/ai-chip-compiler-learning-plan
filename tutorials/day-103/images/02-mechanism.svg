@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.5,3.9 Q 489.9,5.3 975.2,3.9 Q 974.2,320.9 976.1,634.5 Q 492.2,635.4 5.1,636.5 Q 3.6,319.9 5.5,3.9 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">双缓冲时间线：算第 k 圈的同时，DMA 搬第 k+1 圈（块 i0=0, j0=0）</text>
+<path d="M 278.9,47.1 Q 488.0,47.7 699.7,47.4" stroke="#9CBF8E" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="40" y="118" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">DMA</text>
+<text x="40" y="136" font-size="11" fill="#6b6257" text-anchor="middle">引擎</text>
+<text x="40" y="214" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">计算</text>
+<text x="40" y="232" font-size="11" fill="#6b6257" text-anchor="middle">单元</text>
+<path d="M 85.3,92.1 Q 500.3,91.9 918.2,91.8 Q 917.8,120.1 917.2,144.7 Q 502.6,143.6 83.9,144.1 Q 86.2,117.6 85.3,92.1 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<path d="M 84.2,188.3 Q 498.7,189.6 916.4,189.4 Q 917.6,212.5 918.3,238.5 Q 503.3,237.7 86.6,241.2 Q 84.7,214.8 84.2,188.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<path d="M 176.3,81.9 Q 178.5,165.5 177.1,249.7" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 263.0,81.0 Q 261.9,167.7 263.1,251.5" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 351.2,81.1 Q 348.8,166.6 351.9,249.0" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 438.4,80.6 Q 436.0,163.6 438.3,250.5" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 523.7,81.4 Q 522.9,168.3 525.9,249.3" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 612.7,81.6 Q 613.3,167.0 611.2,249.9" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 697.6,81.3 Q 699.5,163.6 697.4,250.8" stroke="#9CBF8E" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 91.5,98.0 Q 93.3,98.4 91.5,97.8 Q 91.1,120.0 93.2,138.7 Q 89.7,137.0 90.2,138.4 Q 89.5,117.7 91.5,98.0 Z" stroke="#3B3B3B" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.7"/>
+<text x="150" y="88" font-size="9.5" fill="#6b6257" text-anchor="middle">bias 0.0078 µs（窄到画不出）</text>
+<path d="M 90.9,99.0 Q 133.7,97.6 176.9,99.2 Q 177.5,118.0 179.2,139.2 Q 134.9,136.8 91.7,138.2 Q 93.3,118.3 90.9,99.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="133.67953985209533" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A0→B0</text>
+<path d="M 176.4,96.8 Q 219.9,98.4 264.5,96.6 Q 264.6,118.8 265.2,137.4 Q 222.4,138.5 178.1,137.5 Q 178.3,117.4 176.4,96.8 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="220.6606409202958" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A1→B1</text>
+<path d="M 264.0,98.6 Q 306.9,96.6 350.1,97.2 Q 353.2,118.5 352.6,139.1 Q 306.7,140.8 263.1,138.9 Q 261.7,119.6 264.0,98.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="307.6417419884963" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A2→B2</text>
+<path d="M 352.3,98.8 Q 396.3,99.1 438.5,97.4 Q 439.4,118.0 437.7,138.8 Q 395.5,138.1 351.6,136.5 Q 353.3,116.6 352.3,98.8 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="394.62284305669675" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A3→B3</text>
+<path d="M 437.7,99.1 Q 479.4,99.7 524.8,96.5 Q 524.5,116.1 526.2,138.9 Q 482.0,137.4 439.8,139.5 Q 436.6,117.8 437.7,99.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="481.6039441248973" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A4→B4</text>
+<path d="M 525.8,96.6 Q 569.6,94.6 613.4,96.4 Q 610.8,114.5 611.7,136.9 Q 569.5,135.2 524.4,136.4 Q 524.7,117.7 525.8,96.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="568.5850451930978" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A5→B5</text>
+<path d="M 611.4,97.6 Q 655.0,96.7 700.6,98.4 Q 701.3,117.8 698.4,138.1 Q 654.7,137.1 613.6,138.1 Q 613.0,119.4 611.4,97.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="655.5661462612983" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A6→B6</text>
+<path d="M 700.1,98.3 Q 744.9,99.3 786.1,97.2 Q 784.9,118.5 787.1,137.5 Q 743.2,136.3 698.9,138.8 Q 700.8,118.8 700.1,98.3 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.6"/>
+<text x="742.5472473294988" y="123" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A7→B7</text>
+<text x="830" y="88" font-size="9.5" fill="#C97B7B" text-anchor="middle">DMA 无货可搬</text>
+<path d="M 873.5,96.6 Q 894.9,95.1 917.2,97.9 Q 918.7,120.0 918.0,139.3 Q 896.5,137.8 872.3,139.3 Q 873.9,119.9 873.5,96.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.6"/>
+<text x="894.5751848808545" y="123" font-size="9.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Store</text>
+<text x="133.49055053410024" y="218" font-size="10" fill="#6b6257" text-anchor="middle">填充：干等</text>
+<path d="M 179.1,193.6 Q 221.4,192.0 265.7,192.8 Q 263.9,214.5 265.9,234.3 Q 220.0,232.5 178.2,234.8 Q 179.3,214.2 179.1,193.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="220.6606409202958" y="219" font-size="9.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c0+bias</text>
+<path d="M 266.2,192.8 Q 310.0,193.1 351.7,193.0 Q 350.4,214.0 352.6,235.5 Q 310.4,235.1 266.1,232.8 Q 266.0,211.0 266.2,192.8 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="307.6417419884963" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c1</text>
+<path d="M 351.2,193.4 Q 395.9,192.9 438.1,195.4 Q 436.4,214.0 439.0,234.4 Q 392.9,234.3 350.0,233.5 Q 349.9,214.9 351.2,193.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="394.62284305669675" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c2</text>
+<path d="M 439.5,193.6 Q 483.0,196.6 526.9,195.2 Q 525.9,216.0 527.0,235.5 Q 481.3,237.6 439.9,235.4 Q 440.5,212.5 439.5,193.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="481.6039441248973" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c3</text>
+<path d="M 527.1,194.4 Q 568.2,192.2 612.2,194.0 Q 611.6,215.0 614.0,235.3 Q 569.9,235.5 524.4,233.2 Q 527.2,214.7 527.1,194.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="568.5850451930978" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c4</text>
+<path d="M 613.9,192.5 Q 656.0,193.3 701.1,193.8 Q 698.7,215.7 700.4,234.3 Q 658.0,233.6 613.4,234.5 Q 612.9,212.8 613.9,192.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="655.5661462612983" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c5</text>
+<path d="M 698.3,194.1 Q 741.5,195.6 787.2,193.5 Q 787.3,212.8 786.3,235.2 Q 743.1,233.5 700.2,232.9 Q 699.7,215.1 698.3,194.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="742.5472473294988" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c6</text>
+<path d="M 787.5,193.4 Q 831.2,191.3 872.7,192.7 Q 871.3,212.1 872.8,234.5 Q 830.8,234.9 787.0,234.1 Q 786.7,215.3 787.5,193.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.65"/>
+<text x="829.5283483976992" y="219" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c7</text>
+<text x="894.5751848808545" y="218" font-size="10" fill="#6b6257" text-anchor="middle">排空</text>
+<text x="503" y="262" font-size="11" fill="#4d7c4f" text-anchor="middle">每个整圈边界：S1（数据已到）与 S2（槽位已空）同时满足——无需等待</text>
+<path d="M 89.3,273.4 Q 132.5,271.7 178.9,271.0 Q 179.8,283.0 178.2,296.4 Q 135.0,295.2 89.2,295.2 Q 90.1,283.6 89.3,273.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.35"/>
+<text x="133.49055053410024" y="289" font-size="10" fill="#3B3B3B" text-anchor="middle">填充 1.0</text>
+<path d="M 178.0,272.5 Q 480.3,272.8 786.5,271.3 Q 784.0,281.6 785.2,294.9 Q 483.2,295.1 177.9,296.1 Q 177.6,284.9 178.0,272.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="481.4149548069022" y="289" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">稳态 7×1.0 µs（双忙重叠）</text>
+<path d="M 786.5,271.4 Q 852.0,270.8 918.5,272.5 Q 916.0,285.9 917.0,295.8 Q 854.0,297.7 786.8,297.0 Q 787.1,284.9 786.5,271.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="851.0846343467542" y="289" font-size="10" fill="#3B3B3B" text-anchor="middle">排空 1.5</text>
+<path d="M 89.4,315.6 Q 513.2,313.8 934.0,316.1" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 89.5,310.8 Q 92.1,315.9 91.3,318.2" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="90.0" y="332" font-size="10" fill="#6b6257" text-anchor="middle">0</text>
+<path d="M 175.9,312.0 Q 175.9,315.1 176.6,317.6" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="176.98110106820047" y="332" font-size="10" fill="#6b6257" text-anchor="middle">1</text>
+<path d="M 263.9,309.8 Q 265.5,312.8 263.5,317.5" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="263.96220213640095" y="332" font-size="10" fill="#6b6257" text-anchor="middle">2</text>
+<path d="M 350.0,309.8 Q 353.3,315.8 349.9,317.8" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="350.9433032046015" y="332" font-size="10" fill="#6b6257" text-anchor="middle">3</text>
+<path d="M 437.9,309.9 Q 438.7,316.5 436.6,318.3" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="437.92440427280195" y="332" font-size="10" fill="#6b6257" text-anchor="middle">4</text>
+<path d="M 523.8,309.7 Q 525.9,316.1 523.6,318.0" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="524.9055053410025" y="332" font-size="10" fill="#6b6257" text-anchor="middle">5</text>
+<path d="M 611.0,309.8 Q 613.4,313.7 611.9,317.3" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="611.886606409203" y="332" font-size="10" fill="#6b6257" text-anchor="middle">6</text>
+<path d="M 699.3,309.9 Q 699.6,314.3 699.1,318.0" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="698.8677074774034" y="332" font-size="10" fill="#6b6257" text-anchor="middle">7</text>
+<path d="M 784.7,310.0 Q 786.7,313.4 786.3,319.2" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="785.8488085456039" y="332" font-size="10" fill="#6b6257" text-anchor="middle">8</text>
+<path d="M 872.8,312.4 Q 873.1,314.7 872.3,316.5" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+<text x="872.8299096138044" y="332" font-size="10" fill="#6b6257" text-anchor="middle">9</text>
+<text x="917.0" y="332" font-size="10" fill="#6b6257" text-anchor="middle">9.5</text>
+<text x="945" y="320" font-size="10.5" fill="#6b6257" text-anchor="middle">µs</text>
+<text x="490" y="368" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">A 槽乒乓：S2 的复用距离从 1 拉到 2</text>
+<path d="M 169.5,381.3 Q 293.1,382.5 419.0,381.5 Q 418.9,402.7 420.6,425.6 Q 294.8,422.8 168.4,422.9 Q 169.0,400.0 169.5,381.3 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="295" y="408" font-size="11" fill="#3B3B3B" text-anchor="middle">槽 0：A0·A2·A4·A6</text>
+<path d="M 559.3,383.1 Q 683.9,383.2 810.0,382.4 Q 810.9,403.7 809.3,422.9 Q 684.0,425.2 561.0,424.0 Q 559.7,402.8 559.3,383.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="685" y="408" font-size="11" fill="#3B3B3B" text-anchor="middle">槽 1：A1·A3·A5·A7</text>
+<path d="M 428.2,403.2 Q 488.4,404.8 552.0,403.0 M 539.0,406.0 L 552.0,403.0 L 539.0,400.0" stroke="#6b6257" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 551.3,401.6 Q 491.7,401.3 428.0,403.0 M 441.0,400.0 L 428.0,403.0 L 441.0,406.0" stroke="#6b6257" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="490" y="452" font-size="11.5" fill="#3B3B3B" text-anchor="middle">算 c[k] 读槽 k%2 ∥ 搬 A/B[k+1] 写槽 (k+1)%2——两个槽永不撞车</text>
+<text x="490" y="476" font-size="11.5" fill="#C97B7B" text-anchor="middle">S2（WAR）：『等上一圈 c[k] 读完』放松为『等上上圈 c[k−1] 读完』，白等 448 µs → 0</text>
+<path d="M 89.9,494.5 Q 286.2,495.9 481.4,496.0 Q 483.1,527.6 481.0,561.2 Q 286.9,561.5 91.3,559.4 Q 90.8,525.0 89.9,494.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.2"/>
+<text x="285" y="521" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">单缓冲（D102）：每圈 搬1.0＋算1.0＝2.0 µs</text>
+<text x="285" y="545" font-size="10.5" fill="#6b6257" text-anchor="middle">本块 16.5078 µs，两排完全错开</text>
+<path d="M 511.0,494.5 Q 711.9,492.9 909.8,495.3 Q 910.2,528.5 909.8,561.2 Q 711.3,561.0 511.5,561.3 Q 512.5,525.9 511.0,494.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.25"/>
+<text x="710" y="521" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">双缓冲：每圈 max(搬1.0, 算1.0)＝1.0 µs</text>
+<text x="710" y="545" font-size="10.5" fill="#6b6257" text-anchor="middle">本块 9.5078 µs，省 7 µs＝7 圈重叠的搬运</text>
+<text x="490" y="600" font-size="10.5" fill="#6b6257" text-anchor="middle">填充 1.0078｜稳态 7×1.0｜排空 1.5 µs——数字来自 code/outputs/main-tile.txt 的真实运行</text>
+</svg>

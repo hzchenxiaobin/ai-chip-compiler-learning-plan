@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.8,3.7 Q 490.6,4.7 977.4,2.8 Q 974.0,318.9 974.6,635.4 Q 489.9,634.2 2.5,637.4 Q 4.4,322.5 3.8,3.7 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">bench_one 解剖：门→预热→计时→统计，以及三个口径怎么分家</text>
+<path d="M 330.0,47.0 Q 491.7,45.7 649.9,49.1" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="70" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">一次 bench_one 调用（真实时序）</text>
+<path d="M 55.4,83.0 Q 254.7,82.0 457.4,84.2 Q 456.7,108.2 456.5,136.1 Q 258.0,133.9 56.3,134.8 Q 57.4,109.7 55.4,83.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="256" y="106" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 正确性门（不计时）</text>
+<text x="256" y="126" font-size="9.5" fill="#6b6257" text-anchor="middle">逐位比对参考实现；no-tail 内核 max_abs_err=3.77 → REJECTED</text>
+<path d="M 55.0,145.3 Q 254.1,144.5 456.4,147.6 Q 456.7,173.4 455.6,197.2 Q 253.9,198.1 55.0,198.9 Q 52.8,171.7 55.0,145.3 Z" stroke="#6b6257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.9"/>
+<text x="256" y="168" font-size="11.5" fill="#6b6257" text-anchor="middle" font-weight="bold">③ 预热 ×3（划掉=丢弃）</text>
+<text x="256" y="188" font-size="9" fill="#6b6257" text-anchor="middle">冷启动：首次调用 / 分配器冷态 / 缺页——与快慢无关的系统性偏差</text>
+<path d="M 75.7,164.1 Q 135.7,164.9 201.3,164.7" stroke="#C97B7B" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+<path d="M 320.1,164.4 Q 376.6,162.3 436.9,164.8" stroke="#C97B7B" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+<path d="M 55.6,208.2 Q 256.0,207.9 456.7,207.4 Q 455.1,251.6 455.3,293.1 Q 253.7,292.0 54.9,291.0 Q 57.4,248.3 55.6,208.2 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="256" y="230" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ 计时 ×21</text>
+<text x="256" y="248" font-size="9.5" fill="#6b6257" text-anchor="middle">每个样本：C 重置回同一初始态（时钟外）</text>
+<text x="256" y="264" font-size="9.5" fill="#6b6257" text-anchor="middle">t0=perf_counter() → 只跑内核 → t1</text>
+<text x="256" y="282" font-size="9.5" fill="#6b6257" text-anchor="middle">21 个样本 = 21 个『有效计算+噪声』的混合物</text>
+<path d="M 54.5,302.9 Q 256.9,300.8 456.8,300.8 Q 456.3,333.9 454.7,364.7 Q 254.2,362.6 56.1,364.8 Q 53.5,333.4 54.5,302.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="256" y="324" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑤ 统计 + 记录</text>
+<text x="256" y="342" font-size="9.5" fill="#6b6257" text-anchor="middle">median · MAD · mean · spread% · outliers(MAD 规则)</text>
+<text x="256" y="358" font-size="9.5" fill="#6b6257" text-anchor="middle">原始 samples 全部落盘 → 换口径重算不用重跑</text>
+<path d="M 255.5,136.0 Q 257.4,141.1 256.0,146.0 M 242.8,147.9 L 256.0,146.0 L 243.3,141.9" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 257.1,199.2 Q 256.6,202.0 256.0,208.0 M 242.7,208.7 L 256.0,208.0 L 243.7,202.8" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 257.0,291.1 Q 256.3,295.7 256.0,302.0 M 267.7,295.6 L 256.0,302.0 L 269.3,301.4" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 56.3,380.7 Q 256.0,378.6 455.3,378.7 Q 454.8,409.4 455.7,436.7 Q 258.0,439.5 57.4,438.9 Q 55.2,409.0 56.3,380.7 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="76" y="402" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">门成绩（outputs/correctness.txt）：</text>
+<text x="76" y="420" font-size="10" fill="#3B3B3B" text-anchor="start">3 个奇数 shape × 6 顺序 × 3 展开 = 54/54 逐位相等</text>
+<text x="76" y="436" font-size="10" fill="#C97B7B" text-anchor="start">靶子 no-tail 内核：passed=False，不计时也照样产记录</text>
+<text x="740" y="70" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">三个口径怎么分家（201 样本长跑，真实数据）</text>
+<path d="M 490.6,83.0 Q 730.6,84.6 968.9,82.5 Q 971.2,172.3 971.3,258.0 Q 731.8,257.3 491.3,256.7 Q 492.0,169.6 490.6,83.0 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<path d="M 515.6,216.4 Q 728.1,214.9 945.2,214.9" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 517.4,150.7 Q 730.9,150.6 943.4,149.6" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="946" y="148" font-size="9.5" fill="#5a7d4e" text-anchor="end" font-weight="bold">median 57.91</text>
+<path d="M 517.6,143.8 Q 729.4,142.4 943.3,141.5" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" fill="none" stroke-dasharray="6 5"/>
+<text x="946" y="137" font-size="9.5" fill="#a4652f" text-anchor="end" font-weight="bold">mean 58.36</text>
+<text x="522.0" y="149.44527665377205" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="533.6" y="152.80524735613307" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="545.2" y="149.69571888691578" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="556.8" y="148.2613767823709" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="568.4" y="149.20475215754416" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="580.0" y="151.00880161709455" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="591.6" y="153.07446027534755" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="603.2" y="134.6465825223041" font-size="12" fill="#C97B7B" text-anchor="middle">•</text>
+<text x="614.8" y="152.47348965834058" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="626.4" y="148.44719241083106" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="638.0" y="151.56193403960495" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="649.6" y="149.1216146267638" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="661.2" y="150.57191424540568" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="672.8" y="152.13855492021128" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="684.4" y="146.9266934120241" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="696.0" y="146.79673011445297" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="707.6" y="147.67841998782424" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="719.2" y="137.07182522655046" font-size="12" fill="#C97B7B" text-anchor="middle">•</text>
+<text x="730.8" y="151.1838829705804" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="742.4" y="152.9034133655006" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="754.0" y="150.30852195468242" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="765.6" y="151.63334122265545" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="777.2" y="152.96890524638764" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="788.8" y="146.9034640855953" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="800.4" y="149.86311043094523" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="812.0" y="150.2333066875165" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="823.5999999999999" y="151.54382858498798" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="835.2" y="134.7612013678807" font-size="12" fill="#C97B7B" text-anchor="middle">•</text>
+<text x="846.8" y="152.4696643003409" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="858.4" y="149.30836898969866" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="870.0" y="147.02761105187633" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="881.5999999999999" y="106" font-size="15" fill="#C97B7B" text-anchor="middle">★</text>
+<text x="875.5999999999999" y="92" font-size="9.5" fill="#C97B7B" text-anchor="end" font-weight="bold">#178: 85.98 (+48.5%)</text>
+<text x="893.2" y="146.79544484033372" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="904.8" y="149.27630949855984" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="916.4" y="147.05409805511275" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="928.0" y="151.55127989835975" font-size="12" fill="#3B3B3B" text-anchor="middle">•</text>
+<text x="730" y="236" font-size="9.5" fill="#6b6257" text-anchor="middle">23/201 个 MAD 离群，聚成 15 个连续短串——离群在时间上成串：</text>
+<text x="730" y="251" font-size="9.5" fill="#6b6257" text-anchor="middle">一次机器忙碌让相邻几个样本一起变慢，不是 23 个独立噪声</text>
+<path d="M 491.2,268.4 Q 728.7,267.8 970.4,271.6 Q 969.2,306.7 969.5,345.1 Q 729.1,347.1 489.8,347.5 Q 492.7,309.2 491.2,268.4 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="730" y="292" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">离群规则：|x − median| > 3.5 × 1.4826 × MAD（修正 z 分数）</text>
+<text x="730" y="310" font-size="9.5" fill="#6b6257" text-anchor="middle">本轮阈值 0.31 ms（MAD 只有 0.06：主体越稳阈值越紧，规则自适应）</text>
+<text x="730" y="328" font-size="9.5" fill="#6b6257" text-anchor="middle">只标记只计数，不悄悄删——离群值是数据，不是污点</text>
+<path d="M 489.9,359.2 Q 604.9,361.2 720.7,358.8 Q 721.3,411.0 721.8,464.7 Q 604.2,464.3 490.5,466.6 Q 490.3,412.8 489.9,359.2 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="606" y="380" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">median：典型一次</text>
+<text x="606" y="398" font-size="9.5" fill="#6b6257" text-anchor="middle">『这个内核一般多快』</text>
+<text x="606" y="416" font-size="9.5" fill="#6b6257" text-anchor="middle">排名、比较、下结论用它</text>
+<text x="606" y="434" font-size="9.5" fill="#6b6257" text-anchor="middle">对离群免疫（201 个样本</text>
+<text x="606" y="450" font-size="9.5" fill="#6b6257" text-anchor="middle">里 23 个离群都拉不动）</text>
+<path d="M 737.4,358.0 Q 852.7,356.7 970.4,357.6 Q 970.0,413.5 970.4,466.0 Q 856.6,466.1 738.7,466.9 Q 737.1,411.7 737.4,358.0 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.35"/>
+<text x="854" y="380" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">mean：总量估算</text>
+<text x="854" y="398" font-size="9.5" fill="#6b6257" text-anchor="middle">『整晚 auto-tuning 跑多久』</text>
+<text x="854" y="416" font-size="9.5" fill="#6b6257" text-anchor="middle">总时长=Σ样本，mean 才对</text>
+<text x="854" y="434" font-size="9.5" fill="#6b6257" text-anchor="middle">脆弱度 ∝ 离群÷样本数：</text>
+<text x="854" y="452" font-size="9.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">repeats=3 时 +48.5%→拖 +16.2%</text>
+<path d="M 55.4,466.7 Q 513.6,466.0 970.6,466.4 Q 970.4,497.2 969.7,527.6 Q 514.5,529.4 57.6,526.8 Q 57.2,497.5 55.4,466.7 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="490" y="490" font-size="10.5" fill="#3B3B3B" text-anchor="middle">gc 口径（同进程背靠背）：gc=off 62.30 vs gc=on 63.32，差 +1.64%——读数就是读数，写进 protocol.gc</text>
+<text x="490" y="512" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">但跨进程漂移更大：同配置主表 57.36 / 长跑 57.91 / 口径实验 62.30（8.6%）→ 配置间排名必须同进程测</text>
+</svg>

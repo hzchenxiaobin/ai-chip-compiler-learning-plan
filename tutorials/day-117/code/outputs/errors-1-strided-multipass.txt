@@ -1,0 +1,4 @@
+gemm_strided.mlir:24:5: error: failed to legalize operation 'builtin.unrealized_conversion_cast' that was explicitly marked illegal
+    func.return %c : memref<4x3xf32, strided<[3, 1]>>
+    ^
+gemm_strided.mlir:24:5: note: see current operation: %19 = "builtin.unrealized_conversion_cast"(%18) : (memref<4x3xf32, strided<[3, 1]>>) -> !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)>

@@ -1,0 +1,7 @@
+// mini 图 IR：matmul + bias 广播加
+// shape：A 96x96 · B 96x96 · bias 96 → C 96x96   —— D108 的 S2
+func @matmul_bias(%A: tensor<96x96xf32>, %B: tensor<96x96xf32>, %bias: tensor<96xf32>) -> tensor<96x96xf32> {
+  %mm = mini.matmul %A, %B    : (96x96, 96x96) -> 96x96
+  %C  = mini.add %mm, %bias   : (96x96, 96) -> 96x96, broadcast row
+  return %C : tensor<96x96xf32>
+}

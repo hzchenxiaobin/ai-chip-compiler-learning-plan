@@ -1,0 +1,84 @@
+第 116 天：转换简单 Elementwise 算子——真机报告（2026-11-13 16:11）
+环境：Python 3.11.4 / numpy 1.26.4 / llvmlite 0.50.0（LLVM 22.1.0） / triple aarch64-unknown-linux-gnu
+输入：@add 2×3、@relu 2×3（展开形态，无 scf.for）、@step（标量）、GEMM 4×6×3（账本回归）
+
+[TP1] 账本四联：三个新输入 full 必须清零；GEMM 只做回归（C1 在 D117）
+      @add: 30/30 转换，残账 0 条；full SUCCESS
+      @relu: 31/31 转换，残账 0 条；full SUCCESS
+      @step: 5/5 转换，残账 0 条；full SUCCESS
+      @gemm: 14/18 转换，残账 4 条（scf.for, scf.yield -> C1，D117）；full FAIL（导出前的门，非今天的失败）
+
+[TP2] @add 目标图静态检查（LLVM 方言文本）
+      源 30 op -> 目标 205 op（膨胀 6.8 倍）；胶水（unrealized_conversion_cast）0 条——full 转换后没有新旧类型交界
+      目标 op 分布：load 12，store 6，extractvalue 72，insertvalue 7，乘加 72，浮点乘加 6，fcmp 0，select 0，malloc 1，常量 9
+      全部 llvm.*、无 index/memref 残留、M3 填表 7 字段齐全、gep 数＝访存数：OK
+[TP3] @add 导出与 verify：LLVM IR parse+verify 通过（真 LLVM 22.1.0）
+      R2 常量内联：9 条 llvm.mlir.constant 全部消失，.ll 指令 195 条；R3（块参数/phi）今天用不到——没有控制流
+      符号：_mlir_ciface_add, add, malloc；边界包装 _mlir_ciface_add（指针合同）已生成
+
+[TP2] @relu 目标图静态检查（LLVM 方言文本）
+      源 31 op -> 目标 152 op（膨胀 4.9 倍）；胶水（unrealized_conversion_cast）0 条——full 转换后没有新旧类型交界
+      目标 op 分布：load 6，store 6，extractvalue 48，insertvalue 7，乘加 48，浮点乘加 0，fcmp 6，select 6，malloc 1，常量 10
+      全部 llvm.*、无 index/memref 残留、M3 填表 7 字段齐全、gep 数＝访存数：OK
+[TP3] @relu 导出与 verify：LLVM IR parse+verify 通过（真 LLVM 22.1.0）
+      R2 常量内联：10 条 llvm.mlir.constant 全部消失，.ll 指令 141 条；R3（块参数/phi）今天用不到——没有控制流
+      符号：_mlir_ciface_relu, malloc, relu；边界包装 _mlir_ciface_relu（指针合同）已生成
+
+[TP2] @step 目标图静态检查（LLVM 方言文本）
+      源 5 op -> 目标 4 op（膨胀 0.8 倍）；胶水（unrealized_conversion_cast）0 条——full 转换后没有新旧类型交界
+      目标 op 分布：load 0，store 0，extractvalue 0，insertvalue 0，乘加 2，浮点乘加 0，fcmp 0，select 0，malloc 0，常量 1
+      全部 llvm.*、无 index/memref 残留、M3 填表 7 字段齐全、gep 数＝访存数：OK
+[TP3] @step 导出与 verify：LLVM IR parse+verify 通过（真 LLVM 22.1.0）
+      R2 常量内联：1 条 llvm.mlir.constant 全部消失，.ll 指令 3 条；R3（块参数/phi）今天用不到——没有控制流
+      符号：malloc, step；标量签名直接可调（无 memref，无需包装）
+
+[TP4] 真机执行 @add——第一个端到端可执行算子（源 IR -> 模式 -> 导出 -> JIT -> 参考对照）
+      契约层：allocated!=0，aligned==allocated，offset 0，sizes [2, 3]，strides [3, 1] OK
+      数值层（描述符读回）：6/6 点 bitwise 一致
+      布局层（裸内存行主序）：6/6 点 bitwise 一致——契约里的 strided<[3,1]> 兑现
+
+      汇编证据（真机 aarch64，27 条指令）：`bl add` 前用 3 条 stp/str 把按值入参复制上栈/寄存器（2×56B＝14 个 8 字节，8 个可用寄存器装不下）
+        调用后 4 条把 56B 结果写进 outp：stp x0, x1, [x19] … str x6, [x19, #48]——聚合返回拆在 x0..x6，不是 gcc C ABI 的 x8
+        ——合同分层：C 合同（gcc，>16B 走间接/x8，D115 证据）与 LLVM 内部合同（两侧同编译，自洽）不是同一份；边界只说指针，所以必须包装
+
+      主输入 [[0.9859650731086731, -1.0044841766357422, -0.3661142587661743], [-0.3771129250526428, 0.7172370553016663, 0.18182919919490814]]：
+        结果 [[0.9859650731086731, 0.0, 0.0], [0.0, 0.7172370553016663, 0.18182919919490814]]；与 np.where(x>0,x,0) 6/6 点 bitwise（OK）；与 np.maximum(x,0) 6/6 点
+      边界输入 [[inf, -inf, nan], [3.25, inf, -inf]]：
+        结果 [[inf, 0.0, 0.0], [3.25, inf, 0.0]]；与 np.where(x>0,x,0) 6/6 点 bitwise（OK）；与 np.maximum(x,0) 5/6 点（不一致：NaN 语义，见常见错误 1）
+      语义注：cmpf ogt + select 下 relu(-0.0)=+0.0、relu(NaN)=0——参考必须与 IR 语义逐位对齐，np.maximum 在 NaN 上不适用
+
+[TP6] 真机执行 @step（A2：index 整数乘加 -> i64）
+      step(0, 0) = 0（期望 0）OK
+      step(2, 3) = 10（期望 10）OK
+      step(-5, 7) = 4（期望 4）OK
+      step(-1, -1) = -4（期望 -4）OK
+      step(1099511627776, 1099511627776) = 4398046511104（期望 4398046511104）OK
+      标量签名 (index, index) -> index 兑换成 (i64, i64) -> i64——index 位宽就是目标指针宽度（D115 兑换表）
+
+[TP7] 转置视图输入：@add 的 %a 换成转置视图（复用同一个 JIT 引擎）
+      numpy .strides=(4, 8) 是字节，描述符要元素步长 (1, 2)（D115 常见错误 1 的正面应用）
+      描述符读回 6/6 点 bitwise（OK）——M1 的地址公式对任意合法 strides 成立，描述符是通用读法
+
+[TP8] 探针三连：故意埋错，看哪一层咬得住（全部真实执行）
+      P1 M3 strides 填反：2×3 非方形——反序不再在界内，store 会越界写坏堆，探针只在方形上跑（2×2 上它是双射，这就是它狡猾的地方）
+      P2 包装漏回写：契约层咬住（allocated 为空）——D115 的 sret 责任在包装里兑现，漏了就被字段检查抓
+      P3 参考写错（np.maximum 当 relu 参考）：边界输入下 1 点不一致——参考也必须被验证语义，bitwise 对照的前提是参考与 IR 语义一致
+
+[TP9] 形状对照：--shape 2 3（计数随形状变，字节账随形状变，正确性不变）
+      @add 2×3：源 30 op（2×2 是 21）、full SUCCESS；malloc 24 B、strides [3,1]
+      真机 @add：6/6 点 bitwise 一致（随机输入），OK
+      真机 @relu：6/6 点 bitwise 一致（随机输入），OK
+      GEMM 账本不变：14/18，残账 4 条（与形状无关的 C1 欠账）
+
+汇总：
+  TP1: PASS
+  TP2: PASS
+  TP3: PASS
+  TP4: PASS
+  TP5: PASS
+  TP6: PASS
+  TP7: PASS
+  TP8: PASS
+  TP9: PASS
+  DISASM: PASS
+10/10 PASS

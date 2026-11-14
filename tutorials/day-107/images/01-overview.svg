@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.2,4.3 Q 491.5,3.3 977.5,4.5 Q 977.1,320.9 975.9,635.4 Q 491.2,635.5 2.8,637.6 Q 2.2,319.6 3.2,4.3 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 107 天定位：统一 Benchmark 工具——测量协议第一次成为基础设施</text>
+<path d="M 330.8,45.8 Q 490.4,49.6 649.6,46.6" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="68" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">调优主线</text>
+<path d="M 58.9,80.0 Q 118.4,79.2 176.9,79.3 Q 176.1,103.6 177.2,129.8 Q 120.4,131.0 61.1,129.2 Q 61.0,106.3 58.9,80.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="119" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">图优化·融合</text>
+<text x="119" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D48~56</text>
+<path d="M 179.1,104.2 Q 185.9,103.2 190.0,104.0 M 177.0,107.0 L 190.0,104.0 L 177.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 192.3,80.9 Q 251.8,82.2 311.3,81.0 Q 313.1,105.8 311.5,130.6 Q 251.4,130.2 192.6,131.0 Q 193.0,106.2 192.3,80.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="251" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">循环 Lowering</text>
+<text x="251" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D85~89</text>
+<path d="M 312.8,104.6 Q 317.0,103.6 322.0,104.0 M 309.0,107.0 L 322.0,104.0 L 309.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 325.4,81.5 Q 382.4,82.2 440.4,79.7 Q 442.4,106.6 442.8,130.1 Q 385.4,131.5 324.4,129.2 Q 326.5,107.2 325.4,81.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="383" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Tiling</text>
+<text x="383" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D92~96</text>
+<path d="M 443.7,103.7 Q 450.6,105.7 454.0,104.0 M 441.0,107.0 L 454.0,104.0 L 441.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 455.8,80.9 Q 514.1,78.5 575.5,80.5 Q 574.2,103.7 573.8,128.7 Q 516.3,127.1 454.8,128.6 Q 453.5,106.5 455.8,80.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="515" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">候选生成</text>
+<text x="515" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D106</text>
+<path d="M 576.1,103.5 Q 582.7,104.0 586.0,104.0 M 573.0,107.0 L 586.0,104.0 L 573.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 587.7,75.3 Q 644.3,77.4 704.7,77.5 Q 704.1,106.8 707.2,135.2 Q 645.5,136.9 586.9,134.4 Q 589.1,104.5 587.7,75.3 Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.8"/>
+<text x="647" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">统一 Benchmark</text>
+<text x="647" y="121" font-size="10" fill="#6b6257" text-anchor="middle">D107</text>
+<path d="M 707.0,105.2 Q 714.7,105.1 718.0,104.0 M 705.0,107.0 L 718.0,104.0 L 705.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 721.2,79.2 Q 780.8,78.2 838.5,79.4 Q 837.1,102.7 836.5,129.9 Q 777.0,130.9 718.8,131.0 Q 721.5,107.2 721.2,79.2 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="779" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Auto-tuning</text>
+<text x="779" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D108</text>
+<path d="M 841.2,104.3 Q 845.5,103.8 850.0,104.0 M 837.0,107.0 L 850.0,104.0 L 837.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 853.0,79.5 Q 914.0,77.3 971.2,79.0 Q 970.8,102.8 969.7,129.1 Q 912.0,130.8 851.6,130.4 Q 854.4,107.0 853.0,79.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="911" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">验收·GFLOPS</text>
+<text x="911" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D109/111</text>
+<text x="490" y="150" font-size="10.5" fill="#C97B7B" text-anchor="middle">D106 喂来 12,970 个幸存者；今天给它们一条统一的『测量流水线』</text>
+<text x="60" y="176" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">从一次性实验到统一工具（D97 → D107）</text>
+<path d="M 56.5,185.2 Q 205.0,184.3 356.7,185.9 Q 354.4,229.3 355.3,276.7 Q 207.3,277.1 57.3,277.8 Q 56.0,230.8 56.5,185.2 Z" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.9"/>
+<text x="206" y="208" font-size="12" fill="#6b6257" text-anchor="middle" font-weight="bold">D97：一次性实验脚本</text>
+<text x="206" y="230" font-size="10" fill="#6b6257" text-anchor="middle">协议写死在 main 里，换配置要手搓</text>
+<text x="206" y="248" font-size="10" fill="#6b6257" text-anchor="middle">结果只有文本表，程序没法消费</text>
+<text x="206" y="266" font-size="10" fill="#6b6257" text-anchor="middle">env 单独躺在 env.txt，和表不绑定</text>
+<path d="M 362.2,230.6 Q 378.1,232.0 396.0,232.0 M 383.0,235.0 L 396.0,232.0 L 383.0,229.0" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 399.7,187.2 Q 548.5,184.6 700.7,186.0 Q 698.5,233.9 699.7,277.4 Q 551.3,275.4 398.9,277.4 Q 398.7,230.6 399.7,187.2 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.35"/>
+<text x="550" y="208" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D107：统一 Benchmark 工具</text>
+<text x="550" y="230" font-size="10" fill="#3B3B3B" text-anchor="middle">bench_one(cfg) 一个入口，协议一处默认</text>
+<text x="550" y="248" font-size="10" fill="#3B3B3B" text-anchor="middle">JSONL 每条自包含 env+protocol+原始样本</text>
+<text x="550" y="266" font-size="10" fill="#3B3B3B" text-anchor="middle">被拒配置也留记录：fail-visible</text>
+<path d="M 715.5,186.3 Q 825.0,185.1 935.2,185.8 Q 935.0,233.2 935.0,278.0 Q 824.6,279.3 714.9,277.4 Q 713.7,232.8 715.5,186.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="826" y="208" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D97 的遗产原样继承</text>
+<text x="826" y="228" font-size="10" fill="#3B3B3B" text-anchor="middle">warmup=3 · repeats=21</text>
+<text x="826" y="244" font-size="10" fill="#3B3B3B" text-anchor="middle">正确性门先行 · 中位数口径</text>
+<text x="826" y="262" font-size="10" fill="#3B3B3B" text-anchor="middle">差距要大于波动才下结论</text>
+<text x="60" y="302" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">统一入口 bench_one(cfg, spec, protocol)：一条流水线五道工序</text>
+<path d="M 57.1,317.4 Q 136.8,314.3 220.6,315.4 Q 219.2,371.8 220.6,424.4 Q 136.0,423.3 55.7,424.3 Q 57.5,372.6 57.1,317.4 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="138" y="338" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 固定输入</text>
+<text x="138" y="356" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">seed=42</text>
+<text x="138" y="376" font-size="9.5" fill="#6b6257" text-anchor="middle">同一 spec 永远</text>
+<text x="138" y="392" font-size="9.5" fill="#6b6257" text-anchor="middle">同一份 A/B/bias</text>
+<path d="M 223.3,369.3 Q 227.7,370.0 234.0,370.0 M 247.0,367.0 L 234.0,370.0 L 247.0,373.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 234.7,315.3 Q 319.5,313.9 400.7,315.4 Q 402.5,370.7 400.2,422.6 Q 317.4,423.7 237.0,425.5 Q 234.4,369.8 234.7,315.3 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="318" y="338" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 正确性门</text>
+<text x="318" y="356" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">54/54 + 1 拒</text>
+<text x="318" y="376" font-size="9.5" fill="#6b6257" text-anchor="middle">逐位相等；被拒</text>
+<text x="318" y="392" font-size="9.5" fill="#6b6257" text-anchor="middle">不计时（no-tail ✗）</text>
+<path d="M 402.5,370.9 Q 409.1,368.4 414.0,370.0 M 401.0,373.0 L 414.0,370.0 L 401.0,367.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 414.6,314.9 Q 498.8,314.6 580.9,317.0 Q 579.4,372.5 579.3,425.2 Q 495.8,425.3 416.5,422.4 Q 414.9,369.1 414.6,314.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="498" y="338" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ 预热 ×3</text>
+<text x="498" y="356" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">全部丢弃</text>
+<text x="498" y="376" font-size="9.5" fill="#6b6257" text-anchor="middle">冷启动成本：首调</text>
+<text x="498" y="392" font-size="9.5" fill="#6b6257" text-anchor="middle">分配器 / 缺页</text>
+<path d="M 581.1,370.3 Q 587.2,370.3 594.0,370.0 M 581.0,373.0 L 594.0,370.0 L 581.0,367.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 595.8,316.4 Q 676.8,314.9 758.4,316.7 Q 760.9,371.9 759.1,425.0 Q 679.6,425.5 595.9,424.5 Q 595.5,370.0 595.8,316.4 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="678" y="338" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ 计时 ×21</text>
+<text x="678" y="356" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">perf_counter</text>
+<text x="678" y="376" font-size="9.5" fill="#6b6257" text-anchor="middle">每样本同一初始态</text>
+<text x="678" y="392" font-size="9.5" fill="#6b6257" text-anchor="middle">时钟只包住内核</text>
+<path d="M 762.9,369.1 Q 769.2,371.3 774.0,370.0 M 761.0,373.0 L 774.0,370.0 L 761.0,367.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 775.2,315.6 Q 857.7,314.6 938.5,315.0 Q 940.6,366.9 939.6,422.9 Q 855.4,422.2 775.1,424.2 Q 776.4,368.7 775.2,315.6 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="858" y="338" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑤ 统计+记录</text>
+<text x="858" y="356" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">JSONL</text>
+<text x="858" y="376" font-size="9.5" fill="#6b6257" text-anchor="middle">median/MAD/mean</text>
+<text x="858" y="392" font-size="9.5" fill="#6b6257" text-anchor="middle">/outl + 原始样本</text>
+<path d="M 56.8,443.4 Q 496.6,444.0 937.0,444.0 Q 935.0,494.1 935.0,541.3 Q 495.8,541.6 57.6,541.3 Q 57.6,494.3 56.8,443.4 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="76" y="468" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">结果格式 d107.bench-result/1（一行一条 JSON）：</text>
+<text x="76" y="490" font-size="10.5" fill="#3B3B3B" text-anchor="start">schema 版本号 · kernel(workload 身份) · env 快照 · protocol(warmup/repeats/gc/policy)</text>
+<text x="76" y="510" font-size="10.5" fill="#3B3B3B" text-anchor="start">correctness(过门/误差) · stats_ms(median/mean/MAD/spread/outl) · samples_ms 原始样本全落盘</text>
+<text x="76" y="530" font-size="10" fill="#6b6257" text-anchor="start">统计可换口径重算（重复次数扫描不用重跑）· 被拒也留痕 · 记录离开目录不失户口</text>
+<text x="490" y="558" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">分工边界：工具只测量只记录；搜索给 D108，GFLOPS 给 D109，排序给 D110</text>
+</svg>

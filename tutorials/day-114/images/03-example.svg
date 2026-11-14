@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 760" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.6,4.1 Q 528.8,3.3 1055.7,3.4 Q 1053.8,380.6 1055.2,757.5 Q 530.8,759.0 4.8,757.5 Q 6.3,382.3 3.6,4.1  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="530.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 114 天真实运行结果：7/7 项 PASS——膨胀 3.8 倍，三种设计错误全部被清单咬住</text>
+<path d="M 329.1,43.2 Q 528.2,42.0 730.6,44.1" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="530" y="66" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.3" fill="#6b6257" text-anchor="middle">环境：Python 3.11.4（aarch64）· numpy 1.26.4 · llvmlite 0.50.0（LLVM 22.1.0）· 2026-11-13，全部出自一次冻结运行（outputs/）</text>
+<path d="M 44.9,87.4 Q 198.9,87.6 353.3,87.7 Q 355.4,207.7 354.0,326.7 Q 198.1,328.0 45.1,327.4 Q 46.3,206.5 44.9,87.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="56" y="107" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 全量转换：18 op 全部过海关</text>
+<text x="56" y="124" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">源 IR：18 op（4 个方言）</text>
+<text x="56" y="140" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">目标形态：69 op、10 个基本块</text>
+<text x="56" y="156" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">膨胀 3.8 倍（信息显式化的代价）</text>
+<text x="56" y="172" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">full 驱动：18/18 转换，残留 0</text>
+<text x="56" y="188" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">每条 load 展开 10 条目标 op</text>
+<text x="56" y="204" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">描述符 7 次 insertvalue 填满</text>
+<path d="M 360.0,88.3 Q 516.2,86.9 670.2,89.4 Q 668.5,208.6 669.2,327.0 Q 515.4,326.6 360.9,328.3 Q 359.4,206.6 360.0,88.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="515" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 两条执行路径都逐位一致</text>
+<text x="515" y="132" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="middle">解释器（numpy 逐 op 仿真）</text>
+<text x="515" y="150" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">执行 211 步 → 与逐项参考 bitwise 相等：True</text>
+<text x="515" y="172" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="middle">真机（llvmlite MCJIT）</text>
+<text x="515" y="190" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">LLVM IR parse + verify 通过</text>
+<text x="515" y="208" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">编译 → ctypes 调用 malloc/访存</text>
+<text x="515" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle">C_jit 与逐项参考 bitwise 相等：True</text>
+<text x="515" y="250" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#E8A87C" text-anchor="middle" font-weight="bold">设计＝可执行的，不是纸面结论</text>
+<text x="515" y="272" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.3" fill="#6b6257" text-anchor="middle">（对照 numpy f32 matmul 差 3.05e-05：</text>
+<text x="515" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.3" fill="#6b6257" text-anchor="middle">  BLAS 累加序不同，只作参考）</text>
+<path d="M 677.4,87.5 Q 847.5,87.6 1018.3,86.7 Q 1016.5,208.0 1017.7,328.4 Q 845.0,327.4 675.5,327.6 Q 677.7,207.9 677.4,87.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="688" y="107" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ 对照实验 C：换形状 2×3×2</text>
+<text x="688" y="124" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">全部 7 项检查照样 PASS</text>
+<text x="688" y="140" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">解释器 51 步，bitwise 相等</text>
+<text x="688" y="156" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">真机 JIT bitwise 相等</text>
+<text x="688" y="172" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">描述符 strides [6,1]→[3,1]，</text>
+<text x="688" y="188" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  malloc 48 B→16 B 随 shape 重算</text>
+<text x="688" y="204" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">探针照样被咬住（见下）</text>
+<text x="230" y="358" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">④ partial vs full：同一份残留清单，语义相反（对照实验 A）</text>
+<path d="M 44.2,370.8 Q 288.0,369.1 529.0,368.9 Q 528.5,455.1 527.8,544.6 Q 284.5,545.3 45.1,546.9 Q 46.7,456.7 44.2,370.8  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="56" y="389" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">扣掉 C1（scf 一族）后重跑驱动器</text>
+<text x="56" y="406" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">partial：14/18 转换、残留 4（SUCCESS）</text>
+<text x="56" y="422" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  残留 = 3×scf.for ＋ 1×scf.yield</text>
+<text x="56" y="438" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  每条原因：'模式未注册（排期见清单）'</text>
+<text x="56" y="454" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">full：同配置 FAIL，列出同样 4 条</text>
+<text x="56" y="470" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  循环体内的 load/store 照样被转换——</text>
+<text x="56" y="486" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  partial 是逐 op 执法，不是逐函数放弃</text>
+<path d="M 534.1,370.2 Q 775.2,368.3 1019.1,369.3 Q 1016.7,459.2 1017.5,545.1 Q 775.1,543.0 534.9,545.0 Q 534.9,456.9 534.1,370.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="546" y="389" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">对照实验 B：把 tensor 图直接喂最终 Lowering</text>
+<text x="546" y="406" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">输入 residual.mlir：3 op（func＋mini.matmul＋return）</text>
+<text x="546" y="422" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">partial：0/3 转换，残留 3（SUCCESS，入账）</text>
+<text x="546" y="438" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  func ＋ return → 类型转换失败：tensor</text>
+<text x="546" y="454" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  mini.matmul → 非法方言且无模式</text>
+<text x="546" y="470" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">full：FAIL——两道闸把管道顺序错误</text>
+<text x="546" y="486" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.8" fill="#3B3B3B" text-anchor="start">  拦在门外：先 bufferize，再最终 Lowering</text>
+<text x="230" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">⑤ 三个故意埋的设计错误：一个都跑不掉</text>
+<path d="M 44.1,590.2 Q 201.2,588.3 354.8,589.6 Q 356.5,650.4 355.0,711.6 Q 198.0,711.4 44.6,713.0 Q 44.5,652.9 44.1,590.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="56" y="609" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.8" fill="#3B3B3B" text-anchor="start" font-weight="bold">P1 描述符 strides 填反</text>
+<text x="56" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">（镜像 D85 的 P1'strides 算反'）</text>
+<text x="56" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">有限部分 max|diff| = 120.0132</text>
+<text x="56" y="658" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">2 个元素永远没写到（NaN 暴露</text>
+<text x="56" y="674" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">malloc 的未初始化内存）</text>
+<text x="56" y="690" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">→ 被 TP5 逐位比对咬住</text>
+<path d="M 376.8,591.2 Q 532.1,589.7 684.9,589.4 Q 684.4,649.7 687.3,712.8 Q 533.6,710.1 375.8,710.6 Q 375.5,652.0 376.8,591.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="388" y="609" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.8" fill="#3B3B3B" text-anchor="start" font-weight="bold">P3 iter_args 接线断开</text>
+<text x="388" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">（镜像 D85 的 P3'忘初始化'）</text>
+<text x="388" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">body 里用的还是初值 %zero</text>
+<text x="388" y="658" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">每个 (i,j) 只剩最后一项乘积</text>
+<text x="388" y="674" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">max|diff| = 191.1975</text>
+<text x="388" y="690" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">→ 被 TP5 咬住</text>
+<path d="M 707.1,589.6 Q 864.0,590.2 1018.7,588.4 Q 1018.6,649.6 1017.5,711.4 Q 863.2,713.8 707.5,713.3 Q 708.9,653.5 707.1,589.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="720" y="609" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.8" fill="#3B3B3B" text-anchor="start" font-weight="bold">P2 index 忘了兑换</text>
+<text x="720" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">（镜像 D85 的 P2'忘类型转换'）</text>
+<text x="720" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">目标形态出现 index 类型 23 处</text>
+<text x="720" y="658" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">LLVM 方言没有 index——</text>
+<text x="720" y="674" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">类型检查 fail-closed 拦截</text>
+<text x="720" y="690" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="start">→ 被 TP4 咬住（静态检查）</text>
+<text x="530" y="736" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle" font-weight="bold">结论：清单不只是文档——它是驱动器的执法依据、解释器的验收表、真机验证的合同。D115~D118 每天从这张清单领任务。</text>
+</svg>

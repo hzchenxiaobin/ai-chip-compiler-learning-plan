@@ -1,0 +1,66 @@
+== 环境 ==
+python      : 3.11.4 | aarch64
+llvmlite LLVM: 22.1.0
+
+== 步骤 1：LLVM Dialect → LLVM IR（教学版 mlir-translate）==
+已导出 LLVM IR：outputs/step.ll
+  @step: 参数 1 个；基本块 4 个；MLIR 指令 14 条（其中常量 4 条内联消失）；块参数 1 个 → phi 1 个
+
+== 步骤 2：标注函数参数 / 返回值 / 基本块 + 概念对照表 ==
+已生成 outputs/step_annotated.ll
+已生成 outputs/concept_table.md
+注释版重新 parse+verify 通过（注释没有破坏 IR）
+  @step：1 参数 / 4 基本块
+
+== 步骤 3：目标无关优化（IR→IR）+ 目标相关编译（IR→两个目标的汇编）==
+[step] 输入：outputs/step.ll
+  优化前 @step：4 块 / 11 条指令 / 7 个 SSA 值
+  优化后 @step：1 块 / 5 条指令 / 4 个 SSA 值（instcombine + sccp + simplifycfg，目标无关）
+  优化前/后 IR：outputs/opt_before_step.ll → outputs/opt_after_step.ll
+  aarch64-unknown-linux-gnu（-O2，目标相关）：4 条指令行
+  x86_64-unknown-linux-gnu（-O2，目标相关）：5 条指令行
+  机器可读摘要：outputs/stats_step.json
+
+== 步骤 4：对照实验 A：乘数 4 → 5 ==
+已导出 LLVM IR：outputs/step_const5.ll
+  @step5: 参数 1 个；基本块 4 个；MLIR 指令 14 条（其中常量 4 条内联消失）；块参数 1 个 → phi 1 个
+[const5] 输入：outputs/step_const5.ll
+  优化前 @step5：4 块 / 11 条指令 / 7 个 SSA 值
+  优化后 @step5：1 块 / 5 条指令 / 4 个 SSA 值（instcombine + sccp + simplifycfg，目标无关）
+  优化前/后 IR：outputs/opt_before_const5.ll → outputs/opt_after_const5.ll
+  aarch64-unknown-linux-gnu（-O2，目标相关）：4 条指令行
+  x86_64-unknown-linux-gnu（-O2，目标相关）：5 条指令行
+  机器可读摘要：outputs/stats_const5.json
+
+== 步骤 5：对照实验 B：加一条从未使用的 %dead ==
+已导出 LLVM IR：outputs/step_dead.ll
+  @step_dead: 参数 1 个；基本块 4 个；MLIR 指令 15 条（其中常量 4 条内联消失）；块参数 1 个 → phi 1 个
+[dead] 输入：outputs/step_dead.ll
+  优化前 @step_dead：4 块 / 12 条指令 / 8 个 SSA 值
+  优化后 @step_dead：1 块 / 5 条指令 / 4 个 SSA 值（instcombine + sccp + simplifycfg，目标无关）
+  优化前/后 IR：outputs/opt_before_dead.ll → outputs/opt_after_dead.ll
+  aarch64-unknown-linux-gnu（-O2，目标相关）：4 条指令行
+  x86_64-unknown-linux-gnu（-O2，目标相关）：5 条指令行
+  机器可读摘要：outputs/stats_dead.json
+
+== 完成：产出清单 ==
+concept_table.md
+const5_step_aarch64.s
+const5_step_x86_64.s
+dead_step_aarch64.s
+dead_step_x86_64.s
+opt_after_const5.ll
+opt_after_dead.ll
+opt_after_step.ll
+opt_before_const5.ll
+opt_before_dead.ll
+opt_before_step.ll
+stats_const5.json
+stats_dead.json
+stats_step.json
+step_aarch64.s
+step_annotated.ll
+step_const5.ll
+step_dead.ll
+step.ll
+step_x86_64.s

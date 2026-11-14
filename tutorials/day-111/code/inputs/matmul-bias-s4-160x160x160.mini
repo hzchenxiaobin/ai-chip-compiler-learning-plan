@@ -1,0 +1,9 @@
+// mini 图 IR：matmul + bias 广播加
+// shape：A 160x160 · B 160x160 · bias 160 → C 160x160 —— 今天的新 shape S4
+// 大 tile（如 160x160x160、160x160x128）会撞上 D104 的 256 KiB 片上预算：
+// 这份输入专门用来验收『资源闸门在集成流水线里真的会剪东西』。
+func @matmul_bias(%A: tensor<160x160xf32>, %B: tensor<160x160xf32>, %bias: tensor<160xf32>) -> tensor<160x160xf32> {
+  %mm = mini.matmul %A, %B    : (160x160, 160x160) -> 160x160
+  %C  = mini.add %mm, %bias   : (160x160, 160) -> 160x160, broadcast row
+  return %C : tensor<160x160xf32>
+}

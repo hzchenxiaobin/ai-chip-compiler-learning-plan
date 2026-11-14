@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 700" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 2.5,5.2 Q 508.7,4.3 1016.7,2.5 Q 1016.4,347.8 1016.2,695.2 Q 510.4,695.7 5.2,697.1 Q 3.7,353.1 2.5,5.2  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 113 天定位：从 MLIR 的最后一层跨进 LLVM 的世界</text>
+<path d="M 319.5,45.5 Q 511.2,42.2 700.8,45.3" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="48" y="70" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">前 16 周：mini 编译器的 MLIR 各层（离硬件越近，领域信息越少）</text>
+<path d="M 48.5,82.6 Q 153.3,83.1 260.9,81.7 Q 262.8,136.5 261.3,193.0 Q 156.5,194.2 48.6,192.5 Q 47.0,139.4 48.5,82.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="155.0" y="101" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">图 IR（mini 方言）</text>
+<text x="155.0" y="120.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">mini.matmul / mini.relu</text>
+<text x="155.0" y="136.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">Shape、广播等语义约束</text>
+<text x="155.0" y="153.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">D12~D48 建成</text>
+<path d="M 282.5,83.1 Q 386.9,84.2 494.8,81.4 Q 496.3,138.6 496.4,194.3 Q 390.5,193.3 280.8,194.6 Q 280.4,139.4 282.5,83.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="389.0" y="101" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">循环层</text>
+<text x="389.0" y="120.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">三重循环 + Tiling 外壳</text>
+<text x="389.0" y="136.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">循环序 / 展开等结构</text>
+<text x="389.0" y="153.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">D85~D96 Lowering</text>
+<path d="M 515.6,82.9 Q 622.0,84.2 730.4,83.2 Q 731.5,136.5 730.8,194.0 Q 622.3,193.2 516.5,193.1 Q 516.3,137.3 515.6,82.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="623.0" y="101" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">内存层</text>
+<text x="623.0" y="120.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">生命周期 / 缓冲复用</text>
+<text x="623.0" y="136.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">片上空间闸门</text>
+<text x="623.0" y="153.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">D97~D105 规划</text>
+<path d="M 751.4,81.4 Q 856.6,82.7 964.1,80.9 Q 964.6,137.0 965.1,195.0 Q 859.2,194.6 749.2,194.4 Q 750.6,140.0 751.4,81.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.4"/>
+<text x="857.0" y="101" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">调优层（search）</text>
+<text x="857.0" y="120.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">候选空间 25.77B→12,970</text>
+<text x="857.0" y="136.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">Cost Model + 实测决赛</text>
+<text x="857.0" y="153.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">D106~D112 选择</text>
+<path d="M 199.3,243.9 Q 512.0,243.6 821.3,243.5 Q 820.0,302.3 821.1,362.4 Q 511.3,362.8 201.5,362.3 Q 200.2,302.5 199.3,243.9  Z" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="266" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D113（今天）：LLVM Dialect——MLIR 里长得最像 LLVM 的一层</text>
+<text x="510.0" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle">llvm.func / llvm.add / llvm.cond_br …（还是 MLIR 的 Operation，还能被 Pass 改写）</text>
+<text x="510.0" y="307" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle">学习重点①：它和 LLVM IR 是什么关系（读写对照）</text>
+<text x="510.0" y="326" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle">学习重点②：目标无关优化和目标相关编译的分界在哪（下两层）</text>
+<text x="510.0" y="348" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">实践：读 step 函数的两侧形态，标注参数 / 返回值 / 基本块</text>
+<path d="M 168.5,413.2 Q 321.5,412.9 470.6,414.0 Q 468.4,478.9 469.3,542.3 Q 319.4,541.4 168.5,542.0 Q 167.4,475.4 168.5,413.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="320.0" y="433" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">LLVM IR（另一个世界）</text>
+<text x="320.0" y="452.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">define i32 @step(i32 %0) { … }</text>
+<text x="320.0" y="468.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">真实 LLVM 的中间表示：</text>
+<text x="320.0" y="485.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">SSA + 基本块 + phi</text>
+<text x="320.0" y="501.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">目标无关优化在这里做</text>
+<text x="320.0" y="518.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">（instcombine / sccp / simplifycfg）</text>
+<path d="M 548.7,414.9 Q 701.0,413.6 849.7,415.1 Q 849.0,478.6 851.5,542.8 Q 699.5,540.8 549.5,540.8 Q 547.7,475.9 548.7,414.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="700.0" y="433" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">汇编 / 机器码</text>
+<text x="700.0" y="452.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">aarch64: csel w0, w8, w9, gt</text>
+<text x="700.0" y="468.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">x86_64:  cmovll %ecx, %eax</text>
+<text x="700.0" y="485.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">目标相关编译的产物：</text>
+<text x="700.0" y="501.5" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">指令选择 + 寄存器分配 + 调度</text>
+<text x="700.0" y="518.0" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.6" fill="#3B3B3B" text-anchor="middle">换目标 = 换指令集</text>
+<text x="510" y="466" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">指令选择</text>
+<text x="512" y="392" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">mlir-translate --mlir-to-llvmir（今天用教学版复刻）</text>
+<text x="48" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">第 17 周路线：把 mini 一路降到能跑</text>
+<path d="M 48.3,589.8 Q 122.2,589.1 196.4,589.5 Q 193.8,624.8 195.0,655.9 Q 121.6,655.9 48.0,655.2 Q 46.4,621.6 48.3,589.8  Z" stroke="#E8A87C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.62"/>
+<text x="122.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D113 今天</text>
+<text x="122.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">理解 LLVM Dialect</text>
+<text x="122.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">↔ LLVM IR</text>
+<path d="M 210.6,589.8 Q 282.9,591.0 358.1,591.6 Q 355.6,625.4 356.8,656.6 Q 282.9,654.9 209.7,655.0 Q 209.9,622.0 210.6,589.8  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="284.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D114</text>
+<text x="284.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">设计最终</text>
+<text x="284.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">Lowering 路径</text>
+<path d="M 372.8,590.3 Q 447.9,590.9 519.5,589.5 Q 520.0,622.7 519.5,657.5 Q 446.5,655.7 372.5,657.4 Q 372.5,624.7 372.8,590.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="446.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D115</text>
+<text x="446.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">转换函数</text>
+<text x="446.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">与类型</text>
+<path d="M 534.2,590.2 Q 606.0,590.4 681.6,590.2 Q 680.1,623.1 680.4,656.4 Q 608.3,657.4 533.1,656.5 Q 535.1,623.7 534.2,590.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="608.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D116</text>
+<text x="608.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">转换 elementwise</text>
+<text x="608.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">算子</text>
+<path d="M 694.8,589.5 Q 767.3,589.3 844.2,589.1 Q 846.3,621.6 845.6,656.1 Q 773.6,653.8 697.5,654.8 Q 698.0,624.3 694.8,589.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="770.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D117</text>
+<text x="770.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">导出</text>
+<text x="770.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">LLVM IR</text>
+<path d="M 856.4,590.5 Q 931.2,591.0 1006.8,589.6 Q 1007.9,620.0 1005.6,654.7 Q 929.0,657.6 856.6,656.9 Q 855.3,622.4 856.4,590.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="932.0" y="608" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D118</text>
+<text x="932.0" y="626" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">JIT / AOT</text>
+<text x="932.0" y="642" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.8" fill="#3B3B3B" text-anchor="middle">执行</text>
+<text x="48" y="682" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="start">一句话：LLVM Dialect 是桥——左边还能用 MLIR 的 Pass 生态，右边一步就跨进 LLVM 的优化与代码生成。</text>
+</svg>

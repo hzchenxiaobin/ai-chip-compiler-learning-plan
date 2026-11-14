@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.7,5.3 Q 488.2,7.4 974.5,5.4 Q 975.1,319.8 977.0,634.6 Q 491.7,636.6 5.0,637.0 Q 5.9,320.2 4.7,5.3 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 106 天定位：候选生成器——搜索空间的第一现场</text>
+<path d="M 329.3,47.0 Q 489.9,45.7 648.6,47.5" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="68" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">编译主线</text>
+<path d="M 61.0,79.0 Q 119.1,79.0 177.8,78.5 Q 178.8,103.6 178.8,128.7 Q 118.5,128.2 59.0,130.8 Q 58.4,103.6 61.0,79.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="119" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">图优化·融合</text>
+<text x="119" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D48~56</text>
+<path d="M 181.3,103.1 Q 184.0,103.3 190.0,104.0 M 177.0,107.0 L 190.0,104.0 L 177.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 190.8,79.3 Q 249.6,79.6 308.8,81.1 Q 310.8,104.8 311.5,130.9 Q 252.6,130.0 193.5,130.2 Q 192.9,106.3 190.8,79.3 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="251" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">循环 Lowering</text>
+<text x="251" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D85~89</text>
+<path d="M 312.3,104.7 Q 317.6,102.6 322.0,104.0 M 309.0,107.0 L 322.0,104.0 L 309.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 324.1,78.6 Q 383.8,78.1 440.7,80.1 Q 443.2,106.1 442.7,130.0 Q 382.0,128.9 324.7,130.2 Q 323.5,105.6 324.1,78.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="383" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Tiling</text>
+<text x="383" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D92~96</text>
+<path d="M 444.8,103.4 Q 449.6,102.3 454.0,104.0 M 441.0,107.0 L 454.0,104.0 L 441.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 457.2,75.3 Q 513.9,73.4 572.7,75.5 Q 575.4,104.6 573.9,133.8 Q 514.1,131.8 456.1,132.7 Q 457.1,101.8 457.2,75.3 Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.8"/>
+<text x="515" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">候选生成</text>
+<text x="515" y="121" font-size="10" fill="#6b6257" text-anchor="middle">D106</text>
+<path d="M 576.1,104.7 Q 579.6,104.7 586.0,104.0 M 573.0,107.0 L 586.0,104.0 L 573.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 589.1,79.4 Q 646.6,80.5 706.8,81.0 Q 707.2,106.0 707.0,130.1 Q 647.6,127.3 588.8,128.5 Q 588.2,102.7 589.1,79.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="647" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">资源过滤</text>
+<text x="647" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D104</text>
+<path d="M 708.8,104.1 Q 713.7,102.9 718.0,104.0 M 705.0,107.0 L 718.0,104.0 L 705.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 719.6,80.4 Q 779.3,79.5 839.2,79.5 Q 839.4,103.6 836.6,131.2 Q 779.6,130.2 719.3,131.3 Q 720.7,107.8 719.6,80.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="779" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">测量·调优</text>
+<text x="779" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D107~110</text>
+<path d="M 841.5,104.1 Q 846.4,103.3 850.0,104.0 M 837.0,107.0 L 850.0,104.0 L 837.0,101.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 851.4,79.6 Q 907.9,80.4 968.7,80.4 Q 967.4,105.7 969.8,130.2 Q 911.7,129.8 853.2,129.8 Q 853.0,102.9 851.4,79.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="911" y="101" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">代码生成·验收</text>
+<text x="911" y="119" font-size="10" fill="#6b6257" text-anchor="middle">D111</text>
+<text x="490" y="150" font-size="10.5" fill="#C97B7B" text-anchor="middle">今天：候选第一次被系统性地『生产』出来，再交给 D104 的闸门</text>
+<text x="60" y="176" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">第 16 周</text>
+<path d="M 59.5,185.1 Q 119.5,182.8 177.1,184.8 Q 176.4,214.9 177.1,243.1 Q 121.1,240.8 61.5,242.4 Q 62.7,215.8 59.5,185.1 Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.7"/>
+<text x="119" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D106</text>
+<text x="119" y="230" font-size="10" fill="#3B3B3B" text-anchor="middle">定义搜索空间</text>
+<path d="M 181.3,215.5 Q 183.4,215.6 190.0,216.0 M 203.0,213.0 L 190.0,216.0 L 203.0,219.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 190.9,190.3 Q 252.5,192.6 310.4,190.9 Q 308.2,213.0 309.1,238.0 Q 251.5,238.6 191.0,239.4 Q 192.5,215.5 190.9,190.3 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="251" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D107</text>
+<text x="251" y="228" font-size="10" fill="#6b6257" text-anchor="middle">Benchmark 工具</text>
+<path d="M 312.7,215.3 Q 315.1,214.5 322.0,216.0 M 309.0,219.0 L 322.0,216.0 L 309.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 323.7,190.4 Q 380.4,187.7 440.6,188.7 Q 442.4,213.4 442.0,236.5 Q 382.7,236.8 323.5,237.6 Q 325.4,213.9 323.7,190.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="383" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D108</text>
+<text x="383" y="228" font-size="10" fill="#6b6257" text-anchor="middle">Auto-tuning</text>
+<path d="M 444.0,216.2 Q 447.7,216.0 454.0,216.0 M 441.0,219.0 L 454.0,216.0 L 441.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 455.5,190.0 Q 514.0,189.9 572.5,190.6 Q 575.0,213.4 575.2,238.8 Q 515.3,239.6 457.1,239.5 Q 454.3,216.9 455.5,190.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="515" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D109</text>
+<text x="515" y="228" font-size="10" fill="#6b6257" text-anchor="middle">GFLOPS</text>
+<path d="M 576.4,215.5 Q 582.7,216.0 586.0,216.0 M 573.0,219.0 L 586.0,216.0 L 573.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 587.9,188.7 Q 645.1,189.4 705.5,189.0 Q 707.5,214.0 705.7,238.5 Q 647.5,239.2 589.1,236.7 Q 587.2,210.5 587.9,188.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="647" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D110</text>
+<text x="647" y="228" font-size="10" fill="#6b6257" text-anchor="middle">Cost Model</text>
+<path d="M 706.8,216.6 Q 713.0,216.4 718.0,216.0 M 705.0,219.0 L 718.0,216.0 L 705.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 720.4,191.1 Q 777.9,192.0 837.5,188.6 Q 835.8,214.5 837.1,237.1 Q 777.2,239.7 719.5,238.5 Q 718.7,215.0 720.4,191.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="779" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D111</text>
+<text x="779" y="228" font-size="10" fill="#6b6257" text-anchor="middle">集成验收</text>
+<path d="M 840.4,216.7 Q 844.0,216.9 850.0,216.0 M 837.0,219.0 L 850.0,216.0 L 837.0,213.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 851.7,188.9 Q 912.0,190.8 969.4,191.1 Q 971.0,212.1 970.0,237.0 Q 910.1,236.6 850.7,238.1 Q 850.0,215.4 851.7,188.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="911" y="210" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D112</text>
+<text x="911" y="228" font-size="10" fill="#6b6257" text-anchor="middle">周复盘</text>
+<text x="60" y="262" font-size="13" fill="#3B3B3B" text-anchor="start" font-weight="bold">生成器详图：D105 留下的问题——候选从哪来、怎么裁</text>
+<path d="M 47.1,277.5 Q 123.6,278.2 197.6,277.1 Q 198.0,326.1 197.1,373.9 Q 122.8,375.6 45.8,375.6 Q 45.8,327.0 47.1,277.5 Z" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.9"/>
+<text x="121" y="300" font-size="12" fill="#6b6257" text-anchor="middle" font-weight="bold">naive 枚举</text>
+<text x="121" y="320" font-size="10" fill="#6b6257" text-anchor="middle">1..512 全试</text>
+<text x="121" y="338" font-size="10.5" fill="#6b6257" text-anchor="middle">25,769,803,776</text>
+<path d="M 68.7,351.3 Q 120.6,348.0 171.7,349.1" stroke="#C97B7B" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+<text x="121" y="366" font-size="10" fill="#C97B7B" text-anchor="middle">不配被枚举</text>
+<path d="M 199.3,326.6 Q 209.6,326.2 224.0,326.0 M 237.0,323.0 L 224.0,326.0 L 237.0,329.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 228.5,272.2 Q 353.5,272.3 476.4,270.4 Q 475.2,364.5 476.7,462.3 Q 354.1,461.8 229.1,463.4 Q 229.4,369.6 228.5,272.2 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="353" y="294" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">四根轴 × 值域剪枝</text>
+<text x="240" y="316" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">tile tm/tn/tk</text>
+<text x="322" y="316" font-size="9.5" fill="#6b6257" text-anchor="start">整除 512 ∩ 8 的倍数</text>
+<text x="472" y="316" font-size="9.5" fill="#3B3B3B" text-anchor="end">7 值/维</text>
+<text x="240" y="346" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">order</text>
+<text x="322" y="346" font-size="9.5" fill="#6b6257" text-anchor="start">D92：排名随容量翻转</text>
+<text x="472" y="346" font-size="9.5" fill="#3B3B3B" text-anchor="end">6 种全留</text>
+<text x="240" y="376" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">unroll</text>
+<text x="322" y="376" font-size="9.5" fill="#6b6257" text-anchor="start">D96：量到 8，16 探上界</text>
+<text x="472" y="376" font-size="9.5" fill="#3B3B3B" text-anchor="end">1/2/4/8/16</text>
+<text x="240" y="406" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">buffering</text>
+<text x="322" y="406" font-size="9.5" fill="#6b6257" text-anchor="start">D103：double 换重叠</text>
+<text x="472" y="406" font-size="9.5" fill="#3B3B3B" text-anchor="end">single/double</text>
+<text x="353" y="448" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">值域原始空间 20,580 = 7×7×7×6×5×2</text>
+<path d="M 479.4,366.2 Q 491.3,367.1 506.0,366.0 M 493.0,369.0 L 506.0,366.0 L 493.0,363.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 509.7,273.0 Q 615.3,273.4 720.6,273.3 Q 718.9,315.1 720.7,361.0 Q 614.9,360.1 510.9,360.0 Q 508.4,317.4 509.7,273.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="615" y="294" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">跨轴参数约束（便宜）</text>
+<text x="615" y="314" font-size="10.5" fill="#3B3B3B" text-anchor="middle">U ≤ 最内层圈数</text>
+<text x="615" y="332" font-size="10.5" fill="#3B3B3B" text-anchor="middle">剪掉 588 个死代码</text>
+<text x="615" y="348" font-size="10" fill="#6b6257" text-anchor="middle">剩 19,992</text>
+<path d="M 616.3,363.1 Q 614.2,371.0 615.0,380.0 M 601.8,382.1 L 615.0,380.0 L 602.2,376.1" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 509.8,383.9 Q 613.0,384.3 718.5,382.5 Q 717.8,422.6 720.1,460.6 Q 613.2,460.6 510.6,460.8 Q 509.9,421.3 509.8,383.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="615" y="406" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D104 资源闸门（贵）</text>
+<text x="615" y="426" font-size="10.5" fill="#3B3B3B" text-anchor="middle">五项家当 ≤ 256 KiB</text>
+<text x="615" y="444" font-size="10.5" fill="#3B3B3B" text-anchor="middle">剪掉 7,022 个超预算</text>
+<text x="615" y="458" font-size="9.5" fill="#6b6257" text-anchor="middle">记账规则一行不改</text>
+<path d="M 721.1,422.1 Q 734.3,424.4 748.0,423.0 M 735.0,426.0 L 748.0,423.0 L 735.0,420.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 751.8,285.7 Q 844.2,284.8 933.8,286.1 Q 932.4,358.9 934.2,433.2 Q 844.5,433.5 752.1,434.2 Q 751.3,360.1 751.8,285.7 Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="843" y="312" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存候选</text>
+<text x="843" y="344" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">12,970 个</text>
+<text x="843" y="368" font-size="10.5" fill="#3B3B3B" text-anchor="middle">242 种 tile</text>
+<text x="843" y="386" font-size="9.5" fill="#6b6257" text-anchor="middle">每个都配得上被测一次</text>
+<text x="843" y="404" font-size="9.5" fill="#6b6257" text-anchor="middle">↓ 交给 D107 定协议</text>
+<text x="843" y="420" font-size="9.5" fill="#6b6257" text-anchor="middle">↓ D108 全测 / D110 只测前 K</text>
+<text x="490" y="470" font-size="10" fill="#6b6257" text-anchor="middle">分工边界：生成器只管『喂』，参数约束和 D104 闸门只管『裁』，排序是 D110 的事，测量是 D107/D108 的事</text>
+<text x="490" y="494" font-size="12" fill="#C97B7B" text-anchor="middle" font-weight="bold">缩减比：naive → 幸存者 = 1,986,878 倍</text>
+<path d="M 148.6,511.3 Q 488.2,512.7 831.4,512.0 Q 829.3,539.8 830.5,566.8 Q 489.5,566.8 148.7,569.5 Q 148.3,542.6 148.6,511.3 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="490" y="536" font-size="11" fill="#3B3B3B" text-anchor="middle">昨天（D105）说：『候选从哪来、怎么裁，明天正式开工』</text>
+<text x="490" y="556" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今天的答案：从问题的因数结构里来，用三层漏斗裁——257 亿剪成 12,970</text>
+</svg>

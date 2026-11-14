@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.5,3.9 Q 490.6,6.0 976.7,4.8 Q 977.5,318.0 975.1,634.6 Q 487.9,633.5 4.3,634.8 Q 6.4,317.2 5.5,3.9 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 103 天定位：计算与搬运重叠——空间账和时间账在这天合流</text>
+<path d="M 328.8,47.1 Q 488.6,45.5 649.0,47.7" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 46.7,84.7 Q 110.6,86.8 173.7,84.9 Q 174.5,107.9 174.2,131.0 Q 108.6,129.4 45.2,129.6 Q 44.7,109.3 46.7,84.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="110" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D99</text>
+<text x="110" y="122" font-size="10.5" fill="#6b6257" text-anchor="middle">活跃区间表</text>
+<path d="M 176.1,106.7 Q 189.5,107.6 200.0,106.0 M 187.0,109.0 L 200.0,106.0 L 187.0,103.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 201.3,83.9 Q 266.5,84.7 328.9,83.7 Q 327.2,106.2 329.2,128.7 Q 268.5,130.9 203.3,128.7 Q 202.6,107.5 201.3,83.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="266" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D100</text>
+<text x="266" y="122" font-size="10.5" fill="#6b6257" text-anchor="middle">片外规划</text>
+<path d="M 332.2,106.3 Q 344.8,105.2 356.0,106.0 M 343.0,109.0 L 356.0,106.0 L 343.0,103.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 357.7,85.0 Q 423.4,85.1 485.8,84.8 Q 485.5,107.8 484.6,129.8 Q 419.4,129.6 356.5,130.5 Q 357.4,108.4 357.7,85.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="422" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D101</text>
+<text x="422" y="122" font-size="10.5" fill="#6b6257" text-anchor="middle">片上空间账</text>
+<path d="M 487.5,106.2 Q 499.5,105.9 512.0,106.0 M 499.0,109.0 L 512.0,106.0 L 499.0,103.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 514.6,83.4 Q 577.2,83.7 642.6,85.1 Q 643.7,106.3 642.1,131.5 Q 578.3,133.1 513.4,131.3 Q 515.9,108.2 514.6,83.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="578" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D102</text>
+<text x="578" y="122" font-size="10.5" fill="#6b6257" text-anchor="middle">时间账·依赖</text>
+<path d="M 644.4,104.6 Q 655.4,105.3 668.0,106.0 M 655.0,109.0 L 668.0,106.0 L 655.0,103.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 668.5,81.2 Q 734.4,81.1 798.4,78.9 Q 797.3,105.0 797.8,133.3 Q 734.6,132.9 671.2,133.3 Q 670.2,106.5 668.5,81.2 Z" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="734" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D103</text>
+<text x="734" y="122" font-size="10.5" fill="#3B3B3B" text-anchor="middle">双缓冲·重叠</text>
+<path d="M 798.8,106.9 Q 813.2,105.7 824.0,106.0 M 811.0,109.0 L 824.0,106.0 L 811.0,103.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 827.3,84.6 Q 890.0,83.7 954.1,85.2 Q 954.6,107.6 955.4,128.4 Q 892.3,127.4 826.0,128.5 Q 824.5,108.7 827.3,84.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="890" y="103" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D104</text>
+<text x="890" y="122" font-size="10.5" fill="#6b6257" text-anchor="middle">资源过滤</text>
+<path d="M 200.8,148.6 Q 345.4,149.8 487.4,149.1" stroke="#9CBF8E" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="344" y="165" font-size="10.5" fill="#6b6257" text-anchor="middle">空间轴：数据住哪、占多大</text>
+<path d="M 514.8,151.0 Q 657.8,150.9 797.2,148.2" stroke="#C97B7B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="656" y="165" font-size="10.5" fill="#6b6257" text-anchor="middle">时间轴：谁必须等谁</text>
+<path d="M 39.8,200.9 Q 111.0,200.9 180.9,200.8 Q 181.6,352.5 180.3,499.9 Q 111.6,498.5 39.0,500.5 Q 38.5,351.2 39.8,200.9 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.35"/>
+<text x="110" y="226" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">HBM（片外）</text>
+<path d="M 56.6,249.3 Q 112.3,249.7 165.4,249.9 Q 167.1,267.7 164.8,284.6 Q 109.3,283.9 55.3,284.5 Q 55.4,265.6 56.6,249.3 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="110" y="273" font-size="11" fill="#3B3B3B" text-anchor="middle">A  1 MiB</text>
+<path d="M 54.7,306.5 Q 108.3,306.9 163.4,305.9 Q 162.3,323.1 164.7,341.3 Q 108.5,342.1 55.8,341.4 Q 54.4,326.0 54.7,306.5 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="110" y="329" font-size="11" fill="#3B3B3B" text-anchor="middle">B  1 MiB</text>
+<path d="M 55.9,362.5 Q 111.1,362.4 164.1,363.0 Q 166.5,381.3 164.6,398.5 Q 111.0,398.7 54.5,396.9 Q 57.3,380.4 55.9,362.5 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="110" y="385" font-size="11" fill="#3B3B3B" text-anchor="middle">C  1 MiB</text>
+<path d="M 57.4,417.8 Q 108.3,417.1 163.3,416.8 Q 163.4,435.4 163.2,455.3 Q 107.7,452.9 56.5,452.5 Q 58.6,436.1 57.4,417.8 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="110" y="441" font-size="11" fill="#3B3B3B" text-anchor="middle">bias  2 KiB</text>
+<path d="M 241.0,235.3 Q 314.5,236.8 390.5,235.0 Q 390.8,288.6 389.4,341.5 Q 315.8,340.2 239.1,339.3 Q 241.9,288.5 241.0,235.3 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="315" y="264" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">DMA 引擎</text>
+<text x="315" y="288" font-size="10" fill="#6b6257" text-anchor="middle">32.768 GB/s（示例）</text>
+<text x="315" y="306" font-size="10" fill="#6b6257" text-anchor="middle">按提交顺序执行</text>
+<path d="M 439.4,199.2 Q 588.7,200.6 740.1,199.8 Q 742.6,350.8 740.9,500.5 Q 591.8,499.2 440.8,500.3 Q 438.4,349.5 439.4,199.2 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="590" y="226" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">SRAM 256 KiB（D101 预算）</text>
+<path d="M 462.3,248.7 Q 522.0,246.9 583.9,248.1 Q 582.6,265.6 582.7,284.6 Q 523.2,286.9 460.8,285.4 Q 463.7,268.1 462.3,248.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="523" y="272" font-size="10.5" fill="#3B3B3B" text-anchor="middle">A 槽 0 16,384 B</text>
+<path d="M 592.4,247.2 Q 655.1,247.3 717.6,248.6 Q 717.2,265.2 717.1,285.0 Q 653.1,284.4 593.2,284.7 Q 594.7,266.6 592.4,247.2 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="655" y="272" font-size="10.5" fill="#3B3B3B" text-anchor="middle">A 槽 1 16,384 B</text>
+<text x="590" y="304" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">乒乓 ×2：DMA 流入项才翻倍</text>
+<path d="M 462.2,314.6 Q 524.0,312.9 583.8,315.6 Q 582.5,335.9 584.4,353.7 Q 525.2,352.6 463.0,353.3 Q 461.3,336.0 462.2,314.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="523" y="340" font-size="10.5" fill="#3B3B3B" text-anchor="middle">B 槽 0 16,384 B</text>
+<path d="M 594.3,314.7 Q 655.6,314.9 717.6,316.2 Q 717.5,334.3 715.4,354.0 Q 655.9,355.2 593.6,354.2 Q 595.9,332.9 594.3,314.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="655" y="340" font-size="10.5" fill="#3B3B3B" text-anchor="middle">B 槽 1 16,384 B</text>
+<path d="M 463.2,372.7 Q 590.4,371.8 715.0,373.3 Q 717.2,389.1 716.0,409.0 Q 589.4,410.9 461.1,411.6 Q 463.7,393.9 463.2,372.7 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="589" y="396" font-size="10.5" fill="#3B3B3B" text-anchor="middle">C 槽 16,384 B（累加器，单份）</text>
+<path d="M 462.7,429.1 Q 528.7,430.2 591.9,429.4 Q 590.3,446.4 591.8,462.7 Q 527.2,462.6 462.8,461.7 Q 460.7,446.3 462.7,429.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="527" y="450" font-size="10" fill="#3B3B3B" text-anchor="middle">bias 256 B（单份）</text>
+<text x="590" y="470" font-size="10" fill="#6b6257" text-anchor="middle">算 c[k] 读槽 k%2 ∥ 搬 A/B[k+1] 写槽 (k+1)%2</text>
+<path d="M 789.7,236.8 Q 866.1,234.1 939.2,234.5 Q 937.9,287.0 939.9,340.4 Q 866.1,341.5 790.9,340.1 Q 788.4,288.9 789.7,236.8 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="865" y="264" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">计算单元</text>
+<text x="865" y="288" font-size="10" fill="#6b6257" text-anchor="middle">262,144 MAC/µs（示例）</text>
+<text x="865" y="306" font-size="11" fill="#3B3B3B" text-anchor="middle">C += A·B</text>
+<path d="M 180.7,270.9 Q 209.4,272.1 238.0,272.0 M 225.0,275.0 L 238.0,272.0 L 225.0,269.0" stroke="#E8A87C" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 393.5,272.0 Q 415.5,271.4 438.0,272.0 M 425.0,275.0 L 438.0,272.0 L 425.0,269.0" stroke="#E8A87C" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="310" y="262" font-size="10.5" fill="#C97B7B" text-anchor="middle">Load 流入</text>
+<path d="M 438.1,322.0 Q 414.4,320.7 392.0,322.0 M 405.0,319.0 L 392.0,322.0 L 405.0,325.0" stroke="#9CBF8E" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<path d="M 238.0,322.9 Q 209.0,323.9 182.0,322.0 M 195.0,319.0 L 182.0,322.0 L 195.0,325.0" stroke="#9CBF8E" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="5 4"/>
+<text x="310" y="342" font-size="10.5" fill="#4d7c4f" text-anchor="middle">Store 写回</text>
+<path d="M 740.7,263.5 Q 765.7,263.3 788.0,262.0 M 775.0,265.0 L 788.0,262.0 L 775.0,259.0" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<path d="M 788.3,290.6 Q 765.4,290.7 742.0,292.0 M 755.0,289.0 L 742.0,292.0 L 755.0,295.0" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<text x="765" y="254" font-size="9.5" fill="#6b6257" text-anchor="middle">读 A/B</text>
+<text x="765" y="312" font-size="9.5" fill="#6b6257" text-anchor="middle">写 C</text>
+<path d="M 59.8,526.7 Q 259.7,527.7 458.6,527.8 Q 461.8,563.7 461.1,602.8 Q 261.3,603.1 61.4,602.9 Q 58.4,566.5 59.8,526.7 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="260" y="556" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">空间账：49,408 → 82,176 B（+66.3%）</text>
+<text x="260" y="582" font-size="11" fill="#6b6257" text-anchor="middle">×2 只加在 A/B 流入项，仍住得下 256 KiB</text>
+<path d="M 500.6,527.5 Q 709.0,528.9 920.9,527.9 Q 919.6,565.4 920.7,602.2 Q 712.8,603.1 501.2,602.0 Q 499.0,566.2 500.6,527.5 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.25"/>
+<text x="710" y="556" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">时间账：1056.5 → 608.5 → 545.5 µs</text>
+<text x="710" y="582" font-size="11" fill="#6b6257" text-anchor="middle">逐块双缓冲 1.74×；跨块预取 1.94×（下界 544.5）</text>
+</svg>

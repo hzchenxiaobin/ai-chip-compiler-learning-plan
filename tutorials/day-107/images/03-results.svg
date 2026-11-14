@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.1,4.9 Q 491.1,4.7 977.4,3.3 Q 974.7,320.8 974.8,637.1 Q 490.3,639.4 3.8,637.5 Q 2.5,320.1 5.1,4.9 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">实测 7 配置：中位数排名 + 两个『直觉翻车』现场（全部真实数据）</text>
+<path d="M 328.9,47.9 Q 492.2,47.5 648.7,47.3" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="72" font-size="10.5" fill="#6b6257" text-anchor="start">负载 matmul_bias 96×96×96 seed=42 · 协议 warmup=3 repeats=21 gc=off · 门 54/54 逐位</text>
+<text x="236" y="101.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">96³ ikj U=1</text>
+<text x="236" y="114.0" font-size="8.5" fill="#6b6257" text-anchor="end">单 tile：无外壳开销</text>
+<path d="M 251.4,89.5 Q 415.8,88.6 578.3,89.3 Q 577.6,100.5 580.0,110.1 Q 414.1,111.6 249.4,111.1 Q 249.9,101.3 251.4,89.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="586.835" y="103.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">50.59 ms</text>
+<text x="236" y="139.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ ikj U=1</text>
+<text x="236" y="152.0" font-size="8.5" fill="#6b6257" text-anchor="end">行访问（D96/D97 reorder 同构）</text>
+<path d="M 251.5,124.6 Q 435.8,123.2 621.4,124.8 Q 624.1,136.0 623.0,149.2 Q 436.5,145.9 248.5,146.6 Q 251.4,134.9 251.5,124.6 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.6"/>
+<text x="630.8399999999999" y="141.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">57.36 ms</text>
+<text x="236" y="177.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ kij U=1</text>
+<text x="236" y="190.0" font-size="8.5" fill="#6b6257" text-anchor="end">k 最外层的行访问变体</text>
+<path d="M 250.2,164.9 Q 456.2,163.3 661.4,162.6 Q 662.9,175.7 661.9,185.9 Q 455.4,184.3 249.4,186.9 Q 250.9,175.8 250.2,164.9 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.6"/>
+<text x="669.19" y="179.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">63.26 ms</text>
+<text x="236" y="215.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ ijk U=1</text>
+<text x="236" y="228.0" font-size="8.5" fill="#6b6257" text-anchor="end">B 跨步（D97 baseline 同构）</text>
+<path d="M 249.8,203.3 Q 457.2,201.1 663.6,202.6 Q 665.0,212.8 666.0,223.9 Q 457.7,224.4 250.7,225.1 Q 248.6,215.9 249.8,203.3 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.6"/>
+<text x="673.155" y="217.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">63.87 ms</text>
+<text x="236" y="253.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ jik U=1</text>
+<text x="236" y="266.0" font-size="8.5" fill="#6b6257" text-anchor="end">本轮 spread 19.6%：被干扰段打中</text>
+<path d="M 250.5,239.8 Q 461.1,239.6 670.3,241.1 Q 668.6,249.9 669.7,260.6 Q 460.6,259.1 249.9,261.8 Q 251.6,251.0 250.5,239.8 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.6"/>
+<text x="678.355" y="255.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">64.67 ms</text>
+<text x="236" y="291.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ ikj U=8</text>
+<text x="236" y="304.0" font-size="8.5" fill="#6b6257" text-anchor="end">展开比 U=1 慢 +23.6%！</text>
+<path d="M 249.0,277.8 Q 480.1,279.1 711.7,277.8 Q 712.4,288.5 711.5,298.6 Q 482.4,299.2 250.8,301.4 Q 250.2,289.6 249.0,277.8 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.6"/>
+<text x="719.0450000000001" y="293.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">70.93 ms</text>
+<text x="236" y="329.0" font-size="10.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">32³ jki U=1</text>
+<text x="236" y="342.0" font-size="8.5" fill="#6b6257" text-anchor="end">C/A 双跨步，最惨（方向同 D92）</text>
+<path d="M 250.7,317.5 Q 499.4,317.2 751.4,314.6 Q 752.1,328.0 749.7,338.8 Q 498.3,338.2 249.4,339.4 Q 252.0,328.0 250.7,317.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.6"/>
+<text x="758.3050000000001" y="331.0" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">76.97 ms</text>
+<text x="60" y="358" font-size="9.5" fill="#6b6257" text-anchor="start">中位数口径，单位 ms，越短越好；MAD 离群拉不动排名</text>
+<path d="M 786.7,85.4 Q 884.2,82.9 977.8,84.4 Q 979.8,131.0 977.9,181.2 Q 881.2,180.4 785.1,180.5 Q 787.3,134.8 786.7,85.4 Z" stroke="#E7DFCE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="882" y="106" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">结论有效性（D97 规则）</text>
+<text x="882" y="126" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 1~2 名差距 13.37%</text>
+<text x="882" y="142" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">vs 2×MAD 口径 0.20%</text>
+<text x="882" y="164" font-size="12" fill="#5a7d4e" text-anchor="middle" font-weight="bold">→ 结论成立</text>
+<path d="M 55.0,399.6 Q 277.0,399.7 496.8,400.2 Q 497.1,466.2 496.9,531.8 Q 275.8,533.1 56.2,532.9 Q 56.4,466.8 55.0,399.6 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.22"/>
+<text x="276" y="422" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">翻车现场 ①：U=8 在 CPython 里反而慢</text>
+<text x="276" y="442" font-size="10" fill="#6b6257" text-anchor="middle">D96 的 C++ 账：展开省循环开销（U=8 机器码 3.2×）</text>
+<text x="276" y="460" font-size="10" fill="#3B3B3B" text-anchor="middle">CPython 的账：Ci[v3 + u] 每条多一次加法＋下标，</text>
+<text x="276" y="478" font-size="10" fill="#3B3B3B" text-anchor="middle">比省下的 FOR_ITER 更贵 → 57.36 → 70.93（+23.6%）</text>
+<text x="276" y="500" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">『看起来该快的变换』必须实测——这就是工具存在的理由</text>
+<text x="276" y="518" font-size="9" fill="#6b6257" text-anchor="middle">（内核性能反映字节码成本模型，不代表硬件，见 README 边界）</text>
+<path d="M 517.5,400.0 Q 736.2,401.1 956.8,398.5 Q 954.7,465.7 954.5,533.1 Q 734.9,530.5 515.6,532.1 Q 514.6,467.6 517.5,400.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="736" y="422" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">翻车现场 ②：同一张表里藏着一次干扰</text>
+<text x="736" y="442" font-size="10" fill="#3B3B3B" text-anchor="middle">jik 的 spread=19.64%、mean−med=+0.67%</text>
+<text x="736" y="460" font-size="9.5" fill="#6b6257" text-anchor="middle">（21 个样本里混进一个慢尾；别的配置 spread 只有 0.4~3.5%）</text>
+<text x="736" y="478" font-size="10" fill="#3B3B3B" text-anchor="middle">中位数 64.67 稳住；均值 65.11 被拖走</text>
+<text x="736" y="500" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">spread/outl 两列是机器当时忙不忙的『体检指标』</text>
+<text x="736" y="518" font-size="9.5" fill="#6b6257" text-anchor="middle">报性能不带这两列 = 把天平精度藏起来</text>
+</svg>

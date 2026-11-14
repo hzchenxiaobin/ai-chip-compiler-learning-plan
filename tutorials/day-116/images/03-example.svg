@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 760" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.9,2.8 Q 508.5,5.6 1016.1,4.3 Q 1016.5,380.9 1016.5,756.0 Q 509.6,756.3 5.0,755.0 Q 5.3,380.1 4.9,2.8  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">真实运行结果：账本清零、三层 4/4、两份合同与三个探针（全部本机冻结数字）</text>
+<path d="M 299.2,43.1 Q 508.5,43.2 719.1,46.0" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 44.4,60.5 Q 192.3,62.3 343.7,60.8 Q 345.8,187.9 346.2,313.0 Q 196.6,312.3 44.5,312.4 Q 44.4,184.9 44.4,60.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="57" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 账本：full 首次放行</text>
+<text x="57" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@add   21/21  残账 0  full SUCCESS</text>
+<text x="57" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@relu  22/22  残账 0  full SUCCESS</text>
+<text x="57" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@step   5/5   残账 0  full SUCCESS</text>
+<text x="57" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@gemm 14/18  残账 C1×4 → D117</text>
+<text x="57" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  full FAIL＝导出前的门（非今天的失败）</text>
+<text x="57" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">D114 实验 A 的预测（扣 C1→14/18）</text>
+<text x="57" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">今天从'模拟'变成'实测'</text>
+<text x="57" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">D115 的 8 条胶水去向：</text>
+<text x="57" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  desc→memref ×2、memref→desc ×1</text>
+<text x="57" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  → 死于 M1/M2/M3 直接消费新类型</text>
+<text x="57" y="258" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  i64→index ×5 → 留给 C1（D117 清零）</text>
+<text x="57" y="274" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">膨胀：@add 21→142 op；.ll 133 条指令</text>
+<path d="M 370.7,61.3 Q 518.6,62.1 670.5,62.1 Q 669.7,186.7 668.7,311.6 Q 520.4,312.1 369.1,310.4 Q 367.8,185.4 370.7,61.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="382" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">② @add 三层验证（第一个端到端算子）</text>
+<text x="382" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">契约层：allocated≠0 · aligned==allocated</text>
+<text x="382" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  offset 0 · sizes [2,2] · strides [2,1]  OK</text>
+<text x="382" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">数值层（描述符读回）：4/4 bitwise</text>
+<text x="382" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">布局层（裸内存行主序）：4/4 bitwise</text>
+<text x="382" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">手算对照（可自己按计算器）：</text>
+<text x="382" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  1.5+10.25 = 11.75</text>
+<text x="382" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  -2.5+(-0.5) = -3.0</text>
+<text x="382" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  0.0+3.0 = 3.0</text>
+<text x="382" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  -0.0+7.75 = 7.75</text>
+<text x="382" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">同一个 JIT 引擎换转置视图输入</text>
+<text x="382" y="258" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">（元素 strides (1,2)）：仍 4/4——</text>
+<text x="382" y="274" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">M1 地址公式对任意合法 strides 成立</text>
+<path d="M 695.4,60.5 Q 840.3,63.8 988.9,63.0 Q 988.3,186.2 989.4,311.4 Q 842.5,312.9 696.6,310.7 Q 694.4,183.6 695.4,60.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="707" y="81" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ 真机执行全家福</text>
+<text x="707" y="98" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@relu 主输入 [[1.5,-2.5],[0,-0]]：</text>
+<text x="707" y="114" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  → [[1.5,0],[0,0]]（-0.0→+0.0，符号位被 select 规整）</text>
+<text x="707" y="130" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@relu 边界输入 [[inf,-inf],[nan,3.25]]：</text>
+<text x="707" y="146" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  → [[inf,0],[0,3.25]]（NaN→0：cmpf ogt 为 false）</text>
+<text x="707" y="162" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">@step (i,k)→(i+k)×2 五组全对（含 2⁴⁰ 的大数）：</text>
+<text x="707" y="178" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  0 / 10 / 4 / -4 / 4398046511104</text>
+<text x="707" y="194" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">标量签名 (index,index)→(i64,i64)，无需包装</text>
+<text x="707" y="210" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">环境：aarch64 · Python 3.11.4 · numpy 1.26.4</text>
+<text x="707" y="226" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  llvmlite 0.50.0（LLVM 22.1.0）</text>
+<text x="707" y="242" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">全部结果与参考 bitwise 一致（tobytes 逐字节相等）</text>
+<text x="50" y="344" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">汇编证据与探针判读：两层检查各抓各的</text>
+<path d="M 43.8,358.7 Q 274.7,359.0 503.9,359.8 Q 503.5,458.9 504.7,558.9 Q 273.4,558.8 45.9,560.9 Q 45.0,458.6 43.8,358.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="57" y="379" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 边界包装的真实汇编（ciface-disasm.s，aarch64）</text>
+<text x="57" y="396" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">_mlir_ciface_add 共 27 条指令（noinline 保留调用边界）：</text>
+<text x="57" y="412" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  bl add 之前：3 条 stp/str 把按值入参复制上栈</text>
+<text x="57" y="428" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">    ——2×56B＝14 个 8 字节，8 个可用寄存器装不下</text>
+<text x="57" y="444" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">  bl add 之后：4 条写回 outp</text>
+<text x="57" y="460" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">    stp x0, x1, [x19] … str x6, [x19, #48]</text>
+<text x="57" y="476" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">    ——56B 聚合返回拆在 x0..x6（LLVM 内部合同）</text>
+<text x="57" y="492" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">对照 D115 gcc 证据：C 合同的 56B 返回走 x8（sret）</text>
+<text x="57" y="508" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">同是'56 字节按值'，两份合同机器形态不同——</text>
+<text x="57" y="524" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">跨边界时哪份都不算数，必须降到指针（三 ptr 签名）</text>
+<path d="M 529.5,360.1 Q 758.0,358.3 989.1,360.8 Q 988.0,459.5 990.1,559.0 Q 761.8,559.2 531.4,560.3 Q 528.8,458.3 529.5,360.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="542" y="379" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">⑤ 探针三连：故意埋错，看哪一层咬得住</text>
+<text x="542" y="396" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">P1 M3 strides 填反：契约层✓（strides=[1,2]）</text>
+<text x="542" y="412" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   数值层✗ 放行——2×2 上反序是缓冲区双射，</text>
+<text x="542" y="428" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   写读共用错坐标系，4/4 照样全对（最狡猾的一课）</text>
+<text x="542" y="444" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   布局层✓ 只有 2/4 点对——缺这层 bug 就逃了</text>
+<text x="542" y="460" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   2×3 对照时干脆跳过：非方形反序 store 越界写坏堆</text>
+<text x="542" y="476" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">P2 包装漏回写：契约层✓（allocated 为空）——</text>
+<text x="542" y="492" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   D115 的 sret 责任在包装里兑现</text>
+<text x="542" y="508" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">P3 参考写成 np.maximum：NaN 点不一致——</text>
+<text x="542" y="524" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.2" fill="#3B3B3B" text-anchor="start">   where 版 4/4、maximum 版 3/4，参考也必须被验证语义</text>
+<path d="M 46.2,587.0 Q 516.9,585.5 991.1,585.9 Q 988.8,657.8 988.5,731.7 Q 518.7,729.1 45.6,729.8 Q 46.4,660.4 46.2,587.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.5"/>
+<text x="510" y="612" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今日验收对照：主运行 9/9 PASS ＋ 形状对照（--shape 2 3）10/10 PASS</text>
+<text x="285" y="638" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP1 账本四联</text>
+<text x="745" y="638" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP2 目标图静态检查</text>
+<text x="285" y="659" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP3 导出 verify</text>
+<text x="745" y="659" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP4 真机 @add</text>
+<text x="285" y="680" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP5 真机 @relu</text>
+<text x="745" y="680" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP6 真机 @step</text>
+<text x="285" y="701" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP7 转置视图</text>
+<text x="745" y="701" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP8 探针三连</text>
+<text x="285" y="722" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ DISASM 汇编证据</text>
+<text x="745" y="722" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#9CBF8E" text-anchor="middle">✓ TP9 形状对照（s23）</text>
+<text x="510" y="724" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#6b6257" text-anchor="middle">环境：Python 3.11.4 / numpy 1.26.4 / llvmlite 0.50.0（LLVM 22.1.0）/ aarch64 Linux · 2026-11-13 冻结运行</text>
+</svg>

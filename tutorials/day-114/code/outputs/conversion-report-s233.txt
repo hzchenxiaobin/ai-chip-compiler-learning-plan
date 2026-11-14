@@ -1,0 +1,81 @@
+第 114 天 最终 Lowering 设计——检查报告
+生成时间：2026-11-13 15:03:02
+环境：Python 3.11.4 aarch64; numpy 1.26.4; llvmlite 0.50.0（LLVM 22.1.0），triple aarch64-unknown-linux-gnu
+输入：GEMM A(2×3) @ B(3×2) 的循环 IR，18 个 op，方言 ['arith', 'func', 'memref', 'scf']
+
+========================================================================
+[PASS] TP1 类型兑换表
+       index                                      -> i64                          位宽随目标指针宽度（64 位目标）
+       f32                                        -> f32                          原样（LLVM 方言兼容类型）
+       i32                                        -> i32                          原样（D113 step 函数同款）
+       memref<2x3xf32, strided<[3,1]>>            -> !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> sizes=[2, 3], strides=[3, 1], offset=0
+       描述符体积（64 位目标，rank 2）：56 字节
+       tensor<4x6xf32> -> 拒收（tensor<4x6xf32>：tensor…）
+       memref<?x?xf32> -> 拒收（动态 shape 暂不支持）
+
+[PASS] TP2 合法性清单覆盖
+       源 IR 出现 10 类 op，全部在清单中有归属；非法方言 ['arith', 'func', 'memref', 'scf']；无漏项
+
+[PASS] TP3 全量驱动（full）
+       18/18 转换，残留 0，结论 SUCCESS
+
+[PASS] TP4 目标形态静态合法性
+       终图 op 全部 llvm.*；每块恰一个终结符；分支目标齐全；描述符 7 字段全覆盖；extractvalue 位置合法
+
+[PASS] TP5 目标形态语义仿真
+       解释器执行 51 步，C_sim 与逐项参考 bitwise 相等：True；与 numpy f32 matmul 的最大差 0.000e+00（BLAS 累加序不同，只作参考）
+
+[PASS] TP6 真机 JIT（LLVM parse→verify→MCJIT→ctypes）
+       LLVM IR parse+verify 通过，MCJIT 编译执行；C_jit 与逐项参考 bitwise 相等：True
+
+[PASS] TP7 partial/full 对照（扣掉 C1 一族）
+       partial：14/18 转换、残留 4（3×scf.for + 1×scf.yield），SUCCESS；full：同配置 FAIL——残留清单一致，语义相反
+
+探针（故意埋的三个设计错误，应全部被检查咬住）
+  - P1 描述符 strides 分量填反：观测值 有限部分 max|diff|=4.1181，未写元素 0 个（NaN）。探针被 TP5 咬住：地址错位导致写入位置全错
+  - P3 iter_args 接线断开（body 用初值）：观测值 max|diff|=5.4908。探针被 TP5 咬住：每个 (i,j) 只剩最后一项乘积
+  - P2 index 不兑换（LLVM 方言没有 index）：观测值 目标形态出现 index 类型 23 处。探针被 TP4 的类型检查咬住：LLVM 方言兼容类型清单里没有 index
+
+对照实验 A：扣掉 C1（scf 一族）后，partial 与 full 的执法对照
+  驱动模式：partial（部分：残留记账、整体成功）
+  op 总数 18，转换 14，残留 4
+  结论：SUCCESS
+  残留清单：
+    - scf.for %i（体内 1 op）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.for %j（体内 2 op）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.for %k（体内 5 op，iter_args(%acc = %zero)）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.yield %s
+        原因：模式未注册（排期见清单：C1 尚未实现）
+
+  驱动模式：full（全量：残留即整体失败）
+  op 总数 18，转换 14，残留 4
+  结论：FAIL
+  残留清单：
+    - scf.for %i（体内 1 op）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.for %j（体内 2 op）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.for %k（体内 5 op，iter_args(%acc = %zero)）
+        原因：模式未注册（排期见清单：C1 尚未实现）
+    - scf.yield %s
+        原因：模式未注册（排期见清单：C1 尚未实现）
+
+对照实验 B：把第一段 Lowering 之前的 tensor 图直接喂给最终 Lowering
+  输入 variants/residual.mlir：3 op（func + mini.matmul + return）
+  partial：0/3 转换，残留 3，结论 SUCCESS（账本入账）
+    - func.func @main（2 参数）
+        原因：类型转换失败：tensor<4x6xf32>：tensor 是值语义类型，最终 Lowering 的兑换表里没有目标类型——必须先经过第一段 Lowering（bufferize，D85~D105）
+    - mini.matmul
+        原因：非法方言 mini.* 且未注册任何模式——最终 Lowering 不负责 mini，请先完成第一段 Lowering（D85~D105）
+    - func.return %c
+        原因：类型转换失败：tensor<4x3xf32>：tensor 是值语义类型，最终 Lowering 的兑换表里没有目标类型——必须先经过第一段 Lowering（bufferize，D85~D105）
+  full：同输入 FAIL——两道闸（TypeConverter 拒收 tensor、ConversionTarget 拒收 mini）把管道顺序错误拦在门外
+
+汇总：7/7 项 PASS；对照实验 B 符合预期
+
+统计
+  源 IR：18 op
+  目标形态：69 op（10 块），膨胀 3.8 倍；其中常量 12 个（LLVM IR 文本中按 R2 内联，不占槽位）

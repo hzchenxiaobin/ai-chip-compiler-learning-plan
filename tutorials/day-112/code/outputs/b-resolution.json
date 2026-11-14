@@ -1,0 +1,67 @@
+{
+ "schema": "d112.b-resolution/1",
+ "timestamp": "2026-11-13T13:52:20+0800",
+ "pred_gap_s1_pct": -0.103,
+ "pred_gap_w1_pct": -0.014,
+ "pred_tie_w1": false,
+ "rounds": [
+  {
+   "ikj_ms": 15.694,
+   "kij_ms": 16.764,
+   "gap_pct": -6.38
+  },
+  {
+   "ikj_ms": 15.607,
+   "kij_ms": 16.73,
+   "gap_pct": -6.71
+  },
+  {
+   "ikj_ms": 15.597,
+   "kij_ms": 16.885,
+   "gap_pct": -7.63
+  },
+  {
+   "ikj_ms": 15.775,
+   "kij_ms": 16.756,
+   "gap_pct": -5.85
+  },
+  {
+   "ikj_ms": 15.61,
+   "kij_ms": 16.932,
+   "gap_pct": -7.81
+  }
+ ],
+ "fresh_calib": [
+  {
+   "j0": 55.4,
+   "k0": 62.2
+  },
+  {
+   "j0": 55.8,
+   "k0": 62.0
+  },
+  {
+   "j0": 56.2,
+   "k0": 63.0
+  }
+ ],
+ "subprocess": [
+  {
+   "ikj_ms": 15.561,
+   "kij_ms": 16.917,
+   "gap_pct": -8.02
+  },
+  {
+   "ikj_ms": 15.567,
+   "kij_ms": 16.892,
+   "gap_pct": -7.84
+  }
+ ],
+ "window_a": {
+  "ikj_ms": 17.013,
+  "kij_ms": 15.993,
+  "gap_pct": 6.38
+ },
+ "window_b_gap_pct": -6.71,
+ "window_flipped": true
+}

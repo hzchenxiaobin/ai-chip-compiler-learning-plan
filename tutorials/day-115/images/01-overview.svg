@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 730" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.3,3.0 Q 510.6,3.7 1014.8,2.8 Q 1015.7,365.2 1016.8,727.1 Q 509.6,724.8 5.6,726.6 Q 7.0,366.1 5.3,3.0  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="17.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 115 天定位：第 17 周动工第一天——把 D114 清单的第一段（F1/R1/A1）落成真代码</text>
+<path d="M 300.3,42.9 Q 512.3,45.7 721.2,45.1" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="48" y="68" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">编译链路：今天走到哪一站？</text>
+<path d="M 61.2,86.9 Q 106.5,88.7 150.9,86.4 Q 152.6,113.0 151.0,137.8 Q 106.3,136.8 60.7,138.1 Q 62.4,112.1 61.2,86.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.55"/>
+<text x="105.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">图 IR</text>
+<text x="105.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">mini 方言</text>
+<text x="105.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">已完成</text>
+<path d="M 164.6,87.2 Q 221.3,87.2 274.9,86.6 Q 275.4,112.5 274.0,138.8 Q 219.4,140.5 166.4,138.4 Q 166.2,114.6 164.6,87.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.55"/>
+<text x="220.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">循环＋内存 IR</text>
+<text x="220.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">scf·memref</text>
+<text x="220.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">D85~D105</text>
+<path d="M 289.5,85.2 Q 368.2,87.7 450.1,86.3 Q 451.4,113.2 448.6,136.7 Q 368.5,138.6 290.3,136.5 Q 289.3,112.2 289.5,85.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="370.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今天：函数与类型</text>
+<text x="370.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">F1/R1/A1</text>
+<text x="370.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#9CBF8E" text-anchor="middle">D115 ★</text>
+<path d="M 464.3,87.4 Q 545.6,87.4 623.9,84.6 Q 625.5,112.3 624.0,138.3 Q 543.9,138.6 463.6,138.5 Q 463.0,113.2 464.3,87.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.55"/>
+<text x="545.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">算子与内存</text>
+<text x="545.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">M1~M3/A2~A3</text>
+<text x="545.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">D116</text>
+<path d="M 640.3,86.0 Q 709.0,87.2 781.3,86.9 Q 778.4,111.6 779.4,139.3 Q 711.1,140.5 639.5,138.0 Q 640.0,113.3 640.3,86.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.55"/>
+<text x="710.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">循环＋导出</text>
+<text x="710.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">C1→LLVM IR</text>
+<text x="710.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">D117</text>
+<path d="M 795.0,84.5 Q 877.3,83.6 963.9,86.4 Q 965.6,114.1 965.9,138.0 Q 881.5,139.8 796.4,139.3 Q 796.1,112.6 795.0,84.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.55"/>
+<text x="880.0" y="108" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">执行</text>
+<text x="880.0" y="126" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">JIT / AOT</text>
+<text x="880.0" y="148" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">D118</text>
+<path d="M 154.0,113.1 Q 155.8,113.4 162.0,112.0 M 148.5,114.1 L 162.0,112.0 L 148.5,109.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 276.8,112.2 Q 284.4,112.9 287.0,112.0 M 273.5,114.1 L 287.0,112.0 L 273.5,109.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 454.4,111.1 Q 455.5,113.0 462.0,112.0 M 448.5,114.1 L 462.0,112.0 L 448.5,109.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 629.3,111.2 Q 631.0,113.3 637.0,112.0 M 623.5,114.1 L 637.0,112.0 L 623.5,109.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 781.7,112.3 Q 788.8,112.9 792.0,112.0 M 778.5,114.1 L 792.0,112.0 L 778.5,109.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="510" y="168" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">最终 Lowering 段：D113 读样本 → D114 写清单 → D115~D118 按清单施工</text>
+<text x="48" y="208" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">第 17 周排期：今天只做函数与类型，别把 D116 的活提前干了</text>
+<path d="M 61.5,223.6 Q 134.1,222.9 206.4,222.4 Q 208.1,255.6 208.4,289.5 Q 133.0,288.8 59.0,288.5 Q 61.3,256.5 61.5,223.6  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.45"/>
+<text x="134.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D113</text>
+<text x="134.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">读目标语言样本</text>
+<text x="134.0" y="280" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#9CBF8E" text-anchor="middle">✓ 已完成</text>
+<path d="M 211.3,223.5 Q 286.4,223.9 358.7,225.1 Q 358.1,254.8 359.8,286.8 Q 287.2,289.6 213.4,288.4 Q 211.5,255.9 211.3,223.5  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.45"/>
+<text x="286.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D114</text>
+<text x="286.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">类型表＋合法性清单</text>
+<text x="286.0" y="280" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#9CBF8E" text-anchor="middle">✓ 已完成</text>
+<path d="M 364.0,224.3 Q 439.9,225.6 513.0,224.4 Q 513.9,258.1 510.4,288.6 Q 436.0,291.0 363.8,289.3 Q 364.3,257.0 364.0,224.3  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.65"/>
+<text x="438.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D115</text>
+<text x="438.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">函数转换＋类型测试</text>
+<text x="438.0" y="280" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#3B3B3B" text-anchor="middle" font-weight="bold">★ 今天</text>
+<path d="M 515.5,225.0 Q 587.7,222.5 664.3,224.3 Q 663.6,258.1 664.1,289.4 Q 591.4,289.0 516.2,288.5 Q 515.1,257.3 515.5,225.0  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.45"/>
+<text x="590.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D116</text>
+<text x="590.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">Elementwise＋访存</text>
+<path d="M 669.4,223.4 Q 744.1,224.8 816.6,222.6 Q 816.4,255.2 816.0,287.1 Q 743.1,288.8 669.6,288.2 Q 671.1,256.1 669.4,223.4  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.45"/>
+<text x="742.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D117</text>
+<text x="742.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">循环＋导出 LLVM IR</text>
+<path d="M 820.0,223.2 Q 896.1,222.7 968.9,225.4 Q 969.1,254.7 968.8,287.1 Q 895.5,286.0 821.6,288.2 Q 822.1,255.6 820.0,223.2  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.45"/>
+<text x="894.0" y="244" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D118</text>
+<text x="894.0" y="262" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">执行与校验</text>
+<text x="48" y="330" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">今天的三件事（一根链条：换类型 → 算字节 → 定怎么传）</text>
+<path d="M 56.1,345.4 Q 201.4,345.6 343.2,345.0 Q 343.0,419.7 342.1,495.2 Q 200.6,495.5 55.2,494.6 Q 54.5,419.5 56.1,345.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="67" y="365" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 函数签名转换（F1）</text>
+<text x="67" y="382" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">memref 参数 → 5 字段描述符结构体</text>
+<text x="67" y="398" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">index → i64，f32 原样</text>
+<text x="67" y="414" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">0/1/≥2 结果 → void/直返/打包 struct</text>
+<text x="67" y="430" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">残账里 scf·memref·arith 留给 D116/D117</text>
+<path d="M 365.8,346.1 Q 508.7,343.8 653.5,345.3 Q 655.4,421.4 655.4,495.6 Q 509.4,494.5 366.3,496.6 Q 367.8,421.7 365.8,346.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="379" y="365" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">② DataLayout：类型→字节的规则书</text>
+<text x="379" y="382" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">大小：f32=4B，ptr=8B，i64=8B</text>
+<text x="379" y="398" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">对齐：结构体逐成员补齐到边界</text>
+<text x="379" y="414" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">index 位宽＝目标指针宽（64 位）</text>
+<text x="379" y="430" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">rank1/2/3 描述符＝40/56/72B，align 8</text>
+<path d="M 677.4,344.9 Q 821.2,342.5 968.0,344.5 Q 965.2,420.8 965.9,496.9 Q 821.8,493.7 678.8,494.9 Q 678.6,421.3 677.4,344.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.45"/>
+<text x="691" y="365" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ ABI 基础：字节怎么上寄存器/栈</text>
+<text x="691" y="382" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">&gt;16B 聚合＝调用方复制＋传地址（indirect）</text>
+<text x="691" y="398" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">大返回＝x8 隐式结果指针（sret）</text>
+<text x="691" y="414" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">JIT 入口按 C ABI 用 ptr 签名</text>
+<text x="691" y="430" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="start">证据链：gcc 汇编＋ctypes 实测</text>
+<path d="M 345.9,418.8 Q 353.7,421.1 365.0,420.0 M 351.5,422.1 L 365.0,420.0 L 351.5,417.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 658.6,419.8 Q 667.9,419.5 677.0,420.0 M 663.5,422.1 L 677.0,420.0 L 663.5,417.9" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="48" y="540" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">今天结束时的真实证据（全部来自本机冻结运行）</text>
+<text x="160" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">8/18</text>
+<text x="160" y="600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">op 今天能转，残账 10 条带排期</text>
+<text x="390" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">56B/8</text>
+<text x="390" y="600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">rank2 描述符，偏移 0,8,16,24,40</text>
+<text x="620" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">112→56</text>
+<text x="620" y="600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">GEMM 参数/返回的 ABI 字节账</text>
+<text x="852" y="578" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">36/36</text>
+<text x="852" y="600" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">真机 peek 全点 bitwise 对</text>
+<path d="M 53.6,620.5 Q 510.9,621.9 963.5,620.3" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="510" y="648" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">验收标准沿用 D114 立下的两条：对照实验 B 的两道闸（tensor 拒收、mini 非法）今天变成可执行的检查</text>
+<text x="510" y="668" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#6b6257" text-anchor="middle">诚实声明：本机无 mlir-opt，四角色为教学仿真；但布局数字对账真 LLVM、ABI 证据来自真 gcc 汇编与真机 JIT 调用</text>
+</svg>

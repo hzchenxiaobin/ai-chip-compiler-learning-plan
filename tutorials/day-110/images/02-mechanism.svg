@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 2.7,2.4 Q 490.5,1.5 977.0,4.0 Q 978.9,331.9 977.1,656.7 Q 491.5,654.3 4.7,655.2 Q 2.4,328.6 2.7,2.4  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">Cost Model 三层结构：数行 → 定价 → 求和（S1 冠军 64³ kij U=1 为例）</text>
+<path d="M 251.4,43.9 Q 488.1,46.8 729.2,45.0" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="172" y="76" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① count_ops(64,64,64, kij)：数源码行</text>
+<text x="172" y="94" font-size="9.5" fill="#6b6257" text-anchor="middle">逐行镜像 kernel_gen.py 的生成规则；</text>
+<text x="172" y="107" font-size="9.5" fill="#6b6257" text-anchor="middle">计价单位 = 源码行（Ci=C[v];Ai=A[v] 算一行）</text>
+<path d="M 41.6,119.8 Q 172.7,118.6 304.8,119.9 Q 302.0,145.5 302.8,167.4 Q 172.8,167.7 39.8,168.6 Q 41.8,143.8 41.6,119.8  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.4"/>
+<text x="52" y="139" font-size="10.5" fill="#3B3B3B" text-anchor="start">tile 外壳</text>
+<text x="52" y="154" font-size="8.8" fill="#6b6257" text-anchor="middle">for i0/j0/k0…：循环迭代 1×1×1</text>
+<text x="296" y="147" font-size="9.2" fill="#3B3B3B" text-anchor="end">min3 ×1 行</text>
+<path d="M 172.4,167.4 Q 171.1,170.3 172.0,175.0 M 169.0,162.0 L 172.0,175.0 L 175.0,162.0" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<path d="M 41.3,174.9 Q 173.5,175.5 305.4,175.7 Q 304.3,199.8 304.6,223.0 Q 173.9,226.0 39.1,224.9 Q 41.8,200.1 41.3,174.9  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.4"/>
+<text x="52" y="195" font-size="10.5" fill="#3B3B3B" text-anchor="start">v1 行提升</text>
+<text x="52" y="210" font-size="8.8" fill="#6b6257" text-anchor="middle">k 循环体：64 次迭代</text>
+<text x="296" y="203" font-size="9.2" fill="#3B3B3B" text-anchor="end">it_v1=64 · hs1×64</text>
+<path d="M 173.0,224.6 Q 171.7,229.4 172.0,231.0 M 169.0,218.0 L 172.0,231.0 L 175.0,218.0" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<path d="M 40.1,230.4 Q 173.7,231.5 304.4,232.0 Q 303.7,254.6 302.8,281.4 Q 172.6,280.7 40.7,280.0 Q 40.5,255.6 40.1,230.4  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.4"/>
+<text x="52" y="251" font-size="10.5" fill="#3B3B3B" text-anchor="start">v2 行提升</text>
+<text x="52" y="266" font-size="8.8" fill="#6b6257" text-anchor="middle">内层行 Ci=C[v1]; a=A[v1][v1]</text>
+<text x="296" y="259" font-size="9.2" fill="#3B3B3B" text-anchor="end">it_v2=4096 · hsm×4096</text>
+<path d="M 172.6,282.6 Q 173.0,284.8 172.0,287.0 M 169.0,274.0 L 172.0,287.0 L 175.0,274.0" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<path d="M 39.7,289.5 Q 170.7,289.3 302.7,289.1 Q 301.3,313.4 304.3,335.9 Q 173.4,335.7 39.2,334.9 Q 40.4,310.5 39.7,289.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="52" y="307" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">v3 主循环</text>
+<text x="52" y="322" font-size="8.8" fill="#6b6257" text-anchor="middle">Ci[v1] += a*Bv[v1]（j 内层）</text>
+<text x="296" y="315" font-size="9.2" fill="#3B3B3B" text-anchor="end" font-weight="bold">it_main=262144 行</text>
+<text x="172" y="358" font-size="10.2" fill="#3B3B3B" text-anchor="middle" font-weight="bold">262144 行 × 60.2 ns ≈ 15.8 ms（占预测 81%）</text>
+<path d="M 311.5,241.4 Q 322.4,238.1 336.0,240.0 M 323.0,243.0 L 336.0,240.0 L 323.0,237.0" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="500" y="76" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② calibrate()：微基准量单价（ns/行）</text>
+<text x="500" y="94" font-size="9.5" fill="#6b6257" text-anchor="middle">三尺寸最小二乘斜率，中位数×7 次重复；</text>
+<text x="500" y="107" font-size="9.5" fill="#6b6257" text-anchor="middle">镜像三纪律：局部变量 · 数据≤80KB · 下标≤96</text>
+<text x="384" y="126" font-size="9.6" fill="#3B3B3B" text-anchor="end">j0  j 内层行</text>
+<path d="M 619.8,115.1 Q 627.2,115.2 637.6,116.8 Q 638.3,124.0 636.2,130.2 Q 630.8,132.7 621.0,131.6 Q 620.1,125.2 619.8,115.1  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="645.1836346336822" y="126" font-size="9.6" fill="#3B3B3B" text-anchor="start">60.2</text>
+<text x="384" y="155" font-size="9.6" fill="#3B3B3B" text-anchor="end">k0  k 内层行</text>
+<path d="M 618.5,145.4 Q 630.2,144.4 639.0,144.0 Q 636.8,150.8 638.4,159.7 Q 628.4,160.8 618.5,159.9 Q 616.8,153.1 618.5,145.4  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="645.4690770694576" y="155" font-size="9.6" fill="#3B3B3B" text-anchor="start">61.2</text>
+<text x="384" y="184" font-size="9.6" fill="#3B3B3B" text-anchor="end">i0  i 内层行</text>
+<path d="M 619.4,174.0 Q 635.5,175.7 647.7,175.1 Q 644.3,183.0 644.8,189.8 Q 634.2,188.0 620.1,189.0 Q 619.7,179.4 619.4,174.0  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.55"/>
+<text x="654.2607040913416" y="184" font-size="9.6" fill="#3B3B3B" text-anchor="start" font-weight="bold">92</text>
+<text x="384" y="213" font-size="9.6" fill="#3B3B3B" text-anchor="end">ju  j 内层+展开</text>
+<path d="M 620.8,202.2 Q 633.3,202.5 641.9,203.0 Q 640.7,209.8 642.6,217.6 Q 629.4,217.6 618.6,217.7 Q 621.4,212.1 620.8,202.2  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="649.5794481446242" y="213" font-size="9.6" fill="#3B3B3B" text-anchor="start">75.6</text>
+<text x="384" y="242" font-size="9.6" fill="#3B3B3B" text-anchor="end">loop 循环机器</text>
+<path d="M 620.8,232.9 Q 621.0,233.2 625.5,233.0 Q 627.4,239.1 626.4,246.9 Q 624.7,245.4 620.4,246.1 Q 620.2,239.5 620.8,232.9  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="634" y="242" font-size="9.6" fill="#3B3B3B" text-anchor="start">6.7</text>
+<text x="384" y="271" font-size="9.6" fill="#3B3B3B" text-anchor="end">range3 三参建立</text>
+<path d="M 620.2,260.8 Q 644.4,262.4 670.8,262.1 Q 671.3,268.3 672.3,275.1 Q 648.9,274.9 621.4,277.6 Q 619.6,267.9 620.2,260.8  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="679.6936251189344" y="271" font-size="9.6" fill="#3B3B3B" text-anchor="start" font-weight="bold">181.1</text>
+<text x="384" y="300" font-size="9.6" fill="#3B3B3B" text-anchor="end">hsm 行提升·单+双</text>
+<path d="M 619.0,291.5 Q 627.1,291.7 631.6,290.3 Q 633.4,296.1 633.1,306.2 Q 626.3,304.1 620.7,305.2 Q 618.6,300.0 619.0,291.5  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="640.7021883920077" y="300" font-size="9.6" fill="#3B3B3B" text-anchor="start">44.5</text>
+<text x="384" y="329" font-size="9.6" fill="#3B3B3B" text-anchor="end">min3 外壳三连 min</text>
+<path d="M 620.0,319.4 Q 692.5,318.8 768.7,319.3 Q 770.0,326.2 769.4,335.4 Q 696.6,335.7 620.0,333.6 Q 617.9,325.0 620.0,319.4  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="778" y="329" font-size="9.6" fill="#3B3B3B" text-anchor="start" font-weight="bold">525.5</text>
+<path d="M 384.8,350.5 Q 576.6,351.4 768.9,353.9" stroke="#E7DFCE" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+<text x="500" y="372" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">j0 与 k0 是近对：差 1.0 ns——</text>
+<text x="500" y="387" font-size="10" fill="#3B3B3B" text-anchor="middle">这条近对决定 j/k 家族次序，对噪声敏感</text>
+<text x="500" y="401" font-size="9.4" fill="#6b6257" text-anchor="middle">（次序若翻转，冠军在近对内互换，仍在 top-K 里）</text>
+<path d="M 500.2,413.2 Q 500.9,424.7 500.0,436.0 M 497.0,423.0 L 500.0,436.0 L 503.0,423.0" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="500" y="456" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ predict_ms：t = Σ 行数 × 单价</text>
+<path d="M 61.2,468.8 Q 262.6,469.3 460.8,469.1 Q 462.8,507.9 460.7,547.0 Q 259.1,546.4 61.0,547.2 Q 62.8,507.0 61.2,468.8  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="260.0" y="487" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军 64³ kij U=1 的求和</text>
+<text x="260.0" y="506.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">j0: 262144×60.2 + hsm: 4096×44.5 + loop: 266307×6.7</text>
+<text x="260.0" y="522.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">  + range/pre/min3…（16 项）</text>
+<text x="260.0" y="539.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">→ 预测 19.42 ms；D108 实测 15.81 ms（+22.8%，模型第 2 名）</text>
+<path d="M 519.4,467.1 Q 718.7,465.4 919.0,468.1 Q 920.8,507.6 919.7,545.3 Q 718.7,544.3 520.1,545.9 Q 518.6,508.4 519.4,467.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.45"/>
+<text x="720.0" y="487" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">流量项：只报账，不进排序（D109 纪律）</text>
+<text x="720.0" y="506.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">元素访问 790528 次 × 4 B ÷ C 级 2.68 GB/s = 1.18 ms</text>
+<text x="720.0" y="522.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">≈ 预测的 6%：内存时间比解释时间低一个数量级；</text>
+<text x="720.0" y="539.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">它与语句成本是同一批解释器事件的不同计价——不叠加</text>
+<text x="500" y="586" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">三道验证（全部真实运行）</text>
+<path d="M 59.1,597.6 Q 199.1,596.5 339.8,597.1 Q 339.5,624.3 338.8,649.9 Q 200.9,648.7 60.1,650.9 Q 61.0,622.9 59.1,597.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="200.0" y="636.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">settrace 真值：39 配置 × 17 项计数全部一致</text>
+<text x="200.0" y="652.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">（静态数行 = 解释器逐行事件，口径钉死）</text>
+<path d="M 360.1,597.0 Q 498.0,598.4 640.3,597.7 Q 639.6,623.7 638.4,648.4 Q 496.6,651.1 358.8,650.0 Q 361.6,624.1 360.1,597.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="500.0" y="636.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">方向自检：i0=92.0 &gt; k0=61.2/j0=60.2；</text>
+<text x="500.0" y="652.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">ju&gt;j0；hsm&gt;hs2&gt;hs1——量级 10~200 ns</text>
+<path d="M 661.0,597.9 Q 798.9,599.2 939.1,596.8 Q 940.6,624.0 940.5,650.0 Q 799.4,648.4 660.9,650.1 Q 663.0,626.0 661.0,597.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="800.0" y="636.0" font-size="9.2" fill="#3B3B3B" text-anchor="middle">Roofline 下界 9.59 ms ≤ 预测 19.42 ms ✓</text>
+<text x="800.0" y="652.5" font-size="9.2" fill="#3B3B3B" text-anchor="middle">（flops ÷ 解释屋顶 P，与候选无关）</text>
+</svg>

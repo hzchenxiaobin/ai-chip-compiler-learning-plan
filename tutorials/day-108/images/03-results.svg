@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.8,3.2 Q 491.7,3.8 977.3,4.5 Q 975.0,318.7 976.6,636.8 Q 492.0,637.6 5.3,636.9 Q 3.1,319.6 4.8,3.2  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="20" fill="#3B3B3B" text-anchor="middle" font-weight="bold">实测结果：冠军 vs 缺省 17~24%、排名有效性、投毒被拦</text>
+<path d="M 299.3,47.6 Q 492.0,48.4 679.7,46.6" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="56" y="78" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">缺省配置 vs 调优冠军（决赛协议 3/21 中位数，ms）</text>
+<text x="60" y="128" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S1 64×64×64</text>
+<path d="M 176.0,111.9 Q 225.0,113.7 272.2,111.9 Q 270.9,125.8 273.3,141.3 Q 224.5,142.2 176.3,143.5 Q 174.6,126.0 176.0,111.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="280.68918918918916" y="132" font-size="10" fill="#6b6257" text-anchor="start">缺省 19.08</text>
+<path d="M 175.1,152.7 Q 215.5,152.4 257.0,152.1 Q 254.6,164.9 255.7,182.1 Q 215.9,183.6 176.0,183.1 Q 174.4,168.4 175.1,152.7  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.75"/>
+<text x="264.06756756756755" y="172" font-size="10" fill="#3B3B3B" text-anchor="start">冠军 64³ kij U=1 15.80</text>
+<text x="264.06756756756755" y="188" font-size="9.5" fill="#C97B7B" text-anchor="start">快 17%（省 3.28 ms/次）</text>
+<text x="60" y="246" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S2 96×96×96</text>
+<path d="M 177.2,229.9 Q 341.1,230.7 504.9,230.8 Q 504.3,245.4 504.7,261.5 Q 340.8,262.3 177.4,260.3 Q 178.0,246.0 177.2,229.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="514.0" y="250" font-size="10" fill="#6b6257" text-anchor="start">缺省 65.12</text>
+<path d="M 176.5,271.4 Q 307.2,271.5 435.8,270.0 Q 435.5,285.9 436.5,298.5 Q 307.1,298.4 176.3,298.9 Q 176.4,284.6 176.5,271.4  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.75"/>
+<text x="445.1317567567568" y="290" font-size="10" fill="#3B3B3B" text-anchor="start">冠军 96³ kij U=1 51.53</text>
+<text x="445.1317567567568" y="306" font-size="9.5" fill="#C97B7B" text-anchor="start">快 21%（省 13.59 ms/次）</text>
+<text x="60" y="364" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">S3 90×96×64</text>
+<path d="M 176.0,348.5 Q 284.3,348.8 388.6,347.6 Q 390.3,362.2 388.5,377.0 Q 280.4,376.4 176.8,378.3 Q 176.5,362.5 176.0,348.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.55"/>
+<text x="396.93918918918916" y="368" font-size="10" fill="#6b6257" text-anchor="start">缺省 42.02</text>
+<path d="M 174.7,388.7 Q 256.0,388.4 338.3,387.4 Q 339.0,402.1 339.4,416.9 Q 256.8,415.6 176.2,417.3 Q 176.7,401.3 174.7,388.7  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.75"/>
+<text x="346.46621621621625" y="408" font-size="10" fill="#3B3B3B" text-anchor="start">冠军 90×96×64 kij U=1 32.06</text>
+<text x="346.46621621621625" y="424" font-size="9.5" fill="#C97B7B" text-anchor="start">快 24%（省 9.96 ms/次）</text>
+<path d="M 177.4,101.0 Q 174.2,276.1 176.2,450.5" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="176" y="468" font-size="9.5" fill="#6b6257" text-anchor="middle">0 ms</text>
+<text x="60" y="490" font-size="10" fill="#3B3B3B" text-anchor="start">回本调用数：S1 ≈2,433｜S2 ≈2,720｜S3 ≈2,377（搜索成本分摊 ÷ 每次省时）</text>
+<path d="M 560.0,94.9 Q 754.9,95.1 953.2,96.2 Q 950.5,149.9 952.0,204.3 Q 757.2,203.9 560.6,204.8 Q 560.1,151.8 560.0,94.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="756.0" y="116" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军榜（每 shape 一名，per-shape 是纪律）</text>
+<text x="756.0" y="136" font-size="10" fill="#3B3B3B" text-anchor="middle">S1  64³ kij U=1              15.80 ms</text>
+<text x="756.0" y="153" font-size="10" fill="#3B3B3B" text-anchor="middle">S2  96³ kij U=1              51.53 ms</text>
+<text x="756.0" y="170" font-size="10" fill="#3B3B3B" text-anchor="middle">S3  90×96×64 kij U=1         32.06 ms</text>
+<text x="756.0" y="187" font-size="10" fill="#3B3B3B" text-anchor="middle">冠军名相似是 CPython 成本模型的巧合（见 README 5.3）</text>
+<path d="M 560.4,216.6 Q 755.4,216.2 951.9,216.9 Q 951.6,262.8 950.9,307.5 Q 758.1,308.4 561.6,307.1 Q 559.4,261.2 560.4,216.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="756.0" y="236" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">排名有效性（D97 规则自动判）</text>
+<text x="756.0" y="256" font-size="10" fill="#3B3B3B" text-anchor="middle">决赛第 1~2 名差距 7.36%~8.02%</text>
+<text x="756.0" y="273" font-size="10" fill="#3B3B3B" text-anchor="middle">2×MAD 口径 &lt; 0.2% → 差距远大于波动：成立</text>
+<text x="756.0" y="290" font-size="10" fill="#3B3B3B" text-anchor="middle">同 shape 的筛选/决赛都在同一次进程内完成</text>
+<path d="M 561.1,320.5 Q 756.0,321.2 952.4,318.5 Q 953.4,384.0 950.9,446.9 Q 754.6,447.6 560.7,447.8 Q 562.9,383.7 561.1,320.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.4"/>
+<text x="756.0" y="340" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">被拒台账 2 条（门先行的现场证据）</text>
+<text x="756.0" y="360" font-size="9.8" fill="#3B3B3B" text-anchor="middle">90×96×64 jki U=4/no-tail：err=10.07 → 不计时</text>
+<text x="756.0" y="377" font-size="9.8" fill="#3B3B3B" text-anchor="middle">32³ jki U=4/no-tail：err=10.07 → 不计时</text>
+<text x="756.0" y="394" font-size="9.8" fill="#3B3B3B" text-anchor="middle">绕过门直接计时：55.32/56.06 ms</text>
+<text x="756.0" y="411" font-size="9.8" fill="#3B3B3B" text-anchor="middle">正确双胞胎：56.83/60.45 ms（错误版快 2.7~7.3%）</text>
+<text x="756.0" y="428" font-size="9.8" fill="#3B3B3B" text-anchor="middle">自动搜索没有肉眼审查，门就是唯一防线</text>
+<path d="M 50.7,520.9 Q 502.0,520.7 953.2,523.1 Q 954.1,563.4 953.5,604.9 Q 503.9,605.4 52.6,605.5 Q 51.5,562.4 50.7,520.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.6"/>
+<text x="500" y="546" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">工程实测两条腿：断点续跑 part1（28 条收工）→ part2（跳过 28 续测 82）；</text>
+<text x="500" y="568" font-size="10.5" fill="#3B3B3B" text-anchor="middle">k=3/5 重算（读落盘样本，内核一次不跑）：冠军不翻、top-3 不变，中游摆 ≤3 位——</text>
+<text x="500" y="588" font-size="10.5" fill="#3B3B3B" text-anchor="middle">筛选 3+7 的保险与成本（省 36%@k=3）都在账上，口径随记录可重算</text>
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 650" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.0,3.1 Q 490.9,2.3 977.4,4.0 Q 977.3,324.8 975.7,646.4 Q 488.8,644.7 2.9,645.0 Q 2.8,325.0 5.0,3.1  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 111 天定位：集成验收——把第四阶段的零件装成一台机器</text>
+<path d="M 281.0,43.4 Q 492.0,43.8 700.8,44.2" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="52" y="68" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">第四阶段的链路（D85~D112，每站都已各自验收）</text>
+<path d="M 52.2,77.7 Q 120.6,80.3 191.2,78.8 Q 191.9,102.7 188.7,130.7 Q 118.2,131.5 51.9,131.1 Q 54.0,106.1 52.2,77.7  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="121" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">Lowering 骨架</text>
+<text x="121" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D86~90 · mini.matmul→循环</text>
+<path d="M 191.9,105.0 Q 197.3,106.0 201.0,105.0 M 188.0,108.0 L 201.0,105.0 L 188.0,102.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 203.1,76.7 Q 273.0,77.5 340.6,78.7 Q 340.1,107.9 338.9,132.9 Q 269.3,131.9 200.9,133.5 Q 202.9,106.9 203.1,76.7  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="271" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">Tiling＋循环变换</text>
+<text x="271" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D91~97 · 顺序/展开/尾部</text>
+<path d="M 341.6,105.6 Q 345.1,106.1 351.0,105.0 M 338.0,108.0 L 351.0,105.0 L 338.0,102.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 351.9,79.4 Q 419.5,79.8 490.2,79.5 Q 489.9,103.2 491.5,130.8 Q 420.5,131.2 353.4,132.8 Q 354.3,104.3 351.9,79.4  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="421" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">内存约束</text>
+<text x="421" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D98~104 · 五项记账</text>
+<path d="M 491.6,105.7 Q 496.8,106.5 501.0,105.0 M 488.0,108.0 L 501.0,105.0 L 488.0,102.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 502.3,78.8 Q 569.4,81.1 639.9,79.5 Q 638.2,106.8 639.7,131.1 Q 571.4,131.0 500.8,131.2 Q 499.6,103.7 502.3,78.8  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="571" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">搜索空间</text>
+<text x="571" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D106 · 值域剪枝</text>
+<path d="M 642.9,103.8 Q 648.2,104.7 651.0,105.0 M 638.0,108.0 L 651.0,105.0 L 638.0,102.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 650.6,77.6 Q 719.6,76.3 789.5,77.1 Q 790.2,104.2 790.4,132.2 Q 722.0,133.9 652.2,131.4 Q 650.6,104.9 650.6,77.6  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="721" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">测量纪律</text>
+<text x="721" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D107 · 3+7/3+21</text>
+<path d="M 792.1,105.3 Q 794.9,106.3 801.0,105.0 M 788.0,108.0 L 801.0,105.0 L 788.0,102.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 802.2,76.8 Q 873.5,75.9 941.2,76.4 Q 940.3,104.6 939.0,131.9 Q 870.0,130.5 803.4,132.6 Q 802.1,102.9 802.2,76.8  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="871" y="99" font-size="10.5" fill="#3B3B3B" text-anchor="middle">全测＋模型</text>
+<text x="871" y="118" font-size="9.2" fill="#6b6257" text-anchor="middle">D108~110 · 实测/预筛</text>
+<path d="M 950.4,73.0 Q 1020.1,72.6 1091.2,74.4 Q 1090.1,103.4 1090.8,136.2 Q 1019.3,135.7 951.9,137.2 Q 951.8,103.8 950.4,73.0  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="1021" y="96" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">集成验收</text>
+<text x="1021" y="114" font-size="10" fill="#3B3B3B" text-anchor="middle">D111 今天</text>
+<text x="1021" y="128" font-size="9.2" fill="#6b6257" text-anchor="middle">一条命令收口</text>
+<text x="52" y="172" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">今天的一条流水线：mini.matmul 文本进去，冠军＋报告出来</text>
+<path d="M 51.9,183.3 Q 110.2,183.1 172.8,183.2 Q 171.0,228.7 171.8,270.8 Q 111.2,272.4 52.7,271.3 Q 52.4,228.5 51.9,183.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="112.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S0 前端</text>
+<text x="112.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">mini 图 IR 解析</text>
+<text x="112.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">shape 推断＋语义校验</text>
+<text x="112.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">0.1 ms</text>
+<path d="M 174.2,226.7 Q 177.7,228.4 180.0,227.0 M 167.0,230.0 L 180.0,227.0 L 167.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 181.6,185.3 Q 241.5,186.5 302.0,183.8 Q 300.8,229.4 302.1,270.9 Q 239.8,269.3 180.8,269.8 Q 182.2,228.5 181.6,185.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="241.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S1 Lowering</text>
+<text x="241.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">D85~90 任务单</text>
+<text x="241.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">六项结构证据 ✓</text>
+<text x="241.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">kernel_gen 实现</text>
+<path d="M 302.2,227.8 Q 304.7,226.2 309.0,227.0 M 296.0,230.0 L 309.0,227.0 L 296.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 309.6,183.9 Q 369.3,185.0 429.8,185.1 Q 429.7,228.2 431.3,270.4 Q 370.4,270.3 309.2,269.8 Q 311.5,226.5 309.6,183.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="370.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S2 候选空间</text>
+<text x="370.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">D106 值域剪枝</text>
+<text x="370.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">tile 池×6 顺序×U</text>
+<text x="370.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">S1 144 / S4 2250</text>
+<path d="M 429.4,227.6 Q 433.5,225.0 438.0,227.0 M 425.0,230.0 L 438.0,227.0 L 425.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 440.3,184.5 Q 497.6,183.4 558.1,182.5 Q 560.0,225.5 558.8,268.6 Q 497.7,269.6 437.6,270.4 Q 440.8,226.1 440.3,184.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="499.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S3 资源闸门</text>
+<text x="499.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">D104 五项记账</text>
+<text x="499.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">≤ 256 KiB</text>
+<text x="499.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">S4 剪 72 个</text>
+<path d="M 560.4,225.5 Q 564.3,225.9 567.0,227.0 M 554.0,230.0 L 567.0,227.0 L 554.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 566.6,183.1 Q 628.7,181.8 688.7,183.2 Q 686.8,226.1 688.7,269.4 Q 627.9,268.2 569.1,271.3 Q 568.8,228.6 566.6,183.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="628.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S4 模型预筛</text>
+<text x="628.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">D110 排序 10~35 µs</text>
+<text x="628.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">名额每家族一个</text>
+<text x="628.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">零内核执行</text>
+<path d="M 689.2,227.0 Q 693.9,228.6 696.0,227.0 M 683.0,230.0 L 696.0,227.0 L 683.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 698.6,183.6 Q 758.7,183.5 817.8,183.3 Q 816.7,225.5 818.4,270.4 Q 756.6,271.2 698.6,271.1 Q 697.3,225.2 698.6,183.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="757.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S5 编译＋实测</text>
+<text x="757.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">编译计时＋bitwise 门</text>
+<text x="757.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">3+7 筛选 / 3+21 决赛</text>
+<text x="757.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">9 个候选</text>
+<path d="M 816.7,226.2 Q 821.9,227.7 825.0,227.0 M 812.0,230.0 L 825.0,227.0 L 812.0,224.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 827.2,184.6 Q 885.1,184.5 946.9,183.2 Q 947.2,226.8 944.6,270.5 Q 885.5,268.9 826.2,270.3 Q 826.2,226.2 827.2,184.6  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="886.0" y="203" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军＋报告</text>
+<text x="886.0" y="222.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">4 shape × 36 条记录</text>
+<text x="886.0" y="238.5" font-size="8.8" fill="#3B3B3B" text-anchor="middle">tune-summary.json</text>
+<text x="886.0" y="255.0" font-size="8.8" fill="#3B3B3B" text-anchor="middle">账本随行</text>
+<text x="490.0" y="292" font-size="10" fill="#6b6257" text-anchor="middle">血统纪律：kernel_gen/bench/cost_model 是 D108~D110 的逐字节副本，今天零改动</text>
+<text x="52" y="322" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">『一条可重复运行的调优命令』：./run_all.sh（本次真实运行 66 秒）</text>
+<path d="M 50.6,335.5 Q 265.2,333.2 481.3,332.8 Q 479.8,393.3 482.3,451.0 Q 268.1,451.6 53.0,451.1 Q 53.8,391.6 50.6,335.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="267.0" y="353" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">命令做什么（全部真实落盘 outputs/）</text>
+<text x="267.0" y="372.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">① 校准 1956 ms 落盘 → ② 四份 mini 输入逐个跑 S0~S5</text>
+<text x="267.0" y="388.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">   （S1 64³ / S2 96³ / S3 90×96×64 / S4 160³ 新 shape）</text>
+<text x="267.0" y="405.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">③ 验收实验 ④ 31/31 自检 ⑤ 环境记录</text>
+<text x="267.0" y="421.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">产出 12 个文件：4 报告＋验收＋自检＋缓存＋36 条记录＋汇总</text>
+<path d="M 521.0,333.4 Q 724.7,335.0 929.2,335.5 Q 928.5,394.2 927.7,453.1 Q 721.9,452.5 519.7,450.7 Q 521.2,392.6 521.0,333.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="724.0" y="353" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">三道验收硬标准（acceptance.txt）</text>
+<text x="724.0" y="372.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">① 同进程全测对照：18 候选全测 vs 引导 top-5</text>
+<text x="724.0" y="388.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">   冠军一致 ✓、recall@5 命中 ✓、提速 1.8×</text>
+<text x="724.0" y="405.0" font-size="9.4" fill="#3B3B3B" text-anchor="middle">② 投毒：no-tail 内核被门拒收（err=10.1，不计时）✓</text>
+<text x="724.0" y="421.5" font-size="9.4" fill="#3B3B3B" text-anchor="middle">③ D108 一致性：3 个 shape 近对互换（跨进程，参考口径）</text>
+<path d="M 52.9,481.4 Q 488.6,483.6 927.4,482.8" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 100.3,497.5 Q 492.1,494.5 880.9,494.4 Q 879.0,553.5 879.3,614.3 Q 488.6,615.3 101.4,614.5 Q 101.4,556.8 100.3,497.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="490.0" y="515" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">集成验收的判据：不是『更快』，是『每个环节都还认账』</text>
+<text x="490.0" y="534.0" font-size="10" fill="#3B3B3B" text-anchor="middle">① 前端拒收坏 shape、闸门拒收超预算 tile、门拒收坏内核——三层 fail-closed 全点火；</text>
+<text x="490.0" y="550.5" font-size="10" fill="#3B3B3B" text-anchor="middle">② 模型预筛省掉 97% 的实测（144→9 个），S4 资源闸门真剪掉 72 个超预算候选；</text>
+<text x="490.0" y="567.0" font-size="10" fill="#3B3B3B" text-anchor="middle">③ 同进程对照给出 recall@5 命中的硬证据；冠军名次只在同进程内宣布（D107 纪律）。</text>
+<text x="490.0" y="583.5" font-size="10" fill="#3B3B3B" text-anchor="middle">集成不改零件、只装零件——改过的零件要重新验收，这是今天最重要的工程规矩。</text>
+</svg>

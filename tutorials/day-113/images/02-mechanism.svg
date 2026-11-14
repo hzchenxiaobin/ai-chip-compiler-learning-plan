@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 740" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.0,4.8 Q 511.3,6.0 1016.2,5.1 Q 1018.8,369.9 1017.5,734.6 Q 509.9,736.3 4.5,735.3 Q 6.4,371.0 4.0,4.8  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="510.0" y="34" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">核心机制：同一个 step 函数的两种写法（数据全部来自真实导出）</text>
+<path d="M 30.4,60.1 Q 244.4,61.1 460.6,60.7 Q 461.1,311.7 460.5,559.2 Q 245.1,560.4 29.9,559.9 Q 32.0,311.2 30.4,60.1  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.3"/>
+<text x="245" y="84" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">LLVM Dialect（MLIR 侧）</text>
+<text x="245" y="104" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">step.mlir——值和块都有名字，常量是显式 Operation</text>
+<text x="50" y="128" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">llvm.func @step(%arg0: i32) -&gt; i32 {</text>
+<text x="50" y="150" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %c2  = llvm.mlir.constant(2 : i32) : i32</text>
+<text x="50" y="172" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %c3  = llvm.mlir.constant(3 : i32) : i32</text>
+<text x="50" y="194" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %c4  = llvm.mlir.constant(4 : i32) : i32</text>
+<text x="50" y="216" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %c0  = llvm.mlir.constant(0 : i32) : i32</text>
+<text x="50" y="238" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %five = llvm.add %c2, %c3 : i32</text>
+<text x="50" y="260" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %s20  = llvm.mul %five, %c4 : i32</text>
+<text x="50" y="282" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %z    = llvm.add %arg0, %c0 : i32</text>
+<text x="50" y="304" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %cond = llvm.icmp "sgt" %z, %s20 : i32</text>
+<text x="50" y="326" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  llvm.cond_br %cond, ^hi, ^lo</text>
+<text x="50" y="348" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">^hi:</text>
+<text x="50" y="370" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %x1 = llvm.add %z, %s20 : i32</text>
+<text x="50" y="392" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  llvm.br ^merge(%x1 : i32)</text>
+<text x="50" y="414" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">^lo:</text>
+<text x="50" y="436" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  %x2 = llvm.sub %z, %s20 : i32</text>
+<text x="50" y="458" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  llvm.br ^merge(%x2 : i32)</text>
+<text x="50" y="480" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">^merge(%m: i32):</text>
+<text x="50" y="502" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">  llvm.return %m : i32</text>
+<text x="50" y="524" font-family="'Courier New',monospace" font-size="9.2" fill="#3B3B3B" text-anchor="start">}</text>
+<path d="M 560.7,60.2 Q 772.7,58.6 988.7,58.7 Q 988.4,308.6 989.8,560.0 Q 772.2,558.4 558.5,560.1 Q 561.0,309.3 560.7,60.2  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.28"/>
+<text x="775" y="84" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">LLVM IR（导出后）</text>
+<text x="775" y="104" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">step.ll——名字消失，槽位编号；常量内联；phi 出现</text>
+<text x="580" y="128" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">define i32 @step(i32 %0) {</text>
+<text x="580" y="153" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %2 = add i32 2, 3</text>
+<text x="580" y="178" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %3 = mul i32 %2, 4</text>
+<text x="580" y="203" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %4 = add i32 %0, 0</text>
+<text x="580" y="228" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %5 = icmp sgt i32 %4, %3</text>
+<text x="580" y="253" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  br i1 %5, label %6, label %8</text>
+<text x="580" y="278" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">6:</text>
+<text x="580" y="303" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %7 = add i32 %4, %3</text>
+<text x="580" y="328" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  br label %10</text>
+<text x="580" y="353" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">8:</text>
+<text x="580" y="378" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %9 = sub i32 %4, %3</text>
+<text x="580" y="403" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  br label %10</text>
+<text x="580" y="428" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">10:</text>
+<text x="580" y="453" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  %11 = phi i32 [ %7, %6 ], [ %9, %8 ]</text>
+<text x="580" y="478" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">  ret i32 %11</text>
+<text x="580" y="503" font-family="'Courier New',monospace" font-size="9.8" fill="#3B3B3B" text-anchor="start">}</text>
+<text x="775" y="540" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.6" fill="#6b6257" text-anchor="middle">（; preds 注释是真实 LLVM 打印时自动加的，</text>
+<text x="775" y="554" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.6" fill="#6b6257" text-anchor="middle">见 outputs/opt_before_step.ll）</text>
+<path d="M 487.1,113.2 Q 510.5,114.8 531.8,113.2 Q 530.9,125.7 531.6,140.9 Q 507.4,140.8 486.0,140.7 Q 485.5,128.4 487.1,113.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="510" y="133" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R1</text>
+<path d="M 486.1,217.3 Q 511.9,214.7 534.4,215.0 Q 532.8,230.4 534.1,245.5 Q 510.5,244.6 487.0,243.8 Q 488.6,231.8 486.1,217.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="510" y="235" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R2</text>
+<path d="M 488.2,415.5 Q 510.7,417.5 534.4,415.9 Q 533.5,431.2 534.2,443.9 Q 511.4,441.5 486.7,443.2 Q 488.0,428.5 488.2,415.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="510" y="435" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R3</text>
+<path d="M 60.0,586.9 Q 205.4,585.7 349.4,585.4 Q 350.4,634.5 351.5,682.1 Q 205.9,681.2 59.0,681.2 Q 58.5,632.0 60.0,586.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="205" y="604" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R1 重编号</text>
+<text x="205" y="624" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">%arg0→%0；^hi→6:、^lo→8:、^merge→10:</text>
+<text x="205" y="640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">值名/块名不跨语言保留；未命名的</text>
+<text x="205" y="656" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">基本块和指令结果共用一个编号池</text>
+<path d="M 368.9,585.2 Q 516.1,586.5 660.9,586.6 Q 660.8,634.4 660.0,680.5 Q 515.6,679.0 371.2,680.7 Q 370.6,633.8 368.9,585.2  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="515" y="604" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R2 常量内联</text>
+<text x="515" y="624" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">%c2~%c0 四条常量 op 全部消失，</text>
+<text x="515" y="640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">2、3、4、0 直接写进操作数位置，</text>
+<text x="515" y="656" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">不占槽位、不产生指令</text>
+<path d="M 679.1,584.5 Q 826.2,586.7 970.9,586.8 Q 968.6,634.0 970.2,682.8 Q 825.4,681.9 679.7,683.2 Q 679.5,632.3 679.1,584.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="825" y="604" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">R3 块参数→phi</text>
+<text x="825" y="624" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">^merge(%m:i32) → %11 = phi …</text>
+<text x="825" y="640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">MLIR 在块边界传值（llvm.br 带参）；</text>
+<text x="825" y="656" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.4" fill="#3B3B3B" text-anchor="middle">LLVM IR 在块首用 phi 汇合</text>
+<text x="510" y="700" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">同一层语义、两种书写系统：MLIR 用『Operation + 块参数』组织，LLVM IR 用『指令 + phi』组织——跨过去以后 LLVM 的优化器和后端接管。</text>
+<text x="510" y="720" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">教学版 mini_translate.py 复刻真实 mlir-translate --mlir-to-llvmir 的三条关键规则。</text>
+</svg>

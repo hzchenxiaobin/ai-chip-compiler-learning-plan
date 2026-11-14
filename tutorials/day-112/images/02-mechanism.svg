@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 2.6,2.8 Q 498.1,1.8 996.0,3.4 Q 997.7,351.9 996.7,695.9 Q 500.3,694.1 4.9,694.8 Q 1.9,347.4 2.6,2.8  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="500.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">两条信息链 + Cost Model 选错的三层机理（每层都有今天的实测兜底）</text>
+<path d="M 301.4,43.0 Q 502.4,46.8 698.6,46.6" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 40.7,67.2 Q 254.7,66.7 471.3,67.2 Q 468.2,218.3 468.4,367.2 Q 254.7,369.0 40.2,367.5 Q 40.7,218.7 40.7,67.2  Z" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.16"/>
+<text x="255.0" y="90" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">生成正确代码：语义链（推理）</text>
+<circle cx="65.8" cy="121.3" r="4" fill="#9CBF8E" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="80" y="126" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 约束从哪来</text>
+<text x="80" y="141" font-size="9.6" fill="#3B3B3B" text-anchor="start">IR 语义：Shape、类型、循环边界 [lb,ub)、</text>
+<text x="80" y="154" font-size="9.6" fill="#3B3B3B" text-anchor="start">累加顺序、初始化、尾部、活跃区间</text>
+<circle cx="65.3" cy="179.3" r="4" fill="#9CBF8E" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="80" y="184" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">② 为什么可判定</text>
+<text x="80" y="199" font-size="9.6" fill="#3B3B3B" text-anchor="start">全部是关于『程序本身』的事实，</text>
+<text x="80" y="212" font-size="9.6" fill="#3B3B3B" text-anchor="start">不依赖跑在哪个进程 / 哪台机器</text>
+<circle cx="65.2" cy="238.4" r="4" fill="#9CBF8E" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="80" y="242" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ 怎么交付</text>
+<text x="80" y="257" font-size="9.6" fill="#3B3B3B" text-anchor="start">Verifier（构造期拒绝）＋ 正确性门</text>
+<text x="80" y="270" font-size="9.6" fill="#3B3B3B" text-anchor="start">（执行期 bitwise ==，先于计时）</text>
+<circle cx="66.4" cy="296.8" r="4" fill="#9CBF8E" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="80" y="300" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 今天的新证据</text>
+<text x="80" y="315" font-size="9.6" fill="#3B3B3B" text-anchor="start">S1 24/24、W1 36/36 逐位相等；</text>
+<text x="80" y="328" font-size="9.6" fill="#3B3B3B" text-anchor="start">窗口 a / 窗口 b / 子进程——都一样</text>
+<text x="255.0" y="352" font-size="9.8" fill="#6b6257" text-anchor="middle">性质：可证明、可复现、永不漂移——代价是它不告诉你谁快</text>
+<path d="M 530.9,65.0 Q 744.6,65.6 959.0,65.6 Q 959.7,215.5 959.5,364.8 Q 745.7,366.3 530.9,366.7 Q 533.0,215.0 530.9,65.0  Z" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.16"/>
+<text x="745.0" y="90" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">生成高性能代码：环境链（测量）</text>
+<circle cx="555.3" cy="121.4" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="570" y="126" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">① 约束从哪来</text>
+<text x="570" y="141" font-size="9.6" fill="#3B3B3B" text-anchor="start">结构差：语句行数、tile 外壳、range、hoist</text>
+<text x="570" y="154" font-size="9.6" fill="#3B3B3B" text-anchor="start">——这些是程序事实（模型数得对）</text>
+<circle cx="556.2" cy="180.0" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="570" y="184" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">② 但结构差不等于时间</text>
+<text x="570" y="199" font-size="9.6" fill="#3B3B3B" text-anchor="start">还要乘单价——单价 = f(进程, regime, 窗口)，</text>
+<text x="570" y="212" font-size="9.6" fill="#3B3B3B" text-anchor="start">校准就是测量，测量就会漂</text>
+<circle cx="556.7" cy="238.1" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="570" y="242" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">③ 怎么交付</text>
+<text x="570" y="257" font-size="9.6" fill="#3B3B3B" text-anchor="start">Cost Model（砍数量）＋ Benchmark 纪律</text>
+<text x="570" y="270" font-size="9.6" fill="#3B3B3B" text-anchor="start">（3+7 / 3+21）＋ 出域闸门</text>
+<circle cx="556.7" cy="296.5" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.3"/>
+<text x="570" y="300" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">④ 今天的新证据</text>
+<text x="570" y="315" font-size="9.6" fill="#3B3B3B" text-anchor="start">j0 窄 55.7 → 宽 59.9 ns；loop +85%；</text>
+<text x="570" y="328" font-size="9.6" fill="#3B3B3B" text-anchor="start">j0−k0：−4.6 → −2.3 → +4.3 ns</text>
+<text x="745.0" y="352" font-size="9.8" fill="#6b6257" text-anchor="middle">性质：永远带不确定度——管理它，别假装它不存在</text>
+<text x="500" y="202" font-size="9.6" fill="#C97B7B" text-anchor="middle">同一条流水线</text>
+<text x="500" y="234" font-size="9.6" fill="#C97B7B" text-anchor="middle">两种证据</text>
+<text x="48" y="396" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">Cost Model 选错的三层机理（今天的实测）与对应的工程兜底</text>
+<path d="M 38.9,408.5 Q 189.5,411.9 341.1,411.5 Q 340.7,519.0 340.7,624.8 Q 187.5,623.6 38.4,626.4 Q 39.8,518.0 38.9,408.5  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.24"/>
+<text x="190.0" y="430" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">失效①：近对无分辨率</text>
+<text x="54" y="452" font-size="9.4" fill="#3B3B3B" text-anchor="start">预测差 0.10%（S1）/ 0.01%（W1）</text>
+<text x="54" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">实测摆动 ±5.9~8.0%，窗口间翻号</text>
+<text x="54" y="486" font-size="9.4" fill="#3B3B3B" text-anchor="start">→ 兜底：recall@K（top-5 实测）</text>
+<path d="M 52.2,506.9 Q 191.9,506.4 328.9,507.3" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="54" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">今天：K=1 付 +6.4%（S1）</text>
+<text x="54" y="540" font-size="9.4" fill="#6b6257" text-anchor="start">K=5＋决赛零损失</text>
+<path d="M 361.1,408.9 Q 510.8,407.6 660.5,409.6 Q 661.8,519.3 660.9,625.7 Q 509.1,626.2 358.9,624.4 Q 360.8,516.9 361.1,408.9  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.24"/>
+<text x="510.0" y="430" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">失效②：系统性偏差</text>
+<text x="374" y="452" font-size="9.4" fill="#3B3B3B" text-anchor="start">同进程预测 +7~16% 高估</text>
+<text x="374" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">j/k 家族偏差不同（+16.4 vs +7.0）</text>
+<text x="374" y="486" font-size="9.4" fill="#3B3B3B" text-anchor="start">→ 兜底：同窗口决赛定名次</text>
+<path d="M 371.4,505.6 Q 507.9,509.4 648.9,508.5" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="374" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">名次用实测，模型只砍数量</text>
+<text x="374" y="540" font-size="9.4" fill="#6b6257" text-anchor="start">跨窗口比较只能当参考</text>
+<path d="M 681.0,410.5 Q 832.4,410.6 979.5,411.5 Q 980.5,517.9 979.9,626.7 Q 829.3,626.1 680.9,625.7 Q 679.4,519.0 681.0,410.5  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.24"/>
+<text x="830.0" y="430" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">失效③：regime 外推</text>
+<text x="694" y="452" font-size="9.4" fill="#3B3B3B" text-anchor="start">宽表 j0−k0 塌零→翻面（+4.3）</text>
+<text x="694" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">ρ 0.985 → 0.945 → 0.883</text>
+<text x="694" y="486" font-size="9.4" fill="#3B3B3B" text-anchor="start">→ 兜底：出域闸门＋整体重校</text>
+<path d="M 693.3,508.2 Q 828.4,506.1 969.4,507.9" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="694" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">W1（512&gt;256）亮灯：拒绝</text>
+<text x="694" y="540" font-size="9.4" fill="#6b6257" text-anchor="start">静默外推 = 拿噪声当偏好</text>
+<text x="500.0" y="678" font-size="10.5" fill="#6b6257" text-anchor="middle">一句话：语义链负责『能不能跑对』，环境链负责『谁更快』——模型选错，永远错在把环境链当语义链用</text>
+</svg>

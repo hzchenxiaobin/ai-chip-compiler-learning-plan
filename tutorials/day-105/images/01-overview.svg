@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 5.2,3.5 Q 490.4,5.6 976.9,5.4 Q 974.6,321.9 975.4,636.9 Q 488.8,634.4 3.5,634.9 Q 4.0,318.7 5.2,3.5 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 15 周知识地图：六件工具，串成一个 Tile 的完整旅程</text>
+<path d="M 29.9,65.2 Q 195.7,63.1 361.3,63.1 Q 363.3,170.9 361.6,274.4 Q 197.1,273.0 31.5,275.0 Q 32.1,171.3 29.9,65.2 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.28"/>
+<text x="195" y="88" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">编译期·图级（片外 HBM，单位 MiB）</text>
+<path d="M 611.2,65.5 Q 781.9,66.6 951.5,64.8 Q 950.7,169.8 949.7,274.1 Q 781.9,275.8 610.0,274.8 Q 612.5,171.1 611.2,65.5 Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.28"/>
+<text x="780" y="88" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">运行期·块级（片上 SRAM，单位 KiB / µs）</text>
+<path d="M 59.3,249.2 Q 488.1,250.1 918.8,249.8" stroke="#6b6257" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M 117.9,244.9 C 127,230 127,258 119.2,245.5 Z" stroke="#3B3B3B" stroke-width="2" fill="#A9C4D4" fill-opacity="0.9"/>
+<text x="118" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D99</text>
+<text x="118" y="294" font-size="12.5" fill="#6b6257" text-anchor="middle" font-weight="bold">活跃区间</text>
+<text x="118" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">谁在何时活着</text>
+<text x="118" y="326" font-size="10.5" fill="#6b6257" text-anchor="middle">峰值 320/416</text>
+<path d="M 288.3,242.4 C 297,230 297,258 287.0,242.6 Z" stroke="#3B3B3B" stroke-width="2" fill="#A9C4D4" fill-opacity="0.9"/>
+<text x="288" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D100</text>
+<text x="288" y="294" font-size="12.5" fill="#6b6257" text-anchor="middle" font-weight="bold">片外房间</text>
+<text x="288" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">workspace 2 MiB</text>
+<text x="288" y="326" font-size="10.5" fill="#6b6257" text-anchor="middle">= 峰值下界</text>
+<path d="M 453.2,243.4 C 461,230 461,258 452.7,243.8 Z" stroke="#3B3B3B" stroke-width="2" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="452" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D101+104</text>
+<text x="452" y="294" font-size="12.5" fill="#3B3B3B" text-anchor="middle">闸门</text>
+<text x="452" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">82,176 B ✓</text>
+<text x="452" y="326" font-size="10.5" fill="#6b6257" text-anchor="middle">328,192 B ✗</text>
+<path d="M 614.3,245.1 C 623,230 623,258 614.5,242.6 Z" stroke="#3B3B3B" stroke-width="2" fill="#9CBF8E" fill-opacity="0.9"/>
+<text x="614" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D102</text>
+<text x="614" y="294" font-size="12.5" fill="#6b6257" text-anchor="middle" font-weight="bold">搬运依赖</text>
+<text x="614" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">S1~S4</text>
+<text x="614" y="326" font-size="10.5" fill="#6b6257" text-anchor="middle">谁必须等谁</text>
+<path d="M 780.4,243.5 C 789,230 789,258 781.5,243.3 Z" stroke="#3B3B3B" stroke-width="2" fill="#9CBF8E" fill-opacity="0.9"/>
+<text x="780" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D103</text>
+<text x="780" y="294" font-size="12.5" fill="#6b6257" text-anchor="middle" font-weight="bold">流水线</text>
+<text x="780" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">1.74× / 1.94×</text>
+<text x="780" y="326" font-size="10.5" fill="#6b6257" text-anchor="middle">重叠＋摊薄</text>
+<path d="M 917.2,245.4 C 927,230 927,258 917.7,242.7 Z" stroke="#3B3B3B" stroke-width="2" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="918" y="276" font-size="14" fill="#3B3B3B" text-anchor="middle" font-weight="bold">D105</text>
+<text x="918" y="294" font-size="12.5" fill="#3B3B3B" text-anchor="middle">完整故事</text>
+<text x="918" y="311" font-size="10.5" fill="#6b6257" text-anchor="middle">今天</text>
+<path d="M 96.9,217.3 Q 135.1,215.0 170.0,214.9 Q 168.9,225.6 171.2,237.5 Q 134.1,239.2 95.2,236.5 Q 94.8,227.5 96.9,217.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.8"/>
+<text x="133" y="231" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">C[0,0] 出发</text>
+<path d="M 362.0,250.6 Q 402.1,251.4 444.0,250.0 M 431.0,253.0 L 444.0,250.0 L 431.0,247.0" stroke="#6b6257" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="403" y="232" font-size="10.5" fill="#C97B7B" text-anchor="middle">过闸才发车</text>
+<path d="M 545.9,248.4 Q 578.4,250.1 608.0,250.0 M 595.0,253.0 L 608.0,250.0 L 595.0,247.0" stroke="#6b6257" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="577" y="232" font-size="10.5" fill="#6b6257" text-anchor="middle">变成代码</text>
+<path d="M 80.8,360.2 Q 488.3,361.5 898.6,361.8" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="490" y="382" font-size="13.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">今天的三个交付物（都在本文可以验证）</text>
+<path d="M 111.1,403.1 Q 215.3,404.2 320.8,402.5 Q 319.0,460.0 319.5,519.6 Q 212.4,519.0 109.0,520.5 Q 111.3,463.2 111.1,403.1 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="215" y="430" font-size="14.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">旅程事件日志</text>
+<path d="M 150.6,442.2 Q 217.1,440.2 279.5,444.4" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="215" y="462" font-size="11" fill="#6b6257" text-anchor="middle">outputs/story.txt</text>
+<text x="215" y="483" font-size="11" fill="#3B3B3B" text-anchor="middle">四幕：房间→闸门→</text>
+<text x="215" y="499" font-size="11" fill="#3B3B3B" text-anchor="middle">9.5078 µs 时间线→总账</text>
+<path d="M 410.6,401.4 Q 517.2,400.7 621.1,401.8 Q 620.3,459.4 619.9,519.9 Q 515.2,517.3 409.9,518.5 Q 408.2,458.7 410.6,401.4 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
+<text x="515" y="430" font-size="14.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">硬件映射一页图</text>
+<path d="M 450.7,440.7 Q 516.9,443.4 579.8,443.8" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="515" y="462" font-size="11" fill="#6b6257" text-anchor="middle">本文图 2</text>
+<text x="515" y="483" font-size="11" fill="#3B3B3B" text-anchor="middle">HBM↔DMA↔SRAM↔计算单元</text>
+<text x="515" y="499" font-size="11" fill="#3B3B3B" text-anchor="middle">①~⑥ 六阶段＋S1~S4</text>
+<path d="M 710.8,401.8 Q 815.2,402.1 918.6,401.6 Q 919.9,463.0 921.4,521.2 Q 816.2,518.6 710.4,519.5 Q 711.6,461.6 710.8,401.8 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="815" y="430" font-size="14.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">本周测试 12 题</text>
+<path d="M 751.5,442.5 Q 813.0,442.6 880.6,442.9" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="815" y="462" font-size="11" fill="#6b6257" text-anchor="middle">weekly_test.py</text>
+<text x="815" y="483" font-size="11" fill="#3B3B3B" text-anchor="middle">D99~D104 每天两题</text>
+<text x="815" y="499" font-size="11" fill="#3B3B3B" text-anchor="middle">自动判分＋参考答案</text>
+<text x="490.0" y="566" font-size="13" fill="#3B3B3B" text-anchor="middle" font-weight="bold">一条规律贯穿两个尺度：谁不用了，谁退场——</text>
+<text x="490.0" y="588" font-size="11.5" fill="#6b6257" text-anchor="middle">图级（区间不重叠→共享房间） · 槽级（WAR 距离 1→2） · 块级（S4 写回即让位）</text>
+<path d="M 299.3,599.9 Q 489.6,602.9 678.7,601.0" stroke="#C97B7B" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>

@@ -1,0 +1,22 @@
+==============================================================================
+ 实验五：配置 → 源码（迷你 Lowering 的产物）
+==============================================================================
+ 32³ ikj U=4 生成的内核源码：
+
+ def _kernel(A, B, C, M, N, K, TM, TN, TK):
+     for i0 in range(0, M, TM):
+         for j0 in range(0, N, TN):
+             for k0 in range(0, K, TK):
+                 ihi = min(i0 + TM, M); jhi = min(j0 + TN, N); khi = min(k0 + TK, K)
+                 for v1 in range(i0, ihi):
+                     Ci = C[v1]; Ai = A[v1]
+                     for v2 in range(k0, khi):
+                         a = Ai[v2]; Bv = B[v2]
+                         n = (jhi - j0) - (jhi - j0) % 4
+                         for v3 in range(j0, j0 + n, 4):
+                             Ci[v3] += a * Bv[v3]
+                             Ci[v3 + 1] += a * Bv[v3 + 1]
+                             Ci[v3 + 2] += a * Bv[v3 + 2]
+                             Ci[v3 + 3] += a * Bv[v3 + 3]
+                         for v3 in range(j0 + n, jhi):
+                             Ci[v3] += a * Bv[v3]

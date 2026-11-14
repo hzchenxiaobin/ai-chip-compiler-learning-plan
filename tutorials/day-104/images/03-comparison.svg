@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.4,4.6 Q 488.9,4.4 976.8,5.3 Q 978.1,319.8 975.8,636.0 Q 490.9,637.3 5.0,636.2 Q 5.5,320.9 3.4,4.6 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">12 个候选 × 256 KiB：纸面最优被一票否决（真实运行结果）</text>
+<path d="M 330.0,46.5 Q 491.4,49.9 649.7,48.8" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 444.9,72.9 Q 444.2,331.7 446.4,585.4" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none" stroke-dasharray="7 5"/>
+<text x="439.70091027308194" y="68" font-size="10.5" fill="#3B3B3B" text-anchor="end">256 KiB 预算红线 262,144 B</text>
+<text x="40" y="86" font-size="10.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">候选</text>
+<path d="M 216.8,91.0 Q 219.8,93.0 226.1,91.9 Q 229.0,101.1 227.6,112.1 Q 222.1,113.0 217.5,113.4 Q 219.3,101.1 216.8,91.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="107" font-size="10" fill="#3B3B3B" text-anchor="start">32³ fp32·single</text>
+<text x="234.879388816645" y="107" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">12,416 B  4.7%  ✓</text>
+<path d="M 215.4,123.2 Q 225.5,124.6 233.4,123.4 Q 234.6,132.4 233.9,143.6 Q 224.8,143.6 215.4,141.5 Q 216.4,134.4 215.4,123.2 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="137" font-size="10" fill="#3B3B3B" text-anchor="start">32³ fp32·double</text>
+<text x="242.0575422626788" y="137" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">20,608 B  7.9%  ✓</text>
+<path d="M 216.8,152.5 Q 236.5,152.2 260.0,152.5 Q 259.3,161.5 260.4,171.8 Q 236.3,173.5 216.5,172.1 Q 215.9,162.5 216.8,152.5 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="167" font-size="10" fill="#3B3B3B" text-anchor="start">64³ fp32·single</text>
+<text x="267.2932379713914" y="167" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">49,408 B  18.8%  ✓</text>
+<path d="M 215.0,181.9 Q 250.4,180.4 288.8,182.4 Q 290.8,192.8 288.8,202.5 Q 253.7,203.4 217.5,202.3 Q 217.3,191.4 215.0,181.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="197" font-size="10" fill="#3B3B3B" text-anchor="start">64³ fp32·double</text>
+<text x="296.00585175552663" y="197" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">82,176 B  31.3%  ✓</text>
+<path d="M 215.2,212.1 Q 265.7,212.5 312.7,212.1 Q 312.2,222.0 312.9,233.5 Q 264.5,233.3 217.4,232.6 Q 214.3,220.5 215.2,212.1 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="227" font-size="10" fill="#3B3B3B" text-anchor="start">96³ fp32·single</text>
+<text x="321.24154746423926" y="227" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">110,976 B  42.3%  ✓</text>
+<path d="M 217.6,240.9 Q 296.6,243.0 376.9,242.6 Q 376.1,252.5 377.8,262.8 Q 297.4,262.6 214.5,260.5 Q 215.9,249.0 217.6,240.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="257" font-size="10" fill="#3B3B3B" text-anchor="start">96³ fp32·double</text>
+<text x="385.8449284785436" y="257" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">184,704 B  70.5%  ✓</text>
+<path d="M 214.9,271.0 Q 303.0,270.7 388.4,273.5 Q 390.2,281.2 387.8,292.6 Q 301.7,290.2 216.8,291.7 Q 214.7,279.4 214.9,271.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="287" font-size="10" fill="#3B3B3B" text-anchor="start">128³ fp32·single</text>
+<text x="396.72431729518854" y="287" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">197,120 B  75.2%  ✓</text>
+<path d="M 216.1,301.3 Q 359.9,300.6 505.1,302.1 Q 503.8,310.9 502.3,323.3 Q 358.4,323.0 214.5,322.2 Q 215.9,312.9 216.1,301.3 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.75"/>
+<text x="40" y="317" font-size="10" fill="#3B3B3B" text-anchor="start">128³ fp32·double</text>
+<text x="511.5747724317295" y="317" font-size="9.5" fill="#C97B7B" text-anchor="start" font-weight="bold">328,192 B  125.2%  ✗ 超 66,048 B</text>
+<text x="703.5747724317296" y="334" font-size="9.5" fill="#C97B7B" text-anchor="start" font-weight="bold">纸面最优（D97 冠军）</text>
+<path d="M 214.6,333.0 Q 302.0,334.0 388.4,331.9 Q 386.9,340.4 387.3,351.6 Q 301.1,350.3 215.4,352.9 Q 213.3,342.5 214.6,333.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="347" font-size="10" fill="#3B3B3B" text-anchor="start">128³ bf16·double</text>
+<text x="396.72431729518854" y="347" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">197,120 B  75.2%  ✓</text>
+<path d="M 217.6,363.0 Q 272.9,363.4 330.4,360.4 Q 330.3,370.9 330.1,380.7 Q 271.8,379.0 217.4,381.3 Q 216.3,371.4 217.6,363.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="377" font-size="10" fill="#3B3B3B" text-anchor="start">128³ int8·double</text>
+<text x="339.29908972691806" y="377" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">131,584 B  50.2%  ✓</text>
+<path d="M 215.8,392.4 Q 318.1,391.3 417.7,391.5 Q 417.2,399.5 415.9,411.0 Q 317.8,410.6 217.6,411.3 Q 218.0,403.4 215.8,392.4 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="40" y="407" font-size="10" fill="#3B3B3B" text-anchor="start">160×128×64 fp32·db</text>
+<text x="425.4369310793238" y="407" font-size="9.5" fill="#4d7c4f" text-anchor="start" font-weight="bold">229,888 B  87.7%  ✓</text>
+<path d="M 215.2,422.7 Q 563.6,420.5 907.6,421.8 Q 904.9,431.6 904.6,442.1 Q 558.8,440.2 215.3,441.2 Q 214.3,431.9 215.2,422.7 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.75"/>
+<text x="40" y="437" font-size="10" fill="#3B3B3B" text-anchor="start">256³ fp32·single</text>
+<text x="896.0" y="437" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">787,456 B  300.4%  ✗ 超 525,312 B</text>
+<text x="456" y="437" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">超预算 3 倍</text>
+<path d="M 39.7,450.6 Q 491.0,454.8 941.2,453.5" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="490" y="476" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">被拒冠军的三条出路：都住得下，但各花一本账（代价轴不同）</text>
+<path d="M 217.5,497.0 Q 302.4,496.6 387.2,496.5 Q 389.6,505.3 388.3,516.4 Q 301.9,515.7 214.6,514.5 Q 215.8,506.3 217.5,497.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="40" y="511" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">a) 退单缓冲</text>
+<text x="396.72431729518854" y="511" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">197,120 B  ✓  代价轴=时间</text>
+<text x="598.7243172951885" y="511" font-size="9.5" fill="#6b6257" text-anchor="start">丢 D103 的重叠，回到轮流值班</text>
+<path d="M 216.6,528.0 Q 253.2,526.7 287.5,526.8 Q 286.3,537.3 286.6,548.2 Q 253.1,547.5 215.9,547.7 Q 214.7,538.6 216.6,528.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="40" y="543" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">b) 缩 tile 64³</text>
+<text x="296.00585175552663" y="543" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">82,176 B  ✓  代价轴=空间</text>
+<text x="498.00585175552663" y="543" font-size="9.5" fill="#6b6257" text-anchor="start">片上复用↓ → HBM 流量↑（D101）</text>
+<path d="M 217.3,560.7 Q 302.0,560.3 389.0,561.0 Q 388.6,571.0 389.0,580.8 Q 300.0,580.0 214.7,580.3 Q 214.2,571.0 217.3,560.7 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="40" y="575" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">c) 降 dtype bf16</text>
+<text x="396.72431729518854" y="575" font-size="9.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">197,120 B  ✓  代价轴=精度</text>
+<text x="598.7243172951885" y="575" font-size="9.5" fill="#6b6257" text-anchor="start">数值风险交给 D78~81 阈值</text>
+<text x="490" y="612" font-size="10.5" fill="#6b6257" text-anchor="middle">数字来自 code/outputs/filter-table.txt 与 fallback.txt 的真实运行（Python 3.11.4，aarch64，2026-11-13）</text>
+</svg>
