@@ -1,0 +1,20 @@
+== ① 生成块循环 IR ==
+  46 行（tile 壳三层＋点循环两层＋bias/relu）
+
+== ② 七 pass 管道 ==
+  ok=True
+
+== ③ 与朴素版对照（产物差异可 grep）==
+  朴素版 ok=True
+  phi 计数：tile 版 7 vs 朴素版 4（差 3——tile 壳的循环变量）
+  → tile 参数真实生效（产物差异可 grep ✓）
+
+== ④ 正确性：tile 版与朴素版语义等价（bitwise 同源）==
+
+  （完整 bitwise 验证在 D144/D146 的 S6 接入后做——今天先验形态与管道）
+  形态验证：块循环的迭代覆盖 = 朴素版的迭代覆盖（i0/j0/k0 的笛卡尔积
+  与 i/j/k 一一对应——教学版全局边界下每点恰好算一次幂等写）
+  [PASS] 生成器产出 IR
+  [PASS] 七 pass 全通
+  [PASS] 产物差异可 grep
+  [PASS] tile 参数进 IR
