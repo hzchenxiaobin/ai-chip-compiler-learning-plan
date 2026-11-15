@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 TUTORIALS_DIR = ROOT / "tutorials"
 PLAN_PATH = ROOT / "AI芯片编译器学习计划.md"
 PUBLIC_DIR = ROOT / "public"
@@ -156,6 +156,7 @@ def page_template(
     if home:
         main_html = f'<main class="home-main">{markdown}</main>'
         render_call = "VPPage.init();"
+        escaped_markdown = ""  # home 页 HTML 已直接嵌入——不需要 JS 变量
     else:
         main_html = f"""<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
         <div class="vp-content"><div class="vp-content-container">
@@ -183,6 +184,14 @@ def page_template(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="24 周、168 天 AI 芯片编译器实战学习计划：Modern C++、MLIR、图优化、Lowering、Tiling、LLVM 与 Runtime。">
+    <meta property="og:title" content="{escaped_title} · AI 芯片编译器学习计划">
+    <meta property="og:description" content="从 Modern C++ 到端到端 AI 编译器的 168 天实战教程，包含 MLIR、图优化、Lowering、Tiling、LLVM 与 Runtime。">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="AI 芯片编译器学习计划">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{escaped_title}">
+    <meta name="twitter:description" content="24 周、168 天 AI 芯片编译器实战学习计划。">
+    <link rel="icon" href="{root_prefix}favicon.svg" type="image/svg+xml">
     <title>{escaped_title} · AI 芯片编译器学习计划</title>
     <script>
     (function() {{
@@ -227,7 +236,7 @@ def page_template(
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
     <script src="{root_prefix}js/vp-solution.js?v=6"></script>
     <script>
-        const pageMarkdown = `{escaped_markdown}`;
+        {'const pageMarkdown = `' + escaped_markdown + '`;' if escaped_markdown else 'const pageMarkdown = "";'}
         try {{
             if (typeof marked === 'undefined' || !window.VPPage) {{
                 throw new Error('页面脚本加载失败。');
@@ -346,17 +355,39 @@ def build_home(tutorials):
             f'<div class="week-cards">{"".join(week_cards)}</div></section>'
         )
 
-    tutorial_cards = []
-    for day in tutorials:
-        title = re.sub(r"^第\s*\d+\s*天[：:]\s*", "", day["title"])
-        goal = re.search(r"^> \*\*今日目标\*\*：(.+)$", day["markdown"], re.MULTILINE)
-        summary = re.sub(r"[`*_]", "", goal.group(1)) if goal else "概念讲解、技术图解、动手实现与结果验证。"
-        tutorial_cards.append(
-            f'<a class="tutorial-card" href="tutorials/{day["slug"]}/">'
-            f'<div class="week-card-top"><span class="week-number">Day {day["number"]}</span>'
-            '<span class="week-arrow" aria-hidden="true">→</span></div>'
-            f'<h3>{html.escape(title)}</h3><p>{html.escape(summary)}</p>'
-            '<span class="tutorial-card-link">开始阅读 <span aria-hidden="true">↗</span></span></a>'
+    # 按阶段分组教程卡片，默认只展开最近两个阶段
+    PHASE_NAMES = ["阶段一", "阶段二", "阶段三", "阶段四", "阶段五", "阶段六"]
+    PHASE_DESCS = [
+        "C++ 与编译器基础", "MLIR 核心能力", "AI 计算图与图优化",
+        "Lowering、Tiling 与性能", "端到端编译与 Runtime", "项目收口与面试转化",
+    ]
+    phase_groups = []
+    for pi in range(6):
+        days = [d for d in tutorials if (d["number"] - 1) // 28 == pi]
+        if not days:
+            continue
+        cards = []
+        for day in days:
+            title = re.sub(r"^第\s*\d+\s*天[：:]\s*", "", day["title"])
+            goal = re.search(r"^> \*\*今日目标\*\*：(.+)$", day["markdown"], re.MULTILINE)
+            summary = re.sub(r"[`*_]", "", goal.group(1)) if goal else "概念讲解、技术图解、动手实现与结果验证。"
+            if len(summary) > 120:
+                summary = summary[:117] + "..."
+            cards.append(
+                f'<a class="tutorial-card" href="tutorials/{day["slug"]}/">'
+                f'<div class="week-card-top"><span class="week-number">Day {day["number"]}</span>'
+                '<span class="week-arrow" aria-hidden="true">\u2192</span></div>'
+                f'<h3>{html.escape(title)}</h3><p>{html.escape(summary)}</p>'
+                '<span class="tutorial-card-link">开始阅读 <span aria-hidden="true">\u2197</span></span></a>'
+            )
+        is_recent = pi >= 4
+        phase_groups.append(
+            f'<details class="phase-tutorials"{" open" if is_recent else ""}>'
+            f'<summary><span class="phase-badge">{PHASE_NAMES[pi]}</span>'
+            f'<span class="phase-tut-title">{PHASE_DESCS[pi]}</span>'
+            f'<span class="phase-tut-count">{len(days)} 天</span>'
+            '<span class="vp-day-nav-chevron" aria-hidden="true">\u29c9</span></summary>'
+            f'<div class="tutorial-cards">{"".join(cards)}</div></details>'
         )
 
     first_day = tutorials[0]
@@ -385,7 +416,7 @@ def build_home(tutorials):
 </section>
 <section class="home-section tutorials-section" id="tutorials">
     <div class="section-heading section-heading-row"><div><h2>每日教程</h2><p>已发布 {len(tutorials)} 篇图文教程，每篇都包含讲解、实践、练习与验收。</p></div><span class="section-status">持续更新</span></div>
-    <div class="tutorial-cards">{"".join(tutorial_cards)}</div>
+    <div class="tutorial-phases">{"".join(phase_groups)}</div>
 </section>
 """
     output = page_template("AI 芯片编译器学习计划", content, home=True)
@@ -434,6 +465,28 @@ def build_tutorials(tutorials):
         print(f"Generated tutorials/{day['slug']}/index.html")
 
 
+
+def build_sitemap(tutorials):
+    site_url = "https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
+    urls = [
+        f"<url><loc>{site_url}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>",
+        f"<url><loc>{site_url}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
+    ]
+    for day in tutorials:
+        loc = f"{site_url}/tutorials/{day['slug']}/"
+        urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml += "\n".join(urls) + "\n</urlset>\n"
+    (PUBLIC_DIR / "sitemap.xml").write_text(xml, encoding="utf-8")
+
+
+def build_robots():
+    site_url = "https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
+    content = f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n"
+    (PUBLIC_DIR / "robots.txt").write_text(content, encoding="utf-8")
+
+
 def main():
     tutorials = load_tutorials()
     if PUBLIC_DIR.exists():
@@ -441,11 +494,15 @@ def main():
     PUBLIC_DIR.mkdir()
     shutil.copytree(STATIC_DIR / "css", PUBLIC_DIR / "css")
     shutil.copytree(STATIC_DIR / "js", PUBLIC_DIR / "js")
+    if (STATIC_DIR / "favicon.svg").exists():
+        shutil.copy2(STATIC_DIR / "favicon.svg", PUBLIC_DIR / "favicon.svg")
     (PUBLIC_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
     build_home(tutorials)
     build_plan(tutorials)
     build_tutorials(tutorials)
+    build_sitemap(tutorials)
+    build_robots()
     print(f"Website built successfully: {len(tutorials)} tutorials in {PUBLIC_DIR}")
 
 

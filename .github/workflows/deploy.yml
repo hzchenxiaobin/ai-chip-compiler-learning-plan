@@ -6,7 +6,7 @@ on:
     paths:
       - 'AI芯片编译器学习计划.md'
       - 'tutorials/**'
-      - 'build.py'
+      - 'tools/**'
       - 'static/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
@@ -41,7 +41,7 @@ jobs:
           enablement: true
 
       - name: Build website
-        run: python3 build.py
+        run: python3 tools/build.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
