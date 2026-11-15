@@ -4,4 +4,9 @@
 public/
 __pycache__/
 **/build/
+*.so
+*.dylib
+*.o
+*.dSYM/
+.DS_Store
 tutorials/day-054/code/mlir-mini/outputs/oscillate_hang.err
