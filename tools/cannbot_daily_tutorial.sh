@@ -82,7 +82,8 @@ GENERATED_COUNT=0
 
 for day in "${DAYS[@]}"; do
     DAY_ID="$(printf "%03d" "$day")"
-    DAY_DIR="$TUTORIAL_ROOT/day-$DAY_ID"
+    WEEK_ID="$(printf "%03d" $(( (day - 1) / 7 + 1 )))"
+    DAY_DIR="$TUTORIAL_ROOT/week-$WEEK_ID/day-$DAY_ID"
     TUTORIAL="$DAY_DIR/README.md"
 
     echo

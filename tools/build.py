@@ -28,12 +28,14 @@ def escape_for_template_string(text):
 
 def load_tutorials():
     tutorials = []
-    for readme in sorted(TUTORIALS_DIR.glob("day-*/README.md")):
+    for readme in sorted(TUTORIALS_DIR.glob("week-*/day-*/README.md")):
         day_dir = readme.parent
+        week_dir = day_dir.parent
         try:
             directory_day = int(day_dir.name.removeprefix("day-"))
+            directory_week = int(week_dir.name.removeprefix("week-"))
         except ValueError as exc:
-            raise ValueError(f"教程目录名称无效：{day_dir.name}") from exc
+            raise ValueError(f"教程目录名称无效：{week_dir.name}/{day_dir.name}") from exc
 
         text = readme.read_text(encoding="utf-8")
         lines = text.strip().splitlines()
@@ -42,6 +44,8 @@ def load_tutorials():
             raise ValueError(f"无法从首行解析教程标题：{readme}")
         if int(match.group(1)) != directory_day:
             raise ValueError(f"教程目录与标题天数不一致：{readme}")
+        if (directory_day - 1) // 7 + 1 != directory_week:
+            raise ValueError(f"教程目录与所在周不一致：{readme}")
 
         for target in IMAGE_RE.findall(text):
             target = target.strip().split()[0].strip("<>")
@@ -53,6 +57,7 @@ def load_tutorials():
         tutorials.append(
             {
                 "number": directory_day,
+                "week": directory_week,
                 "slug": day_dir.name,
                 "title": f"第 {directory_day} 天：{match.group(2).strip()}",
                 "markdown": "\n".join(lines[1:]).strip(),
@@ -61,20 +66,29 @@ def load_tutorials():
         )
 
     if not tutorials:
-        raise ValueError("没有找到 tutorials/day-N/README.md")
+        raise ValueError("没有找到 tutorials/week-N/day-N/README.md")
     return tutorials
 
 
+def tutorial_href(day, root_prefix=""):
+    return f"{root_prefix}tutorials/week-{day['week']:03d}/{day['slug']}/"
+
+
 def day_pills(tutorials, root_prefix="", current_day=None):
+    if current_day is None:
+        current_week = tutorials[-1]["week"]
+    else:
+        current_week = (current_day - 1) // 7 + 1
     return [
         {
             "num": day["number"],
             "label": f"Day {day['number']}",
             "title": day["title"],
-            "href": f"{root_prefix}tutorials/{day['slug']}/",
+            "href": tutorial_href(day, root_prefix),
             "active": current_day == day["number"],
         }
         for day in tutorials
+        if day["week"] == current_week
     ]
 
 
@@ -104,31 +118,7 @@ def page_template(
                 f'{html.escape(str(item["label"]))}</a>'
             )
 
-        if len(pills) > 10:
-            active_day = next((item for item in pills if item.get("active")), None)
-            toggle_label = active_day["label"] if active_day else f"{len(pills)} 天教程"
-            weeks = {}
-            for item in pills:
-                weeks.setdefault((item["num"] - 1) // 7 + 1, []).append(item)
-            groups = []
-            for week, items in weeks.items():
-                links = "".join(pill_link(item, "vp-day-link") for item in items)
-                groups.append(
-                    f'<section class="vp-day-week"><div class="vp-day-week-title">'
-                    f'<strong>第 {week} 周</strong><span>{items[0]["label"]}–{items[-1]["label"]}</span>'
-                    f'</div><div class="vp-day-week-links">{links}</div></section>'
-                )
-            pills_html = (
-                '<nav class="vp-nav-pills vp-nav-pills-grouped" aria-label="每日教程导航">'
-                f'<details class="vp-day-nav"><summary class="vp-day-nav-toggle">'
-                f'<span>{toggle_label}</span><span class="vp-day-nav-chevron" aria-hidden="true">⌄</span>'
-                f'</summary><div class="vp-day-menu"><div class="vp-day-menu-header">'
-                f'<strong>按周学习</strong><span>已发布 {len(pills)} 天</span></div>'
-                f'<div class="vp-day-weeks">{"".join(groups)}</div></div></details></nav>'
-            )
-            body_class += " vp-page-grouped-nav"
-        else:
-            pills_html = '<nav class="vp-nav-pills">' + "".join(pill_link(item) for item in pills) + "</nav>"
+        pills_html = '<nav class="vp-nav-pills">' + "".join(pill_link(item) for item in pills) + "</nav>"
 
     back_html = ""
     if back_link:
@@ -179,7 +169,7 @@ def page_template(
         render_call = "VPPage.render(pageMarkdown);"
 
     return f"""<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,8 +187,8 @@ def page_template(
     (function() {{
         try {{
             var t = localStorage.getItem('vp-theme') || 'dark';
-            if (t === 'dark') document.documentElement.classList.add('dark');
-        }} catch (e) {{ document.documentElement.classList.add('dark'); }}
+            if (t !== 'dark') document.documentElement.classList.remove('dark');
+        }} catch (e) {{ /* 保持默认暗黑 */ }}
     }})();
     </script>
     <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
@@ -374,7 +364,7 @@ def build_home(tutorials):
             if len(summary) > 120:
                 summary = summary[:117] + "..."
             cards.append(
-                f'<a class="tutorial-card" href="tutorials/{day["slug"]}/">'
+                f'<a class="tutorial-card" href="{tutorial_href(day)}">'
                 f'<div class="week-card-top"><span class="week-number">Day {day["number"]}</span>'
                 '<span class="week-arrow" aria-hidden="true">\u2192</span></div>'
                 f'<h3>{html.escape(title)}</h3><p>{html.escape(summary)}</p>'
@@ -389,6 +379,7 @@ def build_home(tutorials):
             '<span class="vp-day-nav-chevron" aria-hidden="true">\u29c9</span></summary>'
             f'<div class="tutorial-cards">{"".join(cards)}</div></details>'
         )
+        )
 
     first_day = tutorials[0]
     content = f"""
@@ -399,7 +390,7 @@ def build_home(tutorials):
         <p class="hero-subtitle">从「写好 Modern C++」进阶到「交付端到端编译器」</p>
         <p class="hero-description">贯通编译器 IR、MLIR、图优化、Lowering、Tiling、LLVM 与 Runtime<br> 每天 1～1.5 小时，每周集成与复盘</p>
         <div class="hero-actions">
-            <a class="hero-button hero-button-primary" href="tutorials/{first_day["slug"]}/">开始 Day {first_day["number"]} <span aria-hidden="true">→</span></a>
+            <a class="hero-button hero-button-primary" href="{tutorial_href(first_day)}">开始 Day {first_day["number"]} <span aria-hidden="true">→</span></a>
             <a class="hero-button hero-button-secondary" href="plan.html">查看完整计划</a>
         </div>
         <div class="hero-stats" aria-label="学习计划概览">
@@ -437,32 +428,33 @@ def build_plan(tutorials):
 
 def build_tutorials(tutorials):
     for index, day in enumerate(tutorials):
-        output_dir = PUBLIC_DIR / "tutorials" / day["slug"]
+        output_dir = PUBLIC_DIR / "tutorials" / f"week-{day['week']:03d}" / day["slug"]
         output_dir.mkdir(parents=True, exist_ok=True)
         images = day["source"] / "images"
         if images.exists():
             shutil.copytree(images, output_dir / "images", dirs_exist_ok=True)
 
+        root_prefix = "../../"
         prev_link = None
         next_link = None
         if index > 0:
             previous = tutorials[index - 1]
-            prev_link = (f"../{previous['slug']}/", previous["title"])
+            prev_link = (tutorial_href(previous, root_prefix), previous["title"])
         if index + 1 < len(tutorials):
             following = tutorials[index + 1]
-            next_link = (f"../{following['slug']}/", following["title"])
+            next_link = (tutorial_href(following, root_prefix), following["title"])
 
         output = page_template(
             day["title"],
             day["markdown"],
-            root_prefix="../../",
-            pills=day_pills(tutorials, root_prefix="../../", current_day=day["number"]),
+            root_prefix=root_prefix,
+            pills=day_pills(tutorials, root_prefix=root_prefix, current_day=day["number"]),
             back_link=("../../index.html#tutorials", "返回每日教程"),
             prev_link=prev_link,
             next_link=next_link,
         )
         (output_dir / "index.html").write_text(output, encoding="utf-8")
-        print(f"Generated tutorials/{day['slug']}/index.html")
+        print(f"Generated tutorials/week-{day['week']:03d}/{day['slug']}/index.html")
 
 
 
@@ -473,7 +465,7 @@ def build_sitemap(tutorials):
         f"<url><loc>{site_url}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
     ]
     for day in tutorials:
-        loc = f"{site_url}/tutorials/{day['slug']}/"
+        loc = f"{site_url}/{tutorial_href(day)}"
         urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

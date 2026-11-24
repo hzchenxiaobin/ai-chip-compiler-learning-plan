@@ -28,7 +28,7 @@ Modern C++
 
 ```text
 ├── AI芯片编译器学习计划.md   # 168 天完整计划（权威来源）
-├── tutorials/                # 每日教程（168 个目录）
+├── tutorials/                # 每日教程（week-001～week-024，共 168 天）
 │   └── day-NNN/
 │       ├── README.md         # 当天完整教程
 │       ├── images/           # 手绘 SVG 技术图（≥3 张/天）
@@ -72,10 +72,10 @@ Modern C++
 
 项目核心产出（第 18 周起）：
 
-- **minic 统一编译入口**：一条命令从图 IR 到可执行（`tutorials/day-120` 起）；
-- **Runtime 三件套**：特化分发 / 通用回退 / 缓冲池（`tutorials/day-127~133`）；
-- **质量体系**：测试金字塔 / Pass 二分定位 / 性能回归（`tutorials/day-134~140`）；
-- **五份项目文档**：架构 / Pass / Lowering / 测试 / 性能（`tutorials/day-155~159`）。
+- **minic 统一编译入口**：一条命令从图 IR 到可执行（`tutorials/week-018/day-120` 起）；
+- **Runtime 三件套**：特化分发 / 通用回退 / 缓冲池（`tutorials/week-019/day-127～day-133`）；
+- **质量体系**：测试金字塔 / Pass 二分定位 / 性能回归（`tutorials/week-020/day-134～day-140`）；
+- **五份项目文档**：架构 / Pass / Lowering / 测试 / 性能（`tutorials/week-023/day-155～day-159`）。
 
 ## 使用方式
 

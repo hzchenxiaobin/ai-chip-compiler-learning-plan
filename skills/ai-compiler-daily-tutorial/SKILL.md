@@ -85,7 +85,7 @@ python3 scripts/tutorial_tools.py extract PLAN.md --day 45
 - 使用脚本检查结构、图片和常见占位内容：
 
 ```bash
-python3 scripts/tutorial_tools.py check tutorials/day-045/README.md
+python3 scripts/tutorial_tools.py check tutorials/week-007/day-045/README.md
 ```
 
 脚本用于检查最低交付要求，不能替代技术正确性审查。
@@ -96,13 +96,16 @@ python3 scripts/tutorial_tools.py check tutorials/day-045/README.md
 
 ```text
 tutorials/
-└── day-045/
-    ├── README.md
-    └── images/
-        ├── 01-overview.svg
-        ├── 02-mechanism.svg
-        └── 03-example.svg
+└── week-007/
+    └── day-045/
+        ├── README.md
+        └── images/
+            ├── 01-overview.svg
+            ├── 02-mechanism.svg
+            └── 03-example.svg
 ```
+
+每天目录放在对应的周目录下：第 N 天属于第 `(N-1)//7 + 1` 周（如 day-045 位于 week-007）。
 
 - 批量生成时，每天独立保存、独立校验，不为凑数量复用无关图片或省略实践。
 - 最终回复只概述当天教程内容、实际验证情况和文件入口，不复述整篇教程。
