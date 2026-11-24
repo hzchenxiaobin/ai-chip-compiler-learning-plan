@@ -379,7 +379,6 @@ def build_home(tutorials):
             '<span class="vp-day-nav-chevron" aria-hidden="true">\u29c9</span></summary>'
             f'<div class="tutorial-cards">{"".join(cards)}</div></details>'
         )
-        )
 
     first_day = tutorials[0]
     content = f"""
