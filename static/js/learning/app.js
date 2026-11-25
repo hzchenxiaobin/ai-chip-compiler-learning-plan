@@ -301,20 +301,6 @@ function reportStoreError(err) {
   return `本次更改未保存：${err && err.message ? err.message : '未知错误'}`;
 }
 
-/** 触发浏览器下载并在稍后撤销对象 URL（不上传任何数据）。 */
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const link = el('a', { href: url, download: filename });
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
-}
-
-function timestampSlug() {
-  return new Date().toISOString().slice(0, 10).replace(/-/g, '');
-}
-
 // ---------------------------------------------------------------------------
 // 首页 / 周页 / 阶段页 / 计划页
 // ---------------------------------------------------------------------------
@@ -402,72 +388,15 @@ function weekPhaseSummaryContent(store, summaryLine, mainState, auxDone, auxTota
   ];
 }
 
-/** 在周/阶段页的逐日行上渲染整体状态徽标。 */
-function markDayRows(dayListMount, summary) {
-  if (!dayListMount) return;
-  for (const row of $$('.learning-day-row[data-day-id]', dayListMount)) {
-    const state = summary.dayStates[row.dataset.dayId];
-    const slot = $('[data-learning="day-state-mark"]', row);
-    if (!slot) continue;
-    if (!state || state === DAY_STATES.NOT_STARTED) {
-      slot.hidden = true;
-      slot.replaceChildren();
-    } else {
-      slot.hidden = false;
-      slot.replaceChildren(stateBadge(state));
-    }
-  }
-}
-
-/** 继续 N 天集合的目标：计划日优先 → 最近活动未完成 → 第一个未完成。 */
-function pickContinueDay(days, recordsById, summary) {
-  if (summary.plannedDayId && days.some((day) => day.day_id === summary.plannedDayId)) {
-    return days.find((day) => day.day_id === summary.plannedDayId);
-  }
-  let best = null;
-  let bestTime = '';
-  for (const day of days) {
-    if (summary.dayStates[day.day_id] === DAY_STATES.COMPLETED) continue;
-    const record = recordsById instanceof Map ? recordsById.get(day.day_id) : recordsById ? recordsById[day.day_id] : null;
-    if (!record) continue;
-    let latest = record.last_visited_at || '';
-    for (const task of Object.values(record.tasks || {})) {
-      if (task && task.updated_at && task.updated_at > latest) latest = task.updated_at;
-    }
-    if (latest && latest > bestTime) {
-      bestTime = latest;
-      best = day;
-    }
-  }
-  if (best) return best;
-  return days.find((day) => summary.dayStates[day.day_id] !== DAY_STATES.COMPLETED) || null;
-}
-
-function wireContinueLink(link, scopeDays, recordsById, summary, labelPrefix) {
-  if (!link) return;
-  const chosen = pickContinueDay(scopeDays, recordsById, summary);
-  if (!chosen) {
-    link.hidden = true;
-    return;
-  }
-  link.hidden = false;
-  link.href = joinBasePath(basePath, chosen.url);
-  link.textContent = `${labelPrefix} · Day ${chosen.day} →`;
-}
-
 async function renderWeekPage(store, days) {
   const mount = $('[data-learning="week-progress"]');
-  const dayList = $('.learning-day-list');
-  if (!mount && !dayList) return;
+  if (!mount) return;
   const week = Number(body.dataset.week);
   const records = await store.getAllDays();
   const recordsById = new Map(records.map((record) => [record.day_id, record]));
   const summary = summarizeDays(days, recordsById);
   const weekSummary = summary.weeks.find((entry) => entry.week === week);
   if (!weekSummary) return;
-  markDayRows(dayList, summary);
-  wireContinueLink($('[data-learning="continue-week"]'), weekSummary.days, recordsById, summary, '继续本周');
-  if (!mount) return;
   const stateCounts = { completed: 0, in_progress: 0, blocked: 0, ready_for_review: 0 };
   for (const day of weekSummary.days) {
     const state = summary.dayStates[day.day_id];
@@ -494,18 +423,13 @@ async function renderWeekPage(store, days) {
 
 async function renderPhasePage(store, days) {
   const mount = $('[data-learning="phase-progress"]');
-  const dayList = $('.learning-day-list');
-  if (!mount && !dayList) return;
+  if (!mount) return;
   const phase = Number(body.dataset.phase);
   const records = await store.getAllDays();
   const recordsById = new Map(records.map((record) => [record.day_id, record]));
   const summary = summarizeDays(days, recordsById);
   const phaseSummary = summary.phases.find((entry) => entry.phase === phase);
   if (!phaseSummary) return;
-  markDayRows(dayList, summary);
-  const phaseDays = days.filter((day) => day.phase === phase);
-  wireContinueLink($('[data-learning="continue-phase"]'), phaseDays, recordsById, summary, '继续本阶段');
-  if (!mount) return;
   const weekNodes = phaseSummary.weeks.map((week) =>
     el('li', { class: 'learning-phase-week' }, `第 ${week.week} 周：`, stateBadge(week.mainState), `（关键产出完成 ${week.completedDays}/${week.totalDays}）`)
   );
@@ -537,27 +461,6 @@ async function renderPlanPage(store, days) {
 // ---------------------------------------------------------------------------
 // 搜索页
 // ---------------------------------------------------------------------------
-
-/** 把文本按命中 token 拆分为文本节点与 <mark>（不用 innerHTML）。 */
-function highlightInto(parent, text, tokens) {
-  const pattern = (tokens || [])
-    .filter(Boolean)
-    .sort((a, b) => b.length - a.length)
-    .map((token) => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  if (!pattern.length) {
-    parent.append(String(text));
-    return;
-  }
-  const regex = new RegExp(pattern.join('|'), 'gi');
-  const source = String(text);
-  let last = 0;
-  for (const match of source.matchAll(regex)) {
-    if (match.index > last) parent.append(source.slice(last, match.index));
-    parent.append(el('mark', { class: 'learning-hit' }, match[0]));
-    last = match.index + match[0].length;
-  }
-  parent.append(source.slice(last));
-}
 
 function initSearchPage(days) {
   const form = $('[data-learning="search-form"]');
@@ -596,49 +499,27 @@ function initSearchPage(days) {
     }
   }
 
-  function clearFilters() {
-    for (const select of [phaseSelect, weekSelect, typeSelect]) {
-      if (select) select.value = '';
-    }
-    if (scopeSelect) scopeSelect.value = 'lite';
-  }
-
-  function anyFilterActive() {
-    return Boolean((phaseSelect && phaseSelect.value) || (weekSelect && weekSelect.value) || (typeSelect && typeSelect.value));
-  }
-
   function renderResults(response) {
     visibleCount = RESULT_STEP;
     const items = response.results.slice(0, visibleCount);
-    const tokens = tokenizeQuery(response.query);
     const nodes = [];
     if (!response.query.trim()) {
       nodes.push(el('p', { class: 'learning-search-hint' }, '输入关键词开始搜索；支持中文、命令、错误码与文件名。'));
     } else if (!items.length) {
-      const emptyBox = el('div', { class: 'learning-search-empty' },
-        el('p', {}, `没有找到与「${response.query}」相关的${response.scope === 'full' ? '正文' : '课程'}结果。`),
-        el('p', {}, '建议：缩短关键词、尝试命令/错误码完整文本（如 mlir-opt）、或切换到全文范围。')
+      nodes.push(
+        el('div', { class: 'learning-search-empty' },
+          el('p', {}, `没有找到与「${response.query}」相关的${response.scope === 'full' ? '正文' : '课程'}结果。`),
+          el('p', {}, '建议：缩短关键词、尝试命令/错误码完整文本（如 mlir-opt）、或切换到全文范围。')
+        )
       );
-      if (anyFilterActive()) {
-        const clearButton = el('button', { class: 'learning-button', type: 'button' }, '清除筛选');
-        clearButton.addEventListener('click', () => {
-          clearFilters();
-          syncUrl(response.query.trim(), 'lite');
-          runLite(response.query.trim());
-        });
-        emptyBox.append(el('p', {}, clearButton));
-      }
-      nodes.push(emptyBox);
     } else {
       for (const item of items) {
-        const snippetSpan = el('span', { class: 'learning-search-snippet' });
-        highlightInto(snippetSpan, item.snippet, tokens);
         nodes.push(
           el('a', { class: 'learning-search-item', href: item.url },
             el('span', { class: 'learning-search-day', text: `Day ${String(item.day).padStart(3, '0')}` }),
             el('span', { class: 'learning-search-title', text: item.title }),
             item.heading ? el('span', { class: 'learning-search-heading', text: `§ ${item.heading}` }) : null,
-            snippetSpan,
+            el('span', { class: 'learning-search-snippet', text: item.snippet }),
             el('span', { class: 'learning-search-meta', text: (item.matchedFields || []).join('·') })
           )
         );
@@ -760,8 +641,14 @@ function wireExport(store, days) {
     button.disabled = true;
     try {
       const blob = await store.exportProgress(days);
-      const filename = `ai-chip-compiler-learning-backup-${timestampSlug()}.json`;
-      downloadBlob(blob, filename);
+      const stamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const filename = `ai-chip-compiler-learning-backup-${stamp}.json`;
+      const url = URL.createObjectURL(blob);
+      const link = el('a', { href: url, download: filename });
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 3000);
       setLiveText(result, `已导出 ${filename}`);
     } catch (err) {
       setLiveText(result, `导出失败：${err.message}`);
@@ -849,21 +736,6 @@ function wireImport(store, days) {
     mountReplace(preview, nodes);
 
     if (conflictsBox && summary.conflict > 0) {
-      const downloadButton = el('button', { class: 'learning-button', type: 'button' }, '下载冲突记录（本机＋导入）');
-      downloadButton.addEventListener('click', () => {
-        const conflicts = plan.entries
-          .filter((entry) => entry.action === 'conflict')
-          .map((entry) => ({ day_id: entry.dayId, local: entry.existing || null, incoming: entry.incoming }));
-        const payload = {
-          schema_version: 1,
-          kind: 'ai-chip-compiler-learning-conflicts',
-          exported_at: nowIso(),
-          note: '同 revision 但规范化内容不同的记录；可在处理完成后重新导入。',
-          conflicts,
-        };
-        const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json' });
-        downloadBlob(blob, `ai-chip-compiler-learning-conflicts-${timestampSlug()}.json`);
-      });
       const items = plan.entries
         .filter((entry) => entry.action === 'conflict')
         .map((entry) => {
@@ -880,12 +752,7 @@ function wireImport(store, days) {
           }
           return group;
         });
-      conflictsBox.replaceChildren(
-        el('h3', { text: '冲突记录（同 revision 但内容不同）' }),
-        el('p', { class: 'learning-res-note' }, '下载的 JSON 包含双方完整记录，供“稍后手动处理”时留档。'),
-        downloadButton,
-        ...items
-      );
+      mountReplace(conflictsBox, el('h3', { text: '冲突记录（同 revision 但内容不同）' }), ...items);
     }
   }
 

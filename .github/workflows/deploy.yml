@@ -14,8 +14,6 @@ on:
       - 'tests/**'
       - 'package.json'
       - '.github/workflows/deploy.yml'
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -79,6 +77,11 @@ jobs:
           path: public
           retention-days: 1
 
+      - name: Upload Pages artifact (only after all checks)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
   browser-test:
     needs: build
     runs-on: ubuntu-latest
@@ -114,8 +117,6 @@ jobs:
         run: npm run test:e2e
 
   deploy:
-    # PR 只测试不部署；Pages artifact 仅在浏览器测试全部通过后才创建。
-    if: github.event_name != 'pull_request'
     needs: [build, browser-test]
     runs-on: ubuntu-latest
     permissions:
@@ -162,7 +163,6 @@ jobs:
         uses: actions/deploy-pages@v5
 
   smoke:
-    if: github.event_name != 'pull_request'
     needs: deploy
     runs-on: ubuntu-latest
     permissions:

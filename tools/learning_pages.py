@@ -202,14 +202,13 @@ def _day_row(record, root_prefix, show_week=False):
     badges = [f'<span class="learning-type-badge learning-type-{esc(record["type"])}">{esc(TYPE_LABELS[record["type"]])}</span>']
     if record["key_output"]:
         badges.append('<span class="learning-key-output">★ 关键产出</span>')
-    badges.append('<span class="learning-day-state" data-learning="day-state-mark" hidden></span>')
     prefix = f"W{record['week']} · " if show_week else ""
     objective = record["objective"]
     if len(objective) > 140:
         objective = objective[:137] + "…"
     time = record["time"]
     return f"""
-<li class="learning-day-row" data-day-id="{esc(record['day_id'])}">
+<li class="learning-day-row">
   <a class="learning-day-link" href="{esc(root_prefix)}tutorials/week-{record['week']:03d}/{record['day_id']}/">
     <span class="learning-day-num">{prefix}Day {record['day']}</span>
     <span class="learning-day-title">{esc(record['title'])}</span>
@@ -250,7 +249,6 @@ def build_week_pages(days, output_dir, base_path, render_page, roadmap):
 </div>
 <h2>本周 7 天</h2>
 <ul class="learning-day-list">{day_rows}</ul>
-<a class="learning-continue-link" data-learning="continue-week" href="#" hidden>继续本周 →</a>
 <nav class="prev-next">{prev_html}{next_html}</nav>
 <a class="learning-phase-link" href="{root_prefix}phases/phase-{phase}/">查看所属阶段 →</a>"""
         output = render_page(
@@ -301,8 +299,7 @@ def build_phase_pages(days, output_dir, base_path, render_page, roadmap):
 <h2>关键产出综合证据清单</h2>
 <ul class="learning-key-output-list">{key_items}</ul>
 <h2>28 天清单</h2>
-<ul class="learning-day-list">{day_rows}</ul>
-<a class="learning-continue-link" data-learning="continue-phase" href="#" hidden>继续本阶段 →</a>"""
+<ul class="learning-day-list">{day_rows}</ul>"""
         output = render_page(
             f"{label}·{title} · AI 芯片编译器学习计划",
             content,
@@ -421,8 +418,6 @@ def build_settings_page(output_dir, base_path, render_page):
   <div class="learning-import-preview" data-learning="import-preview"></div>
   <div class="learning-import-conflicts" data-learning="import-conflicts"></div>
   <p class="learning-action-result" data-learning="import-result" aria-live="polite"></p>
-  <p><button class="learning-button" type="button" data-learning="restore-backup">从替换前备份恢复</button>
-     用最近一次“替换导入”前的完整备份覆盖当前进度（替换模式自动创建）。</p>
   <h2>清空与重置</h2>
   <p><button class="learning-button learning-button-danger" type="button" data-learning="clear-progress">清空学习记录…</button>
      清空 progress 数据，不影响主题等偏好；需二次确认，建议先导出。</p>
