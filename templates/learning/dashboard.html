@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load learning_extras %}
+{% block title %}我的学习 · AI 芯片编译器学习计划{% endblock %}
+{% block page_type %}dashboard{% endblock %}
+{% block content %}
+<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+    <div class="vp-content"><div class="vp-content-container" id="main-content">
+        <main class="main"><article class="vp-doc learning-dashboard">
+            <h1>我的学习</h1>
+
+            <section class="learning-dash-continue" data-learning="dashboard-continue">
+                <h2>继续学习</h2>
+                {% with target=view.continue_target %}
+                <div class="learning-continue-card">
+                    <a class="learning-continue-link" href="/{{ target.meta.url }}">
+                        <span class="learning-continue-day">Day {{ target.meta.day }}</span>
+                        <span class="learning-continue-title">{{ target.meta.title }}</span>
+                    </a>
+                    <span class="learning-continue-reason">
+                        {% if target.reason == "plan" %}当前计划{% elif target.reason == "recent" %}最近学习{% elif target.reason == "first" %}从 Day 001 开始{% else %}查看最终验收{% endif %}
+                    </span>
+                    {% if view.counts.blocked %}
+                    <a class="learning-continue-blocked" href="#blocked">回到卡点（{{ view.counts.blocked }}）</a>
+                    {% endif %}
+                </div>
+                {% endwith %}
+            </section>
+
+            <section class="learning-dash-stats" data-learning="dashboard-stats">
+                <h2>学习概览</h2>
+                <div class="learning-overview-stats">
+                    <div><strong>{{ view.counts.completed }}</strong><span>已完成</span></div>
+                    <div><strong>{{ view.counts.in_progress }}</strong><span>进行中</span></div>
+                    <div><strong>{{ view.counts.ready_for_review }}</strong><span>待验收</span></div>
+                    <div><strong>{{ view.counts.blocked }}</strong><span>卡点</span></div>
+                    <div><strong>{{ view.counts.needs_review }}</strong><span>待复核</span></div>
+                    <div><strong>{{ view.counts.visited }}</strong><span>已访问</span></div>
+                </div>
+                <p class="learning-dash-hint">整体状态由 阅读/练习/实验/验收 四项任务派生；“已完成”不代表实验已被平台复验。</p>
+            </section>
+
+            {% if view.needs_review %}
+            <section class="learning-dash-section" id="needs_review">
+                <h2>内容待复核</h2>
+                <ul class="learning-dash-list">
+                {% for item in view.needs_review %}
+                <li><a href="/{{ item.url }}">{{ item.day_id }}：{{ item.title }}</a></li>
+                {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            {% if view.blocked %}
+            <section class="learning-dash-section" id="blocked">
+                <h2>卡点任务</h2>
+                <ul class="learning-dash-list">
+                {% for item in view.blocked %}
+                <li><a href="/{{ item.url }}">{{ item.day_id }}：{{ item.title }}</a> — {{ item.task_id|learning_task_label }}</li>
+                {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            <section class="learning-dash-section">
+                <h2>最近访问</h2>
+                {% if view.recent %}
+                <ul class="learning-dash-list learning-dash-recent">
+                {% for item in view.recent %}
+                <li><a href="/{{ item.url }}">{{ item.day_id }}：{{ item.title }}</a>
+                    <span class="learning-state learning-state-{{ item.overall }}">{{ item.overall|learning_state_label }}</span>
+                    {% if item.visited_at %}<time>{{ item.visited_at|date:"m-d H:i" }}</time>{% endif %}</li>
+                {% endfor %}
+                </ul>
+                {% else %}
+                <p>还没有访问记录，从 <a href="/tutorials/week-001/day-001/">Day 001</a> 开始。</p>
+                {% endif %}
+            </section>
+
+            <section class="learning-dash-section">
+                <h2>数据管理</h2>
+                <p>学习数据保存在你的账号中。<a href="/settings/">前往设置</a> 导出备份、导入恢复或删除数据。</p>
+            </section>
+        </article></main>
+    </div></div>
+</div></div></div>
+{% endblock %}

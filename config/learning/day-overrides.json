@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "days": {
+    "day-029": {
+      "type": "environment_lab",
+      "skills": ["MLIR", "LLVM 18", "FileCheck", "JIT"]
+    },
+    "day-167": {
+      "type": "presentation",
+      "skills": ["项目表达", "技术演示", "问答准备"]
+    }
+  }
+}

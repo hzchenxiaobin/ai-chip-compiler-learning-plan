@@ -14,6 +14,42 @@ Modern C++
   → 端到端项目与面试复盘
 ```
 
+## 学习网站（动态 Web 应用）
+
+本仓库包含一个基于 **Django + MySQL + Redis** 的动态学习网站（设计见
+[docs/AI芯片编译器学习网站设计文档.md](./docs/AI芯片编译器学习网站设计文档.md)，
+P0 实现说明见 [deploy/README.md](./deploy/README.md)）：
+
+- 教程正文仍以 Git 为唯一权威源，通过 `import_tutorial` 命令原子导入为内容版本；
+- 注册登录后，阅读/练习/实验/验收四项任务状态保存在 MySQL，支持跨设备恢复、
+  revision 乐观锁（`If-Match`/412）、导出与导入（含替换前快照）；
+- 服务端全文搜索支持中文二元词、命令与错误码，可按阶段/周/类型筛选；
+- 每个有代码的日课提供确定性源码 ZIP（排除冻结输出与疑似密钥，保留执行权限）。
+
+本地快速开始：
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+# 准备 MySQL（库名 learning）与 Redis，然后在 config/settings/dev.py 配置连接
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py import_tutorial --commit HEAD   # 导入并激活 168 天内容
+.venv/bin/python manage.py runserver                        # http://127.0.0.1:8000
+```
+
+测试：
+
+```bash
+# 单元/集成/验收（真实 MySQL）：106 个用例
+.venv/bin/python manage.py test tests --settings=config.settings.test
+
+# 浏览器 E2E + 无障碍（Playwright + Chromium，需 dev server 已启动）
+node node_modules/playwright/cli.js test -c playwright.config.js
+```
+
+覆盖：内容导入与发布/回滚（TC-B/A05）、状态机、API 权限与并发（If-Match/412）、
+导入导出回环、搜索、故障降级（MySQL/Redis/搜索不可用）、键盘可达、320px、
+明暗主题与 axe-core critical/serious 违规清零。
+
 ## 文档
 
 完整日程见：[AI芯片编译器学习计划.md](./AI芯片编译器学习计划.md)
@@ -34,8 +70,12 @@ Modern C++
 │       ├── images/           # 手绘 SVG 技术图（≥3 张/天）
 │       └── code/             # 可运行代码 + outputs/ 冻结产物
 ├── skills/                   # 教程生成 Skill（模板 + 质量清单 + 工具）
-├── tools/                    # 构建与生成脚本
-│   ├── build.py              # GitHub Pages 静态站构建
+├── apps/                     # Django 应用（content 导入/learning 进度/search 搜索/accounts 账号）
+├── config/                   # Django 设置（base/dev/test/prod）与根路由
+├── templates/                # 服务端页面模板
+├── tests/                    # 测试套件（94 个用例）
+├── deploy/                   # Nginx/Gunicorn 配置与运维手册
+├── tools/                    # 工具脚本
 │   └── cannbot_daily_tutorial.sh  # 每日教程自动生成
 ├── static/                   # 网站静态资源
 └── public/                   # 构建产物（已 gitignore）

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load learning_extras %}
+{% block title %}隐私说明 · AI 芯片编译器学习计划{% endblock %}
+{% block page_type %}privacy{% endblock %}
+{% block content %}
+<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+    <div class="vp-content"><div class="vp-content-container" id="main-content">
+        <main class="main"><article class="vp-doc learning-privacy">
+            <h1>隐私说明</h1>
+            <p>本说明适用于本学习网站的注册账号与学习数据（设计依据：设计文档 §9.3、§10.3）。</p>
+
+            <h2>我们保存什么</h2>
+            <ul>
+                <li><strong>账号字段</strong>：用户名、邮箱（用于密码找回等必要通知）、加盐哈希后的密码。不采集真实姓名、身份证、生日等无关信息。</li>
+                <li><strong>学习数据</strong>：当前计划日、每门课程的阅读/练习/实验/验收状态、最近访问时间、内容版本复核标记。默认私密，仅本人可见。</li>
+                <li><strong>操作审计</strong>：账号生命周期与导出/导入/删除等敏感操作的脱敏记录（不含任务正文、笔记或密码）。</li>
+                <li><strong>本地浏览器</strong>：仅保存主题等界面偏好（localStorage），不含学习记录。</li>
+            </ul>
+
+            <h2>我们不保存什么</h2>
+            <ul>
+                <li>原始搜索词（默认不记录）；完整控制台日志；你的本地代码或命令行输出。</li>
+                <li>不向第三方分析系统发送学习行为数据。</li>
+            </ul>
+
+            <h2>保留期限</h2>
+            <ul>
+                <li>账号存续期间长期保留学习数据；删除账号时一并删除。</li>
+                <li>导出文件与替换前快照默认 7 天后过期清理。</li>
+                <li>审计记录在账号删除后按安全要求保留最小期限（不含正文内容）。</li>
+            </ul>
+
+            <h2>你的权利与路径</h2>
+            <ul>
+                <li><strong>导出</strong>：设置页一键导出全部学习数据（JSON）。</li>
+                <li><strong>更正</strong>：任何任务状态可在课程页随时修改。</li>
+                <li><strong>删除学习数据</strong>：设置页「删除学习数据」（保留账号）。</li>
+                <li><strong>删除账号</strong>：设置页「永久删除账号」（需密码重新认证，删除全部学习数据与账号信息）。</li>
+            </ul>
+
+            <h2>安全措施</h2>
+            <ul>
+                <li>HTTPS 传输；会话 Cookie 为 HttpOnly + SameSite；写操作启用 CSRF 防护。</li>
+                <li>数据库与密钥仅在服务器端；公开源码包经过密钥扫描，不包含令牌或私钥。</li>
+                <li>导入文件按不可信输入处理：不执行命令、不注入 HTML、不自动打开链接。</li>
+            </ul>
+            <p><a href="/settings/">前往设置管理你的数据</a></p>
+        </article></main>
+    </div></div>
+</div></div></div>
+{% endblock %}

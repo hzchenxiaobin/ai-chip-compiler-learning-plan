@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}请求被拒绝{% endblock %}
+{% block content %}
+<main class="home-main" id="main-content">
+    <section class="home-hero"><div class="home-hero-inner">
+        <h1>请求被拒绝（CSRF 校验失败）</h1>
+        <p class="hero-description">你的登录凭证可能已过期，请刷新页面后重试。</p>
+        <p><a class="hero-button hero-button-secondary" href="/">返回首页</a></p>
+    </div></section>
+</main>
+{% endblock %}

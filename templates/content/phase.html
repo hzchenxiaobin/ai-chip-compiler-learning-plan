@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load learning_extras %}
+{% block title %}{{ phase_info.0 }}：{{ phase_info.1 }} · AI 芯片编译器学习计划{% endblock %}
+{% block page_type %}phase{% endblock %}
+{% block body_data %}data-phase="{{ phase }}"{% endblock %}
+{% block content %}
+<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+    <div class="vp-content"><div class="vp-content-container" id="main-content">
+        <nav class="back-nav learning-breadcrumb"><a href="/">首页</a></nav>
+        <main class="main"><article class="vp-doc">
+            <h1>{{ phase_info.0 }}：{{ phase_info.1 }}</h1>
+            <p class="learning-phase-desc">{{ phase_info.2 }}</p>
+
+            {% if user.is_authenticated and phase_view %}
+            <section class="learning-week-summary" aria-label="阶段状态">
+                <span class="learning-state learning-state-{{ phase_view.phase_state }}">阶段状态：{{ phase_view.phase_state|learning_state_label }}</span>
+                <span>第 28 天综合复盘：{{ phase_view.day28_state|learning_state_label }}</span>
+            </section>
+            {% endif %}
+
+            <h2>四周递进</h2>
+            <div class="learning-phase-weeks">
+                {% for group in week_groups %}
+                <section class="learning-phase-week">
+                    <h3>第 {{ group.0.metadata_json.week }} 周：{{ week_titles|default_if_none:""|learning_week_title:group.0.metadata_json.week }}</h3>
+                    <ul class="learning-phase-days">
+                        {% for row in group %}
+                        <li>
+                            <a href="/tutorials/week-{{ group.0.metadata_json.week }}/{{ row.metadata_json.day_id }}/">
+                                Day {{ row.metadata_json.day }}：{{ row.metadata_json.title }}</a>
+                            {% if row.metadata_json.key_output %}<span class="learning-key-output-badge">关键产出</span>{% endif %}
+                            {% if user.is_authenticated %}
+                            <span class="learning-week-day-status" data-day-status="{{ row.metadata_json.day_id }}"></span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <a class="learning-week-link" href="/weeks/week-{{ group.0.metadata_json.week }}/">查看本周 →</a>
+                </section>
+                {% endfor %}
+            </div>
+        </article></main>
+    </div></div>
+</div></div></div>
+{% endblock %}

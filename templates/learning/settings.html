@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load learning_extras %}
+{% block title %}设置 · AI 芯片编译器学习计划{% endblock %}
+{% block page_type %}settings{% endblock %}
+{% block content %}
+<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+    <div class="vp-content"><div class="vp-content-container" id="main-content">
+        <main class="main"><article class="vp-doc learning-settings">
+            <h1>设置</h1>
+            <p class="learning-settings-hint">学习数据保存在服务器你的账号下；导出文件包含进度详情，请妥善保管。所有表单无需 JavaScript 即可使用。</p>
+
+            <section class="learning-settings-section" id="preferences">
+                <h2>偏好</h2>
+                <form method="post" action="/settings/preferences/" class="learning-inline-form">
+                    {% csrf_token %}
+                    <label>
+                        <input type="checkbox" name="account_emails"
+                               {% if profile.preference.account_emails %}checked{% endif %}>
+                        接收账号相关邮件（密码重置等必要通知之外的说明，默认关闭）
+                    </label>
+                    <button type="submit" class="learning-btn">保存偏好</button>
+                </form>
+                <p class="learning-settings-note">学习数据默认私密；详见<a href="/privacy/">隐私说明</a>。</p>
+            </section>
+
+            <section class="learning-settings-section" id="account-security">
+                <h2>账号安全</h2>
+                <p><a class="learning-btn" href="/settings/password/">修改密码</a>
+                <a class="learning-btn" href="/password-reset/">忘记密码</a></p>
+            </section>
+
+            <section class="learning-settings-section" id="export">
+                <h2>导出备份</h2>
+                <form method="post" action="/settings/export/" class="learning-inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="learning-btn learning-btn-primary">导出学习数据（JSON）</button>
+                </form>
+                <p class="learning-settings-note">导出包含当前计划与逐日任务状态；文件通过短时签名链接下载。</p>
+            </section>
+
+            <section class="learning-settings-section" id="import">
+                <h2>导入备份</h2>
+                <form method="post" action="/settings/import/upload/" enctype="multipart/form-data" class="learning-import-form">
+                    {% csrf_token %}
+                    <label for="import-file">选择导出的 JSON 文件（≤ 5 MiB）</label>
+                    <input id="import-file" type="file" name="file" accept=".json,application/json" required>
+                    <button type="submit" class="learning-btn">上传并预检</button>
+                </form>
+
+                {% if preview_job and report %}
+                <div class="learning-import-preview" data-job-id="{{ preview_job.pk }}">
+                    <h3>预检结果（任务 #{{ preview_job.pk }}）</h3>
+                    <p>新增 {{ report.counts.add }} · 未变化 {{ report.counts.unchanged }} · 冲突 {{ report.counts.conflict }} · 跳过 {{ report.counts.skip }}</p>
+                    {% if report.skipped_unknown %}
+                    <p class="learning-settings-note">跳过的日课（当前内容版本不存在）：{{ report.skipped_unknown|join:"、" }}</p>
+                    {% endif %}
+                    {% if conflicts %}
+                    <div class="learning-import-conflicts">
+                        <h4>冲突记录（内容不同，需逐项选择）</h4>
+                        {% for conflict in conflicts %}
+                        <fieldset class="learning-conflict">
+                            <legend>{{ conflict.day_id }}</legend>
+                            <div class="learning-conflict-cols">
+                                <div><h5>本机（revision {{ conflict.local_payload.revision }}）</h5>
+                                    <ul>{% for task, status in conflict.local_payload.tasks.items %}
+                                    <li>{{ task|learning_task_label }}：{{ status|learning_state_label }}</li>{% endfor %}</ul>
+                                </div>
+                                <div><h5>导入（revision {{ conflict.incoming_payload.revision }}）</h5>
+                                    <ul>{% for task, status in conflict.incoming_payload.tasks.items %}
+                                    <li>{{ task|learning_task_label }}：{{ status|learning_state_label }}</li>{% endfor %}</ul>
+                                </div>
+                            </div>
+                        </fieldset>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <form method="post" action="/settings/import/apply/" class="learning-import-apply">
+                        {% csrf_token %}
+                        <input type="hidden" name="job_id" value="{{ preview_job.pk }}">
+                        <fieldset>
+                            <legend>应用方式</legend>
+                            <label><input type="radio" name="mode" value="merge" checked> 合并（默认；不删除现有记录，冲突逐项选择）</label>
+                            <label><input type="radio" name="mode" value="replace"> 替换（危险；先用当前数据生成可恢复快照，再整体覆盖）</label>
+                        </fieldset>
+                        {% for conflict in conflicts %}
+                        <fieldset class="learning-conflict-choice">
+                            <legend>{{ conflict.day_id }} 冲突选择</legend>
+                            <label><input type="radio" name="conflict-{{ conflict.day_id }}" value="local" checked> 保留本机</label>
+                            <label><input type="radio" name="conflict-{{ conflict.day_id }}" value="incoming"> 使用导入</label>
+                        </fieldset>
+                        {% endfor %}
+                        <button type="submit" class="learning-btn learning-btn-primary">确认应用导入</button>
+                    </form>
+                </div>
+                {% endif %}
+            </section>
+
+            <section class="learning-settings-section" id="data">
+                <h2>删除学习数据</h2>
+                <form method="post" action="/settings/delete-data/" class="learning-delete-form"
+                      data-confirm="此操作不可撤销，建议先导出备份。确定删除全部学习记录？">
+                    {% csrf_token %}
+                    <label><input type="checkbox" name="confirm" value="yes" required> 我确认删除全部学习记录（此操作不可撤销）</label>
+                    <label for="delete-data-password">输入密码确认</label>
+                    <input id="delete-data-password" type="password" name="password" autocomplete="current-password" required>
+                    <button type="submit" class="learning-btn learning-btn-danger">删除学习数据</button>
+                </form>
+            </section>
+
+            <section class="learning-settings-section" id="account">
+                <h2>删除账号</h2>
+                <form method="post" action="/settings/delete-account/" class="learning-delete-form"
+                      data-confirm="删除账号将同时删除全部学习数据且不可恢复。确定继续？">
+                    {% csrf_token %}
+                    <label for="delete-account-password">输入密码重新认证</label>
+                    <input id="delete-account-password" type="password" name="password" autocomplete="current-password" required>
+                    <button type="submit" class="learning-btn learning-btn-danger">永久删除账号</button>
+                </form>
+            </section>
+
+            <section class="learning-settings-section" id="jobs">
+                <h2>最近任务</h2>
+                {% if jobs %}
+                <table class="learning-jobs-table">
+                    <thead><tr><th>任务</th><th>状态</th><th>时间</th><th>备注</th><th>操作</th></tr></thead>
+                    <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.kind }}</td>
+                        <td>{{ job.status }}</td>
+                        <td>{{ job.created_at|date:"m-d H:i" }}</td>
+                        <td>{{ job.report_json.error.message|default:job.report_json.day_count|default:"" }}</td>
+                        <td>
+                          {% if job.kind == "snapshot" and job.status == "applied" %}
+                          <form method="post" action="/settings/restore-snapshot/{{ job.pk }}/"
+                                data-confirm="将从该快照恢复学习数据（进入导入预检，选择替换模式完成恢复）。继续？">
+                            {% csrf_token %}
+                            <button type="submit" class="learning-btn">从此快照恢复</button>
+                          </form>
+                          {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p>暂无任务记录。</p>{% endif %}
+            </section>
+        </article></main>
+    </div></div>
+</div></div></div>
+{% endblock %}

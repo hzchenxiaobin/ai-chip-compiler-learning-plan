@@ -1,0 +1,12 @@
+{
+  "name": "ai-chip-compiler-learning-site",
+  "private": true,
+  "description": "动态学习站 E2E 测试（Playwright + Chromium）",
+  "scripts": {
+    "test:e2e": "playwright test -c playwright.config.js",
+    "test:a11y": "playwright test -c playwright.config.js accessibility"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}
