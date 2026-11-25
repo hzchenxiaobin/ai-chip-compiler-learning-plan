@@ -140,6 +140,24 @@ jobs:
         with:
           path: public
 
+      # 规避 actions/deploy-pages#451：artifact finalize 后元数据索引有延迟，
+      # 立即部署会报 "No artifacts named github-pages"。轮询 REST API 确认可见后再部署。
+      - name: Wait for Pages artifact to become visible
+        run: |
+          set -eu
+          for i in $(seq 1 60); do
+            count=$(curl -sf -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "${{ github.api_url }}/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?name=github-pages" \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])')
+            if [ "$count" = "1" ]; then
+              echo "github-pages artifact visible (waited ~$(( (i-1)*10 ))s)"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for github-pages artifact metadata"
+          exit 1
+
       - name: Deploy exactly the tested artifact
         uses: actions/deploy-pages@v5
 
