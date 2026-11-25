@@ -75,11 +75,17 @@ def tutorial_href(day, root_prefix=""):
     return f"{root_prefix}tutorials/week-{day['week']:03d}/{day['slug']}/"
 
 
-def day_pills(tutorials, root_prefix="", current_day=None):
-    if current_day is None:
-        current_week = tutorials[-1]["week"]
-    else:
-        current_week = (current_day - 1) // 7 + 1
+def week_plan_href(week, root_prefix=""):
+    return f"{root_prefix}plan/week-{week:03d}/"
+
+
+def day_pills(tutorials, root_prefix="", current_week=None, current_day=None):
+    if current_week is None:
+        current_week = (
+            tutorials[-1]["week"]
+            if current_day is None
+            else (current_day - 1) // 7 + 1
+        )
     return [
         {
             "num": day["number"],
@@ -103,6 +109,7 @@ def page_template(
     prev_link=None,
     next_link=None,
     home=False,
+    extra_head="",
 ):
     escaped_title = html.escape(title)
     escaped_markdown = "" if home else escape_for_template_string(markdown)
@@ -207,7 +214,7 @@ def page_template(
     }})();
     </script>
     <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
-{markdown_assets}</head>
+{markdown_assets}{extra_head}</head>
 <body class="{body_class}">
     <header class="vp-navbar">
         <div class="vp-navbar-inner">
@@ -319,9 +326,49 @@ ROADMAP = [
 ]
 
 
-def plan_heading_slug(text):
-    slug = re.sub(r"[^\w\s-]", "", text.lower(), flags=re.UNICODE)
-    return re.sub(r"-+", "-", re.sub(r"\s+", "-", slug.strip())).strip("-")
+def load_plan():
+    text = PLAN_PATH.read_text(encoding="utf-8")
+    text = re.sub(r"^\s*#\s+.+\n", "", text, count=1)
+    lines = text.splitlines()
+    first_phase = next(
+        index for index, line in enumerate(lines) if line.startswith("# 第一阶段")
+    )
+    preamble = "\n".join(lines[:first_phase]).strip()
+    weeks = []
+    appendix_lines = []
+    current_week = None
+    current_phase = ""
+    in_appendix = False
+
+    for line in lines[first_phase:]:
+        phase_match = re.match(r"^# (第.+阶段：.+)$", line)
+        if phase_match:
+            current_phase = phase_match.group(1)
+            current_week = None
+            continue
+
+        week_match = re.match(r"^## 第 (\d+) 周：(.+)$", line)
+        if week_match:
+            current_week = {
+                "number": int(week_match.group(1)),
+                "title": f"第 {week_match.group(1)} 周：{week_match.group(2).strip()}",
+                "phase": current_phase,
+                "lines": [],
+            }
+            weeks.append(current_week)
+            continue
+
+        if line.startswith("# "):
+            in_appendix = True
+            current_week = None
+        if in_appendix:
+            appendix_lines.append(line)
+        elif current_week is not None:
+            current_week["lines"].append(line)
+
+    if [week["number"] for week in weeks] != list(range(1, 25)):
+        raise ValueError("学习计划必须包含连续的第 1～24 周")
+    return preamble, weeks, "\n".join(appendix_lines).strip()
 
 
 def build_home(tutorials):
@@ -337,9 +384,8 @@ def build_home(tutorials):
         for offset, summary in enumerate(summaries):
             number = phase_index * 4 + offset + 1
             week_title = week_titles[number]
-            anchor = plan_heading_slug(f"第 {number} 周：{week_title}")
             week_cards.append(
-                f'<a class="week-card" href="plan.html#{anchor}">'
+                f'<a class="week-card" href="{week_plan_href(number)}">'
                 f'<div class="week-card-top"><span class="week-number">W{number}</span>'
                 '<span class="week-arrow" aria-hidden="true">→</span></div>'
                 f'<h4>{html.escape(week_title)}</h4><p>{html.escape(summary)}</p></a>'
@@ -415,15 +461,63 @@ def build_home(tutorials):
 
 
 def build_plan(tutorials):
-    text = PLAN_PATH.read_text(encoding="utf-8")
-    text = re.sub(r"^\s*#\s+.+\n", "", text, count=1)
+    preamble, weeks, appendix = load_plan()
+    legacy_redirect = """    <script>
+    (function() {
+        var hash;
+        try { hash = decodeURIComponent(window.location.hash); } catch (e) { return; }
+        var weekMatch = hash.match(/^#第-(\\d+)-周/);
+        var dayMatch = hash.match(/^#第-(\\d+)-天/);
+        var week = weekMatch ? Number(weekMatch[1]) : Math.ceil(Number(dayMatch && dayMatch[1]) / 7);
+        if (week >= 1 && week <= 24) {
+            window.location.replace('plan/week-' + String(week).padStart(3, '0') + '/');
+        }
+    })();
+    </script>
+"""
+    overview = [preamble, "## 每周计划"]
+    current_phase = None
+    for week in weeks:
+        if week["phase"] != current_phase:
+            current_phase = week["phase"]
+            overview.append(f"### {current_phase}")
+        overview.append(
+            f'- [{week["title"]}]({week_plan_href(week["number"])})'
+        )
+    overview.append(appendix)
     output = page_template(
         "AI 芯片编译器 168 天学习计划",
-        text,
-        pills=day_pills(tutorials),
+        "\n\n".join(overview),
         back_link=("index.html", "返回首页"),
+        extra_head=legacy_redirect,
     )
     (PUBLIC_DIR / "plan.html").write_text(output, encoding="utf-8")
+
+    root_prefix = "../../"
+    for index, week in enumerate(weeks):
+        number = week["number"]
+        previous = weeks[index - 1] if index > 0 else None
+        following = weeks[index + 1] if index + 1 < len(weeks) else None
+        content = f'> {week["phase"]}\n\n' + "\n".join(week["lines"]).strip()
+        output = page_template(
+            week["title"],
+            content,
+            root_prefix=root_prefix,
+            pills=day_pills(tutorials, root_prefix=root_prefix, current_week=number),
+            back_link=("../../plan.html", "返回计划总览"),
+            prev_link=(
+                (week_plan_href(previous["number"], root_prefix), previous["title"])
+                if previous else None
+            ),
+            next_link=(
+                (week_plan_href(following["number"], root_prefix), following["title"])
+                if following else None
+            ),
+        )
+        output_dir = PUBLIC_DIR / "plan" / f"week-{number:03d}"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "index.html").write_text(output, encoding="utf-8")
+        print(f"Generated plan/week-{number:03d}/index.html")
 
 
 def build_tutorials(tutorials):
@@ -463,6 +557,10 @@ def build_sitemap(tutorials):
         f"<url><loc>{SITE_URL}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>",
         f"<url><loc>{SITE_URL}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
     ]
+    _, weeks, _ = load_plan()
+    for week in weeks:
+        loc = f"{SITE_URL}/{week_plan_href(week['number'])}"
+        urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
     for day in tutorials:
         loc = f"{SITE_URL}/{tutorial_href(day)}"
         urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
