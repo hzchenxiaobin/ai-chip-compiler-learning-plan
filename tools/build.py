@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 """Build the daily tutorials as a static GitHub Pages website."""
 
+import datetime
 import html
+import os
 import re
 import shutil
+import subprocess
+import sys
 from pathlib import Path
+
+import learning_assets
+import learning_metadata
+import learning_pages
+import learning_search
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -15,6 +24,8 @@ STATIC_DIR = ROOT / "static"
 GITHUB_REPO_URL = "https://github.com/hzchenxiaobin/ai-chip-compiler-learning-plan"
 TITLE_RE = re.compile(r"^#\s+第\s*(\d+)\s*天[：:]\s*(.+)$")
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
+#: 学习模块部署基路径：本地为空，仓库 Pages 为 /ai-chip-compiler-learning-plan
+LEARNING_BASE_PATH = os.environ.get("LEARNING_BASE_PATH", "").strip()
 
 
 def escape_for_template_string(text):
@@ -86,6 +97,7 @@ def day_pills(tutorials, root_prefix="", current_day=None):
             "title": day["title"],
             "href": tutorial_href(day, root_prefix),
             "active": current_day == day["number"],
+            "day_id": day["slug"],
         }
         for day in tutorials
         if day["week"] == current_week
@@ -102,9 +114,20 @@ def page_template(
     prev_link=None,
     next_link=None,
     home=False,
+    static_html=None,
+    body_attrs=None,
+    extra_head="",
+    extra_scripts="",
+    prelude_html="",
 ):
     escaped_title = html.escape(title)
-    escaped_markdown = escape_for_template_string(markdown)
+    escaped_markdown = escape_for_template_string(markdown) if static_html is None else ""
+
+    body_attr_html = ""
+    if body_attrs:
+        body_attr_html = "".join(
+            f' {key}="{html.escape(str(value), quote=True)}"' for key, value in body_attrs.items() if value is not None
+        )
 
     pills_html = ""
     body_class = "vp-page vp-home" if home else "vp-page"
@@ -112,9 +135,10 @@ def page_template(
         def pill_link(item, css_class="vp-pill"):
             active = " active" if item.get("active") else ""
             current = ' aria-current="page"' if item.get("active") else ""
+            day_attr = f' data-day-id="{html.escape(item["day_id"], quote=True)}"' if item.get("day_id") else ""
             return (
                 f'<a class="{css_class}{active}" href="{item["href"]}"'
-                f' title="{html.escape(item["title"], quote=True)}"{current}>'
+                f' title="{html.escape(item["title"], quote=True)}"{current}{day_attr}>'
                 f'{html.escape(str(item["label"]))}</a>'
             )
 
@@ -147,10 +171,32 @@ def page_template(
         main_html = f'<main class="home-main">{markdown}</main>'
         render_call = "VPPage.init();"
         escaped_markdown = ""  # home 页 HTML 已直接嵌入——不需要 JS 变量
+    elif static_html is not None:
+        main_html = f"""<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
+        <div class="vp-content"><div class="vp-content-container">
+            {back_html}
+            {prelude_html}
+            <main class="main"><article class="vp-doc vp-static-doc">
+                <h1>{escaped_title}</h1>
+                {static_html}
+            </article></main>
+            <footer class="vp-doc-footer">{pager_html}</footer>
+        </div></div>
+        <div class="vp-aside"><div class="vp-aside-container"><div class="vp-aside-content">
+            <nav class="vp-outline" aria-labelledby="outline-title">
+                <div class="outline-title" id="outline-title">本页目录</div>
+                <div class="outline-content"><div class="outline-marker"></div>
+                    <ul class="outline-root" id="outline-root"></ul>
+                </div>
+            </nav>
+        </div></div></div>
+    </div></div></div>"""
+        render_call = "VPPage.init();"
     else:
         main_html = f"""<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
         <div class="vp-content"><div class="vp-content-container">
             {back_html}
+            {prelude_html}
             <main class="main"><article class="vp-doc">
                 <h1>{escaped_title}</h1>
                 <div id="doc-content"></div>
@@ -192,6 +238,8 @@ def page_template(
     }})();
     </script>
     <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
+    <link rel="stylesheet" href="{root_prefix}css/learning.css?v=1">
+    {extra_head}
     <script src="{root_prefix}js/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -202,7 +250,7 @@ def page_template(
     <script src="{root_prefix}js/prism-bash.min.js"></script>
     <script src="{root_prefix}js/prism-python.min.js"></script>
 </head>
-<body class="{body_class}">
+<body class="{body_class}"{body_attr_html}>
     <header class="vp-navbar">
         <div class="vp-navbar-inner">
             <a class="vp-brand" href="{root_prefix}index.html">AI Chip <span>Compiler</span></a>
@@ -211,7 +259,9 @@ def page_template(
             <nav class="vp-menu" aria-label="站点导航">
                 <a href="{root_prefix}plan.html">168 天计划</a>
                 <a class="vp-roadmap-link" href="{root_prefix}index.html#roadmap">学习路线</a>
-                <a href="{root_prefix}index.html#tutorials">每日教程</a>
+                <a href="{root_prefix}phases/">阶段</a>
+                <a href="{root_prefix}search/">搜索</a>
+                <a href="{root_prefix}settings/">我的数据</a>
                 <a class="vp-github-link" href="{GITHUB_REPO_URL}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             </nav>
             <div class="vp-appearance">
@@ -225,6 +275,8 @@ def page_template(
     <footer class="vp-footer"><span>AI 芯片编译器学习计划 · Deployed on GitHub Pages</span></footer>
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
     <script src="{root_prefix}js/vp-solution.js?v=6"></script>
+    <script type="module" src="{root_prefix}js/learning/app.js?v=1"></script>
+    {extra_scripts}
     <script>
         {'const pageMarkdown = `' + escaped_markdown + '`;' if escaped_markdown else 'const pageMarkdown = "";'}
         try {{
@@ -318,7 +370,7 @@ def plan_heading_slug(text):
     return re.sub(r"-+", "-", re.sub(r"\s+", "-", slug.strip())).strip("-")
 
 
-def build_home(tutorials):
+def build_home(tutorials, days=None):
     plan_text = PLAN_PATH.read_text(encoding="utf-8")
     week_titles = {
         int(number): title.strip()
@@ -353,11 +405,11 @@ def build_home(tutorials):
     ]
     phase_groups = []
     for pi in range(6):
-        days = [d for d in tutorials if (d["number"] - 1) // 28 == pi]
-        if not days:
+        phase_days = [d for d in tutorials if (d["number"] - 1) // 28 == pi]
+        if not phase_days:
             continue
         cards = []
-        for day in days:
+        for day in phase_days:
             title = re.sub(r"^第\s*\d+\s*天[：:]\s*", "", day["title"])
             goal = re.search(r"^> \*\*今日目标\*\*：(.+)$", day["markdown"], re.MULTILINE)
             summary = re.sub(r"[`*_]", "", goal.group(1)) if goal else "概念讲解、技术图解、动手实现与结果验证。"
@@ -375,12 +427,19 @@ def build_home(tutorials):
             f'<details class="phase-tutorials"{" open" if is_recent else ""}>'
             f'<summary><span class="phase-badge">{PHASE_NAMES[pi]}</span>'
             f'<span class="phase-tut-title">{PHASE_DESCS[pi]}</span>'
-            f'<span class="phase-tut-count">{len(days)} 天</span>'
+            f'<span class="phase-tut-count">{len(phase_days)} 天</span>'
             '<span class="vp-day-nav-chevron" aria-hidden="true">\u29c9</span></summary>'
             f'<div class="tutorial-cards">{"".join(cards)}</div></details>'
         )
 
     first_day = tutorials[0]
+    learning_sections = ""
+    if days:
+        learning_sections = learning_pages.home_learning_sections(
+            root_prefix="",
+            first_day_href=tutorial_href(first_day),
+            first_day_label=f"Day {days[0]['day']:03d}",
+        )
     content = f"""
 <section class="home-hero">
     <div class="home-hero-inner">
@@ -400,6 +459,7 @@ def build_home(tutorials):
         </div>
     </div>
 </section>
+{learning_sections}
 <section class="home-section roadmap-section" id="roadmap">
     <div class="section-heading"><h2>学习路线</h2><p>六个阶段、24 个主题，从 Modern C++ 一路走到端到端 AI 芯片编译器。</p></div>
     {"".join(phases)}
@@ -409,7 +469,16 @@ def build_home(tutorials):
     <div class="tutorial-phases">{"".join(phase_groups)}</div>
 </section>
 """
-    output = page_template("AI 芯片编译器学习计划", content, home=True)
+    output = page_template(
+        "AI 芯片编译器学习计划",
+        content,
+        home=True,
+        body_attrs={
+            "data-page-type": "home",
+            "data-base-path": LEARNING_BASE_PATH,
+            "data-days-url": "learning/days.json",
+        },
+    )
     (PUBLIC_DIR / "index.html").write_text(output, encoding="utf-8")
 
 
@@ -421,11 +490,17 @@ def build_plan(tutorials):
         text,
         pills=day_pills(tutorials),
         back_link=("index.html", "返回首页"),
+        body_attrs={
+            "data-page-type": "plan",
+            "data-base-path": LEARNING_BASE_PATH,
+            "data-days-url": "learning/days.json",
+        },
     )
     (PUBLIC_DIR / "plan.html").write_text(output, encoding="utf-8")
 
 
-def build_tutorials(tutorials):
+def build_tutorials(tutorials, days_by_id=None):
+    days_by_id = days_by_id or {}
     for index, day in enumerate(tutorials):
         output_dir = PUBLIC_DIR / "tutorials" / f"week-{day['week']:03d}" / day["slug"]
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -433,7 +508,7 @@ def build_tutorials(tutorials):
         if images.exists():
             shutil.copytree(images, output_dir / "images", dirs_exist_ok=True)
 
-        root_prefix = "../../"
+        root_prefix = "../../../"
         prev_link = None
         next_link = None
         if index > 0:
@@ -443,14 +518,19 @@ def build_tutorials(tutorials):
             following = tutorials[index + 1]
             next_link = (tutorial_href(following, root_prefix), following["title"])
 
+        record = days_by_id.get(day["slug"])
+        body_attrs = learning_pages.tutorial_body_attrs(record, root_prefix, LEARNING_BASE_PATH) if record else None
+        prelude = learning_pages.tutorial_prelude(record, root_prefix) if record else ""
         output = page_template(
             day["title"],
             day["markdown"],
             root_prefix=root_prefix,
             pills=day_pills(tutorials, root_prefix=root_prefix, current_day=day["number"]),
-            back_link=("../../index.html#tutorials", "返回每日教程"),
+            back_link=("../../../index.html#tutorials", "返回每日教程"),
             prev_link=prev_link,
             next_link=next_link,
+            body_attrs=body_attrs,
+            prelude_html=prelude,
         )
         (output_dir / "index.html").write_text(output, encoding="utf-8")
         print(f"Generated tutorials/week-{day['week']:03d}/{day['slug']}/index.html")
@@ -462,7 +542,14 @@ def build_sitemap(tutorials):
     urls = [
         f"<url><loc>{site_url}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>",
         f"<url><loc>{site_url}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
+        f"<url><loc>{site_url}/phases/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>",
+        f"<url><loc>{site_url}/search/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>",
+        f"<url><loc>{site_url}/settings/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>",
     ]
+    for phase in range(1, 7):
+        urls.append(f"<url><loc>{site_url}/phases/phase-{phase}/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
+    for week in range(1, 25):
+        urls.append(f"<url><loc>{site_url}/weeks/week-{week:03d}/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>")
     for day in tutorials:
         loc = f"{site_url}/{tutorial_href(day)}"
         urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
@@ -470,6 +557,100 @@ def build_sitemap(tutorials):
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     xml += "\n".join(urls) + "\n</urlset>\n"
     (PUBLIC_DIR / "sitemap.xml").write_text(xml, encoding="utf-8")
+
+
+def resolve_content_commit():
+    """解析当前内容提交：优先 TUTORIAL_COMMIT 环境变量，其次 git rev-parse。"""
+    commit = os.environ.get("TUTORIAL_COMMIT", "").strip()
+    if re.fullmatch(r"[0-9a-f]{40}", commit):
+        return commit
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
+        )
+        commit = result.stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        commit = ""
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise SystemExit(
+            "[BUILD] 无法确定 content_commit：请设置 TUTORIAL_COMMIT=<40位提交哈希> 或在 Git 仓库内构建"
+        )
+    return commit
+
+
+def build_learning(tutorials, repo_root, output_dir, content_commit, base_path=""):
+    """学习产物编排（WP-01…WP-05）：契约 → 源码包 → 索引 → 学习页面。
+
+    对应 docs/development/01_构建与内容契约.md §1.1；任一必填校验失败即抛出
+    SystemExit，CI 不得上传未通过构建的产物。
+    """
+    day_ids = {f"day-{t['number']:03d}" for t in tutorials}
+    overrides = learning_metadata.load_day_overrides(
+        repo_root / "config" / "learning" / "day-overrides.json", valid_day_ids=day_ids
+    )
+
+    days = []
+    errors = []
+    selections = {}
+    for tutorial in tutorials:
+        day_id = f"day-{tutorial['number']:03d}"
+        override = overrides["days"].get(day_id, {})
+        try:
+            selected = learning_assets.select_archive_files(tutorial["source"], override)
+            selections[day_id] = selected
+            days.append(
+                learning_metadata.build_day_record(
+                    tutorial,
+                    repo_root,
+                    overrides["days"],
+                    github_repo_url=GITHUB_REPO_URL,
+                    content_commit=content_commit,
+                    source_zip=learning_assets.source_zip_name(day_id) if selected else None,
+                )
+            )
+        except learning_metadata.LearningError as exc:
+            errors.append(str(exc))
+    if errors:
+        for line in errors:
+            print(line, file=sys.stderr)
+        raise SystemExit(f"[BUILD] 内容契约失败：共 {len(errors)} 个错误，未生成任何产物")
+
+    collection_errors = learning_metadata.validate_day_collection(days, content_commit, base_path)
+    for error in collection_errors:
+        print(str(error), file=sys.stderr)
+    unused = learning_metadata.unused_override_ids(overrides, [d["day_id"] for d in days])
+    if unused:
+        print(f"[LEARNING_E141] 覆盖配置存在未使用日课：{unused}", file=sys.stderr)
+    if collection_errors or unused:
+        raise SystemExit("[BUILD] 日课集合校验失败")
+
+    generated_at = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    learning_metadata.write_days_json(days, output_dir, content_commit, base_path, generated_at)
+
+    zip_count = 0
+    for tutorial in tutorials:
+        day_id = f"day-{tutorial['number']:03d}"
+        selected = selections[day_id]
+        if selected:
+            learning_assets.build_day_zip(
+                tutorial["source"], output_dir, day_id, overrides["days"].get(day_id, {}), selected
+            )
+            zip_count += 1
+
+    tutorials_by_day = {t["number"]: t for t in tutorials}
+    learning_search.build_search_indexes(tutorials_by_day, days, output_dir, content_commit)
+
+    learning_pages.build_week_pages(days, output_dir, base_path, page_template, ROADMAP)
+    learning_pages.build_phase_pages(days, output_dir, base_path, page_template, ROADMAP)
+    learning_pages.build_phases_index(output_dir, base_path, page_template, ROADMAP)
+    learning_pages.build_search_page(output_dir, base_path, page_template)
+    learning_pages.build_settings_page(output_dir, base_path, page_template)
+
+    print(
+        f"Learning artifacts: {len(days)} days, {zip_count} source zips, "
+        f"search indexes + 24 week pages + 6 phase pages + search/settings pages"
+    )
+    return days
 
 
 def build_robots():
@@ -480,6 +661,7 @@ def build_robots():
 
 def main():
     tutorials = load_tutorials()
+    content_commit = resolve_content_commit()
     if PUBLIC_DIR.exists():
         shutil.rmtree(PUBLIC_DIR)
     PUBLIC_DIR.mkdir()
@@ -489,11 +671,18 @@ def main():
         shutil.copy2(STATIC_DIR / "favicon.svg", PUBLIC_DIR / "favicon.svg")
     (PUBLIC_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
-    build_home(tutorials)
+    days = build_learning(tutorials, ROOT, PUBLIC_DIR, content_commit, LEARNING_BASE_PATH)
+    days_by_id = {d["day_id"]: d for d in days}
+
+    build_home(tutorials, days)
     build_plan(tutorials)
-    build_tutorials(tutorials)
+    build_tutorials(tutorials, days_by_id)
     build_sitemap(tutorials)
     build_robots()
+
+    import learning_validate
+
+    learning_validate.validate_public(PUBLIC_DIR, days, content_commit, LEARNING_BASE_PATH)
     print(f"Website built successfully: {len(tutorials)} tutorials in {PUBLIC_DIR}")
 
 
