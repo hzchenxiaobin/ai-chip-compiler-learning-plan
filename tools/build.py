@@ -13,6 +13,7 @@ PLAN_PATH = ROOT / "AI芯片编译器学习计划.md"
 PUBLIC_DIR = ROOT / "public"
 STATIC_DIR = ROOT / "static"
 GITHUB_REPO_URL = "https://github.com/hzchenxiaobin/ai-chip-compiler-learning-plan"
+SITE_URL = "https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
 TITLE_RE = re.compile(r"^#\s+第\s*(\d+)\s*天[：:]\s*(.+)$")
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 
@@ -104,7 +105,7 @@ def page_template(
     home=False,
 ):
     escaped_title = html.escape(title)
-    escaped_markdown = escape_for_template_string(markdown)
+    escaped_markdown = "" if home else escape_for_template_string(markdown)
 
     pills_html = ""
     body_class = "vp-page vp-home" if home else "vp-page"
@@ -146,7 +147,9 @@ def page_template(
     if home:
         main_html = f'<main class="home-main">{markdown}</main>'
         render_call = "VPPage.init();"
-        escaped_markdown = ""  # home 页 HTML 已直接嵌入——不需要 JS 变量
+        markdown_assets = ""
+        markdown_declaration = ""
+        render_prerequisite = "window.VPPage"
     else:
         main_html = f"""<div class="vp-main"><div class="vp-doc-wrap"><div class="vp-container">
         <div class="vp-content"><div class="vp-content-container">
@@ -167,6 +170,18 @@ def page_template(
         </div></div></div>
     </div></div></div>"""
         render_call = "VPPage.render(pageMarkdown);"
+        markdown_assets = f"""    <script src="{root_prefix}js/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="{root_prefix}js/markdown-math.js"></script>
+    <script src="{root_prefix}js/prism.min.js"></script>
+    <script src="{root_prefix}js/prism-c.min.js"></script>
+    <script src="{root_prefix}js/prism-cpp.min.js"></script>
+    <script src="{root_prefix}js/prism-bash.min.js"></script>
+    <script src="{root_prefix}js/prism-python.min.js"></script>
+"""
+        markdown_declaration = "const pageMarkdown = `" + escaped_markdown + "`;"
+        render_prerequisite = "typeof marked !== 'undefined' && window.VPPage"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN" class="dark">
@@ -192,16 +207,7 @@ def page_template(
     }})();
     </script>
     <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
-    <script src="{root_prefix}js/marked.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="{root_prefix}js/markdown-math.js"></script>
-    <script src="{root_prefix}js/prism.min.js"></script>
-    <script src="{root_prefix}js/prism-c.min.js"></script>
-    <script src="{root_prefix}js/prism-cpp.min.js"></script>
-    <script src="{root_prefix}js/prism-bash.min.js"></script>
-    <script src="{root_prefix}js/prism-python.min.js"></script>
-</head>
+{markdown_assets}</head>
 <body class="{body_class}">
     <header class="vp-navbar">
         <div class="vp-navbar-inner">
@@ -226,9 +232,9 @@ def page_template(
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
     <script src="{root_prefix}js/vp-solution.js?v=6"></script>
     <script>
-        {'const pageMarkdown = `' + escaped_markdown + '`;' if escaped_markdown else 'const pageMarkdown = "";'}
+        {markdown_declaration}
         try {{
-            if (typeof marked === 'undefined' || !window.VPPage) {{
+            if (!({render_prerequisite})) {{
                 throw new Error('页面脚本加载失败。');
             }}
             {render_call}
@@ -346,13 +352,8 @@ def build_home(tutorials):
         )
 
     # 按阶段分组教程卡片，默认只展开最近两个阶段
-    PHASE_NAMES = ["阶段一", "阶段二", "阶段三", "阶段四", "阶段五", "阶段六"]
-    PHASE_DESCS = [
-        "C++ 与编译器基础", "MLIR 核心能力", "AI 计算图与图优化",
-        "Lowering、Tiling 与性能", "端到端编译与 Runtime", "项目收口与面试转化",
-    ]
     phase_groups = []
-    for pi in range(6):
+    for pi, (phase_name, phase_desc, _, _) in enumerate(ROADMAP):
         days = [d for d in tutorials if (d["number"] - 1) // 28 == pi]
         if not days:
             continue
@@ -373,8 +374,8 @@ def build_home(tutorials):
         is_recent = pi >= 4
         phase_groups.append(
             f'<details class="phase-tutorials"{" open" if is_recent else ""}>'
-            f'<summary><span class="phase-badge">{PHASE_NAMES[pi]}</span>'
-            f'<span class="phase-tut-title">{PHASE_DESCS[pi]}</span>'
+            f'<summary><span class="phase-badge">{phase_name}</span>'
+            f'<span class="phase-tut-title">{phase_desc}</span>'
             f'<span class="phase-tut-count">{len(days)} 天</span>'
             '<span class="vp-day-nav-chevron" aria-hidden="true">\u29c9</span></summary>'
             f'<div class="tutorial-cards">{"".join(cards)}</div></details>'
@@ -458,13 +459,12 @@ def build_tutorials(tutorials):
 
 
 def build_sitemap(tutorials):
-    site_url = "https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
     urls = [
-        f"<url><loc>{site_url}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>",
-        f"<url><loc>{site_url}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
+        f"<url><loc>{SITE_URL}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>",
+        f"<url><loc>{SITE_URL}/plan.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>",
     ]
     for day in tutorials:
-        loc = f"{site_url}/{tutorial_href(day)}"
+        loc = f"{SITE_URL}/{tutorial_href(day)}"
         urls.append(f"<url><loc>{loc}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>")
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -473,8 +473,7 @@ def build_sitemap(tutorials):
 
 
 def build_robots():
-    site_url = "https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
-    content = f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n"
+    content = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n"
     (PUBLIC_DIR / "robots.txt").write_text(content, encoding="utf-8")
 
 

@@ -1,10 +1,11 @@
 /**
  * vp-solution.js
  * VitePress 风格独立页面（题解/文章）的渲染与交互脚本，
- * 与 vp-solution.css 配套使用（由 build/common.py 的 solution_page_template 生成页面）。
+ * 与 vp-solution.css 配套使用（由 tools/build.py 的 page_template 生成页面）。
  *
- * 页面需先加载：marked.min.js、markdown-math.js、KaTeX、Prism（各语言组件）。
- * 本文件提供 window.VPPage.render(markdown)，完成：
+ * 文章渲染需先加载：marked.min.js、markdown-math.js、KaTeX、Prism（各语言组件）。
+ * 静态首页调用 window.VPPage.init()，不依赖上述渲染库。
+ * window.VPPage.render(markdown) 完成：
  *   1. Markdown 渲染（标题锚点 + 悬停 "#" 链接，CJK 友好 slug）
  *   2. 代码块增强：语言标签 / 复制按钮 / 行号列
  *   3. 右侧「本页目录」生成 + 滚动高亮（outline-marker 跟随）
@@ -446,23 +447,6 @@ window.VPPage = (function () {
         if (active && typeof active.scrollIntoView === 'function') {
             active.scrollIntoView({ inline: 'center', block: 'nearest' });
         }
-
-        var dayNav = document.querySelector('.vp-day-nav');
-        if (!dayNav) return;
-        var toggle = dayNav.querySelector('.vp-day-nav-toggle');
-        dayNav.addEventListener('toggle', function () {
-            if (!dayNav.open) return;
-            var current = dayNav.querySelector('.vp-day-link.active');
-            if (current) current.scrollIntoView({ block: 'nearest' });
-        });
-        document.addEventListener('click', function (event) {
-            if (dayNav.open && !dayNav.contains(event.target)) dayNav.open = false;
-        });
-        dayNav.addEventListener('keydown', function (event) {
-            if (event.key !== 'Escape') return;
-            dayNav.open = false;
-            toggle.focus();
-        });
     }
 
     /* ------------------------------------------------------------------
