@@ -344,6 +344,26 @@
 .learning-pill-completed { border-color: var(--vp-c-green-1, #2aa846); }
 .learning-pill-blocked { border-color: #d4380d; color: #d4380d; }
 
+.learning-day-row .learning-day-state { display: inline-flex; align-items: center; }
+
+.learning-continue-link {
+  display: inline-block;
+  margin: 14px 0 4px;
+  color: var(--vp-c-brand, #3f6ad3);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.learning-continue-link:hover, .learning-continue-link:focus-visible { text-decoration: underline; }
+
+.learning-hit {
+  background: var(--vp-c-brand-soft, rgba(63, 106, 211, .18));
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
 /* --- 窄屏适配 ------------------------------------------------------------ */
 
 @media (max-width: 640px) {
