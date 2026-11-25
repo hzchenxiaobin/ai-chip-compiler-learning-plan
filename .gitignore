@@ -9,8 +9,4 @@ __pycache__/
 *.o
 *.dSYM/
 .DS_Store
-node_modules/
-test-results/
-playwright-report/
-.playwright/
 tutorials/week-008/day-054/code/mlir-mini/outputs/oscillate_hang.err

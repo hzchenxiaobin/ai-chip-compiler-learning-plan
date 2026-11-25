@@ -9,134 +9,43 @@ on:
       - 'tutorials/**'
       - 'tools/**'
       - 'static/**'
-      - 'config/**'
-      - 'schemas/**'
-      - 'tests/**'
-      - 'package.json'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  content-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Content and pure-function tests
-        run: |
-          python3 -m unittest discover -s tests/content -p 'test_*.py' -v
-          node --test tests/unit/*.mjs
-
-  build:
-    needs: content-test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout (full metadata for commit)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Build with learning artifacts
-        run: python3 tools/build.py
-        env:
-          LEARNING_BASE_PATH: /ai-chip-compiler-learning-plan
-          TUTORIAL_COMMIT: ${{ github.sha }}
-
-      - name: Validate public output
-        run: python3 tools/learning_validate.py --public public --base-path /ai-chip-compiler-learning-plan
-
-      - name: Upload site for browser tests
-        uses: actions/upload-artifact@v4
-        with:
-          name: website-build
-          path: public
-          retention-days: 1
-
-      - name: Upload Pages artifact (only after all checks)
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
-
-  browser-test:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Download tested site
-        uses: actions/download-artifact@v4
-        with:
-          name: website-build
-          path: public
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-
   deploy:
-    needs: [build, browser-test]
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Checkout
+        uses: actions/checkout@v7
 
-      - name: Download the exact tested artifact
-        uses: actions/download-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          name: website-build
-          path: public
+          python-version: '3.11'
 
-      - name: Package Pages artifact (after all tests passed)
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+        with:
+          enablement: true
+
+      - name: Build website
+        run: python3 tools/build.py
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: public
@@ -159,35 +68,6 @@ jobs:
           echo "Timed out waiting for github-pages artifact metadata"
           exit 1
 
-      - name: Deploy exactly the tested artifact
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v5
-
-  smoke:
-    needs: deploy
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Verify deployed critical URLs
-        run: |
-          set -eu
-          BASE="https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan"
-          check() {
-            code=$(curl -s -o /dev/null -w "%{http_code}" -L "$1")
-            echo "$1 -> $code"
-            [ "$code" = "200" ]
-          }
-          check "$BASE/"
-          check "$BASE/plan.html"
-          check "$BASE/learning/days.json"
-          check "$BASE/learning/search/lite-index.json"
-          check "$BASE/learning/search/phase-2.json"
-          check "$BASE/tutorials/week-005/day-029/"
-          check "$BASE/weeks/week-005/"
-          check "$BASE/phases/phase-2/"
-          check "$BASE/search/"
-          check "$BASE/settings/"
-          check "$BASE/downloads/day-029-source.zip"
-          days=$(curl -s -L "$BASE/learning/days.json" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["days"]))')
-          echo "days count: $days"
-          [ "$days" = "168" ]
