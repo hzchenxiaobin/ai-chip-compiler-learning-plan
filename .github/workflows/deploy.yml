@@ -119,6 +119,7 @@ jobs:
     needs: [build, browser-test]
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       pages: write
       id-token: write
     environment:
@@ -135,12 +136,12 @@ jobs:
           path: public
 
       - name: Package Pages artifact (after all tests passed)
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: public
 
       - name: Deploy exactly the tested artifact
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   smoke:
     if: github.event_name != 'pull_request'
