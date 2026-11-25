@@ -1,4 +1,5 @@
 name: Deploy tutorials to GitHub Pages
+# 注：push 触发带 paths 过滤，空提交不会触发本工作流；重试请在 Actions 页面 Re-run 或修改匹配路径文件。
 
 on:
   push:
