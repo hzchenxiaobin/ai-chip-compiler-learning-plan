@@ -11,7 +11,11 @@
 
 网站的产品目标也不应是“把文章搬到网上”，而应是帮助学习者持续完成一条有工程证据的能力路径：从 Modern C++、Tensor 与图 IR，经过 MLIR、图优化、Lowering、Tiling、LLVM 和 Runtime，最终交付可复现的 `minic` 端到端编译器及项目文档。普通课程平台常用的视频播放、营销页和结业证书不是本项目的首要能力；**下一步该学什么、今天需要交付什么、实验怎样证明正确、性能数字怎样复现、卡住后如何回到路径**，才是网站需要优先回答的问题。每周第 6 天集成、第 7 天复盘，以及第 155—159 天的项目文档、第 160 天的干净环境复现、第 167—168 天的表达与最终验收，已经提供了很好的学习骨架，网站应把它显性化而非另造一套课程体系([仓库 README](https://github.com/hzchenxiaobin/ai-chip-compiler-learning-plan/blob/53b62f1c84223bb6ca466bb8177921ccd5d8ef72/README.md), [第 160 天](https://github.com/hzchenxiaobin/ai-chip-compiler-learning-plan/tree/53b62f1c84223bb6ca466bb8177921ccd5d8ef72/tutorials/week-023/day-160), [第 168 天](https://github.com/hzchenxiaobin/ai-chip-compiler-learning-plan/tree/53b62f1c84223bb6ca466bb8177921ccd5d8ef72/tutorials/week-024/day-168))。
 
-![按日教程的学习闭环](学习网站建设指南_assets/每日学习闭环.png)
+```text
+明确目标与前置 → 阅读教程与图解 → 获取并运行代码 → 修改变量与观察结果
+      ↑                                                        ↓
+加入复习与下周计划 ← 周集成/阶段复盘 ← 记录证据与卡点 ← 练习和当日验收
+```
 
 ## 1. 项目基线：不是“从教程到静态页”，而是“从教程仓库到动态学习产品”
 
@@ -49,7 +53,7 @@
 | --- | --- | --- | --- |
 | Coursera | 课程/周进度、任务汇总、推荐下一步([官方说明](https://blog.coursera.org/new-progress-tracking-features-on-coursera/)) | 首页“继续学习”、本周任务与集成/复盘节点 | 以视频观看和通用周作业为中心的课程模型 |
 | Duolingo | 连续记录、每日回访、Streak Freeze 弹性机制([官方说明](https://blog.duolingo.com/duolingo-101-how-to-learn-a-language-on-duolingo/), [机制说明](https://blog.duolingo.com/how-duolingo-streak-builds-habit/)) | 温和提醒、漏学后的恢复计划、每周坚持视图 | Hearts、过度 streak 压力、跨学习者排名 |
-| freeCodeCamp | 短讲与理解检查、引导工作坊、空白实验、复习、测验和项目([官方课程更新](https://www.freecodecamp.org/news/christmas-2025-freecodecamp-curriculum-updates/)) | 日课小检查、从引导到独立实验、项目作品集 | 首版把所有 C++/MLIR 实验搬进浏览器 |
+| freeCodeCamp | 短讲与理解检查、引导工作坊、空白实验、复习、测验和项目([官方课程更新](https://www.freecodecamp.org/news/freecodecamp-turns-10-major-curriculum-updates/)) | 日课小检查、从引导到独立实验、项目作品集 | 首版把所有 C++/MLIR 实验搬进浏览器 |
 | Moodle | 按前置活动、日期、成绩限制访问；按完成条件发徽章([访问条件](https://docs.moodle.org/en/Using_restrict_access), [徽章](https://docs.moodle.org/en/Using_badges)) | 前置检查、路径状态、阶段徽章 | 为单课程引入完整角色、成绩册和插件运维 |
 | LearnDash | 前置课程、定时释放、测验、作业、证书与报表([官方功能](https://learndash.com/support/kb/core/getting-started-with-learndash/setting-up-your-first-course-with-learndash/), [测验进度](https://learndash.com/support/docs/core/quizzes/quiz-access/)) | 练习尝试记录、作业反馈、可选学习证明 | 重复迁移 168 篇正文和静态资源，增加 WordPress 维护 |
 | 现有静态发布流程 | 内容校验、版本化教程和 Actions 经验可复用 | 复用解析器、静态资源与内容工作流 | 继续把 Pages 当生产托管，或在纯前端保存私密数据 |
