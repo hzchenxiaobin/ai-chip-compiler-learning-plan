@@ -33,8 +33,15 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 # 准备 MySQL（库名 learning）与 Redis，然后在 config/settings/dev.py 配置连接
 .venv/bin/python manage.py migrate
 .venv/bin/python manage.py import_tutorial --commit HEAD   # 导入并激活 168 天内容
+.venv/bin/python manage.py createsuperuser                 # 或使用下方默认账号
 .venv/bin/python manage.py runserver                        # http://127.0.0.1:8000
 ```
+
+本地环境已预置默认管理员（仅限本机开发，生产环境请自行创建并更换）：
+
+| 用户名 | 密码 | 说明 |
+|---|---|---|
+| `admin` | `admin-learn-2026` | 超级用户：可登录站点与 `/admin/`（发布后台、学习指标），也可作为普通学习者使用 |
 
 测试：
 
