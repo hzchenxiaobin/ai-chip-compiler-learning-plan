@@ -79,6 +79,19 @@ def week_plan_href(week, root_prefix=""):
     return f"{root_prefix}plan/week-{week:03d}/"
 
 
+def week_pills(weeks, root_prefix="", current_week=None):
+    return [
+        {
+            "num": week["number"],
+            "label": f"Week {week['number']}",
+            "title": week["title"],
+            "href": week_plan_href(week["number"], root_prefix),
+            "active": current_week == week["number"],
+        }
+        for week in weeks
+    ]
+
+
 def day_pills(tutorials, root_prefix="", current_week=None, current_day=None):
     if current_week is None:
         current_week = (
@@ -488,6 +501,7 @@ def build_plan(tutorials):
     output = page_template(
         "AI 芯片编译器 168 天学习计划",
         "\n\n".join(overview),
+        pills=week_pills(weeks),
         back_link=("index.html", "返回首页"),
         extra_head=legacy_redirect,
     )
