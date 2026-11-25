@@ -317,12 +317,15 @@ def _current_sha(release, day_id: str) -> str | None:
 
 def day_representation(user, release, meta: dict) -> dict:
     view = get_day_view_model(user, release, meta)
+    progress = DayProgress.objects.filter(user=user, day_id=view["day_id"]).first()
     return {
         "schema_version": 1,
         "day_id": view["day_id"],
         "content_sha": view["ack_content_sha"] or "",
         "planned": view["planned"],
         "tasks": view["tasks"],
+        "reading_position": round(progress.reading_position, 4) if progress else 0.0,
+        "reading_seconds": progress.reading_seconds if progress else 0,
         "last_visited_at": (
             view["last_visited_at"].strftime("%Y-%m-%dT%H:%M:%SZ")
             if view["last_visited_at"] else None
@@ -431,6 +434,85 @@ def _snapshot(user, release, meta, progress) -> dict:
             progress.last_visited_at.strftime("%Y-%m-%dT%H:%M:%SZ")
             if progress.last_visited_at else None
         ),
+    }
+
+
+def record_reading_heartbeat(user, meta: dict, *, scroll_ratio: float,
+                             elapsed_seconds: int) -> dict:
+    """阅读心跳（自动进度，产品决策：含自动完成）。
+
+    - 幂等式单向推进：不做 If-Match（仅创建/累加/推进 reading 状态）；
+    - 纯位置/时长更新不增加 revision（避免与任务写入产生 412 风暴）；
+    - 状态变化（not_started→in_progress→done）才增加 revision 并写审计；
+    - 自动完成条件（settings.AUTO_COMPLETE_READING）：累计时长达阈值
+      且本次心跳滚动比例达阈值 → reading=done（audit: reading.auto_done）。
+    """
+    from django.conf import settings as dj_settings
+
+    now = timezone.now()
+    day_id = meta["day_id"]
+
+    # 输入规整：单次 elapsed 上限 60 秒（防时钟漂移灌水），比例夹取 [0,1]。
+    elapsed_seconds = max(0, min(int(elapsed_seconds), 60))
+    scroll_ratio = min(1.0, max(0.0, float(scroll_ratio)))
+
+    auto_completed = False
+    with transaction.atomic():
+        progress = DayProgress.objects.select_for_update().filter(
+            user=user, day_id=day_id
+        ).first()
+        if progress is None:
+            progress = DayProgress.objects.create(
+                user=user, day_id=day_id, ack_content_sha=meta["content_sha"],
+                last_visited_at=now, revision=0,
+            )
+        progress.reading_position = scroll_ratio
+        progress.reading_seconds = min(
+            progress.reading_seconds + elapsed_seconds, 24 * 3600
+        )
+        if progress.last_visited_at is None or now - progress.last_visited_at > timedelta(seconds=60):
+            progress.last_visited_at = now
+        progress.save()
+
+        task = TaskProgress.objects.select_for_update().filter(
+            user=user, day_id=day_id, task_id="reading"
+        ).first()
+        if task is None:
+            task = TaskProgress(user=user, day_id=day_id, task_id="reading")
+        current = task.status if task.pk else TaskStatus.NOT_STARTED
+
+        reading_applicable = "reading" in meta.get("required_tasks", ())
+        new_status = current
+        if reading_applicable:
+            if current in (TaskStatus.NOT_STARTED, TaskStatus.NOT_APPLICABLE):
+                new_status = TaskStatus.IN_PROGRESS  # 真实活动信号：自动进入进行中。
+            if (current in (TaskStatus.NOT_STARTED, TaskStatus.IN_PROGRESS)
+                    and getattr(dj_settings, "AUTO_COMPLETE_READING", True)
+                    and progress.reading_seconds >= int(
+                        getattr(dj_settings, "READING_DONE_MIN_SECONDS", 180))
+                    and scroll_ratio >= float(
+                        getattr(dj_settings, "READING_DONE_SCROLL_RATIO", 0.95))):
+                # 自动完成（产品开关控制）；blocked/done 等人工状态永不覆盖。
+                new_status = TaskStatus.DONE
+                auto_completed = True
+        if new_status != current:
+            task.status = new_status
+            task.save()
+            progress.revision += 1
+            progress.save(update_fields=["revision"])
+            _audit(user, "reading.heartbeat" if not auto_completed else
+                    "reading.auto_done", "day", day_id, {
+                        "status": new_status,
+                        "reading_seconds": progress.reading_seconds,
+                    })
+
+    return {
+        "day_id": day_id,
+        "reading_position": round(progress.reading_position, 4),
+        "reading_seconds": progress.reading_seconds,
+        "reading_status": new_status,
+        "auto_completed": auto_completed,
+        "revision": progress.revision,
     }
 
 

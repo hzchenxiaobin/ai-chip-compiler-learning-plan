@@ -22,6 +22,7 @@ from .services import (
     ValidationError,
     day_representation,
     get_dashboard_view,
+    record_reading_heartbeat,
     set_plan,
     update_progress,
 )
@@ -192,6 +193,42 @@ def me_progress_update(request, day_id: str):
     response = JsonResponse(representation)
     response["ETag"] = f'"{representation["revision"]}"'
     return response
+
+
+HEARTBEAT_RATE_LIMIT = 30       # 次/分钟（客户端 15 秒一次，余量充足）
+
+
+@require_http_methods(["POST"])
+@db_unavailable
+@api_auth
+def me_progress_heartbeat(request, day_id: str):
+    """阅读心跳：自动推进 reading 进度（含自动完成，见 settings.AUTO_COMPLETE_READING）。
+
+    无需 If-Match：单向幂等推进（创建/累加/状态前进），不会覆盖人工勾选的
+    done/blocked 状态；sendBeacon 场景支持 form-encoded 的 csrfmiddlewaretoken。
+    """
+    if not _rate_limit(request, "heartbeat", HEARTBEAT_RATE_LIMIT, window=60):
+        return _error("RATE_LIMITED", "心跳过于频繁", 429)
+    release = SiteState.get_active_release()
+    if release is None:
+        return _error("NO_ACTIVE_RELEASE", "内容尚未发布", 503)
+    meta = _meta_or_none(release, day_id)
+    if meta is None:
+        return _error("DAY_NOT_FOUND", f"日课不存在：{day_id}", 404)
+    try:
+        if request.content_type and "json" in request.content_type:
+            body = _json_body(request)
+        else:  # sendBeacon 的 form-encoded。
+            body = {k: v for k, v in request.POST.items()}
+        scroll_ratio = float(body.get("scroll_ratio", 0))
+        elapsed_seconds = int(float(body.get("elapsed_seconds", 0)))
+    except (TypeError, ValueError):
+        return _error("BODY_INVALID", "scroll_ratio/elapsed_seconds 格式无效")
+    result = record_reading_heartbeat(
+        request.user, meta,
+        scroll_ratio=scroll_ratio, elapsed_seconds=elapsed_seconds,
+    )
+    return JsonResponse(result)
 
 
 @require_http_methods(["GET", "PUT"])

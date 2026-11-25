@@ -129,6 +129,17 @@ LOGOUT_REDIRECT_URL = "/"
 # 签名下载 URL 的有效时长（秒）。
 SIGNED_URL_TTL = 300
 
+# ---------------------------------------------------------------------------
+# 阅读进度自动化（产品决策：开启自动完成，覆盖设计文档 §1.2 默认口径）
+# - AUTO_COMPLETE_READING=True：滚至文末且累计阅读达阈值 → reading 自动 done
+# - 关闭（False）即回到「完成必须人工确认」的设计默认
+# - 阈值 READING_DONE_MIN_SECONDS：累计阅读秒数下限（默认 180 秒）
+# - READING_DONE_SCROLL_RATIO：滚动比例下限（默认 0.95）
+# ---------------------------------------------------------------------------
+AUTO_COMPLETE_READING = True
+READING_DONE_MIN_SECONDS = 180
+READING_DONE_SCROLL_RATIO = 0.95
+
 # 导入/导出限额（设计文档 §8.4）。
 IMPORT_MAX_FILE_BYTES = 5 * 1024 * 1024
 IMPORT_MAX_DAY_RECORDS = 500

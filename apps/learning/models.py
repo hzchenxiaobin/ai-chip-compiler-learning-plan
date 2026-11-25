@@ -43,6 +43,9 @@ class DayProgress(models.Model):
     needs_review = models.BooleanField(default=False)
     revision = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
+    # 阅读自动追踪（心跳）：上次滚动位置（断点续读）与累计阅读秒数。
+    reading_position = models.FloatField(default=0.0)
+    reading_seconds = models.PositiveIntegerField(default=0)
 
     class Meta:
         constraints = [

@@ -7,6 +7,8 @@ urlpatterns = [
     path("me/dashboard/", api.me_dashboard, name="api_dashboard"),
     path("me/progress/<str:day_id>/", api.me_progress, name="api_progress"),
     path("me/progress/<str:day_id>/update/", api.me_progress_update, name="api_progress_update"),
+    path("me/progress/<str:day_id>/heartbeat/", api.me_progress_heartbeat,
+         name="api_progress_heartbeat"),
     path("me/plan/", api.me_plan, name="api_plan"),
     path("me/exports/", api.me_exports, name="api_exports"),
     path("me/exports/<int:job_id>/download/", api.me_export_download, name="api_export_download"),

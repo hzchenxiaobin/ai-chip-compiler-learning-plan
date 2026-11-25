@@ -24,6 +24,7 @@
         var saveStatus = $('[data-learning="save-status"]', card);
         var overallEl = $('[data-learning="overall-status"]', card);
         var revision = null;
+        var revisionRef = { value: null };
 
         function say(message, isError) {
             if (!saveStatus) return;
@@ -33,6 +34,7 @@
 
         function refreshOverall(data) {
             revision = data.revision;
+            revisionRef.value = data.revision;
             if (overallEl && data.overall) {
                 overallEl.textContent = STATE_LABELS[data.overall] || data.overall;
                 overallEl.className = 'learning-state learning-state-' + data.overall;
@@ -128,10 +130,117 @@
             });
         }
 
-        // 首次拉取 revision（用于 If-Match）。
+        // 首次拉取 revision（用于 If-Match）+ 断点续读 + 启动阅读心跳。
         global.LearningAPI.apiFetch('/api/v1/me/progress/' + dayId + '/').then(function (result) {
-            if (result.ok) refreshOverall(result.data);
+            if (!result.ok) return;
+            refreshOverall(result.data);
+            restoreReadingPosition(result.data);
+            startReadingHeartbeat(dayId, revision);
         });
+    }
+
+    /* ---------------- 阅读自动追踪（心跳） ---------------- */
+
+    var HEARTBEAT_INTERVAL_MS = 15000;
+
+    function currentScrollRatio() {
+        var doc = document.documentElement;
+        var total = doc.scrollHeight - window.innerHeight;
+        if (total <= 0) return 1.0;
+        return Math.min(1.0, Math.max(0.0, window.scrollY / total));
+    }
+
+    function restoreReadingPosition(data) {
+        var position = data && data.reading_position;
+        if (!position || position < 0.05 || position >= 0.98) return;
+        var doc = document.documentElement;
+        var total = doc.scrollHeight - window.innerHeight;
+        var target = Math.round(total * position);
+        if (Math.abs(window.scrollY - target) < 80) return;  // 已在附近。
+        window.scrollTo(0, target);
+        var hint = document.createElement('div');
+        hint.className = 'learning-restore-hint';
+        hint.setAttribute('role', 'status');
+        hint.textContent = '已恢复上次阅读位置（约 ' + Math.round(position * 100) + '%）';
+        document.body.appendChild(hint);
+        setTimeout(function () { hint.remove(); }, 5000);
+    }
+
+    function startReadingHeartbeat(dayId, revisionRef) {
+        var lastTick = Date.now();
+        var sending = false;
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') {
+                lastTick = Date.now();  // 回到页面重新计时，避免计入后台时间。
+            } else {
+                sendBeaconNow();
+            }
+        });
+
+        function elapsedSinceTick() {
+            var seconds = Math.round((Date.now() - lastTick) / 1000);
+            lastTick = Date.now();
+            return Math.max(0, Math.min(60, seconds));  // 单次上限 60s（与服务器一致）。
+        }
+
+        function handleResponse(data) {
+            if (!data) return;
+            revisionRef.value = data.revision;
+            if (data.auto_completed) {
+                // 自动完成：同步单选组与整体状态（程序置 checked 不触发 change）。
+                var radio = card0() && card0().querySelector(
+                    'input[data-task="reading"][value="done"]');
+                if (radio) {
+                    radio.checked = true;
+                    var group = radio.closest('fieldset');
+                    if (group) group.setAttribute('data-previous', 'done');
+                }
+                say('阅读已自动标记完成（读完全文且时长达标）');
+                global.LearningAPI.apiFetch('/api/v1/me/progress/' + dayId + '/')
+                    .then(function (result) {
+                        if (result.ok) refreshOverall(result.data);
+                    });
+            }
+        }
+
+        function card0() {
+            return document.querySelector('[data-learning="day-task"]');
+        }
+
+        function sendBeat() {
+            var elapsed = elapsedSinceTick();
+            if (sending || elapsed <= 0) return;
+            sending = true;
+            global.LearningAPI.apiFetch(
+                '/api/v1/me/progress/' + dayId + '/heartbeat/', {
+                method: 'POST',
+                body: {
+                    scroll_ratio: Math.round(currentScrollRatio() * 1000) / 1000,
+                    elapsed_seconds: elapsed
+                }
+            }).then(function (result) {
+                sending = false;
+                if (result.ok) handleResponse(result.data);
+            }).catch(function () { sending = false; });
+        }
+
+        function sendBeaconNow() {
+            if (!navigator.sendBeacon) return;
+            var elapsed = elapsedSinceTick();
+            if (elapsed <= 0) return;
+            var params = new URLSearchParams();
+            params.set('csrfmiddlewaretoken', global.LearningAPI.csrfToken());
+            params.set('scroll_ratio', String(Math.round(currentScrollRatio() * 1000) / 1000));
+            params.set('elapsed_seconds', String(elapsed));
+            navigator.sendBeacon(
+                '/api/v1/me/progress/' + dayId + '/heartbeat/', params);
+        }
+
+        setInterval(function () {
+            if (document.visibilityState === 'visible') sendBeat();
+        }, HEARTBEAT_INTERVAL_MS);
+        window.addEventListener('pagehide', sendBeaconNow);
     }
 
     /* ---------------- 周/阶段/仪表盘状态刷新 ---------------- */

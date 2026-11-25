@@ -24,6 +24,11 @@ P0 实现说明见 [deploy/README.md](./deploy/README.md)）：
 - 注册登录后，阅读/练习/实验/验收四项任务状态保存在 MySQL，支持跨设备恢复、
   revision 乐观锁（`If-Match`/412）、导出与导入（含替换前快照）；
 - 服务端全文搜索支持中文二元词、命令与错误码，可按阶段/周/类型筛选；
+- **阅读进度自动记录**（心跳 15 秒/次 + 关闭页面 sendBeacon）：自动恢复上次阅读位置
+  （断点续读，跨设备）、自动把阅读推进到「进行中」；**读完全文且累计满 3 分钟自动标记
+  阅读完成**（产品决策，可用 `AUTO_COMPLETE_READING=False` 关闭回到人工确认口径，
+  阈值 `READING_DONE_MIN_SECONDS` / `READING_DONE_SCROLL_RATIO` 可调）；
+  自动标记永不覆盖人工设置的 done/blocked；
 - 每个有代码的日课提供确定性源码 ZIP（排除冻结输出与疑似密钥，保留执行权限）。
 
 本地快速开始：

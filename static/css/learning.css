@@ -329,3 +329,15 @@ html.dark .home-quick-search button {
     .pager-link .title { overflow-wrap: anywhere; }
     .prev-next { min-width: 0; }
 }
+
+
+/* 断点续读提示（自动恢复阅读位置） */
+.learning-restore-hint {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 24px; z-index: 120;
+    padding: 8px 16px; border-radius: 999px;
+    background: var(--vp-c-bg-elv); color: var(--vp-c-text-1);
+    border: 1px solid var(--vp-c-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    font-size: 0.85em;
+}
