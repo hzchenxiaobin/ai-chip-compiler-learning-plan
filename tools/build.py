@@ -74,10 +74,12 @@ def load_tutorials():
 def load_week_overview(week_number):
     week_dir = TUTORIALS_DIR / f"week-{week_number:03d}"
     overview_path = week_dir / "overview.md"
-    if not overview_path.exists():
-        return ""
+    if not overview_path.is_file():
+        raise FileNotFoundError(f"周计划不存在：{overview_path}")
 
     text = overview_path.read_text(encoding="utf-8").strip()
+    if not text:
+        raise ValueError(f"周计划不能为空：{overview_path}")
     for target in IMAGE_RE.findall(text):
         target = target.strip().split()[0].strip("<>")
         if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
@@ -528,14 +530,7 @@ def build_plan(tutorials):
         number = week["number"]
         previous = weeks[index - 1] if index > 0 else None
         following = weeks[index + 1] if index + 1 < len(weeks) else None
-        overview = load_week_overview(number)
-        content_parts = []
-        if overview:
-            content_parts.append(overview)
-        content_parts.extend(
-            [f'> {week["phase"]}', "\n".join(week["lines"]).strip()]
-        )
-        content = "\n\n".join(content_parts)
+        content = load_week_overview(number)
         output = page_template(
             week["title"],
             content,
@@ -554,9 +549,10 @@ def build_plan(tutorials):
         output_dir = PUBLIC_DIR / "plan" / f"week-{number:03d}"
         output_dir.mkdir(parents=True, exist_ok=True)
         (output_dir / "index.html").write_text(output, encoding="utf-8")
-        if overview:
+        images = TUTORIALS_DIR / f"week-{number:03d}" / "images"
+        if images.exists():
             shutil.copytree(
-                TUTORIALS_DIR / f"week-{number:03d}" / "images",
+                images,
                 output_dir / "images",
                 dirs_exist_ok=True,
             )

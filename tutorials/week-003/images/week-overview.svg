@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<rect x="0" y="0" width="1200" height="675" fill="#FDFBF4"/>
+<!-- 页眉 -->
+<text x="36" y="50" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+<text x="1164" y="50" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="end">Week 3／24 · 第一阶段：C++ 与编译器基础</text>
+<text x="600" y="54" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="27" fill="#3A322A" text-anchor="middle" font-weight="bold">第 3 周：CFG、SSA 与程序分析</text>
+<text x="600" y="82" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle">七天主线：立路网 → 排时间表 → 发身份证 → 查必经之地 → 算退房时刻 → 管理事实 → 菱形收拢</text>
+<path d="M 320.8 96.5 L 413.0 95.0 L 507.2 97.5 L 599.8 97.1 L 691.8 96.1 L 785.7 96.0 L 880.4 97.1" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<!-- 左列：七天阶段推进 -->
+<text x="36" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15.5" fill="#3A322A" text-anchor="start" font-weight="bold">七天这样推进</text>
+<path d="M 33.7 131.2 L 31.6 132.6 L 506.3 131.0 L 507.1 132.6 L 509.5 187.8 L 509.5 190.0 L 32.5 186.3 L 32.1 189.4 Z" fill="#DCE9F5" stroke="none"/>
+<path d="M 33.9 133.7 L 35.4 132.6 L 507.6 130.3 L 505.6 133.2 L 508.2 189.1 L 507.8 188.7 L 34.1 189.6 L 31.9 188.0 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.7 133.3 L 35.0 131.0 L 505.8 131.0 L 506.8 133.1 L 507.1 189.0 L 506.7 188.1 L 32.2 188.6 L 33.6 189.5 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 35.3 132.1 L 31.8 133.7 L 509.3 131.9 L 507.4 133.7 L 506.5 187.0 L 508.3 188.7 L 34.2 189.3 L 33.5 187.7 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="156" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 15 天 · 立路网</text>
+<text x="52" y="178" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">DAG→CFG：基本块＋跳转边，控制流请进图世界</text>
+<path d="M 269.7 189.4 Q 267.9 196.0 270.4 202.7" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 202.5 L 274.2 194.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 202.5 L 265.8 194.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.5 203.5 L 34.0 203.5 L 508.7 204.6 L 508.3 203.5 L 507.6 260.9 L 509.3 260.1 L 32.8 260.8 L 32.0 259.3 Z" fill="#DCE9F5" stroke="none"/>
+<path d="M 31.6 204.2 L 32.5 203.6 L 508.7 204.5 L 505.6 203.8 L 505.5 261.3 L 507.5 261.4 L 32.6 261.3 L 32.1 261.5 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.1 202.3 L 35.2 205.3 L 506.3 204.3 L 507.4 202.6 L 507.2 261.9 L 507.0 261.0 L 34.5 261.1 L 33.9 261.6 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.9 203.9 L 33.3 202.4 L 507.5 205.0 L 507.8 202.7 L 506.5 259.9 L 505.9 258.8 L 34.5 258.4 L 32.0 258.6 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="228" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 16 天 · 排时间表</text>
+<text x="52" y="250" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">拓扑排序＋环检测：好图出波次表，环图拒执行</text>
+<path d="M 270.4 261.6 Q 267.2 268.0 270.4 274.9" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 274.5 L 274.2 266.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 274.5 L 265.8 266.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.4 276.1 L 32.7 276.4 L 506.1 274.9 L 508.3 276.4 L 506.1 331.8 L 507.9 330.9 L 34.1 330.6 L 32.2 331.7 Z" fill="#F8E7CC" stroke="none"/>
+<path d="M 32.7 276.9 L 33.2 275.2 L 508.8 277.3 L 508.6 274.5 L 506.6 330.4 L 508.5 331.9 L 31.9 333.7 L 31.8 330.2 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 35.1 275.8 L 34.9 276.4 L 506.0 275.9 L 508.5 274.1 L 508.6 331.4 L 507.6 331.3 L 34.7 331.9 L 33.3 330.3 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.4 274.7 L 33.9 274.0 L 505.9 276.5 L 506.6 276.4 L 508.3 331.4 L 507.6 331.6 L 31.7 333.4 L 33.6 333.5 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="300" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 17 天 · 发身份证</text>
+<text x="52" y="322" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">SSA：每个值只定义一次，使用直指定义</text>
+<path d="M 269.2 333.7 Q 273.1 340.0 269.9 346.1" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 346.5 L 274.2 338.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 346.5 L 265.8 338.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.0 346.7 L 31.8 348.6 L 507.2 346.5 L 507.8 349.5 L 509.2 402.3 L 508.0 404.5 L 33.4 403.5 L 33.4 403.4 Z" fill="#F8E7CC" stroke="none"/>
+<path d="M 33.1 346.7 L 34.3 349.4 L 509.4 347.5 L 506.4 347.0 L 505.6 404.7 L 506.1 404.0 L 35.0 404.8 L 34.0 405.1 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.9 349.3 L 33.9 346.9 L 505.8 349.8 L 506.0 348.1 L 509.0 405.4 L 508.5 402.2 L 31.6 404.1 L 31.9 402.9 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.5 349.2 L 34.8 349.2 L 509.0 349.5 L 506.2 350.0 L 506.9 404.8 L 508.7 402.9 L 35.2 404.5 L 34.3 403.5 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="372" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 18 天 · 查必经之地</text>
+<text x="52" y="394" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">支配关系＋支配树：每条路都先定义后使用</text>
+<path d="M 269.7 405.9 Q 266.7 412.0 270.6 418.6" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 418.5 L 274.2 410.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 418.5 L 265.8 410.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.8 418.3 L 33.4 418.8 L 506.7 419.6 L 507.5 419.3 L 508.4 474.5 L 505.7 476.8 L 33.4 477.9 L 33.9 476.3 Z" fill="#F8E7CC" stroke="none"/>
+<path d="M 33.8 418.4 L 34.0 419.7 L 506.1 418.7 L 505.5 419.2 L 507.1 476.1 L 508.9 474.2 L 32.1 474.1 L 33.4 475.8 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 31.6 419.3 L 32.5 418.7 L 507.2 418.3 L 506.1 419.1 L 506.7 475.8 L 506.9 476.7 L 32.7 475.7 L 32.0 477.9 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.9 418.5 L 34.7 420.6 L 508.9 421.7 L 508.7 421.1 L 507.3 475.6 L 507.7 476.6 L 33.1 477.9 L 33.4 475.6 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="444" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 19 天 · 算退房时刻</text>
+<text x="52" y="466" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">活跃区间：值占多久内存，峰值在哪一条</text>
+<path d="M 269.8 477.2 Q 266.6 484.0 270.4 490.1" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 490.5 L 274.2 482.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 490.5 L 265.8 482.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.5 491.3 L 32.0 490.4 L 507.1 492.7 L 508.9 490.1 L 509.1 548.2 L 505.8 547.7 L 32.2 549.8 L 33.1 546.5 Z" fill="#DFEEDD" stroke="none"/>
+<path d="M 31.7 491.4 L 32.2 492.0 L 507.6 492.7 L 507.2 491.5 L 507.4 547.9 L 505.8 546.6 L 31.8 548.9 L 34.4 546.3 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.4 493.8 L 34.4 490.0 L 507.2 493.7 L 508.4 491.3 L 508.8 548.6 L 509.3 549.3 L 31.8 548.0 L 34.4 549.4 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.6 493.1 L 32.4 491.8 L 506.4 493.7 L 509.5 491.5 L 506.9 547.1 L 506.0 546.2 L 31.9 549.8 L 34.3 547.1 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="516" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 20 天 · 管理事实</text>
+<text x="52" y="538" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">分析组件＋epoch 对账：图一变，旧表作废</text>
+<path d="M 270.8 548.6 Q 266.1 556.0 269.7 561.7" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 270.0 562.5 L 274.2 554.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 270.0 562.5 L 265.8 554.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.3 564.7 L 34.9 564.5 L 505.6 563.9 L 509.2 564.6 L 506.0 621.9 L 505.5 621.8 L 34.1 619.1 L 34.3 621.0 Z" fill="#DFEEDD" stroke="none"/>
+<path d="M 34.8 565.8 L 34.1 565.6 L 506.3 562.6 L 508.0 565.1 L 508.7 619.5 L 509.2 620.5 L 32.0 621.5 L 33.8 619.8 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.5 562.6 L 33.1 563.2 L 509.3 565.9 L 507.5 564.8 L 507.0 619.2 L 507.9 619.3 L 35.2 620.9 L 34.8 621.4 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.9 562.0 L 33.0 563.3 L 505.9 564.6 L 508.0 565.4 L 506.6 621.5 L 507.5 621.4 L 35.4 621.2 L 34.7 618.7 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="588" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 21 天 · 菱形收拢</text>
+<text x="52" y="610" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">复盘：六件工具画进同一张菱形，补反向数据流</text>
+<!-- 右侧 R1：上半周 · 结构（DAG → CFG） -->
+<path d="M 538.5 118.7 L 540.0 118.7 L 1167.5 119.2 L 1166.4 119.9 L 1165.3 324.0 L 1166.8 326.8 L 536.9 327.8 L 536.1 327.8 Z" fill="#DCE9F5" stroke="none"/>
+<path d="M 538.5 117.9 L 538.4 118.5 L 1165.1 118.0 L 1168.4 118.2 L 1165.6 324.6 L 1167.1 326.2 L 537.1 327.0 L 537.7 324.1 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 537.4 117.8 L 537.1 116.8 L 1166.1 116.5 L 1168.7 119.0 L 1168.5 325.8 L 1168.2 327.6 L 538.5 324.3 L 538.3 324.5 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 536.7 116.4 L 536.8 119.5 L 1165.8 119.8 L 1165.1 118.4 L 1165.9 328.0 L 1165.4 326.6 L 537.2 325.6 L 539.3 326.5 Z" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="558" y="142" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15" fill="#3A322A" text-anchor="start" font-weight="bold">上半周 · 结构：从 DAG 到 CFG</text>
+<text x="558" y="168" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#5B8BB9" text-anchor="start" font-weight="bold">前两周 · DAG</text>
+<text x="1160" y="168" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#5B8BB9" text-anchor="end" font-weight="bold">本周 · CFG</text>
+<path d="M 560.8 178.0 L 559.9 178.8 L 620.9 176.6 L 618.9 177.5 L 619.3 202.8 L 619.1 203.1 L 558.8 204.8 L 561.3 203.1 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 561.0 179.2 L 560.6 176.9 L 621.1 178.8 L 619.7 176.6 L 620.1 204.5 L 619.7 204.8 L 560.6 202.8 L 560.5 205.3 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 559.4 178.8 L 559.9 178.6 L 621.2 176.8 L 621.4 178.6 L 618.6 204.0 L 621.0 204.2 L 560.9 204.4 L 559.0 205.1 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 560.7 178.8 L 559.0 177.5 L 620.4 178.6 L 621.3 177.5 L 618.7 203.6 L 619.2 205.0 L 560.5 204.3 L 560.6 203.1 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="590" y="195" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">A×B</text>
+<path d="M 636.9 177.9 L 637.4 178.4 L 696.2 176.6 L 694.5 177.5 L 695.9 202.8 L 695.5 203.4 L 635.2 204.5 L 635.7 205.2 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 636.7 177.7 L 635.3 177.8 L 696.5 178.7 L 697.0 179.1 L 696.9 203.4 L 695.9 204.2 L 636.5 204.0 L 634.7 204.4 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 635.3 177.1 L 634.5 178.0 L 694.9 177.5 L 697.5 176.5 L 694.6 203.2 L 696.3 204.1 L 637.4 203.8 L 636.0 203.1 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 636.5 178.5 L 635.3 178.9 L 696.0 177.7 L 696.0 177.5 L 696.1 203.2 L 695.4 202.5 L 634.8 204.2 L 637.0 205.4 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="666" y="195" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">＋bias</text>
+<path d="M 711.3 178.5 L 713.3 178.8 L 771.5 178.5 L 773.1 177.5 L 772.6 202.8 L 771.1 205.3 L 712.3 202.9 L 710.6 203.1 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 712.0 177.4 L 712.5 176.6 L 770.6 177.9 L 771.6 176.7 L 771.0 203.0 L 771.3 205.3 L 713.3 204.1 L 711.1 203.9 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 712.3 176.6 L 713.0 177.5 L 771.4 176.9 L 772.3 177.1 L 772.8 204.3 L 772.3 204.2 L 710.7 202.9 L 713.3 203.4 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 711.8 177.2 L 711.4 177.3 L 773.3 177.6 L 771.9 176.7 L 771.7 202.9 L 772.0 203.8 L 710.9 204.6 L 712.5 202.7 Z" fill="#FDFBF4" stroke="#5B8BB9" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="742" y="195" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">relu</text>
+<path d="M 622.0 191.8 Q 628.0 193.4 634.4 190.7" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 634.0 191.0 L 625.5 186.8" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 634.0 191.0 L 625.5 195.2" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 698.9 191.9 Q 704.0 187.7 710.3 190.8" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 710.0 191.0 L 701.5 186.8" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 710.0 191.0 L 701.5 195.2" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="677" y="232" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">边＝数据依赖 · 无环</text>
+<text x="677" y="250" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">拓扑序存在＝执行时间表</text>
+<text x="677" y="268" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">每节点恰好执行一次</text>
+<text x="819" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">控制流</text>
+<path d="M 786.9 191.9 Q 819.0 189.4 851.3 192.3" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 852.0 192.0 L 843.5 187.8" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 852.0 192.0 L 843.5 196.2" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 917.0 171.9 L 915.5 174.5 L 961.6 173.7 L 964.2 174.2 L 963.4 193.6 L 962.2 194.5 L 917.9 195.7 L 916.6 195.4 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 918.0 172.0 L 916.5 172.4 L 961.9 171.8 L 962.7 173.1 L 962.1 195.9 L 964.1 194.9 L 916.5 195.1 L 916.5 194.5 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 916.0 171.8 L 918.1 172.6 L 962.0 171.7 L 964.1 173.8 L 963.4 193.6 L 961.7 195.1 L 918.1 195.6 L 916.5 194.3 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 917.1 173.0 L 915.8 173.5 L 961.7 174.3 L 963.2 172.1 L 963.3 195.2 L 962.1 196.2 L 917.5 194.1 L 917.2 195.7 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="940.0" y="188.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle">B0</text>
+<path d="M 915.6 203.5 L 918.4 204.6 L 961.8 205.1 L 961.9 206.5 L 964.2 225.8 L 962.1 227.3 L 918.1 228.1 L 918.2 227.4 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 915.9 205.8 L 915.8 205.6 L 963.8 204.7 L 962.4 205.1 L 963.5 226.5 L 963.2 226.8 L 916.4 227.5 L 915.8 227.6 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 918.2 206.0 L 917.7 203.7 L 962.1 203.6 L 962.7 204.5 L 964.4 225.6 L 961.9 226.1 L 916.1 227.1 L 916.3 228.5 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 917.6 205.8 L 918.0 205.0 L 962.4 205.3 L 962.8 204.0 L 964.0 227.6 L 961.5 228.3 L 917.8 227.4 L 918.2 225.5 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="940.0" y="220.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle">B1</text>
+<path d="M 861.9 244.2 L 862.0 242.9 L 905.7 243.1 L 906.5 244.2 L 908.5 264.9 L 907.7 263.6 L 860.0 266.2 L 862.4 265.9 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 861.1 243.9 L 862.1 242.4 L 907.3 243.0 L 906.2 241.8 L 906.1 264.0 L 906.8 265.6 L 860.5 263.8 L 861.7 265.7 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 860.8 242.9 L 860.6 243.8 L 906.0 241.9 L 906.3 242.3 L 907.2 263.8 L 907.3 265.9 L 861.4 264.4 L 859.9 264.5 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 862.1 243.2 L 859.5 241.7 L 908.4 241.9 L 907.5 241.6 L 908.2 263.5 L 907.5 266.1 L 859.9 266.0 L 862.0 263.9 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="884.0" y="258.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle">B2</text>
+<path d="M 973.2 242.0 L 971.7 242.7 L 1020.5 241.6 L 1019.9 242.6 L 1018.4 265.2 L 1017.7 265.9 L 972.6 265.8 L 972.6 265.0 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 974.4 243.3 L 972.0 243.6 L 1018.4 242.6 L 1019.3 244.2 L 1018.7 264.6 L 1020.1 263.5 L 974.1 265.9 L 973.6 264.8 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 973.9 243.4 L 971.9 242.5 L 1018.0 241.7 L 1019.2 243.0 L 1017.7 263.6 L 1018.5 264.0 L 972.7 264.1 L 972.7 265.4 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 972.9 242.0 L 973.5 244.3 L 1019.4 243.7 L 1019.4 243.9 L 1019.5 266.2 L 1019.6 264.5 L 974.4 265.2 L 971.5 265.0 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="996.0" y="258.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle">B3</text>
+<path d="M 917.5 281.0 L 916.4 282.0 L 962.7 282.0 L 961.7 280.2 L 961.9 302.5 L 963.6 303.7 L 915.6 303.0 L 918.1 304.4 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 915.7 280.6 L 918.4 281.3 L 962.3 281.4 L 963.4 282.3 L 962.9 304.1 L 963.6 301.8 L 916.7 302.5 L 918.0 303.0 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 915.5 280.9 L 916.5 281.8 L 963.2 281.0 L 964.2 282.3 L 962.5 304.2 L 962.3 304.1 L 917.3 302.5 L 918.2 303.4 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 917.3 280.0 L 917.7 280.1 L 964.1 281.6 L 963.5 279.6 L 961.5 303.0 L 963.6 304.0 L 918.4 304.4 L 916.1 302.6 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="940.0" y="296.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle">B4·φ</text>
+<path d="M 939.4 196.9 Q 944.0 200.0 940.4 203.8" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 940.0 204.0 L 944.2 195.5" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 940.0 204.0 L 935.8 195.5" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 930.7 228.3 Q 910.7 232.8 893.4 242.0" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 893.0 242.0 L 902.4 242.9" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 893.0 242.0 L 899.5 235.1" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 950.5 228.9 Q 967.7 237.0 986.5 242.1" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 987.0 242.0 L 980.5 235.1" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 987.0 242.0 L 977.6 242.9" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 892.0 265.5 Q 912.7 269.7 930.1 279.6" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 930.0 280.0 L 923.5 273.1" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 930.0 280.0 L 920.6 280.9" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 987.2 265.6 Q 967.2 269.7 949.3 279.7" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M 950.0 280.0 L 959.4 280.9" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 950.0 280.0 L 956.5 273.1" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 916.7 292.7 L 836.9 291.5 L 837.6 215.6 L 913.6 215.5" stroke="#C4574A" stroke-width="2.0" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<text x="830" y="254" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C4574A" text-anchor="end">回边＝环</text>
+<text x="1030" y="198" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">边＝控制转移</text>
+<text x="1030" y="216" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">允许回边成环</text>
+<text x="1030" y="234" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">一块执行 0..N 次</text>
+<text x="975" y="297" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">φ：按来路选版本</text>
+<text x="855" y="318" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">这张菱形，Day 21 六件工具一起验收</text>
+<!-- 右侧 R2：下半周 · 值的事实 -->
+<path d="M 539.2 338.5 L 537.4 338.7 L 1167.8 338.7 L 1168.1 337.7 L 1167.2 485.3 L 1165.2 485.4 L 538.7 485.0 L 539.5 484.3 Z" fill="#F8E7CC" stroke="none"/>
+<path d="M 539.4 336.4 L 539.7 337.6 L 1167.6 337.8 L 1168.6 338.5 L 1165.4 486.9 L 1168.8 487.5 L 539.0 485.8 L 539.0 484.7 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 538.2 339.7 L 538.7 338.3 L 1167.8 337.8 L 1166.8 337.8 L 1165.7 485.3 L 1168.8 485.1 L 537.6 486.3 L 537.6 486.9 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 537.2 338.1 L 538.8 336.2 L 1167.8 338.5 L 1167.0 337.4 L 1168.9 486.7 L 1166.7 485.1 L 538.3 484.1 L 538.1 486.5 Z" fill="#F8E7CC" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="558" y="362" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15" fill="#3A322A" text-anchor="start" font-weight="bold">下半周 · 事实：值的一生，三张单子</text>
+<path d="M 569.0 372.7 L 570.3 373.9 L 738.7 372.8 L 739.3 374.3 L 739.6 453.4 L 738.6 451.7 L 570.8 452.3 L 568.2 451.8 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 570.9 373.3 L 569.6 375.0 L 739.3 375.6 L 737.0 374.5 L 736.5 451.4 L 738.9 452.2 L 571.8 451.5 L 571.7 452.3 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 568.8 375.3 L 568.9 373.3 L 738.2 375.1 L 738.3 374.9 L 738.3 453.2 L 739.7 450.9 L 568.8 451.7 L 571.7 453.2 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 568.2 373.8 L 569.0 372.7 L 739.7 372.9 L 737.1 373.0 L 737.1 452.3 L 737.5 452.9 L 570.6 452.1 L 568.8 452.0 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="654" y="396" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#3A322A" text-anchor="middle" font-weight="bold">SSA · 从哪来</text>
+<text x="654" y="418" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">一值一定义＋φ 汇合</text>
+<text x="654" y="438" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">使用直指定义</text>
+<path d="M 767.1 375.8 L 769.4 373.3 L 937.2 372.9 L 936.8 373.3 L 936.9 453.8 L 937.4 450.4 L 768.7 452.8 L 766.5 451.7 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 769.3 373.2 L 769.7 374.6 L 935.0 373.0 L 935.9 375.3 L 935.2 452.6 L 934.4 451.2 L 766.8 451.5 L 767.5 452.7 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 766.8 373.6 L 766.8 375.1 L 936.3 375.6 L 935.5 373.1 L 934.5 452.7 L 935.1 451.9 L 768.1 451.8 L 769.7 453.2 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 766.4 374.2 L 769.1 375.6 L 935.1 373.7 L 934.7 374.7 L 935.3 451.0 L 934.3 450.9 L 769.7 451.6 L 766.3 453.2 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="852" y="396" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#3A322A" text-anchor="middle" font-weight="bold">支配 · 合不合法</text>
+<text x="852" y="418" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">每条路先定义后使用</text>
+<text x="852" y="438" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">支配树定 φ 插哪</text>
+<path d="M 966.8 375.7 L 967.7 375.3 L 1135.0 374.9 L 1133.8 374.1 L 1133.3 452.7 L 1133.0 452.2 L 966.0 451.5 L 967.1 453.3 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 967.0 374.4 L 966.7 374.6 L 1134.7 375.2 L 1133.5 375.6 L 1135.8 451.4 L 1132.2 453.0 L 965.5 452.4 L 967.3 450.8 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 965.0 375.6 L 967.1 372.5 L 1133.6 374.8 L 1135.0 375.8 L 1134.0 450.3 L 1134.3 451.0 L 967.2 451.2 L 965.4 451.8 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 966.6 373.8 L 965.2 373.0 L 1133.0 373.8 L 1135.5 372.4 L 1132.6 450.8 L 1133.2 451.2 L 965.6 453.5 L 966.2 452.7 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1050" y="396" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#3A322A" text-anchor="middle" font-weight="bold">活跃 · 占多久</text>
+<text x="1050" y="418" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">首用→末用＝区间</text>
+<text x="1050" y="438" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.2" fill="#3A322A" text-anchor="middle">峰值＝内存账单</text>
+<path d="M 739.4 413.6 Q 753.0 411.2 766.8 413.1" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 766.0 413.0 L 757.5 408.8" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 766.0 413.0 L 757.5 417.2" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 938.0 412.2 Q 951.0 409.6 964.2 413.3" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 964.0 413.0 L 955.5 408.8" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 964.0 413.0 L 955.5 417.2" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="853" y="472" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.3" fill="#3A322A" text-anchor="middle">分支世界补一课：反向数据流方程算活跃（Day 21 补上）</text>
+<!-- 右侧 R3：分析组件与本周产出 -->
+<path d="M 537.1 497.8 L 539.0 498.7 L 866.3 497.2 L 866.2 497.8 L 866.7 640.4 L 868.8 641.2 L 536.9 639.1 L 539.4 639.3 Z" fill="#DFEEDD" stroke="none"/>
+<path d="M 537.3 499.7 L 536.2 496.3 L 866.5 497.4 L 867.1 499.1 L 866.5 639.3 L 869.4 639.8 L 538.4 641.6 L 537.3 639.5 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 539.4 500.0 L 536.9 496.6 L 868.9 498.4 L 867.7 496.7 L 868.5 640.2 L 866.0 640.0 L 536.0 639.2 L 537.9 641.3 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 538.6 499.0 L 538.1 498.4 L 868.1 496.0 L 866.7 499.4 L 866.3 638.7 L 868.4 640.7 L 538.4 638.1 L 538.0 641.5 Z" fill="#DFEEDD" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="703" y="522" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13.5" fill="#3A322A" text-anchor="middle" font-weight="bold">事实的管家（第 20 天）</text>
+<text x="703" y="546" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">分析 Pass 只读 · 变换 Pass 改图</text>
+<text x="703" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">Unused／LastUse 两个组件</text>
+<text x="703" y="590" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">epoch 对账：图一变，旧表作废</text>
+<text x="703" y="614" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">第 4 周的 DCE、内存规划来查表</text>
+<path d="M 889.5 498.3 L 886.4 497.6 L 1167.3 498.8 L 1165.7 497.5 L 1166.0 641.1 L 1168.2 641.2 L 888.2 639.9 L 887.9 641.4 Z" fill="#FDFBF4" stroke="none"/>
+<path d="M 888.1 498.5 L 888.2 497.1 L 1166.7 497.0 L 1166.7 497.2 L 1165.8 638.2 L 1168.0 641.3 L 887.3 639.1 L 886.6 640.8 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 887.0 498.4 L 888.9 496.9 L 1168.6 497.8 L 1168.0 498.7 L 1165.1 638.2 L 1167.9 639.5 L 888.0 638.7 L 887.5 640.7 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 887.1 496.6 L 888.6 496.1 L 1167.6 499.7 L 1166.8 498.0 L 1165.5 639.3 L 1166.5 640.7 L 886.3 639.6 L 889.4 638.3 Z" fill="#FDFBF4" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1027" y="522" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#3A322A" text-anchor="middle" font-weight="bold">本周产出</text>
+<text x="1027" y="546" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">mini-cfg-v1（140 断言）</text>
+<text x="1027" y="568" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">mini-graph-v8（489 断言）</text>
+<text x="1027" y="590" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">SSA／支配／活跃／复盘演练场</text>
+<text x="1027" y="614" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">下周：基础优化 Pass 开工</text>
+<path d="M 869.3 559.6 Q 878.0 563.0 885.3 560.4" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M 886.0 560.0 L 877.5 555.8" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 886.0 560.0 L 877.5 564.2" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="663" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.8" fill="#3A322A" text-anchor="middle">六天造工具＋一天复盘：从『要算什么』到『程序的事实』，下周的优化 Pass 全部站在本周的事实上开工</text>
+</svg>

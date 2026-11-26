@@ -43,7 +43,7 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ```text
 ├── AI芯片编译器学习计划.md   # 168 天完整计划（权威来源）
 ├── tutorials/                # 每周概览与每日教程（week-001～week-024，共 168 天）
-│   ├── overview.md           # 周首总结与总览图引用
+│   ├── overview.md           # 完整周计划（可含周首总结与总览图引用）
 │   ├── images/               # 周总览 SVG
 │   └── day-NNN/
 │       ├── README.md         # 当天完整教程
@@ -75,9 +75,10 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 
 ## 每周概览生成
 
-周计划页支持在每日内容前展示一段总结和一张技术总览图，源文件分别保存在
-`tutorials/week-NNN/overview.md` 与 `tutorials/week-NNN/images/week-overview.svg`。
-构建脚本会自动组合内容并复制图片，不需要修改 `AI芯片编译器学习计划.md`。
+周计划页的完整正文直接保存在 `tutorials/week-NNN/overview.md`，包括阶段说明和七天的
+学习、实践、产出；构建脚本只读取该文件，不再从总计划动态拼接正文。文件开头还可包含
+一段总结和一张技术总览图，图片位于 `tutorials/week-NNN/images/week-overview.svg`。
+生成工具只补充总结和总览图，并保留已有周计划正文。
 
 使用 cannbot 串行补全所有周，或只处理指定周：
 

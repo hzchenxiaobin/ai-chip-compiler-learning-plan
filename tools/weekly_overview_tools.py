@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the summary and SVG used by a weekly plan page."""
+"""Validate the complete Markdown and SVG used by a weekly plan page."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 IMAGE_BLOCK_RE = re.compile(r"^!\[([^\]]+)\]\(images/week-overview\.svg\)$")
+DAY_HEADING_RE = re.compile(r"^### 第 (\d{3}) 天｜.+$", re.MULTILINE)
 PLACEHOLDER_RE = re.compile(
     r"此处.{0,8}(插图|放图)|图片待补充|图像待补充|待插图|占位图|"
     r"建议.{0,6}(画|插入|生成).{0,4}图|TODO|PLACEHOLDER",
@@ -30,11 +31,14 @@ def check_overview(week_dir: Path) -> list[str]:
         return [f"无法读取周概览：{exc}"]
 
     blocks = re.split(r"\n\s*\n", text.strip())
-    if len(blocks) != 2:
-        errors.append("overview.md 必须且只能包含一个总结段落和一张总览图")
+    if len(blocks) < 2:
+        errors.append("overview.md 必须先包含一个总结段落和一张总览图")
         return errors
+    if len(blocks) < 3:
+        errors.append("overview.md 必须在总结和总览图后包含完整的七天计划")
 
-    summary, image_block = blocks
+    summary, image_block = blocks[:2]
+    schedule = "\n\n".join(blocks[2:])
     summary_chars = len(re.sub(r"\s+", "", summary))
     if summary_chars < 80:
         errors.append(f"总结过短：去空白后 {summary_chars} 字符，要求至少 80 字符")
@@ -50,6 +54,19 @@ def check_overview(week_dir: Path) -> list[str]:
         errors.append("第二段必须是 ![有意义的替代文本](images/week-overview.svg)")
     elif not image_match.group(1).strip():
         errors.append("总览图缺少替代文本")
+
+    day_matches = list(DAY_HEADING_RE.finditer(schedule))
+    week_number = int(week_dir.name.removeprefix("week-"))
+    expected_days = list(range((week_number - 1) * 7 + 1, week_number * 7 + 1))
+    actual_days = [int(match.group(1)) for match in day_matches]
+    if actual_days != expected_days:
+        errors.append(f"七天计划标题不完整或顺序错误：应为第 {expected_days[0]:03d}～{expected_days[-1]:03d} 天")
+    for index, match in enumerate(day_matches):
+        end = day_matches[index + 1].start() if index + 1 < len(day_matches) else len(schedule)
+        day_text = schedule[match.end():end]
+        for label in ("学习", "实践", "产出"):
+            if f"- **{label}**" not in day_text:
+                errors.append(f"第 {match.group(1)} 天缺少“{label}”内容")
 
     if not image_path.is_file():
         errors.append(f"总览图不存在：{image_path}")
@@ -85,7 +102,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"周概览检查通过：{args.week_dir} 的总结、图片链接和 SVG 均有效。")
+    print(f"周概览检查通过：{args.week_dir} 的总结、图片链接、七天计划和 SVG 均有效。")
     return 0
 
 
