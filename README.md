@@ -14,53 +14,19 @@ Modern C++
   → 端到端项目与面试复盘
 ```
 
-## 学习网站（动态 Web 应用）
+## 在线阅读（GitHub Pages）
 
-本仓库包含一个基于 **Django + MySQL + Redis** 的动态学习网站（设计见
-[docs/AI芯片编译器学习网站设计文档.md](./docs/AI芯片编译器学习网站设计文档.md)，
-P0 实现说明见 [deploy/README.md](./deploy/README.md)）：
+网站由 `tools/build.py` 从 `tutorials/` 静态构建，推送到 `main` 分支后由
+GitHub Actions 自动发布到 GitHub Pages：
 
-- 教程正文仍以 Git 为唯一权威源，通过 `import_tutorial` 命令原子导入为内容版本；
-- 注册登录后，阅读/练习/实验/验收四项任务状态保存在 MySQL，支持跨设备恢复、
-  revision 乐观锁（`If-Match`/412）、导出与导入（含替换前快照）；
-- 服务端全文搜索支持中文二元词、命令与错误码，可按阶段/周/类型筛选；
-- **阅读进度自动记录**（心跳 15 秒/次 + 关闭页面 sendBeacon）：自动恢复上次阅读位置
-  （断点续读，跨设备）、自动把阅读推进到「进行中」；**读完全文且累计满 3 分钟自动标记
-  阅读完成**（产品决策，可用 `AUTO_COMPLETE_READING=False` 关闭回到人工确认口径，
-  阈值 `READING_DONE_MIN_SECONDS` / `READING_DONE_SCROLL_RATIO` 可调）；
-  自动标记永不覆盖人工设置的 done/blocked；
-- 每个有代码的日课提供确定性源码 ZIP（排除冻结输出与疑似密钥，保留执行权限）。
+**https://hzchenxiaobin.github.io/ai-chip-compiler-learning-plan/**
 
-本地快速开始：
+本地预览：
 
 ```bash
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-# 准备 MySQL（库名 learning）与 Redis，然后在 config/settings/dev.py 配置连接
-.venv/bin/python manage.py migrate
-.venv/bin/python manage.py import_tutorial --commit HEAD   # 导入并激活 168 天内容
-.venv/bin/python manage.py createsuperuser                 # 或使用下方默认账号
-.venv/bin/python manage.py runserver                        # http://127.0.0.1:8000
+python3 tools/build.py                                  # 生成 public/ 静态站
+python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ```
-
-本地环境已预置默认管理员（仅限本机开发，生产环境请自行创建并更换）：
-
-| 用户名 | 密码 | 说明 |
-|---|---|---|
-| `admin` | `123456` | 超级用户：可登录站点与 `/admin/`（发布后台、学习指标），也可作为普通学习者使用。仅为本地开发便利而设的弱密码，生产环境务必另行创建强密码账号 |
-
-测试：
-
-```bash
-# 单元/集成/验收（真实 MySQL）：106 个用例
-.venv/bin/python manage.py test tests --settings=config.settings.test
-
-# 浏览器 E2E + 无障碍（Playwright + Chromium，需 dev server 已启动）
-node node_modules/playwright/cli.js test -c playwright.config.js
-```
-
-覆盖：内容导入与发布/回滚（TC-B/A05）、状态机、API 权限与并发（If-Match/412）、
-导入导出回环、搜索、故障降级（MySQL/Redis/搜索不可用）、键盘可达、320px、
-明暗主题与 axe-core critical/serious 违规清零。
 
 ## 文档
 
@@ -69,7 +35,7 @@ node node_modules/playwright/cli.js test -c playwright.config.js
 每天都包含：
 
 - **学习**：当天需要理解的概念或源码；
-- **实践**：当天需要完成的编码或实验；
+- **实践**：当天必须动手完成的编码或实验；
 - **产出**：代码、测试、IR、性能数据或复盘笔记。
 
 ## 项目结构
@@ -82,12 +48,8 @@ node node_modules/playwright/cli.js test -c playwright.config.js
 │       ├── images/           # 手绘 SVG 技术图（≥3 张/天）
 │       └── code/             # 可运行代码 + outputs/ 冻结产物
 ├── skills/                   # 教程生成 Skill（模板 + 质量清单 + 工具）
-├── apps/                     # Django 应用（content 导入/learning 进度/search 搜索/accounts 账号）
-├── config/                   # Django 设置（base/dev/test/prod）与根路由
-├── templates/                # 服务端页面模板
-├── tests/                    # 测试套件（94 个用例）
-├── deploy/                   # Nginx/Gunicorn 配置与运维手册
-├── tools/                    # 工具脚本
+├── tools/                    # 构建与生成脚本
+│   ├── build.py              # GitHub Pages 静态站构建
 │   └── cannbot_daily_tutorial.sh  # 每日教程自动生成
 ├── static/                   # 网站静态资源
 └── public/                   # 构建产物（已 gitignore）
