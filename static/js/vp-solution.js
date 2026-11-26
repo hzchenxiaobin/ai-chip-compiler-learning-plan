@@ -10,6 +10,7 @@
  *   2. 代码块增强：语言标签 / 复制按钮 / 行号列
  *   3. 右侧「本页目录」生成 + 滚动高亮（outline-marker 跟随）
  *   4. 图片点击放大、外链新标签打开、回到顶部、明暗切换
+ *   5. 浏览器书签：教程收藏、首页列表、数量与跨标签页同步
  */
 window.VPPage = (function () {
     'use strict';
@@ -497,12 +498,151 @@ window.VPPage = (function () {
     }
 
     /* ------------------------------------------------------------------
+     * 浏览器书签：教程页收藏 + 首页列表 + 跨标签页同步
+     * ------------------------------------------------------------------ */
+    var BOOKMARKS_KEY = 'vp-bookmarks';
+
+    function getBookmarks() {
+        try {
+            var value = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '[]');
+            if (!Array.isArray(value)) return [];
+            return value.filter(function (item) {
+                return item && typeof item.id === 'string' &&
+                    typeof item.label === 'string' && typeof item.title === 'string' &&
+                    typeof item.url === 'string' && item.url.charAt(0) === '/';
+            });
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function renderBookmarkList(bookmarks) {
+        var list = document.getElementById('bookmarks-list');
+        if (!list) return;
+        var empty = document.getElementById('bookmarks-empty');
+        var clear = document.getElementById('bookmarks-clear');
+        empty.hidden = bookmarks.length > 0;
+        clear.hidden = bookmarks.length === 0;
+        list.innerHTML = '';
+
+        bookmarks.forEach(function (bookmark) {
+            var item = document.createElement('article');
+            var link = document.createElement('a');
+            var label = document.createElement('span');
+            var title = document.createElement('h3');
+            var remove = document.createElement('button');
+            item.className = 'bookmark-item';
+            link.className = 'bookmark-item-link';
+            link.href = bookmark.url;
+            label.className = 'bookmark-item-label';
+            label.textContent = bookmark.label;
+            title.textContent = bookmark.title;
+            remove.className = 'bookmark-remove';
+            remove.type = 'button';
+            remove.setAttribute('data-remove-bookmark', bookmark.id);
+            remove.setAttribute('aria-label', '删除书签：' + bookmark.title);
+            remove.title = '删除书签';
+            remove.innerHTML = '&times;';
+            link.appendChild(label);
+            link.appendChild(title);
+            item.appendChild(link);
+            item.appendChild(remove);
+            list.appendChild(item);
+        });
+    }
+
+    function updateBookmarkUI(bookmarks) {
+        var toggle = document.querySelector('.vp-bookmark-toggle');
+        if (toggle) {
+            var id = toggle.getAttribute('data-bookmark-id');
+            var saved = bookmarks.some(function (bookmark) { return bookmark.id === id; });
+            toggle.setAttribute('aria-pressed', saved ? 'true' : 'false');
+            toggle.setAttribute('aria-label', saved ? '取消书签' : '加入书签');
+            toggle.querySelector('span').textContent = saved ? '已加入书签' : '加入书签';
+        }
+        document.querySelectorAll('.vp-bookmark-count').forEach(function (badge) {
+            badge.textContent = bookmarks.length;
+            badge.hidden = bookmarks.length === 0;
+        });
+        renderBookmarkList(bookmarks);
+    }
+
+    function saveBookmarks(bookmarks) {
+        try {
+            localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
+        } catch (e) {
+            return false;
+        }
+        updateBookmarkUI(bookmarks);
+        return true;
+    }
+
+    function showBookmarkSaveError() {
+        var toggle = document.querySelector('.vp-bookmark-toggle');
+        if (!toggle) return;
+        toggle.querySelector('span').textContent = '保存失败';
+        toggle.title = '请检查浏览器是否允许本地存储';
+        setTimeout(function () {
+            updateBookmarkUI(getBookmarks());
+        }, 2000);
+    }
+
+    function initBookmarks() {
+        var toggle = document.querySelector('.vp-bookmark-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', function () {
+                var bookmarks = getBookmarks();
+                var id = toggle.getAttribute('data-bookmark-id');
+                var index = bookmarks.findIndex(function (bookmark) { return bookmark.id === id; });
+                if (index >= 0) {
+                    bookmarks.splice(index, 1);
+                } else {
+                    bookmarks.unshift({
+                        id: id,
+                        label: toggle.getAttribute('data-bookmark-label'),
+                        title: toggle.getAttribute('data-bookmark-title'),
+                        url: new URL(toggle.getAttribute('data-bookmark-url'), window.location.href).pathname
+                    });
+                }
+                if (!saveBookmarks(bookmarks)) showBookmarkSaveError();
+            });
+        }
+
+        var list = document.getElementById('bookmarks-list');
+        if (list) {
+            list.addEventListener('click', function (event) {
+                var button = event.target.closest('[data-remove-bookmark]');
+                if (!button) return;
+                var id = button.getAttribute('data-remove-bookmark');
+                saveBookmarks(getBookmarks().filter(function (bookmark) {
+                    return bookmark.id !== id;
+                }));
+            });
+        }
+
+        var clear = document.getElementById('bookmarks-clear');
+        if (clear) {
+            clear.addEventListener('click', function () {
+                if (getBookmarks().length && window.confirm('确定清空全部书签吗？')) {
+                    saveBookmarks([]);
+                }
+            });
+        }
+
+        window.addEventListener('storage', function (event) {
+            if (event.key === BOOKMARKS_KEY) updateBookmarkUI(getBookmarks());
+        });
+        updateBookmarkUI(getBookmarks());
+    }
+
+    /* ------------------------------------------------------------------
      * 入口
      * ------------------------------------------------------------------ */
     function init() {
         /* 各增强步骤相互隔离：单个组件异常不影响页面其余部分 */
         [
             enhanceCodeBlocks,
+            initBookmarks,
             function () {
                 if (window.Prism) Prism.highlightAll();
             },
