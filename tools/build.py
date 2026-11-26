@@ -4,7 +4,11 @@
 import html
 import re
 import shutil
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from week_diagram import render_week_framework_svg  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -530,6 +534,32 @@ def build_plan(tutorials):
         )
         output_dir = PUBLIC_DIR / "plan" / f"week-{number:03d}"
         output_dir.mkdir(parents=True, exist_ok=True)
+        # 每周整体框架图（手绘 SVG，规范与教程图片一致）。
+        images_dir = output_dir / "images"
+        images_dir.mkdir(exist_ok=True)
+        svg = render_week_framework_svg(week)
+        (images_dir / "framework.svg").write_text(svg, encoding="utf-8")
+        alt = f"第 {number} 周整体框架图：{week['title'].removeprefix(f'第 {number} 周：')}"
+        content = (
+            f"![{alt}](images/framework.svg)\n\n"
+            f"**图 {number}**：第 {number} 周整体框架——Day 1–5 打零件、"
+            f"Day 6 集成、Day 7 复盘，形成 7 天学习闭环。\n\n" + content
+        )
+        output = page_template(
+            week["title"],
+            content,
+            root_prefix=root_prefix,
+            pills=day_pills(tutorials, root_prefix=root_prefix, current_week=number),
+            back_link=("../../plan.html", "返回计划总览"),
+            prev_link=(
+                (week_plan_href(previous["number"], root_prefix), previous["title"])
+                if previous else None
+            ),
+            next_link=(
+                (week_plan_href(following["number"], root_prefix), following["title"])
+                if following else None
+            ),
+        )
         (output_dir / "index.html").write_text(output, encoding="utf-8")
         print(f"Generated plan/week-{number:03d}/index.html")
 
