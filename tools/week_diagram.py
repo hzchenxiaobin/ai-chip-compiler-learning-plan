@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""每周整体框架图（信息密集时间轴版）。
+"""每周整体框架图（v3：大字号 + 仓库实测完整色板）。
 
-规范（与教程图片一致）：纸面 #fdfaf4、楷体手写字体栈、抖动波浪边框、
-色板 #3a4657/#6b7686/#e0884f、面板 #fffdf8/#fbeadd。
-
-信息层次：
-1. 头部：周主题、所属阶段、阶段内位置、24 周进度刻度；
-2. 时间轴：7 张日卡（编号气泡 + 类型徽标 + 标题 + 学习/实践/产出三要素）；
-3. 底部：本周真实体量（正文字数、技术图、代码文件、run_all 天数、预计投入），
-   由构建期从 tutorials/ 实际统计。
+色板与字号均来自对仓库 554 张教程 SVG 的统计（抽样 50 张）：
+- 墨色 #3b352d/#84796a；蓝系 #4a7fa5/#5d8fc9/#dbe7f6；绿系 #5a8a5a；
+  琥珀 #a8772e/#d08a4e/#fbeadd；玫红 #d96c5c/#b0605a；纸面 #fdfaf4/#fdfbf6。
+- 类型分色：学习日=蓝、集成日=琥珀、复盘日=绿、最终验收=玫红。
+- 学习/实践/产出三要素标签分别以蓝/绿/琥珀加粗强调。
+手绘风格不变：抖动波浪边框、楷体字体栈、圆角线帽。
 """
 
 from __future__ import annotations
@@ -19,44 +17,52 @@ import random
 import re
 
 FONT = "Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive"
-INK = "#3a4657"
-MUTED = "#6b7686"
-ACCENT = "#e0884f"
-PANEL = "#fffdf8"
-PANEL_ACCENT = "#fbeadd"
+INK = "#3b352d"
+MUTED = "#84796a"
 PAPER = "#fdfaf4"
+PANEL = "#fdfbf6"
+PANEL_ACCENT = "#fbeadd"
+
+BLUE_TEXT, BLUE_STROKE, BLUE_FILL = "#4a7fa5", "#5d8fc9", "#dbe7f6"
+GREEN_TEXT, GREEN_STROKE = "#5a8a5a", "#5a8a5a"
+AMBER_TEXT, AMBER_STROKE = "#a8772e", "#d08a4e"
+ROSE_TEXT, ROSE_STROKE = "#b0605a", "#d96c5c"
 
 DAY_RE = re.compile(r"^###\s*第\s*(\d+)\s*天[｜|:：]\s*(.+)$")
 BULLET_RE = re.compile(r"^-\s*\*\*(学习|实践|产出)\*\*[：:]\s*(.+)$")
 
-WIDTH = 980
-CARD_X = 126
-CARD_W = 830
-CARD_H = 148
-CARD_GAP = 12
+WIDTH = 1200
+CARD_X = 150
+CARD_W = 1000
+CARD_H = 140
+CARD_GAP = 14
+BUBBLE_X = 100
 
 
 def _escape(text: str) -> str:
     return html.escape(text, quote=True)
 
 
-def _wrap(text: str, per_line: int, max_lines: int) -> list[str]:
+def _wrap1(text: str, limit: int) -> str:
     text = text.strip()
-    if len(text) <= per_line:
-        return [text]
-    lines = [text[i : i + per_line] for i in range(0, len(text), per_line)]
-    if len(lines) > max_lines:
-        lines = lines[:max_lines]
-        last = lines[-1]
-        lines[-1] = (last[: per_line - 1] + "…") if len(last) >= per_line else last
-    return lines
+    return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
-def _text(x, y, content, *, size=13, fill=INK, weight=500, anchor="start"):
+def _text(x, y, content, *, size=15.5, fill=INK, weight=500, anchor="start"):
     return (
         f'<text x="{x:.1f}" y="{y:.1f}" font-family="{FONT}" '
         f'font-size="{size}" fill="{fill}" text-anchor="{anchor}" '
         f'font-weight="{weight}">{_escape(content)}</text>'
+    )
+
+
+def _label_value_text(x, y, label, value, *, label_color, size=15.5):
+    """「标签：值」行 —— 标签加粗分色，值墨色。"""
+    value = _wrap1(value, 58)
+    return (
+        f'<text x="{x:.1f}" y="{y:.1f}" font-family="{FONT}" font-size="{size}">'
+        f'<tspan font-weight="700" fill="{label_color}">{_escape(label)}</tspan>'
+        f'<tspan fill="{INK}">：{_escape(value)}</tspan></text>'
     )
 
 
@@ -76,7 +82,6 @@ def _wavy_path(rng, points, *, stroke, width=2.4, fill="none", close=False):
 
 def _wavy_rect(rng, x, y, w, h, *, fill=None, stroke=INK, width=2.4):
     pts = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
-    # 每条边细分为 ~26px 段，保证手绘抖动。
     dense = [pts[0]]
     for (ax, ay), (bx, by) in zip(pts, pts[1:] + [pts[0]]):
         steps = max(2, int(math.hypot(bx - ax, by - ay) / 26))
@@ -90,7 +95,7 @@ def _wavy_rect(rng, x, y, w, h, *, fill=None, stroke=INK, width=2.4):
     return "".join(parts)
 
 
-def _wavy_circle(rng, cx, cy, r, *, stroke=INK, width=2.4, fill=PAPER):
+def _wavy_circle(rng, cx, cy, r, *, stroke=INK, width=2.4, fill="#ffffff"):
     pts = []
     steps = 14
     for i in range(steps):
@@ -99,7 +104,7 @@ def _wavy_circle(rng, cx, cy, r, *, stroke=INK, width=2.4, fill=PAPER):
     return _wavy_path(rng, pts, stroke=stroke, width=width, fill=fill, close=True)
 
 
-def _arrow_head(rng, x, y, angle, *, stroke, size=9):
+def _arrow_head(rng, x, y, angle, *, stroke, size=10):
     left = (x - size * math.cos(angle - 0.42), y - size * math.sin(angle - 0.42))
     right = (x - size * math.cos(angle + 0.42), y - size * math.sin(angle + 0.42))
     return (
@@ -128,20 +133,34 @@ def _parse_days(lines) -> list[dict]:
     return days
 
 
-def _day_type(day: int) -> tuple[str, str]:
-    """(徽标文字, 颜色)。"""
+def _day_theme(day: int) -> dict:
+    """类型 → (徽标文字, 描边, 卡片底色, 标签文字色, 标签底色)。"""
     if day == 168:
-        return "最终验收", INK
+        return {
+            "label": "最终验收", "stroke": ROSE_STROKE, "fill": PANEL,
+            "text": ROSE_TEXT, "chip_fill": "#f6e3e0",
+        }
     if day % 7 == 0:
-        return "复盘日", INK
+        return {
+            "label": "复盘日", "stroke": GREEN_STROKE, "fill": PANEL,
+            "text": GREEN_TEXT, "chip_fill": "#e9e4d8",
+        }
     if day % 7 == 6:
-        return "集成日", ACCENT
-    return "学习日", MUTED
+        return {
+            "label": "集成日", "stroke": AMBER_STROKE, "fill": PANEL_ACCENT,
+            "text": AMBER_TEXT, "chip_fill": "#f6e7d2",
+        }
+    return {
+        "label": "学习日", "stroke": BLUE_STROKE, "fill": PANEL,
+        "text": BLUE_TEXT, "chip_fill": BLUE_FILL,
+    }
+
+
+BULLET_COLORS = {"学习": BLUE_TEXT, "实践": GREEN_TEXT, "产出": AMBER_TEXT}
 
 
 def render_week_framework_svg(week: dict) -> str:
-    """week 需含 {number, title, phase, lines, stats, phase_index, week_in_phase}。"""
-    rng = random.Random(2026_1100 + week["number"])
+    rng = random.Random(2026_1200 + week["number"])
     number = week["number"]
     days = [d for d in _parse_days(week["lines"])
             if (d["day"] - 1) // 7 + 1 == number][:7]
@@ -149,150 +168,155 @@ def render_week_framework_svg(week: dict) -> str:
     phase_index = week.get("phase_index", 0)
     week_in_phase = week.get("week_in_phase", 1)
 
-    header_h = 152
+    header_h = 164
     timeline_top = header_h
     timeline_h = len(days) * (CARD_H + CARD_GAP) - CARD_GAP
-    stats_y = timeline_top + timeline_h + 18
-    stats_h = 104
-    height = stats_y + stats_h + 44
+    stats_y = timeline_top + timeline_h + 20
+    stats_h = 116
+    height = stats_y + stats_h + 52
 
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" '
         f'height="{height}" viewBox="0 0 {WIDTH} {height}">',
         f'<rect x="0" y="0" width="{WIDTH}" height="{height}" fill="{PAPER}"/>',
-        # 标题与副标题。
-        _text(WIDTH / 2, 46, week["title"], size=26, weight=600, anchor="middle"),
+        _text(WIDTH / 2, 54, week["title"], size=30, weight=700, anchor="middle"),
         _text(
-            WIDTH / 2, 74,
+            WIDTH / 2, 86,
             f"{week['phase']} ｜ 第 {number}/24 周 · 阶段内第 {week_in_phase}/4 周",
-            size=14, fill=MUTED, anchor="middle",
+            size=16, fill=MUTED, anchor="middle",
         ),
     ]
 
     # ---- 24 周进度刻度 ----
-    tick_y = 100
-    tick_x0, tick_x1 = 72, 908
+    tick_y = 120
+    tick_x0, tick_x1 = 90, 1110
     step = (tick_x1 - tick_x0) / 23
-    ticks = [f'<path d="M {tick_x0} {tick_y} L {tick_x1} {tick_y}" '
-             f'stroke="{MUTED}" stroke-width="1.2" stroke-linecap="round" '
-             f'stroke-dasharray="1 6" opacity="0.55"/>']
+    parts.append(
+        f'<path d="M {tick_x0} {tick_y} L {tick_x1} {tick_y}" stroke="{MUTED}" '
+        f'stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1 6" opacity="0.55"/>'
+    )
     for i in range(24):
         x = tick_x0 + i * step
         current = i + 1 == number
-        h = 13 if current else 7
-        color = ACCENT if current else MUTED
-        ticks.append(
+        h = 15 if current else 8
+        color = AMBER_STROKE if current else MUTED
+        parts.append(
             f'<path d="M {x:.1f} {tick_y - h / 2} L {x:.1f} {tick_y + h / 2}" '
-            f'stroke="{color}" stroke-width="{2.6 if current else 1.6}" '
+            f'stroke="{color}" stroke-width="{3.0 if current else 1.6}" '
             f'stroke-linecap="round"/>'
         )
-    # 阶段分隔刻度（每 4 周）。
     for phase_mark in range(1, 6):
         x = tick_x0 + phase_mark * 4 * step - step * 2
-        ticks.append(
-            f'<path d="M {x:.1f} {tick_y - 10} L {x:.1f} {tick_y + 10}" '
+        parts.append(
+            f'<path d="M {x:.1f} {tick_y - 11} L {x:.1f} {tick_y + 11}" '
             f'stroke="{MUTED}" stroke-width="1" stroke-linecap="round" '
             f'stroke-dasharray="2 3" opacity="0.7"/>'
         )
-    ticks.append(_text(
-        tick_x0 + (number - 1) * step, tick_y - 14, f"W{number}",
-        size=11.5, fill=ACCENT, weight=600, anchor="middle",
+    parts.append(_text(
+        tick_x0 + (number - 1) * step, tick_y - 18, f"W{number}",
+        size=14, fill=AMBER_TEXT, weight=700, anchor="middle",
     ))
-    ticks.append(_text(tick_x0, tick_y + 22, "W1", size=10, fill=MUTED, anchor="middle"))
-    ticks.append(_text(tick_x1, tick_y + 22, "W24", size=10, fill=MUTED, anchor="middle"))
-    parts.extend(ticks)
+    parts.append(_text(tick_x0, tick_y + 26, "W1", size=12, fill=MUTED, anchor="middle"))
+    parts.append(_text(tick_x1, tick_y + 26, "W24", size=12, fill=MUTED, anchor="middle"))
 
     # ---- 时间轴主干 ----
-    spine_x = 88
     if days:
         first_cy = timeline_top + CARD_H / 2
         last_cy = timeline_top + (len(days) - 1) * (CARD_H + CARD_GAP) + CARD_H / 2
         parts.append(_wavy_path(
-            rng, [(spine_x, first_cy), (spine_x, last_cy + 34)],
-            stroke=MUTED, width=2.0,
+            rng, [(BUBBLE_X, first_cy), (BUBBLE_X, last_cy + 38)],
+            stroke=MUTED, width=2.2,
         ))
         parts.append(_arrow_head(
-            rng, spine_x, last_cy + 36, math.pi / 2, stroke=MUTED, size=10,
+            rng, BUBBLE_X, last_cy + 40, math.pi / 2, stroke=MUTED, size=11,
         ))
 
     # ---- 7 张日卡 ----
     for index, day in enumerate(days):
         y = timeline_top + index * (CARD_H + CARD_GAP)
-        label, color = _day_type(day["day"])
-        is_integration = day["day"] % 7 == 6
-        is_review = day["day"] % 7 == 0
-        card_fill = PANEL_ACCENT if is_integration else PANEL
-        stroke = ACCENT if is_integration else (INK if is_review else MUTED)
-        stroke_w = 3.0 if is_integration or is_review else 2.2
+        theme = _day_theme(day["day"])
+        is_key = day["day"] % 7 in (0, 6) or day["day"] == 168
         parts.append(_wavy_rect(
             rng, CARD_X, y, CARD_W, CARD_H,
-            fill=card_fill, stroke=stroke, width=stroke_w,
+            fill=theme["fill"], stroke=theme["stroke"],
+            width=3.2 if is_key else 2.4,
         ))
-        # 编号气泡。
+        # 编号气泡（白底 + 类型色描边）。
         parts.append(_wavy_circle(
-            rng, spine_x, y + CARD_H / 2, 17,
-            stroke=ACCENT if is_integration else INK,
-            width=2.6 if is_integration else 2.2,
+            rng, BUBBLE_X, y + CARD_H / 2, 20,
+            stroke=theme["stroke"], width=2.8,
         ))
         parts.append(_text(
-            spine_x, y + CARD_H / 2 + 4.5, str(day["day"]),
-            size=11.5, weight=600, anchor="middle",
+            BUBBLE_X, y + CARD_H / 2 + 5, str(day["day"]),
+            size=14, weight=700, anchor="middle",
         ))
-        # 行 1：Day NNN + 类型徽标。
+        # 行 1：Day NNN + 类型徽标（手绘 chip）+ 标题。
         parts.append(_text(
-            CARD_X + 24, y + 28, f"Day {day['day']}", size=13.5, fill=MUTED,
-            weight=600,
+            CARD_X + 28, y + 34, f"Day {day['day']}", size=15, fill=MUTED,
+            weight=700,
+        ))
+        chip_w, chip_h = 96, 30
+        chip_x, chip_y = CARD_X + 122, y + 12
+        parts.append(_wavy_rect(
+            rng, chip_x, chip_y, chip_w, chip_h,
+            fill=theme["chip_fill"], stroke=theme["stroke"], width=1.8,
         ))
         parts.append(_text(
-            CARD_X + 104, y + 28, f"· {label} ·", size=12.5, fill=color,
-            weight=600,
+            chip_x + chip_w / 2, chip_y + 21, theme["label"],
+            size=14, fill=theme["text"], weight=700, anchor="middle",
         ))
-        # 行 2–3：标题（最多两行）。
-        for line_no, line in enumerate(_wrap(day["title"], 24, 2)):
-            parts.append(_text(
-                CARD_X + 196, y + 28 + line_no * 21, line, size=14.5, weight=600,
+        parts.append(_text(
+            CARD_X + 246, y + 34, _wrap1(day["title"], 36),
+            size=19, weight=700,
+        ))
+        # 行 2–4：学习 / 实践 / 产出（标签分色加粗）。
+        bullet_y = y + 68
+        for key in ("学习", "实践", "产出"):
+            value = day["bullets"].get(key, "—")
+            parts.append(_label_value_text(
+                CARD_X + 28, bullet_y, key, value,
+                label_color=BULLET_COLORS[key],
             ))
-        # 三要素。
-        bullet_y = y + 76
-        for key, prefix in (("学习", "学习"), ("实践", "实践"), ("产出", "产出")):
-            value = day["bullets"].get(key, "")
-            for line_no, line in enumerate(_wrap(
-                    f"{prefix}：{value}" if value else f"{prefix}：—", 42, 1)):
-                parts.append(_text(
-                    CARD_X + 24, bullet_y, line, size=12.5, fill=INK,
-                ))
-            bullet_y += 22
+            bullet_y += 26
 
-    # ---- 底部：本周体量统计 ----
+    # ---- 底部：本周体量统计（数值分色）----
     parts.append(_wavy_rect(
-        rng, 58, stats_y, 864, stats_h, fill=PANEL, stroke=MUTED,
-    ))
-    parts.append(_text(490, stats_y + 28, "本周体量（来自已发布教程的实际统计）",
-                       size=13.5, weight=600, anchor="middle"))
-    stat_items = [
-        f"教程正文 {stats.get('chars_wan', '—')} 万字",
-        f"技术图 {stats.get('images', '—')} 张",
-        f"代码/IR 文件 {stats.get('code_files', '—')} 个",
-        f"run_all 一键脚本 {stats.get('run_all_days', '—')} 天",
-    ]
-    parts.append(_text(
-        490, stats_y + 56, " ｜ ".join(stat_items), size=13, anchor="middle",
+        rng, 70, stats_y, 1060, stats_h, fill=PANEL, stroke=MUTED, width=2.2,
     ))
     parts.append(_text(
-        490, stats_y + 82,
-        f"预计投入：学习 {stats.get('learning_min', 0) // 60} 小时 "
-        f"{stats.get('learning_min', 0) % 60} 分钟 ＋ 实践 "
-        f"{stats.get('practice_min', 0) // 60} 小时 "
-        f"{stats.get('practice_min', 0) % 60} 分钟（阶段 {phase_index + 1}/6）",
-        size=13, fill=MUTED, anchor="middle",
+        600, stats_y + 32, "本周体量（来自已发布教程的实际统计）",
+        size=16, weight=700, anchor="middle",
+    ))
+    parts.append(
+        f'<text x="600" y="{stats_y + 62}" font-family="{FONT}" font-size="15.5" '
+        f'text-anchor="middle">'
+        f'<tspan fill="{INK}">教程正文 </tspan>'
+        f'<tspan font-weight="700" fill="{BLUE_TEXT}">{stats.get("chars_wan", "—")} 万字</tspan>'
+        f'<tspan fill="{MUTED}"> ｜ </tspan>'
+        f'<tspan fill="{INK}">技术图 </tspan>'
+        f'<tspan font-weight="700" fill="{GREEN_TEXT}">{stats.get("images", "—")} 张</tspan>'
+        f'<tspan fill="{MUTED}"> ｜ </tspan>'
+        f'<tspan fill="{INK}">代码/IR 文件 </tspan>'
+        f'<tspan font-weight="700" fill="{AMBER_TEXT}">{stats.get("code_files", "—")} 个</tspan>'
+        f'<tspan fill="{MUTED}"> ｜ </tspan>'
+        f'<tspan fill="{INK}">run_all 脚本 </tspan>'
+        f'<tspan font-weight="700" fill="{ROSE_TEXT}">{stats.get("run_all_days", "—")} 天</tspan>'
+        f'</text>'
+    )
+    learning = stats.get("learning_min", 0)
+    practice = stats.get("practice_min", 0)
+    parts.append(_text(
+        600, stats_y + 92,
+        f"预计投入：学习 {learning // 60}h{learning % 60}m ＋ 实践 "
+        f"{practice // 60}h{practice % 60}m（阶段 {phase_index + 1}/6）",
+        size=15, fill=MUTED, anchor="middle",
     ))
 
-    # 图注。
     parts.append(_text(
-        WIDTH / 2, height - 16,
+        WIDTH / 2, height - 18,
         f"图 {number}：第 {number} 周整体框架——每日学习/实践/产出、"
         f"集成与复盘节点及本周实际体量",
-        size=12, fill=MUTED, anchor="middle",
+        size=13.5, fill=MUTED, anchor="middle",
     ))
     parts.append("</svg>")
     return "\n".join(parts)
