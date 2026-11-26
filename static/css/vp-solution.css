@@ -1609,11 +1609,67 @@ html.dark .vp-doc div[class*='language-'] {
     border: 1px solid #212a35;
 }
 
-html.dark .vp-doc blockquote {
+html.dark .vp-doc blockquote:not(.tutorial-meta) {
     padding: 10px 16px;
     border-left-color: var(--vp-c-brand-2);
     border-radius: 0 6px 6px 0;
     background-color: rgba(56, 139, 253, 0.055);
+}
+
+.vp-doc blockquote.tutorial-meta {
+    margin: 24px 0 32px;
+    padding: 6px 20px;
+    border: 1px solid var(--vp-c-divider);
+    border-left: 3px solid var(--vp-c-brand-2);
+    border-radius: 12px;
+    background-color: var(--vp-c-bg-soft);
+}
+
+.vp-doc .tutorial-meta > p {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin: 0;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--vp-c-divider);
+    font-size: 15px;
+    line-height: 26px;
+}
+
+.vp-doc .tutorial-meta > p:last-child {
+    border-bottom: 0;
+}
+
+.vp-doc .tutorial-meta-label {
+    flex: 0 0 64px;
+    color: var(--vp-c-brand-1);
+    font-weight: 600;
+}
+
+.vp-doc .tutorial-meta-value {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 640px) {
+    .vp-doc blockquote.tutorial-meta {
+        margin: 20px 0 28px;
+        padding: 6px 14px;
+    }
+
+    .vp-doc .tutorial-meta > p {
+        display: block;
+        padding: 12px 0;
+    }
+
+    .vp-doc .tutorial-meta-label,
+    .vp-doc .tutorial-meta-value {
+        display: block;
+    }
+
+    .vp-doc .tutorial-meta-label {
+        margin-bottom: 4px;
+    }
 }
 
 @media (max-width: 1100px) {

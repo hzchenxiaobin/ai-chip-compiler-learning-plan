@@ -230,7 +230,7 @@ def page_template(
         }} catch (e) {{ /* 保持默认暗黑 */ }}
     }})();
     </script>
-    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=7">
+    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=8">
 {markdown_assets}{extra_head}</head>
 <body class="{body_class}">
     <header class="vp-navbar">
@@ -254,7 +254,7 @@ def page_template(
     {main_html}
     <footer class="vp-footer"><span>AI 芯片编译器学习计划 · Deployed on GitHub Pages</span></footer>
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
-    <script src="{root_prefix}js/vp-solution.js?v=6"></script>
+    <script src="{root_prefix}js/vp-solution.js?v=7"></script>
     <script>
         {markdown_declaration}
         try {{

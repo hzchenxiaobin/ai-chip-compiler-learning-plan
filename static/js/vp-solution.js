@@ -92,7 +92,36 @@ window.VPPage = (function () {
             sanitize: false
         });
 
-        document.getElementById('doc-content').innerHTML = marked.parse(markdownText);
+        var normalizedMarkdown = markdownText.replace(
+            /(^> \*\*(?:今日目标|预计时间|前置准备|今日产出)\*\*：[^\n]*)\n(?=> \*\*(?:今日目标|预计时间|前置准备|今日产出)\*\*：)/gm,
+            '$1\n>\n'
+        );
+        var content = document.getElementById('doc-content');
+        content.innerHTML = marked.parse(normalizedMarkdown);
+
+        var meta = content.firstElementChild;
+        if (!meta || meta.tagName !== 'BLOCKQUOTE') return;
+        var items = Array.prototype.slice.call(meta.children);
+        var labels = ['今日目标', '预计时间', '前置准备', '今日产出'];
+        var isTutorialMeta = items.length === labels.length && items.every(function (item, index) {
+            var label = item.firstElementChild;
+            return item.tagName === 'P' && label && label.tagName === 'STRONG' &&
+                label.textContent === labels[index];
+        });
+        if (!isTutorialMeta) return;
+
+        meta.classList.add('tutorial-meta');
+        items.forEach(function (item) {
+            var label = item.firstElementChild;
+            var value = document.createElement('span');
+            label.classList.add('tutorial-meta-label');
+            value.classList.add('tutorial-meta-value');
+            while (label.nextSibling) value.appendChild(label.nextSibling);
+            if (value.firstChild && value.firstChild.nodeType === 3) {
+                value.firstChild.textContent = value.firstChild.textContent.replace(/^\s*：\s*/, '');
+            }
+            item.appendChild(value);
+        });
     }
 
     /* ------------------------------------------------------------------
