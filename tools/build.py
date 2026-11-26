@@ -542,7 +542,7 @@ def build_tutorials(tutorials):
         if images.exists():
             shutil.copytree(images, output_dir / "images", dirs_exist_ok=True)
 
-        root_prefix = "../../"
+        root_prefix = "../../../"
         prev_link = None
         next_link = None
         if index > 0:
@@ -557,7 +557,7 @@ def build_tutorials(tutorials):
             day["markdown"],
             root_prefix=root_prefix,
             pills=day_pills(tutorials, root_prefix=root_prefix, current_day=day["number"]),
-            back_link=("../../index.html#tutorials", "返回每日教程"),
+            back_link=(f"{root_prefix}index.html#tutorials", "返回每日教程"),
             prev_link=prev_link,
             next_link=next_link,
         )
