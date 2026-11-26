@@ -42,7 +42,9 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 
 ```text
 ├── AI芯片编译器学习计划.md   # 168 天完整计划（权威来源）
-├── tutorials/                # 每日教程（week-001～week-024，共 168 天）
+├── tutorials/                # 每周概览与每日教程（week-001～week-024，共 168 天）
+│   ├── overview.md           # 周首总结与总览图引用
+│   ├── images/               # 周总览 SVG
 │   └── day-NNN/
 │       ├── README.md         # 当天完整教程
 │       ├── images/           # 手绘 SVG 技术图（≥3 张/天）
@@ -50,7 +52,8 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ├── skills/                   # 教程生成 Skill（模板 + 质量清单 + 工具）
 ├── tools/                    # 构建与生成脚本
 │   ├── build.py              # GitHub Pages 静态站构建
-│   └── cannbot_daily_tutorial.sh  # 每日教程自动生成
+│   ├── cannbot_daily_tutorial.sh  # 每日教程自动生成
+│   └── cannbot_weekly_overview.sh # 每周概览自动生成
 ├── static/                   # 网站静态资源
 └── public/                   # 构建产物（已 gitignore）
 ```
@@ -69,6 +72,23 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ```text
 使用 ai-compiler-daily-tutorial，根据学习计划生成第 45 天教程。
 ```
+
+## 每周概览生成
+
+周计划页支持在每日内容前展示一段总结和一张技术总览图，源文件分别保存在
+`tutorials/week-NNN/overview.md` 与 `tutorials/week-NNN/images/week-overview.svg`。
+构建脚本会自动组合内容并复制图片，不需要修改 `AI芯片编译器学习计划.md`。
+
+使用 cannbot 串行补全所有周，或只处理指定周：
+
+```bash
+tools/cannbot_weekly_overview.sh       # 第 1～24 周，已完成且通过校验的周会跳过
+tools/cannbot_weekly_overview.sh 1     # 只处理第 1 周
+```
+
+脚本每周独立校验并运行整站构建，失败时默认重试 3 次，日志写入
+`build/cannbot_weekly_overview/`。可通过 `MAX_ATTEMPTS` 调整重试次数；可信环境中可设置
+`CANNBOT_AUTO_APPROVE=1` 自动批准 cannbot 工具权限。
 
 ## 最终项目
 

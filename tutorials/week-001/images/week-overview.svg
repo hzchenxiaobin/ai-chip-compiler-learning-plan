@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect x="0" y="0" width="1200" height="675" fill="#FDFBF4"/>
+  <!-- 页眉 -->
+  <text x="36" y="50" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+  <text x="1164" y="50" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="end">Week 1／24 · 第一阶段：C++ 与编译器基础</text>
+  <text x="600" y="52" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="27" fill="#3A322A" text-anchor="middle" font-weight="bold">第 1 周：Modern C++ 与最小 Tensor</text>
+  <text x="600" y="80" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle">七天主线：搭好地板 → 立资源规矩 → 写取数说明书 → 装进类型系统 → 合体成最小 Tensor</text>
+  <!-- 标题下手绘分隔线 -->
+  <path d="M 310.0 93.9 406.7 95.3 503.3 94.1 600.0 92.6 696.7 92.8 793.3 94.5 890.0 93.9" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- 左列：七天阶段推进 -->
+  <text x="36" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15.5" fill="#3A322A" text-anchor="start" font-weight="bold">七天这样推进</text>
+  <!-- 阶段 1 -->
+  <path d="M 34.4 132.8 L 269.8 132.9 L 504.8 132.9 L 506.4 161.6 L 504.4 193.7 L 269.3 191.8 L 34.5 191.0 L 34.9 161.5 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 34.4 133.0 L 269.3 132.6 L 504.4 130.7 L 504.9 163.6 L 505.7 193.4 L 270.9 190.4 L 35.0 192.8 L 35.5 161.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 35.6 132.8 L 272.1 132.3 L 504.6 131.7 L 505.7 162.1 L 505.5 191.8 L 271.5 193.6 L 37.5 191.1 L 34.7 161.9 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="156" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 1 天 · 搭地板</text>
+  <text x="52" y="178" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">CMake＋Ninja＋ctest：可构建、可测试的空工程</text>
+  <!-- 阶段 2 -->
+  <path d="M 35.4 216.2 L 269.6 216.5 L 506.3 217.1 L 506.0 246.8 L 504.2 276.4 L 269.5 275.3 L 35.1 274.4 L 36.2 246.0 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 35.4 215.3 L 270.4 214.7 L 506.8 215.5 L 507.5 244.6 L 504.8 277.1 L 271.6 277.5 L 35.1 276.4 L 35.8 244.7 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 34.5 214.4 L 269.8 216.0 L 504.9 216.6 L 504.3 246.9 L 504.8 274.2 L 270.6 274.7 L 36.2 275.0 L 37.0 247.3 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="240" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 2～3 天 · 资源的规矩</text>
+  <text x="52" y="262" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">RAII 生死账；禁拷贝、移动过户（所有权）</text>
+  <!-- 阶段 3 -->
+  <path d="M 35.2 300.6 L 271.3 299.8 L 505.2 298.9 L 505.7 330.8 L 505.1 359.9 L 272.1 360.2 L 36.0 361.3 L 37.6 330.7 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 37.6 299.2 L 272.5 301.7 L 504.7 300.2 L 506.2 328.5 L 506.8 359.1 L 270.6 358.3 L 34.4 361.7 L 37.7 331.5 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 37.6 299.3 L 270.8 299.8 L 504.4 298.5 L 505.3 329.5 L 506.7 361.4 L 272.7 361.5 L 36.4 358.4 L 35.4 331.6 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="324" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 4 天 · 取数说明书</text>
+  <text x="52" y="346" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">shape·strides·dtype：多维下标落到第几个字节</text>
+  <!-- 阶段 4 -->
+  <path d="M 37.6 384.6 L 270.7 384.3 L 506.8 383.7 L 504.8 414.8 L 504.5 445.2 L 270.3 443.4 L 37.5 445.1 L 37.5 412.4 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 37.6 382.8 L 269.6 383.8 L 505.5 383.1 L 507.5 412.7 L 504.4 443.4 L 269.8 442.8 L 34.7 444.4 L 34.6 415.5 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 35.6 382.4 L 270.6 384.9 L 506.0 385.2 L 506.9 412.8 L 505.9 443.0 L 272.6 445.6 L 36.4 442.2 L 34.4 414.5 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="408" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 5 天 · 硬约束＋报警</text>
+  <text x="52" y="430" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">unique_ptr 管所有权；ASan／UBSan 抓越界与泄漏</text>
+  <!-- 阶段 5 -->
+  <path d="M 35.2 468.2 L 271.2 468.5 L 504.8 467.5 L 505.9 498.4 L 507.8 528.8 L 271.7 526.3 L 35.3 529.4 L 37.3 499.2 Z" fill="#F8E7CC" stroke="none" opacity="1.0"/>
+  <path d="M 37.4 469.7 L 271.8 467.2 L 506.1 466.2 L 504.6 497.5 L 505.1 527.7 L 272.7 526.3 L 35.3 527.1 L 34.7 499.2 Z" fill="none" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 37.0 466.5 L 269.3 469.2 L 506.2 469.5 L 505.7 496.2 L 506.3 529.2 L 270.9 527.4 L 36.7 526.4 L 35.7 497.7 Z" fill="none" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="492" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 6 天 · 合体</text>
+  <text x="52" y="514" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">Tensor＝TensorDesc＋Buffer：配套检查、异常安全</text>
+  <!-- 阶段 6 -->
+  <path d="M 36.5 552.2 L 270.9 553.3 L 504.3 550.3 L 504.7 581.7 L 505.6 611.5 L 270.3 612.5 L 34.3 612.7 L 35.9 582.9 Z" fill="#DFEEDD" stroke="none" opacity="1.0"/>
+  <path d="M 37.0 550.3 L 269.3 550.5 L 504.7 552.8 L 507.8 581.7 L 507.0 612.6 L 271.8 611.0 L 35.5 610.6 L 34.8 582.8 Z" fill="none" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 35.4 551.8 L 269.9 550.3 L 505.6 552.8 L 506.6 581.2 L 506.2 612.7 L 271.7 611.1 L 35.8 611.2 L 37.1 582.2 Z" fill="none" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="52" y="576" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="start" font-weight="bold">第 7 天 · 复盘收拢</text>
+  <text x="52" y="598" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="start">一页复盘；修复遗留；压轴题：裸指针＋随意拷贝＝？</text>
+  <!-- 阶段箭头 1 -->
+  <path d="M 271.0 194.0 271.9 200.4 269.8 203.7 271.8 209.1 271.0 214.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 271.0 214.0 L 274.4 209.2 L 275.7 203.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 271.0 214.0 L 267.6 209.2 L 266.3 203.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 阶段箭头 2 -->
+  <path d="M 271.0 278.0 271.6 282.1 270.4 287.9 270.5 293.3 271.0 298.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 271.0 298.0 L 274.4 293.2 L 275.7 287.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 271.0 298.0 L 267.6 293.2 L 266.3 287.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 阶段箭头 3 -->
+  <path d="M 271.0 362.0 271.0 368.3 270.8 370.8 272.0 376.3 271.0 382.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 271.0 382.0 L 274.4 377.2 L 275.7 371.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 271.0 382.0 L 267.6 377.2 L 266.3 371.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 阶段箭头 4 -->
+  <path d="M 271.0 446.0 270.8 450.5 271.7 456.8 271.4 461.6 271.0 466.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 271.0 466.0 L 274.4 461.2 L 275.7 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 271.0 466.0 L 267.6 461.2 L 266.3 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 阶段箭头 5 -->
+  <path d="M 271.0 530.0 271.2 535.3 269.8 540.6 271.7 544.5 271.0 550.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 271.0 550.0 L 274.4 545.2 L 275.7 539.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 271.0 550.0 L 267.6 545.2 L 266.3 539.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 右列：核心结构 -->
+  <text x="610" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="15.5" fill="#3A322A" text-anchor="start" font-weight="bold">核心结构：Tensor ＝ 说明书 ＋ 仓库</text>
+  <!-- Tensor 外框 -->
+  <path d="M 609.9 133.6 L 826.0 131.9 L 1039.0 130.3 L 1040.8 279.9 L 1040.6 429.1 L 825.7 430.6 L 608.4 431.2 L 611.4 279.2 Z" fill="#F8E7CC" stroke="none" opacity="1.0"/>
+  <path d="M 610.3 131.7 L 823.4 133.1 L 1038.7 130.5 L 1040.1 282.6 L 1039.4 430.7 L 826.1 428.9 L 608.3 431.2 L 609.7 280.7 Z" fill="none" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 608.7 130.5 L 826.6 133.2 L 1040.3 130.5 L 1039.2 279.8 L 1038.6 429.3 L 823.6 428.8 L 609.8 429.1 L 610.0 279.6 Z" fill="none" stroke="#D08A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="825" y="163" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="19" fill="#3A322A" text-anchor="middle" font-weight="bold">Tensor</text>
+  <text x="1030" y="160" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="end">第 6 天产出</text>
+  <!-- Buffer 卡片 -->
+  <path d="M 629.0 175.6 L 826.7 174.3 L 1020.8 172.5 L 1021.6 228.9 L 1018.8 285.1 L 824.0 284.0 L 630.2 285.5 L 628.5 229.2 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 628.3 172.9 L 824.0 175.0 L 1019.0 174.6 L 1018.9 230.5 L 1020.8 284.6 L 826.0 284.5 L 629.1 285.7 L 629.4 230.5 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 630.5 173.2 L 826.1 173.4 L 1018.8 174.3 L 1018.3 228.0 L 1020.1 282.3 L 825.3 284.5 L 631.4 284.3 L 630.3 228.6 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="825" y="200" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle" font-weight="bold">Buffer · 仓库</text>
+  <text x="825" y="224" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">unique_ptr&lt;byte[]&gt; 独占 24 字节堆内存</text>
+  <text x="825" y="246" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">RAII：出生拿资源，死亡自动归还</text>
+  <text x="825" y="270" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.8" fill="#3A322A" text-anchor="middle">拷贝被删；移动＝指针过户、内存不动</text>
+  <!-- TensorDesc 卡片 -->
+  <path d="M 631.5 294.7 L 824.7 295.8 L 1021.6 296.7 L 1019.8 351.4 L 1020.0 404.6 L 823.6 404.2 L 629.7 405.7 L 628.5 352.4 Z" fill="#DCE9F5" stroke="none" opacity="1.0"/>
+  <path d="M 629.4 294.9 L 825.7 297.7 L 1020.4 294.3 L 1020.6 350.2 L 1021.2 407.1 L 825.8 404.9 L 629.4 405.1 L 628.9 352.6 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 630.7 296.4 L 824.2 297.4 L 1018.8 295.1 L 1020.5 350.7 L 1020.0 407.6 L 825.4 406.1 L 631.2 405.9 L 628.9 350.4 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="825" y="322" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="14" fill="#3A322A" text-anchor="middle" font-weight="bold">TensorDesc · 说明书</text>
+  <text x="825" y="346" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">shape(2,3) · strides(3,1) · dtype float32</text>
+  <text x="825" y="368" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">多维下标 → 元素位置 → 字节位置</text>
+  <text x="825" y="392" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.8" fill="#3A322A" text-anchor="middle">值语义：复印便宜，两份各自作主</text>
+  <text x="825" y="422" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#3A322A" text-anchor="middle">at({i,j})：查说明书 → 进仓库取字节</text>
+  <!-- 左列到右列的汇流箭头 -->
+  <!-- 第 2~3 天 → Buffer -->
+  <path d="M 508.0 246.0 537.2 241.7 567.7 237.6 596.0 232.9 626.0 230.0" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-dasharray="6 5"/>
+  <path d="M 626.0 230.0 L 620.8 227.2 L 615.0 226.8" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+  <path d="M 626.0 230.0 L 621.7 234.0 L 616.2 236.0" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+  <!-- 第 4 天 → TensorDesc -->
+  <path d="M 508.0 330.0 538.2 336.3 565.9 340.6 597.5 346.8 626.0 352.0" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-dasharray="6 5"/>
+  <path d="M 626.0 352.0 L 621.9 347.7 L 616.5 345.5" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+  <path d="M 626.0 352.0 L 620.7 354.5 L 614.8 354.7" stroke="#3A322A" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+  <!-- 第 6 天 → Tensor 合体 -->
+  <path d="M 508.0 498.0 554.2 481.7 599.8 464.9 644.8 451.2 690.0 434.0" stroke="#3A322A" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+  <path d="M 690.0 434.0 L 684.4 432.3 L 678.5 433.1" stroke="#3A322A" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 690.0 434.0 L 686.6 438.8 L 681.6 441.9" stroke="#3A322A" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="573" y="466" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#D08A4E" text-anchor="start" font-weight="bold">合体</text>
+  <!-- 底部：堆内存与产出 -->
+  <!-- Tensor → 堆内存 -->
+  <path d="M 736.0 432.0 735.0 441.1 734.6 449.8 734.7 457.9 736.0 466.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 736.0 466.0 L 739.4 461.2 L 740.7 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 736.0 466.0 L 732.6 461.2 L 731.3 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 堆内存卡片 -->
+  <path d="M 608.7 470.8 L 736.3 468.7 L 862.1 471.4 L 862.7 511.9 L 862.4 553.0 L 737.4 551.0 L 609.1 551.8 L 611.7 511.3 Z" fill="#FDFBF4" stroke="none" opacity="1.0"/>
+  <path d="M 608.8 471.5 L 735.9 470.1 L 863.4 470.8 L 861.9 511.2 L 863.4 551.2 L 734.3 550.4 L 611.0 552.0 L 610.7 512.8 Z" fill="none" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 611.5 469.5 L 735.5 469.6 L 860.6 468.2 L 863.6 511.8 L 860.7 550.9 L 735.9 550.9 L 608.5 551.4 L 609.9 512.4 Z" fill="none" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="736" y="496" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13" fill="#3A322A" text-anchor="middle" font-weight="bold">堆内存：同一块 24 字节</text>
+  <text x="736" y="520" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#3A322A" text-anchor="middle">[1, 2, 3, 4, 5, 6] · float32</text>
+  <text x="736" y="542" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#C4574A" text-anchor="middle">说明书不同，读出的矩阵不同</text>
+  <!-- Tensor → 本周产出 -->
+  <path d="M 1028.0 432.0 1027.2 441.8 1028.5 449.5 1027.3 458.0 1028.0 466.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 1028.0 466.0 L 1031.4 461.2 L 1032.7 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 1028.0 466.0 L 1024.6 461.2 L 1023.3 455.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 产出卡片 -->
+  <path d="M 892.3 471.2 L 1028.6 470.2 L 1165.4 471.0 L 1163.6 510.2 L 1163.1 552.4 L 1029.1 551.1 L 893.6 550.4 L 892.1 512.2 Z" fill="#DFEEDD" stroke="none" opacity="1.0"/>
+  <path d="M 892.4 468.7 L 1029.1 468.3 L 1164.4 469.8 L 1165.4 512.6 L 1165.3 550.7 L 1029.8 553.2 L 892.4 553.2 L 893.1 510.9 Z" fill="none" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 893.5 469.3 L 1028.5 468.6 L 1164.0 468.8 L 1164.3 510.0 L 1165.6 551.1 L 1028.7 553.3 L 892.8 552.6 L 893.0 510.2 Z" fill="none" stroke="#6FA573" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="1028" y="496" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="13.5" fill="#3A322A" text-anchor="middle" font-weight="bold">本周核心产出</text>
+  <text x="1028" y="520" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">mini-tensor 工程：53＋12 条断言</text>
+  <text x="1028" y="542" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.2" fill="#3A322A" text-anchor="middle">Debug／ASan／UBSan 三构建验收</text>
+  <!-- 产出 → 下周 -->
+  <path d="M 1028.0 554.0 1028.5 561.2 1026.8 568.4 1026.6 572.6 1028.0 580.0" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M 1028.0 580.0 L 1031.4 575.2 L 1032.7 569.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 1028.0 580.0 L 1024.6 575.2 L 1023.3 569.5" stroke="#3A322A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 下周卡片 -->
+  <path d="M 890.5 585.5 L 1029.6 585.7 L 1165.4 584.3 L 1165.0 613.4 L 1164.0 640.8 L 1028.7 639.1 L 890.9 641.6 L 893.6 611.9 Z" fill="#FDFBF4" stroke="none" opacity="1.0"/>
+  <path d="M 892.7 583.7 L 1028.8 582.7 L 1165.0 583.4 L 1165.3 612.5 L 1164.8 638.4 L 1028.9 640.4 L 890.6 639.7 L 893.6 612.8 Z" fill="none" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <path d="M 891.7 584.4 L 1026.3 582.3 L 1163.3 585.6 L 1162.5 612.5 L 1162.9 639.8 L 1029.0 640.5 L 892.2 640.1 L 890.6 611.8 Z" fill="none" stroke="#3A322A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" opacity="1.0"/>
+  <text x="1028" y="608" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.8" fill="#3A322A" text-anchor="middle" font-weight="bold">第 2 周：极简计算图 IR</text>
+  <text x="1028" y="628" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle">Tensor 升级为图中的「值」</text>
+  <!-- 页脚 -->
+  <text x="600" y="658" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.8" fill="#3A322A" text-anchor="middle">六天零件＋第七天收拢：内存安全、元信息完整的最小 Tensor，是 168 天主线的第一块地基</text>
+</svg>
