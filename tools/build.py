@@ -4,49 +4,7 @@
 import html
 import re
 import shutil
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from week_diagram import render_week_framework_svg  # noqa: E402
-
-TIME_RE = re.compile(
-    r"^>\s*\*\*预计时间\*\*\s*[：:]\s*学习\s*(\d+)\s*分钟.*?(?:实践|练习)\s*(\d+)\s*分钟",
-    re.MULTILINE,
-)
-
-
-def _week_stats(tutorials, week_number):
-    """一周真实体量：正文字数、技术图、代码文件、run_all 天数、预计时间。"""
-    days = [t for t in tutorials if t["week"] == week_number]
-    chars = sum(len(t["markdown"]) for t in days)
-    images = 0
-    code_files = 0
-    run_all_days = 0
-    learning_min = 0
-    practice_min = 0
-    for t in days:
-        images_dir = t["source"] / "images"
-        if images_dir.is_dir():
-            images += sum(1 for item in images_dir.rglob("*") if item.is_file())
-        for name in ("code", "examples"):
-            base = t["source"] / name
-            if base.is_dir():
-                code_files += sum(1 for item in base.rglob("*") if item.is_file())
-        if (t["source"] / "code" / "run_all.sh").is_file():
-            run_all_days += 1
-        match = TIME_RE.search(t["markdown"])
-        if match:
-            learning_min += int(match.group(1))
-            practice_min += int(match.group(2))
-    return {
-        "chars_wan": round(chars / 10000, 1),
-        "images": images,
-        "code_files": code_files,
-        "run_all_days": run_all_days,
-        "learning_min": learning_min,
-        "practice_min": practice_min,
-    }
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -572,35 +530,6 @@ def build_plan(tutorials):
         )
         output_dir = PUBLIC_DIR / "plan" / f"week-{number:03d}"
         output_dir.mkdir(parents=True, exist_ok=True)
-        # 每周整体框架图（手绘 SVG，规范与教程图片一致；含真实体量统计）。
-        week["stats"] = _week_stats(tutorials, number)
-        week["phase_index"] = (number - 1) // 28
-        week["week_in_phase"] = ((number - 1) % 28) // 4 + 1
-        images_dir = output_dir / "images"
-        images_dir.mkdir(exist_ok=True)
-        svg = render_week_framework_svg(week)
-        (images_dir / "framework.svg").write_text(svg, encoding="utf-8")
-        alt = f"第 {number} 周整体框架图：{week['title'].removeprefix(f'第 {number} 周：')}"
-        content = (
-            f"![{alt}](images/framework.svg)\n\n"
-            f"**图 {number}**：第 {number} 周整体框架——每日学习/实践/产出三要素、"
-            f"集成与复盘节点、24 周进度位置及本周实际体量统计。\n\n" + content
-        )
-        output = page_template(
-            week["title"],
-            content,
-            root_prefix=root_prefix,
-            pills=day_pills(tutorials, root_prefix=root_prefix, current_week=number),
-            back_link=("../../plan.html", "返回计划总览"),
-            prev_link=(
-                (week_plan_href(previous["number"], root_prefix), previous["title"])
-                if previous else None
-            ),
-            next_link=(
-                (week_plan_href(following["number"], root_prefix), following["title"])
-                if following else None
-            ),
-        )
         (output_dir / "index.html").write_text(output, encoding="utf-8")
         print(f"Generated plan/week-{number:03d}/index.html")
 
