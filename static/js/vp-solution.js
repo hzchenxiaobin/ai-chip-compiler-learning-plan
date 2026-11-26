@@ -93,35 +93,53 @@ window.VPPage = (function () {
         });
 
         var normalizedMarkdown = markdownText.replace(
-            /(^> \*\*(?:今日目标|预计时间|前置准备|今日产出)\*\*：[^\n]*)\n(?=> \*\*(?:今日目标|预计时间|前置准备|今日产出)\*\*：)/gm,
-            '$1\n>\n'
+            /^> \*\*(预计时间|前置准备|今日产出)\*\*：/gm,
+            '>\n> **$1**：'
         );
         var content = document.getElementById('doc-content');
         content.innerHTML = marked.parse(normalizedMarkdown);
 
         var meta = content.firstElementChild;
         if (!meta || meta.tagName !== 'BLOCKQUOTE') return;
-        var items = Array.prototype.slice.call(meta.children);
         var labels = ['今日目标', '预计时间', '前置准备', '今日产出'];
-        var isTutorialMeta = items.length === labels.length && items.every(function (item, index) {
-            var label = item.firstElementChild;
-            return item.tagName === 'P' && label && label.tagName === 'STRONG' &&
-                label.textContent === labels[index];
+        var sections = [];
+        var currentSection = null;
+        var valid = true;
+        Array.prototype.slice.call(meta.children).forEach(function (child) {
+            var label = child.tagName === 'P' ? child.firstElementChild : null;
+            if (label && label.tagName === 'STRONG' && label.textContent === labels[sections.length]) {
+                currentSection = { paragraph: child, extras: [] };
+                sections.push(currentSection);
+            } else if (currentSection) {
+                currentSection.extras.push(child);
+            } else {
+                valid = false;
+            }
         });
-        if (!isTutorialMeta) return;
+        if (!valid || sections.length !== labels.length) return;
 
         meta.classList.add('tutorial-meta');
-        items.forEach(function (item) {
-            var label = item.firstElementChild;
-            var value = document.createElement('span');
+        var fragment = document.createDocumentFragment();
+        sections.forEach(function (section) {
+            var item = document.createElement('div');
+            var label = section.paragraph.firstElementChild;
+            var value = document.createElement('div');
+            item.classList.add('tutorial-meta-item');
             label.classList.add('tutorial-meta-label');
             value.classList.add('tutorial-meta-value');
             while (label.nextSibling) value.appendChild(label.nextSibling);
             if (value.firstChild && value.firstChild.nodeType === 3) {
                 value.firstChild.textContent = value.firstChild.textContent.replace(/^\s*：\s*/, '');
             }
+            section.extras.forEach(function (extra) {
+                value.appendChild(extra);
+            });
+            item.appendChild(label);
             item.appendChild(value);
+            fragment.appendChild(item);
         });
+        while (meta.firstChild) meta.removeChild(meta.firstChild);
+        meta.appendChild(fragment);
     }
 
     /* ------------------------------------------------------------------
