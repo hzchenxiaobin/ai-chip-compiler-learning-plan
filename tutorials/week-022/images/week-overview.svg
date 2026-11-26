@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive">
+<rect width="1200" height="675" fill="#fdfaf2"/>
+<title>第 22 周总览：完成一次完整性能归因。D148 建立基线，D149 拆解开销，D150 Roofline 定性，D151 有依据优化，D152 跨 Shape 验证，D153 性能反例，D154 闭环报告：五步链每步实测，从一个慢数字到带适用条件与环境戳的优化结论</title>
+<text x="36" y="42" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#84796a" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+<text x="1164" y="42" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#84796a" text-anchor="end">Week 22／24 · 第六阶段：项目收口与面试转化</text>
+<text x="600" y="84" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="27" fill="#3b352d" text-anchor="middle" font-weight="bold">第 22 周：完成一次完整性能归因</text>
+<text x="600" y="108" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#3b352d" text-anchor="middle">从一个慢数字到带适用条件与环境戳的优化结论——每一步都从上一步的结论出发</text>
+<path d="M 37.8,120.9 L 104.1,123.5 L 174.7,120.9 L 246.6,121.5 L 317.6,121.2 L 387.8,121.5 L 456.4,123.3 L 526.7,123.3 L 596.8,120.6 L 667.5,122.3 L 735.2,121.1 L 807.4,122.2 L 877.8,122.8 L 947.8,122.2 L 1016.8,122.3 L 1085.0,123.4 L 1155.2,122.8 L 1167.0,122.8" fill="none" stroke="#84796a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.5,132.5 Q 183.1,134.6 335.9,133.0 Q 336.7,173.6 337.5,214.0 Q 184.1,215.3 31.6,215.1 Q 34.8,172.9 34.5,132.5  Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="160" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">处境：慢是表象，归因无地图</text>
+<text x="52" y="180" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">v0.5.0 能跑，但「为什么慢」没答案</text>
+<text x="52" y="198" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">「明显慢」要数字背书：0.39GF 离峰值百倍</text>
+<text x="52" y="214" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">单一 shape 的加速比是轶事，分布才是结论</text>
+<path d="M 341.6,132.3 Q 587.7,134.5 837.4,132.3 Q 837.1,173.2 838.1,214.8 Q 589.9,216.8 342.6,215.1 Q 344.1,173.7 341.6,132.3  Z" fill="#ffffff" fill-opacity="1.0" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="364" y="160" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">主线：基线→拆解→定性→验证→范围→闭环</text>
+<text x="364" y="180" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="start">五步链每步实测，每步揭开一层暗区</text>
+<text x="364" y="198" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="start">每一步都从上一步的结论出发</text>
+<text x="364" y="216" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="start">每步的输出是下一步的输入</text>
+<path d="M 842.7,130.7 Q 1002.6,128.8 1165.3,130.9 Q 1164.9,174.0 1164.1,214.5 Q 1003.9,213.2 842.5,214.5 Q 843.4,170.7 842.7,130.7  Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="862" y="160" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">命题：没有一步是「感觉应该」</text>
+<text x="862" y="180" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">假设→预测→实验→判定，不是试试看</text>
+<text x="862" y="198" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">证伪同样是结论（tile 0.3×）</text>
+<text x="862" y="214" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">没有反例的优化报告是广告</text>
+<path d="M 32.7,226.0 Q 121.2,226.5 205.3,224.9 Q 205.1,298.9 205.1,371.0 Q 119.7,370.5 33.1,371.3 Q 34.1,300.1 32.7,226.0  Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">基线｜D148</text>
+<text x="52" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">三候选扫描选定 160³</text>
+<text x="52" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">20.91ms／0.39 GFLOPS</text>
+<text x="52" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">五要素协议落盘 json</text>
+<text x="52" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">默认 O2 不慢的插曲教训</text>
+<text x="52" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：基线性能表＋复现命令</text>
+<path d="M 226.3,226.4 Q 310.6,224.7 395.5,225.0 Q 394.4,299.8 397.4,370.5 Q 310.5,369.4 224.9,371.6 Q 224.4,297.9 226.3,226.4  Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="245" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">拆解｜D149</text>
+<text x="245" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">编译 929｜执行 21.4ms</text>
+<text x="245" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">首次 97.7% 是编译</text>
+<text x="245" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">稳态 100% 是执行</text>
+<text x="245" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">小 kernel 对照法分离开销</text>
+<text x="245" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：时间分解图＋嫌疑排序</text>
+<path d="M 416.2,224.0 Q 502.6,225.3 585.3,223.7 Q 583.6,296.4 585.9,370.1 Q 501.7,368.9 414.5,371.8 Q 414.0,297.8 416.2,224.0  Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="434" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">定性｜D150</text>
+<text x="434" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">AI 0.13 vs 拐点 1.0</text>
+<text x="434" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">离两屋顶 128×／32×</text>
+<text x="434" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">判定：执行效率瓶颈</text>
+<text x="434" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">三假设配对策·证据·验证</text>
+<text x="434" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：瓶颈分析＋三假设</text>
+<path d="M 607.6,225.8 Q 694.4,223.8 779.7,224.9 Q 780.7,298.2 778.2,370.1 Q 690.8,369.9 607.3,369.6 Q 607.9,295.7 607.6,225.8  Z" fill="#f9f0e0" fill-opacity="1.0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="627" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b07d3a" text-anchor="start" font-weight="bold">验证｜D151</text>
+<text x="627" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">O2 展开 8.4×（H1 ✓）</text>
+<text x="627" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">教学 tile 0.3×（H2 ✗）</text>
+<text x="627" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">重复计算吃掉复用收益</text>
+<text x="627" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">证伪同样是结论</text>
+<text x="627" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：优化实验数据</text>
+<path d="M 801.0,223.5 Q 887.1,221.9 972.9,223.4 Q 971.9,299.6 972.4,372.6 Q 888.7,369.2 802.1,370.1 Q 801.0,297.4 801.0,223.5  Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="820" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">范围｜D152</text>
+<text x="820" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">跨 7 shape 全部正确</text>
+<text x="820" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">加速 1.7×～14.1×</text>
+<text x="820" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">中位 9.4×·8 倍离散</text>
+<text x="820" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">收益是 shape 的函数</text>
+<text x="820" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：跨 shape 收益表</text>
+<path d="M 993.0,226.0 Q 1078.6,224.1 1166.3,225.2 Q 1166.9,298.7 1164.6,372.1 Q 1080.2,372.5 994.0,370.0 Q 995.6,296.6 993.0,226.0  Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1013" y="250" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">边界｜D153</text>
+<text x="1013" y="274" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">tile 0.3× 反例铁证</text>
+<text x="1013" y="292" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">K 太小收益存疑</text>
+<text x="1013" y="310" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">反例是环境函数</text>
+<text x="1013" y="328" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">三区条件＋环境戳</text>
+<text x="1013" y="356" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：适用条件文档</text>
+<path d="M 206.0,297.8 Q 214.5,298.9 223.0,297.8 M 211.2,300.1 L 223.0,297.8 L 211.2,295.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 399.0,298.6 Q 405.5,298.3 412.0,298.6 M 404.2,300.9 L 412.0,298.6 L 404.2,296.3" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 588.0,298.4 Q 596.5,297.5 605.0,298.4 M 593.2,300.7 L 605.0,298.4 L 593.2,296.1" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 781.0,297.2 Q 789.5,295.8 798.0,297.2 M 786.2,299.5 L 798.0,297.2 L 786.2,294.9" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 974.0,297.7 Q 982.5,296.9 991.0,297.7 M 979.2,300.0 L 991.0,297.7 L 979.2,295.4" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 36.1,374.5 Q 597.4,375.8 1162.9,373.2 Q 1164.8,413.1 1165.2,450.3 Q 602.1,448.8 36.1,450.9 Q 34.2,411.3 36.1,374.5  Z" fill="#f9f0e0" fill-opacity="1.0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="398" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#b07d3a" text-anchor="start" font-weight="bold">复盘收官｜D154：闭环报告＋5 分钟口径</text>
+<text x="1148" y="398" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#b07d3a" text-anchor="end" font-weight="bold">核心问题：慢数字怎么变成带条件的结论？</text>
+<path d="M 50.0,405.4 Q 114.6,405.6 175.3,403.7 Q 176.6,423.1 174.4,439.8 Q 112.6,439.4 49.5,440.5 Q 48.8,421.8 50.0,405.4  Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="112" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">① 基线 20.9ms</text>
+<text x="112" y="431" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="middle">五要素协议</text>
+<path d="M 188.6,405.4 Q 249.5,403.8 313.4,402.5 Q 313.0,419.5 313.4,437.7 Q 253.0,437.2 189.8,438.5 Q 189.4,423.6 188.6,405.4  Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="252" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">② 拆解 100%</text>
+<text x="252" y="431" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="middle">稳态执行</text>
+<path d="M 331.5,403.6 Q 391.2,402.9 452.5,405.4 Q 451.3,423.9 454.0,438.1 Q 392.8,436.4 328.8,438.2 Q 330.1,422.2 331.5,403.6  Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">③ 定性 两屋顶远</text>
+<text x="392" y="431" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="middle">执行效率</text>
+<path d="M 470.0,402.6 Q 529.8,403.9 593.5,403.6 Q 595.8,422.2 595.3,439.3 Q 532.0,438.4 469.9,439.4 Q 467.8,419.2 470.0,402.6  Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="532" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">④ 验证 8.4×/0.3×</text>
+<text x="532" y="431" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="middle">H1 ✓ H2 ✗</text>
+<path d="M 608.9,403.9 Q 673.7,403.8 734.9,403.1 Q 733.5,420.1 733.9,439.4 Q 673.0,440.4 610.4,437.5 Q 608.9,420.2 608.9,403.9  Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="672" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">⑤ 范围 1.7~14.1×</text>
+<text x="672" y="431" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="middle">环境函数</text>
+<text x="755" y="417" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start" font-weight="bold">五个数字讲完全部故事：闭环验收＝首尾相接</text>
+<text x="755" y="432" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">每步的输出是下一步的输入——断链的归因是碰运气</text>
+<text x="52" y="447" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#84796a" text-anchor="start">口诀：基线→拆解→定性→验证→范围——报告可复现、结论可追溯，5 分钟汇报每段一个数字锚点</text>
+<path d="M 33.2,453.0 Q 379.2,452.9 722.7,455.3 Q 723.1,497.0 723.2,537.0 Q 378.0,537.6 32.2,537.2 Q 31.6,495.3 33.2,453.0  Z" fill="#ffffff" fill-opacity="1.0" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="479" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">全周产出：一条实测的归因链＋完整性能材料</text>
+<text x="52" y="500" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">六份实测 json（基线／拆解／Roofline／优化／分布／反例）</text>
+<text x="52" y="517" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">2~3 页性能归因闭环报告（数据＋图＋结论）＋5 分钟口头汇报口径</text>
+<text x="52" y="533" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">三区适用条件文档：收益／存疑／反例，每区带环境戳</text>
+<path d="M 738.5,455.0 Q 952.1,453.2 1163.6,455.5 Q 1164.4,494.5 1164.3,535.1 Q 952.7,533.3 738.7,534.8 Q 739.4,495.8 738.5,455.0  Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="754" y="479" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">贯穿方法：假设先行＋分布申报＋反例划界</text>
+<text x="754" y="500" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">假设→预测→实验→判定——不是「试试看」</text>
+<text x="754" y="517" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">分布三数：最小／中位／最大都要报</text>
+<text x="754" y="533" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">反例要带环境戳——没有反例的报告是广告</text>
+<path d="M 34.1,545.8 Q 207.4,548.6 383.6,547.5 Q 383.4,585.0 383.2,625.4 Q 207.3,626.1 34.8,628.0 Q 34.4,585.5 34.1,545.8  Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#4a7fa5" text-anchor="start" font-weight="bold">① 定义问题与找嫌疑（D148–D149）</text>
+<text x="52" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">五要素基线＋五段时间拆解</text>
+<text x="52" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">稳态执行 100% 是头号嫌疑</text>
+<path d="M 411.7,547.0 Q 586.0,548.5 763.2,546.8 Q 761.5,585.6 763.8,627.6 Q 586.7,628.3 413.2,626.1 Q 412.6,588.4 411.7,547.0  Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="431" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#b0605a" text-anchor="start" font-weight="bold">② 定性与验证（D150–D151）</text>
+<text x="431" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">Roofline 判性质＋三假设检验</text>
+<text x="431" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">H1 成立与 H2 证伪都是结论</text>
+<path d="M 792.4,546.5 Q 977.4,547.4 1163.8,547.7 Q 1161.9,589.6 1163.1,628.0 Q 979.3,626.8 791.7,625.5 Q 793.8,586.8 792.4,546.5  Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="811" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#5a8a5a" text-anchor="start" font-weight="bold">③ 范围与闭环（D152–D154）</text>
+<text x="811" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">跨 shape 分布＋反例带戳边界</text>
+<text x="811" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">闭环报告与 5 分钟口径收口</text>
+<path d="M 389.0,587.1 Q 398.5,586.1 408.0,587.1 M 394.2,589.4 L 408.0,587.1 L 394.2,584.8" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 771.0,588.1 Q 779.5,589.3 788.0,588.1 M 776.2,590.4 L 788.0,588.1 L 776.2,585.8" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="646" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="middle">承上：第 21 周块循环 Tiling 落地给了现成实验素材——本周用五步归因链结清它的性能账</text>
+<text x="600" y="664" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="middle">启下：第 23 周整理项目与可复现材料——本周的性能数据与报告是性能材料文档的底稿</text>
+</svg>

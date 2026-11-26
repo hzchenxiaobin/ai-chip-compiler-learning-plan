@@ -1,3 +1,7 @@
+第 5 周是从手写小编译器迈向工业级编译器基础设施的换挡点：第二阶段用 MLIR 重建对 IR 的认识，而吃透 IR 结构正是后续定义 Dialect、编写 Pass 的地基。七天沿一条主线推进：第 29 天搭好可运行的 MLIR 工作台；第 30 天拆开一行 IR，分清 Operation 的操作数、结果与 SSA 值；第 31 天钻进套娃结构，看 Operation 持有 Region、Region 装下 Block 与控制流；第 32 天分清身份，Type 长在值上、Attribute 挂在操作上；第 33 天摊开 Dialect 户口本，理解混合抽象与渐进式 Lowering；第 34 天拆解 Toy 或 Standalone 示例工程，看清操作定义、构建与 Pass 注册如何连成一条链；第 35 天闭卷复盘，把七种零件拼成一页 MLIR 概念图。走完本周，应能不查资料读懂一段 MLIR 并说出每个元素的定义与使用，这张概念图既是本周核心产物，也是下周定义 mini Dialect 的门票。
+
+![第 5 周总览：第 29 天搭 MLIR 工作台，第 30～32 天依次拆解 Operation 与 SSA 值、Region 与 Block 套娃结构、Type 与 Attribute 的分工，第 33～34 天摊开 Dialect 户口本与渐进式 Lowering 路线并跑通示例工程，第 35 天把七种零件拼成一页 MLIR 概念图，衔接下周定义 mini Dialect](images/week-overview.svg)
+
 > 第二阶段：MLIR 核心能力（第 29～56 天）
 
 ### 第 029 天｜准备 MLIR 环境

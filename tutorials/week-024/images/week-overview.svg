@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive">
+<rect width="1200" height="675" fill="#fdfaf2"/>
+<title>第 24 周总览：面试标准回答与最终验收。D162 多层 IR、MLIR 与 SSA，D163 融合与正确性，D164 动态 Shape 与 Runtime，D165 Tiling 与性能，D166 调试与数值，D167 二十分钟模拟讲解与问答，D168 最终验收：五天四段式标答、一次汇演和九项验收，把 22 周的实测经历组织成可复述的标准回答</title>
+<text x="36" y="42" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#84796a" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+<text x="1164" y="42" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#84796a" text-anchor="end">Week 24／24 · 第六阶段：项目收口与面试转化</text>
+<text x="600" y="84" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="27" fill="#3b352d" text-anchor="middle" font-weight="bold">第 24 周：面试标准回答与最终验收</text>
+<text x="600" y="108" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#3b352d" text-anchor="middle">五天标答＋一天汇演＋一天验收——把 22 周的实测经历变成可复述的表达，168 天收官</text>
+<path d="M 34.0,121.9 L 112.2,121.4 L 194.4,121.7 L 272.3,121.3 L 338.4,122.9 L 410.9,121.7 L 489.1,123.4 L 556.8,122.6 L 629.8,122.7 L 714.8,121.1 L 793.6,121.9 L 871.3,123.1 L 935.0,121.1 L 1005.3,120.7 L 1074.1,121.7 L 1137.2,122.7 L 1167.0,121.7" fill="none" stroke="#84796a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.5,130.0 Q 182.8,127.8 335.8,130.4 Q 337.3,176.0 335.1,218.2 Q 182.7,219.2 32.1,215.5 Q 33.8,172.4 32.5,130.0 Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="158" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">处境：材料有了，回答还没排练</text>
+<text x="52" y="177" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">22 周经历在脑中、五份文档在手</text>
+<text x="52" y="194" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">面试要的是两分钟讲清「为什么」</text>
+<text x="52" y="211" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">背概念的人给不出 IR 片段与数字</text>
+<path d="M 339.8,132.1 Q 590.2,129.3 837.3,130.1 Q 837.4,172.5 838.6,216.6 Q 591.5,219.3 340.0,217.0 Q 339.7,172.9 339.8,132.1 Z" fill="#ffffff" fill-opacity="1.0" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="360" y="158" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">主线：五天标答＋一天汇演＋一天验收</text>
+<text x="360" y="177" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">统一模具·四段式：结论／机制／例子／限制</text>
+<text x="360" y="194" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">配比 10:30:60:20——项目例子段最长</text>
+<text x="360" y="211" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">例子全部来自本仓库实测（D 编号＋数字）</text>
+<path d="M 842.6,132.2 Q 1002.3,132.1 1165.5,130.1 Q 1165.3,170.8 1166.6,215.7 Q 1006.4,214.3 843.1,215.4 Q 842.7,172.6 842.6,132.2 Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="861" y="158" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">命题：把能力变成表达</text>
+<text x="861" y="177" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">面试转化不是背答案，是组织经历</text>
+<text x="861" y="194" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">例子最长（差异化）、限制最值（成熟度）</text>
+<text x="861" y="211" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#3b352d" text-anchor="start">数字锚点：听者记住数字不是形容词</text>
+<path d="M 33.1,223.8 Q 134.0,221.4 237.5,223.0 Q 234.7,295.7 234.6,371.4 Q 132.7,372.0 31.8,372.5 Q 31.1,297.4 33.1,223.8 Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="51" y="252" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">多层 IR｜D162</text>
+<text x="51" y="276" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">「为什么需要多层 IR」等 3 题</text>
+<text x="51" y="296" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">每层只面对一类问题</text>
+<text x="51" y="316" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">例子：七层对账＋分层优化</text>
+<text x="51" y="336" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">限制：转换开销要认账</text>
+<text x="51" y="360" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：3 份四段式标答</text>
+<path d="M 266.6,225.0 Q 366.0,222.9 469.3,225.4 Q 467.3,301.0 469.1,373.4 Q 370.0,373.5 266.7,372.4 Q 264.6,298.7 266.6,225.0 Z" fill="#f9f0e0" fill-opacity="1.0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="284" y="252" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b07d3a" text-anchor="start" font-weight="bold">融合正确性｜D163</text>
+<text x="284" y="276" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">「融合为什么不总更快」</text>
+<text x="284" y="296" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">反例弹药库×4（0.3× 最硬）</text>
+<text x="284" y="316" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">三层验证法＋P1 探针踩坑</text>
+<text x="284" y="336" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">答得出反例才是真懂</text>
+<text x="284" y="360" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：2 份标答＋正反例</text>
+<path d="M 498.2,224.3 Q 602.9,224.3 702.7,222.9 Q 702.2,297.1 700.8,370.7 Q 600.8,370.5 500.4,372.2 Q 497.4,295.9 498.2,224.3 Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="517" y="252" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">动态 Shape｜D164</text>
+<text x="517" y="276" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">六件事涟漪＋三件套配套</text>
+<text x="517" y="296" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">fmul 18→2、特化 2→18</text>
+<text x="517" y="316" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">光谱思维：11 决策点显式选</text>
+<text x="517" y="336" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">动态化成本＝Runtime 层</text>
+<text x="517" y="360" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：2 份标答＋流程图</text>
+<path d="M 730.6,224.4 Q 832.1,225.6 935.4,224.4 Q 935.4,299.4 934.1,371.1 Q 834.1,369.6 731.0,371.0 Q 731.2,297.5 730.6,224.4 Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="750" y="252" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">Tiling 性能｜D165</text>
+<text x="750" y="276" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">Tile 三角：容量/复用/边界</text>
+<text x="750" y="296" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">Roofline 三分支判瓶颈</text>
+<text x="750" y="316" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">第三种瓶颈＋8.4× 验证</text>
+<text x="750" y="336" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">平衡点：不是越大越好</text>
+<text x="750" y="360" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：2 份标答＋性能示例</text>
+<path d="M 964.7,224.6 Q 1064.1,224.7 1167.2,222.9 Q 1167.8,299.1 1165.7,372.8 Q 1064.7,375.1 964.5,372.6 Q 963.2,298.4 964.7,224.6 Z" fill="#f9f0e0" fill-opacity="1.0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="983" y="252" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#b07d3a" text-anchor="start" font-weight="bold">调试数值｜D166</text>
+<text x="983" y="276" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">五站流水线＋最早破坏点</text>
+<text x="983" y="296" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">误差界三分法：序差合法</text>
+<text x="983" y="316" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">k0／量化 bug 是活教材</text>
+<text x="983" y="336" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">判据先于结论（差多少算错）</text>
+<text x="983" y="360" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">产出：2 份标答＋调试演示</text>
+<path d="M 238.0,298.0 Q 250.0,298.0 262.0,298.0 M 251.0,302.5 L 262.0,298.0 L 251.0,293.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 471.0,298.0 Q 483.0,298.9 495.0,298.0 M 484.0,302.5 L 495.0,298.0 L 484.0,293.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 704.0,298.0 Q 716.0,297.8 728.0,298.0 M 717.0,302.5 L 728.0,298.0 L 717.0,293.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 937.0,298.0 Q 949.0,296.5 961.0,298.0 M 950.0,302.5 L 961.0,298.0 L 950.0,293.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 32.5,375.5 Q 601.7,372.2 1167.4,373.2 Q 1169.0,409.5 1166.7,449.1 Q 602.4,449.1 34.5,451.0 Q 35.6,413.3 32.5,375.5 Z" fill="#f9f0e0" fill-opacity="1.0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="399" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#b07d3a" text-anchor="start" font-weight="bold">汇演｜D167：20 分钟五幕＋10 分钟 Q&amp;A</text>
+<text x="1148" y="399" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#b07d3a" text-anchor="end" font-weight="bold">核心问题：把 22 周讲成 20 分钟的故事</text>
+<path d="M 49.6,404.9 Q 111.4,403.3 171.8,405.0 Q 172.6,420.0 171.4,439.5 Q 109.8,437.7 48.8,440.6 Q 51.2,424.9 49.6,404.9 Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="111" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">① 开场 2 分</text>
+<text x="111" y="434" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#84796a" text-anchor="middle">问题背景＋一句话定位</text>
+<path d="M 185.1,404.4 Q 248.2,403.8 309.2,403.8 Q 307.0,420.4 308.2,439.7 Q 244.0,438.7 184.7,441.3 Q 184.3,423.2 185.1,404.4 Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="247" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">② 架构 5 分</text>
+<text x="247" y="434" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#84796a" text-anchor="middle">六层数据流＋三合同</text>
+<path d="M 321.8,405.9 Q 382.7,406.8 445.1,406.4 Q 444.1,425.4 444.2,441.8 Q 382.8,441.2 323.3,440.3 Q 321.2,424.5 321.8,405.9 Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="383" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">③ 难点 5 分</text>
+<text x="383" y="434" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#84796a" text-anchor="middle">三个技术难点各配数字</text>
+<path d="M 457.5,404.7 Q 516.5,404.0 579.9,404.4 Q 581.4,421.8 581.5,441.6 Q 519.3,442.3 457.0,441.5 Q 456.2,423.3 457.5,404.7 Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="519" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">④ 量化结果</text>
+<text x="519" y="434" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#84796a" text-anchor="middle">数字 1.7~14.1×</text>
+<path d="M 595.4,405.8 Q 658.0,407.7 716.0,404.9 Q 717.7,422.4 715.3,440.2 Q 654.0,438.6 594.1,441.8 Q 595.5,424.8 595.4,405.8 Z" fill="#ffffff" fill-opacity="1.0" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="655" y="420" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="middle" font-weight="bold">⑤ 限制与下一步</text>
+<text x="655" y="434" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#84796a" text-anchor="middle">诚实边界收尾</text>
+<text x="745" y="419" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start">数字锚点：每幕至少一个数字（12/12｜8.4×｜250 项）</text>
+<text x="745" y="436" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start">Q&amp;A：标答索引＋卡壳预案——「没测过＋推测＋验证」胜过编造</text>
+<text x="52" y="448" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#84796a" text-anchor="start">产出：讲解提纲＋卡壳清单——纪律：数字不是形容词、诚实比编造加分</text>
+<path d="M 33.8,454.3 Q 598.0,455.4 1164.7,453.4 Q 1166.2,492.5 1165.0,529.9 Q 599.8,532.0 34.5,529.8 Q 35.6,490.4 33.8,454.3 Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="478" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#5a8a5a" text-anchor="start" font-weight="bold">收官｜D168：最终验收＋下一阶段计划</text>
+<text x="1148" y="478" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#5a8a5a" text-anchor="end" font-weight="bold">本质：会什么／不会什么／学什么</text>
+<path d="M 50.7,485.0 Q 219.3,481.9 384.6,482.8 Q 386.7,498.5 386.3,516.8 Q 216.9,520.2 49.6,519.5 Q 51.7,504.4 50.7,485.0 Z" fill="#ffffff" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="500" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#5a8a5a" text-anchor="start" font-weight="bold">九项能力验收 9/9</text>
+<text x="66" y="513" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start">从图编译器到面试表达——每项配证据链</text>
+<path d="M 395.6,482.7 Q 563.7,482.6 730.8,483.7 Q 732.0,498.9 732.4,517.5 Q 566.2,516.1 397.0,517.2 Q 398.2,500.2 395.6,482.7 Z" fill="#ffffff" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="412" y="500" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#5a8a5a" text-anchor="start" font-weight="bold">四选一深入方向</text>
+<text x="412" y="513" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start">选定 MLIR 图编译＋理由与四周计划</text>
+<path d="M 742.6,484.8 Q 941.9,484.5 1145.0,485.0 Q 1145.4,500.9 1146.6,517.1 Q 942.4,517.1 740.5,518.4 Q 740.8,501.5 742.6,484.8 Z" fill="#ffffff" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="758" y="500" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#5a8a5a" text-anchor="start" font-weight="bold">项目总账</text>
+<text x="758" y="513" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#3b352d" text-anchor="start">168 篇｜≈250 项判定｜v0.5.0｜五文档｜十标答</text>
+<text x="52" y="526" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#84796a" text-anchor="start">验收不是「都学会了」——是三个清单的完整自我认知；产出：最终验收总结＋完整总结</text>
+<path d="M 32.6,536.8 Q 207.2,536.1 383.2,535.5 Q 385.9,579.1 384.3,627.0 Q 209.6,629.9 32.5,628.0 Q 31.4,580.8 32.6,536.8 Z" fill="#eef3f7" fill-opacity="1.0" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="50" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#4a7fa5" text-anchor="start" font-weight="bold">① 立标答：概念与优化（D162–D163）</text>
+<text x="50" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">三题＋两题——四段式模具统一</text>
+<text x="50" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">反例弹药库（0.3×）是差异化弹药</text>
+<path d="M 411.9,537.4 Q 584.8,536.5 761.9,535.8 Q 763.9,582.4 761.6,628.8 Q 588.0,630.5 412.8,628.7 Q 413.2,583.8 411.9,537.4 Z" fill="#f7ecea" fill-opacity="1.0" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="430" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#b0605a" text-anchor="start" font-weight="bold">② 立标答：系统与工程（D164–D166）</text>
+<text x="430" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">动态 Shape／Tiling／调试各配框架</text>
+<text x="430" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">光谱·三角·五站——可操作非纯概念</text>
+<path d="M 792.5,537.4 Q 978.3,539.8 1166.0,537.3 Q 1165.0,580.6 1166.6,628.6 Q 980.0,630.1 792.1,628.7 Q 791.1,582.3 792.5,537.4 Z" fill="#edf4ee" fill-opacity="1.0" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="810" y="573" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="11.5" fill="#5a8a5a" text-anchor="start" font-weight="bold">③ 汇演与验收（D167–D168）</text>
+<text x="810" y="594" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">20 分钟五幕＋Q&amp;A＋九项验收</text>
+<text x="810" y="611" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10" fill="#3b352d" text-anchor="start">产出提纲、总账与下一阶段计划</text>
+<path d="M 386.0,588.0 Q 397.5,586.7 409.0,588.0 M 398.0,592.5 L 409.0,588.0 L 398.0,583.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 766.0,588.0 Q 777.5,586.5 789.0,588.0 M 778.0,592.5 L 789.0,588.0 L 778.0,583.5" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="646" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="middle">承上：第 23 周的五份文档与实测资产——本周标答的「项目例子」全部来自那里（D 编号＋数字＋反例）</text>
+<text x="600" y="664" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="10.5" fill="#84796a" text-anchor="middle">启下：168 天的终点是下一阶段的起点——四选一方向与四周计划（选定 MLIR 图编译）接棒</text>
+</svg>

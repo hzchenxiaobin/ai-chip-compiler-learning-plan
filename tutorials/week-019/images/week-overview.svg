@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive">
+<rect width="1200" height="675" fill="#fdfaf2"/>
+<title>第 19 周总览：Runtime 与动态 Shape——D127 审计 11 个决策点，D128~D132 逐格翻转并配平特化、回退、池化三件套，D133 复盘成职责迁移表与标准回答</title>
+<text x="36" y="42" font-size="12" fill="#84796a" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+<text x="1164" y="42" font-size="12" fill="#84796a" text-anchor="end">Week 19／24 · 第五阶段：端到端编译与 Runtime</text>
+<text x="600" y="84" font-size="28" fill="#3b352d" text-anchor="middle" font-weight="bold">第 19 周：Runtime 与动态 Shape</text>
+<text x="600" y="108" font-size="13" fill="#3b352d" text-anchor="middle">把一串决策从编译期搬进运行期：先审计、逐格翻转、三件配套，六天长出一个 Runtime 层</text>
+<path d="M 35.0,123.1 L 97.8,122.2 L 160.6,122.0 L 223.3,123.3 L 286.1,122.4 L 348.9,122.6 L 411.7,122.5 L 474.4,122.7 L 537.2,124.1 L 600.0,123.6 L 662.8,122.2 L 725.6,122.8 L 788.3,123.0 L 851.1,123.4 L 913.9,122.3 L 976.7,123.4 L 1039.4,124.2 L 1102.2,122.3 L 1165.0,122.3" fill="none" stroke="#84796a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 33.5,135.3 L 108.5,134.1 L 183.6,134.9 L 261.0,134.1 L 335.5,132.8 L 335.0,213.4 L 258.8,213.5 L 183.8,213.2 L 109.9,214.8 L 33.9,214.0 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="160" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">问题：minic 是纯静态派</text>
+<text x="52" y="179" font-size="10.5" fill="#3b352d" text-anchor="start">Shape·Stride·Tile·Kernel 全在编译期固化</text>
+<text x="52" y="197" font-size="10.5" fill="#3b352d" text-anchor="start">换个 shape 就要重编译，还有两格 NONE</text>
+<path d="M 344.5,133.7 L 413.3,133.0 L 483.4,133.2 L 553.4,133.4 L 624.5,132.6 L 694.8,134.4 L 765.2,132.6 L 834.6,133.5 L 835.9,213.2 L 754.3,212.8 L 672.5,213.7 L 590.9,214.0 L 508.4,212.6 L 427.0,212.6 L 346.6,213.9 Z" fill="#ffffff" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="364" y="160" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">主线：审计→翻转→特化→回退→池化→异步→复盘</text>
+<text x="364" y="179" font-size="10.5" fill="#84796a" text-anchor="start">审计表是地图：11 个决策点各归谁</text>
+<text x="364" y="197" font-size="10.5" fill="#84796a" text-anchor="start">D128~D132 逐格动刀，D133 对照复盘成职责迁移表</text>
+<path d="M 845.9,134.3 L 924.3,135.1 L 1006.2,134.5 L 1084.7,133.9 L 1164.0,132.8 L 1165.5,214.8 L 1084.5,215.4 L 1003.5,215.4 L 924.8,215.3 L 843.6,213.8 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="862" y="160" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">命题：动态化＝整个 Runtime 层</text>
+<text x="862" y="179" font-size="10.5" fill="#3b352d" text-anchor="start">不只是改常量，是一串涟漪</text>
+<text x="862" y="197" font-size="10.5" fill="#3b352d" text-anchor="start">特化·回退·池化三件配套</text>
+<path d="M 33.8,226.4 L 118.9,225.3 L 205.7,225.8 L 206.1,296.8 L 203.8,367.0 L 119.2,367.3 L 34.0,369.4 L 35.1,296.9 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="249" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">审计｜D127</text>
+<text x="52" y="273" font-size="10" fill="#3b352d" text-anchor="start">11 个决策点逐项定归属</text>
+<text x="52" y="291" font-size="10" fill="#3b352d" text-anchor="start">三重证据：代码·产物·对照</text>
+<text x="52" y="309" font-size="10" fill="#3b352d" text-anchor="start">结论：纯静态派＋两格 NONE</text>
+<text x="52" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：职责表＋运行时流程图</text>
+<path d="M 226.2,225.2 L 310.6,224.3 L 396.3,225.1 L 396.1,295.4 L 395.6,367.2 L 312.0,366.0 L 226.5,366.6 L 227.6,296.2 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="244" y="249" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">翻转｜D128</text>
+<text x="244" y="273" font-size="10" fill="#3b352d" text-anchor="start">Shape 从类型搬进描述符</text>
+<text x="244" y="291" font-size="10" fill="#3b352d" text-anchor="start">一份 .ll 吃三种 shape</text>
+<text x="244" y="309" font-size="10" fill="#3b352d" text-anchor="start">代价在头部、循环体零差异</text>
+<text x="244" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：接口说明＋参数清单</text>
+<path d="M 418.8,227.5 L 503.2,228.4 L 587.9,227.4 L 589.0,298.8 L 589.7,368.3 L 502.5,368.7 L 417.4,367.2 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="436" y="249" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">特化｜D129</text>
+<text x="436" y="273" font-size="10" fill="#3b352d" text-anchor="start">两层分发，miss 走动态</text>
+<text x="436" y="291" font-size="10" fill="#3b352d" text-anchor="start">fmul 2→18：确定性是燃料</text>
+<text x="436" y="309" font-size="10" fill="#3b352d" text-anchor="start">热点特化、长尾动态兜底</text>
+<text x="436" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：特化产物＋性能表</text>
+<path d="M 611.5,224.6 L 697.1,224.4 L 782.3,225.3 L 781.1,295.9 L 782.4,366.6 L 695.7,365.7 L 611.6,367.3 L 612.5,296.4 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="628" y="249" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">回退｜D130</text>
+<text x="628" y="273" font-size="10" fill="#3b352d" text-anchor="start">校验→特化→回退→上抛</text>
+<text x="628" y="291" font-size="10" fill="#3b352d" text-anchor="start">W301 警告：降级可见</text>
+<text x="628" y="309" font-size="10" fill="#3b352d" text-anchor="start">永远有底·底破有出口</text>
+<text x="628" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：分发逻辑＋回退链</text>
+<path d="M 802.7,226.9 L 888.9,225.2 L 974.0,225.1 L 973.3,297.4 L 973.3,369.3 L 889.2,368.8 L 803.1,369.5 L 803.8,297.3 Z" fill="#f9f0e0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="820" y="249" font-size="12" fill="#b07d3a" text-anchor="start" font-weight="bold">池化｜D131</text>
+<text x="820" y="273" font-size="10" fill="#3b352d" text-anchor="start">BufferPool 档位分桶</text>
+<text x="820" y="291" font-size="10" fill="#3b352d" text-anchor="start">100 次调用仅 1 次分配</text>
+<text x="820" y="309" font-size="10" fill="#3b352d" text-anchor="start">malloc 债务今日结清</text>
+<text x="820" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：分配流程＋复用测试</text>
+<path d="M 994.1,224.9 L 1079.4,225.5 L 1165.7,227.0 L 1165.4,299.1 L 1165.1,368.9 L 1080.5,367.9 L 995.6,368.9 L 995.3,295.8 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1012" y="249" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">异步｜D132</text>
+<text x="1012" y="273" font-size="10" fill="#3b352d" text-anchor="start">Stream／Event 仿真</text>
+<text x="1012" y="291" font-size="10" fill="#3b352d" text-anchor="start">launch 0.01ms 即返回</text>
+<text x="1012" y="309" font-size="10" fill="#3b352d" text-anchor="start">release 挂 event 防竞争</text>
+<text x="1012" y="337" font-size="9.5" fill="#84796a" text-anchor="start">产出：异步图示</text>
+<path d="M 207.5,294 Q 218.1,293.6 224.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 217.8,296.8 L 224.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 218.2,290.4 L 224.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 399.5,294 Q 410.0,294.1 416.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 410.0,297.3 L 416.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 410.0,290.9 L 416.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 591.5,294 Q 601.6,292.0 608.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 601.4,295.2 L 608.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 603.2,289.1 L 608.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 783.5,294 Q 789.9,292.1 800.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 793.5,296.0 L 800.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 794.7,289.7 L 800.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 975.5,294 Q 984.4,296.2 992.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 987.1,298.8 L 992.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 985.4,292.6 L 992.5,294" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 36.5,372.3 L 107.9,373.2 L 178.7,372.5 L 247.7,373.0 L 318.9,371.9 L 389.2,373.5 L 460.6,372.4 L 529.8,372.8 L 601.1,373.4 L 672.3,373.3 L 741.5,373.2 L 812.1,373.5 L 883.2,374.7 L 952.7,374.6 L 1025.1,374.2 L 1095.3,375.0 L 1165.6,374.4 L 1165.1,450.8 L 1093.3,450.9 L 1023.4,450.4 L 954.6,450.1 L 882.8,450.1 L 812.9,450.7 L 741.1,450.7 L 670.9,448.9 L 600.5,448.9 L 529.0,448.7 L 458.6,450.5 L 388.4,449.8 L 318.0,450.0 L 246.7,449.0 L 177.4,448.6 L 105.6,450.4 L 35.8,449.0 Z" fill="#f9f0e0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="398" font-size="12.5" fill="#b07d3a" text-anchor="start" font-weight="bold">复盘收官｜D133：职责迁移表——一周翻了五格</text>
+<text x="1148" y="398" font-size="10.5" fill="#b07d3a" text-anchor="end" font-weight="bold">核心问题：为什么动态 Shape 不只是常量改变量？</text>
+<path d="M 51.5,406.8 L 152.2,406.8 L 149.5,429.9 L 52.4,429.0 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="101.0" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">Shape→RUNTIME</text>
+<path d="M 158.0,407.6 L 268.2,407.4 L 268.8,429.8 L 157.4,429.4 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="213.0" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">Kernel 选择→SPLIT</text>
+<path d="M 275.7,407.5 L 363.8,404.6 L 362.6,429.9 L 275.3,431.2 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="319.5" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">释放→RUNTIME</text>
+<path d="M 370.8,407.0 L 437.1,406.8 L 436.8,430.0 L 371.2,431.2 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="403.0" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">缓存→雏形</text>
+<path d="M 443.4,407.0 L 555.5,407.5 L 554.7,428.8 L 440.6,430.0 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="499.0" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">错误恢复→＋RUNTIME</text>
+<path d="M 560.7,406.0 L 697.0,406.9 L 696.3,430.6 L 561.1,429.9 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="629.0" y="422" font-size="9.5" fill="#3b352d" text-anchor="middle">同步→显式化（路径清晰）</text>
+<text x="706" y="421" font-size="9.5" fill="#84796a" text-anchor="start">另有 3 格保持、2 格不变——教学取舍</text>
+<text x="52" y="447" font-size="10" fill="#84796a" text-anchor="start">标准回答：一串涟漪（签名/读回/分配/边界/验证/性能语义）＋三件配套——完整成本是整个 Runtime 层</text>
+<path d="M 36.5,454.3 L 113.1,454.1 L 190.2,455.4 L 266.1,455.2 L 342.7,455.7 L 419.5,456.5 L 496.0,454.5 L 571.1,454.6 L 646.4,454.9 L 723.8,456.3 L 722.2,537.2 L 645.7,538.1 L 570.2,537.9 L 492.2,535.9 L 415.9,536.7 L 340.0,538.0 L 262.6,536.8 L 186.3,535.9 L 109.5,536.9 L 33.9,536.3 Z" fill="#ffffff" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="481" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">全周产出：Runtime 三件套＋一张迁移表</text>
+<text x="52" y="502" font-size="10.5" fill="#3b352d" text-anchor="start">特化分发 fmul 2→18 · 通用回退四级降级 · BufferPool 复用 99%</text>
+<text x="52" y="520" font-size="10.5" fill="#3b352d" text-anchor="start">六天 40 项判定全绿（9+5+8+6+6+6）· launch 0.01ms · 双 stream 1.4×</text>
+<path d="M 738.6,454.0 L 810.4,454.9 L 880.4,454.9 L 953.5,453.9 L 1022.3,455.5 L 1094.1,454.7 L 1165.8,455.0 L 1163.7,537.1 L 1093.5,538.0 L 1019.9,537.3 L 950.1,537.7 L 877.6,536.7 L 807.7,538.1 L 735.6,538.1 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="754" y="481" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">贯穿方法：先审计、后动刀、再配平</text>
+<text x="754" y="502" font-size="10.5" fill="#3b352d" text-anchor="start">每一格归属＝一天的工作量</text>
+<text x="754" y="520" font-size="10.5" fill="#3b352d" text-anchor="start">性能·正确·内存三件缺一不可</text>
+<path d="M 35.5,549.1 L 122.3,548.0 L 209.4,550.3 L 297.5,550.3 L 384.0,549.0 L 383.7,627.0 L 296.3,626.2 L 210.6,626.6 L 123.1,626.1 L 36.2,625.9 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="573" font-size="11.5" fill="#4a7fa5" text-anchor="start" font-weight="bold">① 审计定界（D127）</text>
+<text x="52" y="594" font-size="10" fill="#3b352d" text-anchor="start">11 格归属摸清现状</text>
+<text x="52" y="611" font-size="10" fill="#3b352d" text-anchor="start">NONE 空位点名、排期对应</text>
+<path d="M 413.9,548.0 L 485.2,546.8 L 553.5,547.6 L 623.9,548.2 L 693.9,548.9 L 764.8,548.1 L 765.8,625.4 L 677.3,624.0 L 590.1,624.5 L 503.5,625.9 L 416.2,624.9 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="432" y="573" font-size="11.5" fill="#b0605a" text-anchor="start" font-weight="bold">② 逐格翻转·配平三件（D128–D131）</text>
+<text x="432" y="594" font-size="10" fill="#3b352d" text-anchor="start">Shape/Kernel/释放/缓存动刀</text>
+<text x="432" y="611" font-size="10" fill="#3b352d" text-anchor="start">特化拿性能＋回退兜正确＋池管内存</text>
+<path d="M 794.7,549.5 L 868.1,549.6 L 941.8,549.8 L 1016.8,548.4 L 1089.3,548.3 L 1163.5,549.1 L 1165.0,624.7 L 1091.1,625.5 L 1015.9,625.0 L 941.5,625.1 L 868.4,626.5 L 793.8,626.5 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="812" y="573" font-size="11.5" fill="#5a8a5a" text-anchor="start" font-weight="bold">③ 显式化与收官（D132–D133）</text>
+<text x="812" y="594" font-size="10" fill="#3b352d" text-anchor="start">同步 IMPLICIT→显式 Stream/Event</text>
+<text x="812" y="611" font-size="10" fill="#3b352d" text-anchor="start">迁移表＋一页标准回答收口</text>
+<path d="M 387,587 Q 397.7,588.3 411,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 404.8,590.8 L 411,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 404.2,584.5 L 411,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 767,587 Q 781.3,588.5 791,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round"/>
+<path d="M 785.1,591.2 L 791,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 784.1,584.9 L 791,587" fill="none" stroke="#84796a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="646" font-size="10.5" fill="#84796a" text-anchor="middle">承上：第 18 周 minic 统一编译入口收官——manifest 与 stage 产物正是 Runtime 的输入接口</text>
+<text x="600" y="664" font-size="10.5" fill="#84796a" text-anchor="middle">启下：第 20 周测试、调试与回归体系——动态 Shape 的正确性交给随机测试与回归兜底</text>
+</svg>

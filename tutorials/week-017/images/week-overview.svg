@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive">
+<rect width="1200" height="675" fill="#fdfaf2"/>
+<title>第 17 周总览：Lowering 到 LLVM 并执行——认门、写手册、修海关、点算子、通管道、真执行、七层复盘，把 mini 从 MLIR 世界一路降到机器码</title>
+<text x="36" y="42" font-size="12" fill="#84796a" text-anchor="start">AI 芯片编译器 168 天学习计划</text>
+<text x="1164" y="42" font-size="12" fill="#84796a" text-anchor="end">Week 17／24 · 第五阶段：端到端编译与 Runtime</text>
+<text x="600" y="84" font-size="28" fill="#3b352d" text-anchor="middle" font-weight="bold">第 17 周：Lowering 到 LLVM 并执行</text>
+<text x="600" y="108" font-size="13" fill="#3b352d" text-anchor="middle">把 mini 从 MLIR 最后一层降到 LLVM IR，编译成机器码并真正跑起来——跨过 mlir-translate 这扇门</text>
+<path d="M 36.1,123.1 L 98.9,123.6 L 161.3,123.9 L 224.9,123.6 L 286.6,123.9 L 348.8,121.9 L 413.1,122.7 L 475.6,123.8 L 537.4,123.8 L 600.9,122.6 L 662.8,122.3 L 725.3,124.1 L 787.6,122.1 L 851.8,123.6 L 913.2,122.2 L 975.1,124.1 L 1038.1,122.6 L 1101.7,123.7" fill="none" stroke="#84796a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 34.9,136.9 L 94.6,136.9 L 155.6,137.0 L 215.4,137.4 L 274.6,135.1 L 337.3,136.5 L 336.4,173.6 L 335.4,212.4 L 276.9,214.4 L 217.4,212.3 L 157.4,213.4 L 95.2,213.4 L 34.5,211.9 L 35.6,175.3 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="162" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">问题：CPU 不读 MLIR</text>
+<text x="52" y="180" font-size="10.5" fill="#3b352d" text-anchor="start">前 16 周的循环·内存·调优都住在 MLIR 世界</text>
+<text x="52" y="197" font-size="10.5" fill="#3b352d" text-anchor="start">到机器码，必须过 LLVM 这扇单向门</text>
+<path d="M 346.6,134.8 L 410.3,136.3 L 469.5,135.6 L 530.4,135.8 L 592.7,137.3 L 653.6,135.0 L 715.0,137.1 L 775.7,136.2 L 836.5,137.3 L 838.4,174.9 L 836.8,213.6 L 775.9,212.2 L 714.4,214.3 L 654.0,213.5 L 594.2,214.3 L 532.0,212.6 L 469.6,213.7 L 410.5,213.3 L 348.8,212.9 L 348.9,173.9 Z" fill="#ffffff" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="364" y="162" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">主线：认门 → 手册 → 海关 → 算子 → 管道 → 执行 → 复盘</text>
+<text x="364" y="180" font-size="10.5" fill="#84796a" text-anchor="start">D113 门两侧读写 · D114 类型与合法性 · D115 描述符与 ABI</text>
+<text x="364" y="197" font-size="10.5" fill="#84796a" text-anchor="start">D116 首个算子 · D117 导出 .ll · D118 执行对账 · D119 七层复盘</text>
+<path d="M 850.4,136.5 L 914.2,137.1 L 976.4,135.7 L 1039.3,136.0 L 1102.3,134.9 L 1163.9,135.5 L 1164.7,175.2 L 1165.1,213.5 L 1102.1,211.7 L 1037.9,211.9 L 974.2,213.9 L 911.3,213.1 L 850.2,212.9 L 850.0,173.6 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="866" y="162" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">命题：信息只减不增</text>
+<text x="866" y="180" font-size="10.5" fill="#3b352d" text-anchor="start">每层留什么·丢什么·长什么都要有出处</text>
+<text x="866" y="197" font-size="10.5" fill="#3b352d" text-anchor="start">为什么不能只看最终 LLVM IR？</text>
+<path d="M 37.1,227.4 L 94.6,224.6 L 151.6,224.6 L 209.1,226.6 L 208.7,293.0 L 206.8,363.1 L 150.5,360.9 L 94.5,361.4 L 37.3,361.3 L 36.0,293.8 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="248" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">认门｜D113</text>
+<text x="52" y="272" font-size="10" fill="#3b352d" text-anchor="start">Dialect↔IR 读写对照</text>
+<text x="52" y="289" font-size="10" fill="#3b352d" text-anchor="start">无关 vs 相关优化</text>
+<text x="52" y="306" font-size="10" fill="#3b352d" text-anchor="start">重编号·内联·phi</text>
+<text x="52" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：注释 IR＋概念对照表</text>
+<path d="M 228.9,226.8 L 286.3,227.1 L 342.6,225.0 L 399.6,225.8 L 399.8,295.2 L 402.3,362.1 L 342.8,362.8 L 286.8,361.7 L 228.7,362.0 L 229.8,295.5 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="245" y="248" font-size="12" fill="#4a7fa5" text-anchor="start" font-weight="bold">翻译手册｜D114</text>
+<text x="245" y="272" font-size="10" fill="#3b352d" text-anchor="start">TypeConverter 换类型</text>
+<text x="245" y="289" font-size="10" fill="#3b352d" text-anchor="start">终态只认 llvm.*</text>
+<text x="245" y="306" font-size="10" fill="#3b352d" text-anchor="start">全量清零·部分挂账</text>
+<text x="245" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：路线＋合法性清单</text>
+<path d="M 420.7,225.6 L 478.7,225.6 L 537.4,225.7 L 593.7,226.0 L 593.3,293.3 L 594.2,361.8 L 535.8,362.0 L 480.1,362.3 L 420.8,361.3 L 421.8,292.8 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="438" y="248" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">修海关｜D115</text>
+<text x="438" y="272" font-size="10" fill="#3b352d" text-anchor="start">memref→五字段描述符</text>
+<text x="438" y="289" font-size="10" fill="#3b352d" text-anchor="start">DataLayout 算字节账</text>
+<text x="438" y="306" font-size="10" fill="#3b352d" text-anchor="start">ABI：调用双方合同</text>
+<text x="438" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：函数转换＋类型测试</text>
+<path d="M 614.8,224.9 L 673.4,227.2 L 729.8,226.6 L 786.8,225.3 L 787.4,293.9 L 787.5,361.1 L 728.6,362.3 L 673.7,360.9 L 614.4,361.7 L 614.0,294.3 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="631" y="248" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">点算子｜D116</text>
+<text x="631" y="272" font-size="10" fill="#3b352d" text-anchor="start">Relu/Add 简单先行</text>
+<text x="631" y="289" font-size="10" fill="#3b352d" text-anchor="start">访存 M1·M2·M3</text>
+<text x="631" y="306" font-size="10" fill="#3b352d" text-anchor="start">契约·数值·布局验证</text>
+<text x="631" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：第一个端到端算子</text>
+<path d="M 807.8,224.8 L 864.0,225.0 L 923.4,225.9 L 980.3,227.1 L 979.6,294.1 L 981.4,361.2 L 923.8,360.5 L 865.4,360.8 L 809.1,361.1 L 807.6,294.0 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="824" y="248" font-size="12" fill="#b0605a" text-anchor="start" font-weight="bold">通管道｜D117</text>
+<text x="824" y="272" font-size="10" fill="#3b352d" text-anchor="start">C1 落地·循环进 cf</text>
+<text x="824" y="289" font-size="10" fill="#3b352d" text-anchor="start">五连 pass＋reconcile</text>
+<text x="824" y="306" font-size="10" fill="#3b352d" text-anchor="start">mlir-translate 出 .ll</text>
+<text x="824" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：三组冻结 IR 文件</text>
+<path d="M 999.9,225.5 L 1058.7,225.4 L 1116.5,226.3 L 1173.5,225.3 L 1174.4,292.6 L 1172.7,363.5 L 1115.5,363.1 L 1058.8,362.4 L 1000.7,361.3 L 1000.7,293.0 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1017" y="248" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">真执行｜D118</text>
+<text x="1017" y="272" font-size="10" fill="#3b352d" text-anchor="start">AOT/JIT 一个时刻差</text>
+<text x="1017" y="289" font-size="10" fill="#3b352d" text-anchor="start">四路线共用 C 合同</text>
+<text x="1017" y="306" font-size="10" fill="#3b352d" text-anchor="start">结果与参考对账</text>
+<text x="1017" y="334" font-size="10" fill="#84796a" text-anchor="start">产出：可重复命令＋对账</text>
+<path d="M 210,290 Q 217.2,289.0 227,290" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 219.9,292.5 L 227,290 L 220.6,286.1" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 403,290 Q 410.6,288.8 420,290" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 412.9,292.4 L 420,290 L 413.7,285.9" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 596,290 Q 605.5,290.7 613,290" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 606.6,293.9 L 613,290 L 606.0,287.4" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 789,290 Q 798.9,289.2 806,290" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 798.9,292.5 L 806,290 L 799.7,286.0" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 982,290 Q 991.3,288.7 999,290" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 991.8,292.1 L 999,290 L 992.9,285.7" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 35.5,373.6 L 91.0,375.3 L 150.1,373.9 L 206.0,373.9 L 261.9,374.3 L 318.9,374.9 L 373.4,375.4 L 430.0,373.8 L 488.1,374.9 L 543.8,374.8 L 600.6,374.0 L 657.5,374.4 L 711.9,376.0 L 768.6,373.7 L 826.0,373.6 L 883.4,374.9 L 937.8,374.9 L 994.7,373.8 L 1052.6,374.9 L 1109.1,375.0 L 1163.8,374.9 L 1164.2,408.2 L 1164.2,439.9 L 1106.7,440.2 L 1051.9,439.9 L 995.1,439.3 L 938.7,439.9 L 880.8,441.3 L 825.5,440.5 L 769.4,439.6 L 714.1,441.2 L 655.1,439.6 L 600.0,440.9 L 544.1,439.1 L 486.5,438.8 L 430.0,441.2 L 373.4,441.2 L 317.9,440.9 L 262.7,440.6 L 204.8,441.0 L 148.8,440.4 L 92.0,439.2 L 37.4,439.9 L 36.8,406.9 Z" fill="#f9f0e0" stroke="#b07d3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="398" font-size="12.5" fill="#b07d3a" text-anchor="start" font-weight="bold">复盘收官｜D119：七层信息对账</text>
+<text x="1148" y="398" font-size="10.5" fill="#b07d3a" text-anchor="end" font-weight="bold">核心问题：为什么不能只看最终 LLVM IR？</text>
+<path d="M 51.3,405.5 L 118.1,403.3 L 183.4,404.7 L 183.3,412.3 L 185.1,421.2 L 116.7,420.9 L 51.6,421.9 L 52.9,412.2 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="118.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">图／算子层</text>
+<path d="M 187,413 Q 195.8,412.5 205,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 200.4,415.0 L 205,413 L 200.6,410.6" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 206.9,402.6 L 274.3,404.7 L 340.1,403.4 L 338.5,414.0 L 339.3,420.6 L 273.0,420.5 L 208.7,421.7 L 208.5,412.8 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="274.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">循环层 scf</text>
+<path d="M 343,413 Q 353.7,411.7 361,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 356.2,414.3 L 361,413 L 357.0,410.0" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 364.7,405.0 L 430.3,405.2 L 497.4,404.3 L 497.3,413.5 L 494.9,422.2 L 430.6,422.4 L 364.9,422.9 L 364.6,413.7 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="430.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">cf 控制流</text>
+<path d="M 499,413 Q 506.6,414.7 517,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 512.9,415.9 L 517,413 L 512.2,411.6" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 520.1,404.3 L 587.1,404.9 L 653.1,402.8 L 651.8,412.8 L 650.7,422.5 L 585.2,421.0 L 519.5,422.1 L 520.4,411.8 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="586.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">LLVM 方言</text>
+<path d="M 655,413 Q 662.4,413.2 673,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 668.5,415.3 L 673,413 L 668.4,410.9" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 676.5,404.7 L 742.5,403.2 L 808.7,402.8 L 808.1,412.7 L 809.4,423.1 L 742.6,420.9 L 674.8,422.6 L 675.3,413.7 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="742.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">LLVM IR</text>
+<path d="M 811,413 Q 818.9,414.4 829,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 824.9,415.8 L 829,413 L 824.2,411.5" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 832.4,403.5 L 898.7,404.4 L 964.5,404.4 L 962.9,413.3 L 963.1,421.9 L 899.2,421.3 L 830.6,420.5 L 831.2,413.0 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="898.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">优化后 IR</text>
+<path d="M 967,413 Q 977.7,412.3 985,413" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M 980.3,414.7 L 985,413 L 980.7,410.4" fill="none" stroke="#84796a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 987.9,403.7 L 1052.6,403.3 L 1119.3,405.5 L 1121.0,412.5 L 1121.0,421.9 L 1053.1,420.9 L 987.6,421.9 L 987.9,413.6 Z" fill="#ffffff" stroke="#b07d3a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1054.0" y="417" font-size="9.5" fill="#3b352d" text-anchor="middle">机器码</text>
+<text x="52" y="436" font-size="10" fill="#84796a" text-anchor="start">每层三问：保留·丢失·新增——决策的理由留在上层，最终 IR 只剩结果</text>
+<path d="M 36.5,450.1 L 93.5,451.3 L 149.7,451.3 L 207.2,450.7 L 264.3,450.1 L 321.6,451.2 L 380.2,451.5 L 436.0,451.1 L 493.8,448.6 L 552.8,450.6 L 610.1,448.6 L 666.3,449.7 L 724.9,449.5 L 723.3,490.1 L 724.0,528.1 L 665.2,526.6 L 610.7,526.8 L 553.3,529.1 L 495.2,527.7 L 437.4,529.0 L 381.2,527.1 L 323.4,527.6 L 265.9,529.0 L 208.6,527.8 L 149.6,527.5 L 93.1,527.8 L 34.6,527.3 L 36.0,489.6 Z" fill="#ffffff" stroke="#6b6357" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="474" font-size="12" fill="#3b352d" text-anchor="start" font-weight="bold">全周产出：从注释 IR 到可重复命令</text>
+<text x="52" y="494" font-size="10.5" fill="#3b352d" text-anchor="start">注释版 LLVM IR＋概念对照表 · Lowering 路线＋合法性清单 · 函数转换＋类型测试</text>
+<text x="52" y="512" font-size="10.5" fill="#3b352d" text-anchor="start">第一个端到端算子 · 优化前后 MLIR／LLVM 方言／.ll 三组冻结 · 执行命令＋正确性结果</text>
+<path d="M 740.4,450.4 L 801.7,449.6 L 860.2,449.0 L 922.6,451.5 L 983.0,450.9 L 1042.0,450.0 L 1102.9,451.2 L 1164.5,450.4 L 1162.8,489.4 L 1165.3,527.5 L 1104.2,527.6 L 1044.1,526.5 L 982.1,529.2 L 920.3,528.8 L 861.2,528.1 L 800.2,526.7 L 739.2,526.7 L 741.5,488.7 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="756" y="474" font-size="12" fill="#5a8a5a" text-anchor="start" font-weight="bold">两条贯穿线索</text>
+<text x="756" y="494" font-size="10.5" fill="#3b352d" text-anchor="start">表示在换：七层逐级下降，账逐层可查</text>
+<text x="756" y="512" font-size="10.5" fill="#3b352d" text-anchor="start">合同在立：描述符·ABI 一以贯之（D115→D118）</text>
+<path d="M 35.2,542.0 L 95.8,542.3 L 155.3,539.5 L 216.2,540.0 L 277.1,541.9 L 336.1,542.4 L 396.7,539.7 L 397.3,577.6 L 396.9,615.4 L 334.8,615.6 L 276.8,614.4 L 215.9,614.5 L 157.1,614.1 L 97.3,615.9 L 37.1,614.0 L 35.9,576.8 Z" fill="#eef3f7" stroke="#4a7fa5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="52" y="565" font-size="11.5" fill="#4a7fa5" text-anchor="start" font-weight="bold">① 认门·定图（D113–D114）</text>
+<text x="52" y="586" font-size="10" fill="#3b352d" text-anchor="start">先读样本再动工：类型兑换与合法性</text>
+<text x="52" y="604" font-size="10" fill="#3b352d" text-anchor="start">动工前立成清单，避免中途返工</text>
+<path d="M 414.8,540.8 L 475.3,540.5 L 535.9,541.7 L 594.9,540.0 L 657.2,539.6 L 717.3,540.5 L 775.7,542.1 L 775.1,578.4 L 776.1,616.1 L 715.5,614.8 L 657.2,616.2 L 594.7,615.8 L 535.2,616.0 L 477.3,614.0 L 417.1,615.8 L 415.5,577.7 Z" fill="#f7ecea" stroke="#b0605a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="432" y="565" font-size="11.5" fill="#b0605a" text-anchor="start" font-weight="bold">② 动工·打通（D115–D117）</text>
+<text x="432" y="586" font-size="10" fill="#3b352d" text-anchor="start">海关→算子→管道逐段落地</text>
+<text x="432" y="604" font-size="10" fill="#3b352d" text-anchor="start">残账清零、胶水清零、导出 .ll</text>
+<path d="M 794.6,540.1 L 857.0,542.0 L 918.0,542.2 L 980.4,540.4 L 1040.8,541.8 L 1102.3,541.7 L 1165.1,542.3 L 1164.4,578.6 L 1162.6,613.5 L 1101.4,613.9 L 1041.4,616.0 L 979.3,613.6 L 919.4,614.0 L 857.7,614.5 L 797.4,615.4 L 797.0,577.9 Z" fill="#edf4ee" stroke="#5a8a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="812" y="565" font-size="11.5" fill="#5a8a5a" text-anchor="start" font-weight="bold">③ 执行·收口（D118–D119）</text>
+<text x="812" y="586" font-size="10" fill="#3b352d" text-anchor="start">JIT／AOT 跑通并与参考对账</text>
+<text x="812" y="604" font-size="10" fill="#3b352d" text-anchor="start">七层复盘收口，全程证据可查</text>
+<path d="M 398,578 Q 407.7,579.5 414,578" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 408.2,582.7 L 414,578 L 406.7,576.4" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 778,578 Q 786.8,576.3 794,578" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 786.7,579.6 L 794,578 L 788.2,573.3" fill="none" stroke="#84796a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="640" font-size="10.5" fill="#84796a" text-anchor="middle">承上：第 16 周自动调优收官，循环＋内存 IR 备好——本周走完到机器码的最后一段</text>
+<text x="600" y="658" font-size="10.5" fill="#84796a" text-anchor="middle">启下：第 18 周统一端到端编译入口（minic）——把七层链路装进一条命令</text>
+</svg>

@@ -1,3 +1,7 @@
+第 6 周从“读懂 MLIR”跨到“动手造方言”：不改动 LLVM 一行源码，亲手搭一个叫 mini 的方言，给最终项目 MatMul＋Bias＋ReLU 安家。七天沿一条主线推进：第 36 天建起独立工程，把空方言注册进自制工具 mini-opt；第 37～38 天用 ODS 在 .td 表里定义 matmul、add、relu、constant 四个算子，交给 mlir-tblgen 自动生成解析、打印与约束代码；第 39～40 天接下 ODS 管不了的跨值关系，手写 Verifier 查内维匹配与 shape 一致，让报错学会说人话；第 41 天把算子、验证、Pass 注册首尾相连，端到端 IR 在 mini-opt 里跑通 round-trip；第 42 天复盘，独立新增第五个算子 mini.mul。本周收获五个算子、两层验证的 mini 方言工程和一个自制工具，更是“新增算子只改注册数据、不改工具代码”的扩展能力，也是下周 Shape 推导与图优化的地基。
+
+![第 6 周总览：左侧生产线把 MiniOps.td 经 mlir-tblgen 生成 .inc、加手写 Verifier 编译链接成 mini-opt；右侧 mini-opt 内部一条 .mlir 过解析、两层验证（ODS 约束在前、手写 verify() 在后）、打印与 Pass 三道关卡，靠方言和 Pass 两张注册表认人；目标图 MatMul→Add→Relu 与 constant、mul 五个算子；底部七天从建工程、ODS 填表、手写 Verifier、端到端 IR 到复盘新增 mini.mul，衔接第 5 周读 IR 与第 7 周 Shape 推导](images/week-overview.svg)
+
 > 第二阶段：MLIR 核心能力（第 29～56 天）
 
 ### 第 036 天｜创建独立 Dialect 工程
