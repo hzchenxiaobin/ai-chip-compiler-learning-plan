@@ -139,9 +139,23 @@ def page_template(
     next_link=None,
     home=False,
     extra_head="",
+    bookmark=None,
 ):
     escaped_title = html.escape(title)
     escaped_markdown = "" if home else escape_for_template_string(markdown)
+
+    bookmark_html = ""
+    if bookmark:
+        bookmark_html = (
+            '<button class="vp-bookmark-toggle" type="button" aria-pressed="false" aria-label="加入书签" '
+            f'data-bookmark-id="{html.escape(bookmark["id"], quote=True)}" '
+            f'data-bookmark-label="{html.escape(bookmark["label"], quote=True)}" '
+            f'data-bookmark-title="{html.escape(bookmark["title"], quote=True)}" '
+            f'data-bookmark-url="{html.escape(bookmark["url"], quote=True)}">'
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.75 5.57 6.15.9-4.45 4.33 '
+            '1.05 6.12L12 17.03 6.5 19.92l1.05-6.12L3.1 9.47l6.15-.9L12 3Z"/></svg>'
+            '<span>加入书签</span></button>'
+        )
 
     pills_html = ""
     body_class = "vp-page vp-home" if home else "vp-page"
@@ -242,7 +256,7 @@ def page_template(
         }} catch (e) {{ /* 保持默认暗黑 */ }}
     }})();
     </script>
-    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=8">
+    <link rel="stylesheet" href="{root_prefix}css/vp-solution.css?v=9">
 {markdown_assets}{extra_head}</head>
 <body class="{body_class}">
     <header class="vp-navbar">
@@ -254,8 +268,10 @@ def page_template(
                 <a href="{root_prefix}plan.html">168 天计划</a>
                 <a class="vp-roadmap-link" href="{root_prefix}index.html#roadmap">学习路线</a>
                 <a href="{root_prefix}index.html#tutorials">每日教程</a>
+                <a class="vp-bookmarks-link" href="{root_prefix}index.html#bookmarks">我的书签<span class="vp-bookmark-count" hidden></span></a>
                 <a class="vp-github-link" href="{GITHUB_REPO_URL}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             </nav>
+            {bookmark_html}
             <div class="vp-appearance">
                 <button class="vp-switch" type="button" aria-label="切换深色/浅色外观">
                     <span class="check"><span class="icon sun">☀</span><span class="icon moon">☾</span></span>
@@ -266,7 +282,7 @@ def page_template(
     {main_html}
     <footer class="vp-footer"><span>AI 芯片编译器学习计划 · Deployed on GitHub Pages</span></footer>
     <button class="vp-back-to-top" aria-label="回到顶部">↑</button>
-    <script src="{root_prefix}js/vp-solution.js?v=7"></script>
+    <script src="{root_prefix}js/vp-solution.js?v=8"></script>
     <script>
         {markdown_declaration}
         try {{
@@ -480,6 +496,18 @@ def build_home(tutorials):
     <div class="section-heading"><h2>学习路线</h2><p>六个阶段、24 个主题，从 Modern C++ 一路走到端到端 AI 芯片编译器。</p></div>
     {"".join(phases)}
 </section>
+<section class="home-section bookmarks-section" id="bookmarks">
+    <div class="section-heading section-heading-row">
+        <div><h2>我的书签</h2><p>收藏感兴趣的教程，稍后继续阅读。书签仅保存在当前浏览器，无需登录。</p></div>
+        <button class="bookmarks-clear" id="bookmarks-clear" type="button" hidden>清空书签</button>
+    </div>
+    <div class="bookmarks-empty" id="bookmarks-empty">
+        <p>还没有书签</p>
+        <span>打开一篇教程，点击顶部的“加入书签”即可收藏。</span>
+        <a href="#tutorials">浏览每日教程 →</a>
+    </div>
+    <div class="bookmarks-list" id="bookmarks-list" aria-live="polite"></div>
+</section>
 <section class="home-section tutorials-section" id="tutorials">
     <div class="section-heading section-heading-row"><div><h2>每日教程</h2><p>已发布 {len(tutorials)} 篇图文教程，每篇都包含讲解、实践、练习与验收。</p></div><span class="section-status">持续更新</span></div>
     <div class="tutorial-phases">{"".join(phase_groups)}</div>
@@ -589,6 +617,12 @@ def build_tutorials(tutorials):
             back_link=(f"{root_prefix}index.html#tutorials", "返回每日教程"),
             prev_link=prev_link,
             next_link=next_link,
+            bookmark={
+                "id": f"day-{day['number']}",
+                "label": f"Day {day['number']}",
+                "title": day["title"],
+                "url": tutorial_href(day, root_prefix),
+            },
         )
         (output_dir / "index.html").write_text(output, encoding="utf-8")
         print(f"Generated tutorials/week-{day['week']:03d}/{day['slug']}/index.html")
