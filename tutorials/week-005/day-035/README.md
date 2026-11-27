@@ -102,7 +102,7 @@ module {
 ```text
 tutorials/week-005/day-035/
 ├── README.md                      ← 本教程
-├── images/                        ← 三张图
+├── images/                        ← 四张图
 └── code/
     ├── week5_exam.mlir            ← ① 期末考卷（闭卷标注对象）
     ├── week5_run.mlir             ← ② JIT 版（加了个 @main 调 clamped_dot）
@@ -230,6 +230,10 @@ $ mlir-cpu-runner-18 /tmp/day035/s3.mlir --entry-point-result=i32
 
 **图 3**：左半是考卷的解剖图——色条即方言（蓝 arith、绿 func、琥珀 scf、红 tensor、灰 builtin），`%zero 第 1 读`（`iter_args` 初值）与`第 2 读`（`maximumf`）、`%acc` 的"上一轮 `%new`"回传箭头都画在结构里；右半是三张卡：def→use 速查（注意 `%zero` 是唯一被读 2 次的值）、机器判卷数据、执行证据。**这张图就是"闭卷标注＋判卷＋执行"的完整成果对照**。
 
+![降级阶梯与 JIT 真跑全景：四级台阶从 s0 张量层（19 ops，arith/builtin/func/scf/tensor 五家全到齐）经 one-shot-bufferize 到 s1 缓冲区层（21 ops，tensor 退场、memref 进场）、经 convert-scf-to-cf 到 s2 CFG 层（24 ops，scf 退场、cf 进场，循环头 ^bb1 带 2 个前驱）、经其余五个 convert＋canonicalize 到 s3 LLVM 层（32 ops，只剩 builtin 与 llvm），每级贴一行真实 IR 片段；底部 JIT 卡显示终端打印 5、换 bias＝2.0 只改 Attribute 得 8](images/04-lowering-staircase.svg)
+
+**图 4**：把 5.3 节的台阶表画成下楼图——每级台阶标层级名与实测 op 数（19→21→24→32），台阶之间是搬家的 Pass 名与住户进出（谁退场、谁进场），卡片里贴一行该级真实 IR 片段（`memref.load`、`^bb1(…): 2 preds`、`llvm.icmp`／`llvm.cond_br`）；底部是 JIT 执行证据卡——打印 `5`，换 bias＝2.0 只改 `arith.constant` 的 Attribute 得 `8`。**这张图就是"跑"这一步（5.3 节的表格＋代码片段）的全景对照**。
+
 **彩蛋（也是证据三的现场）**：bytecode 序列化。`run_all.sh` 末尾执行 `mlir-opt-18 code/week5_exam.mlir --emit-bytecode`，本机真实输出：
 
 ```text
@@ -296,3 +300,4 @@ $ mlir-cpu-runner-18 /tmp/day035/bias2.llvm.mlir --entry-point-result=i32
 ## 9. 一句话总结与明天预告
 
 今天的问题是"六天学的零件能不能脱稿拼成整机"；机制上要记住的是一页概念图的三句话——**五件套是中心（操作数读值、结果定义值），Region→Block→Operation 首尾相接构成套娃，Dialect 是让一切可扩展的户口本＋注册表**；实践上用考卷 `clamped_dot` 走了"闭卷标注→generic form 判卷→四级台阶降级→JIT 真跑"的完整闭环；验证方式是机器数数（9 种 13 个 op）、终端里真实的 `5` 和 `8`，以及 bytecode 读回与文本版 diff 一致。明天（Day 36）开第 6 周：创建独立的 `mini` Dialect 工程——概念图里 Dialect 那一格，从"认得 46 家户口"变成"自己开一家"：Standalone 工程结构、TableGen 生成代码、构建依赖，都是为你自己的 `arith.addf` 递交出生申请。
+<!-- tutorial-review: v1 -->

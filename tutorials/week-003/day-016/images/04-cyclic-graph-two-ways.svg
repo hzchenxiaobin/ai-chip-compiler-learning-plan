@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="780" viewBox="0 0 1000 780">
+  <rect x="0" y="0" width="1000" height="780" fill="#FDFBF4"/>
+  <text x="500" y="34" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="21" fill="#3A322A" text-anchor="middle" font-weight="bold">环图的两条出路：时间展开，或把循环显式化</text>
+  <text x="500" y="58" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#8A8378" text-anchor="middle" font-style="italic">循环图无拓扑序——业界的答案不是「更强的排序器」，而是让拓扑排序永远只面对 DAG</text>
+  <path d="M 28.8 93.0 L 340.8 91.3 L 340.0 429.9 L 30.5 430.8 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 28.8 93.0 L 340.8 91.3 L 340.0 429.9 L 30.5 430.8 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 27.9 92.0 L 341.6 91.2 L 340.6 428.9 L 30.4 431.3 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="185" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">① 循环的样子：RNN 的时间步</text>
+  <text x="185" y="140" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">同一段计算，吃自己上一步的输出</text>
+  <ellipse cx="80" cy="185" rx="22" ry="14" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="80" y="188.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">x_t</text>
+  <path d="M 129.5 151.3 L 254.6 148.8 L 257.1 220.7 L 128.5 219.5 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 129.5 151.3 L 254.6 148.8 L 257.1 220.7 L 128.5 219.5 Z" fill="none" stroke="#D08A4E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 129.7 151.5 L 254.8 148.2 L 256.9 220.4 L 129.1 220.5 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="192" y="175" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">f(x_t, s)</text>
+  <text x="192" y="193" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">同一段计算</text>
+  <text x="192" y="209" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#D08A4E" text-anchor="middle">-&gt; s'</text>
+  <path d="M 102 183 L 126 180" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 117.6 185.1 L 126 180 L 116.6 177.1" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 256 180 L 288 178" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 279.3 182.6 L 288 178 L 278.8 174.6" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="297" y="174" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle" font-weight="bold">s'</text>
+  <ellipse cx="80" cy="262" rx="20" ry="13" fill="#F6DCDC" stroke="#C96A6A" stroke-width="1.8"/>
+  <text x="80" y="265.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">s</text>
+  <path d="M 100 255 L 124 222" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 121.9 231.6 L 124 222 L 115.5 226.9" fill="none" stroke="#C96A6A" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 292 190 C 322 250, 215 320, 104 274" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="8,6"/>
+  <path d="M 113.6 276.2 L 104 274 L 108.8 282.6" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="190" y="305" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">下一轮：s' 当作新的 s</text>
+  <text x="185" y="340" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">s -&gt; f -&gt; s' -&gt; s：依赖闭成圈</text>
+  <text x="185" y="362" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#C96A6A" text-anchor="middle">有环 ⟺ 无拓扑序，拒绝执行</text>
+  <text x="185" y="388" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-style="italic">v7 的「硬排」＝静默假序（第 1 节实测）</text>
+  <text x="185" y="408" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">v8：TopoSort 拒绝＋报出环路径</text>
+  <path d="M 359.2 92.1 L 964.6 92.3 L 965.4 382.8 L 358.4 384.9 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 359.2 92.1 L 964.6 92.3 L 965.4 382.8 L 358.4 384.9 Z" fill="none" stroke="#7FA65A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 358.6 91.6 L 965.8 92.2 L 966.2 382.7 L 358.8 384.2 Z" fill="none" stroke="#7FA65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="662" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#7FA65A" text-anchor="middle" font-weight="bold">② 出路一：沿时间展开（unroll，T 步＝T 份复制）</text>
+  <text x="662" y="244" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">把「跨时间的环」摊平成一条链</text>
+  <ellipse cx="425" cy="200" rx="24" ry="14" fill="#E7F0DC" stroke="#7FA65A" stroke-width="1.8"/>
+  <text x="425" y="203.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">h0</text>
+  <text x="425" y="232" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="8.5" fill="#8A8378" text-anchor="middle">初始状态</text>
+  <ellipse cx="515" cy="137" rx="18" ry="11" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="515" y="140.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">x1</text>
+  <path d="M 474.2 170.9 L 554.7 171.0 L 553.6 227.7 L 476.3 228.8 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 474.2 170.9 L 554.7 171.0 L 553.6 227.7 L 476.3 228.8 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 474.8 170.3 L 554.8 170.6 L 552.8 226.9 L 475.7 229.7 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="515" y="194" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">f(x1, h0)</text>
+  <text x="515" y="214" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#5B8BB9" text-anchor="middle">-&gt; h1</text>
+  <path d="M 515 148 L 515 170" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 511.0 161.0 L 515 170 L 519.0 161.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="602" cy="200" rx="21" ry="13" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="602" y="203.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">h1</text>
+  <ellipse cx="687" cy="137" rx="18" ry="11" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="687" y="140.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">x2</text>
+  <path d="M 647.4 172.7 L 727.9 173.2 L 727.8 229.2 L 645.5 227.9 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 647.4 172.7 L 727.9 173.2 L 727.8 229.2 L 645.5 227.9 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 648.5 173.0 L 728.9 172.5 L 727.7 228.7 L 645.6 228.1 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="687" y="194" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">f(x2, h1)</text>
+  <text x="687" y="214" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#5B8BB9" text-anchor="middle">-&gt; h2</text>
+  <path d="M 687 148 L 687 170" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 683.0 161.0 L 687 170 L 691.0 161.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="774" cy="200" rx="21" ry="13" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="774" y="203.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">h2</text>
+  <ellipse cx="859" cy="137" rx="18" ry="11" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="859" y="140.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">x3</text>
+  <path d="M 819.9 172.9 L 899.0 171.3 L 897.4 228.5 L 818.9 228.7 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 819.9 172.9 L 899.0 171.3 L 897.4 228.5 L 818.9 228.7 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 819.6 173.4 L 898.4 171.9 L 898.0 228.3 L 819.0 229.1 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="859" y="194" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">f(x3, h2)</text>
+  <text x="859" y="214" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#5B8BB9" text-anchor="middle">-&gt; h3</text>
+  <path d="M 859 148 L 859 170" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 855.0 161.0 L 859 170 L 863.0 161.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="940" cy="200" rx="21" ry="13" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="940" y="203.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">h3</text>
+  <path d="M 449 200 L 473 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 464.0 204.0 L 473 200 L 464.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 555 200 L 581 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 572.0 204.0 L 581 200 L 572.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 623 200 L 645 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 636.0 204.0 L 645 200 L 636.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 709 200 L 731 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 722.0 204.0 L 731 200 L 722.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 795 200 L 817 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 808.0 204.0 L 817 200 L 808.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 899 200 L 919 200" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 910.0 204.0 L 919 200 L 910.0 196.0" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="662" y="262" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#7FA65A" text-anchor="middle" font-weight="bold">回边没有了——每一步都是普通数据依赖</text>
+  <text x="662" y="284" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">整体又成了 DAG ⇒ 拓扑序照排：h0 -&gt; f1 -&gt; h1 -&gt; f2 -&gt; h2 -&gt; f3 -&gt; h3</text>
+  <text x="662" y="306" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-style="italic">串行链：f1/f2/f3 各自成一波（波数＝T）</text>
+  <text x="662" y="330" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">代价：图变成 T 倍大——T 很大时，用下面那条路</text>
+  <text x="662" y="356" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">（展开后的图照样吃今天的拓扑排序和波次表）</text>
+  <path d="M 359.4 399.0 L 965.5 398.8 L 965.1 701.6 L 358.6 702.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 359.4 399.0 L 965.5 398.8 L 965.1 701.6 L 358.6 702.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 358.3 398.9 L 964.5 398.0 L 964.9 702.3 L 357.7 701.5 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="662" y="428" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">③ 出路二：把循环显式化（IR 里引入 while / loop）</text>
+  <text x="662" y="448" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">图不复制；循环体内部保持一张小 DAG</text>
+  <path d="M 397.1 463.3 L 696.8 462.6 L 696.7 639.3 L 399.6 639.2 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 397.1 463.3 L 696.8 462.6 L 696.7 639.3 L 399.6 639.2 Z" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 397.5 463.2 L 696.7 462.6 L 695.9 640.0 L 398.6 638.7 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="548" y="488" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#5B8BB9" text-anchor="middle" font-weight="bold">while (cond) { 循环体 }</text>
+  <text x="548" y="506" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="8.5" fill="#8A8378" text-anchor="middle">循环次数运行时才知道</text>
+  <ellipse cx="448" cy="528" rx="22" ry="13" fill="#E7F0DC" stroke="#7FA65A" stroke-width="1.8"/>
+  <text x="448" y="531.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">s0</text>
+  <text x="448" y="551" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="8.5" fill="#8A8378" text-anchor="middle">初始状态</text>
+  <path d="M 417.9 587.6 L 472.8 589.0 L 472.4 620.0 L 419.3 618.8 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 417.9 587.6 L 472.8 589.0 L 472.4 620.0 L 419.3 618.8 Z" fill="none" stroke="#D08A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 418.0 587.9 L 471.7 588.8 L 472.9 619.9 L 419.8 618.1 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="446" y="609" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#D08A4E" text-anchor="middle" font-weight="bold">PHI</text>
+  <path d="M 520.2 584.8 L 612.2 584.2 L 613.0 623.9 L 520.5 622.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 520.2 584.8 L 612.2 584.2 L 613.0 623.9 L 520.5 622.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 520.3 584.5 L 611.6 585.1 L 614.2 623.0 L 521.4 622.3 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="566" y="602" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">f(x_t, s)</text>
+  <text x="566" y="616" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#5B8BB9" text-anchor="middle">-&gt; s'</text>
+  <ellipse cx="566" cy="555" rx="20" ry="12" fill="#DCE9F5" stroke="#5B8BB9" stroke-width="1.8"/>
+  <text x="566" y="558.5" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle" font-weight="bold">x_t</text>
+  <path d="M 448 541 L 448 586" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 444.0 577.0 L 448 586 L 452.0 577.0" fill="none" stroke="#7FA65A" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 448 588 L 448 561" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 566 567 L 566 583" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 562.0 574.0 L 566 583 L 570.0 574.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 474 602 L 518 600" fill="none" stroke="#D08A4E" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 509.2 604.4 L 518 600 L 508.8 596.4" fill="none" stroke="#D08A4E" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 612 596 L 648 594" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 639.2 598.5 L 648 594 L 638.8 590.5" fill="none" stroke="#5B8BB9" stroke-width="1.9800000000000002" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="660" y="590" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle" font-weight="bold">s'</text>
+  <path d="M 664 600 C 706 606, 700 655, 655 660 L 470 660 C 440 660, 444 640, 446 622" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="8,6"/>
+  <path d="M 450.0 631.0 L 446 622 L 442.0 631.0" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="558" y="650" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#C96A6A" text-anchor="middle" font-weight="bold">回边：s' 变成下一轮的 s（第 15 天的 b2 -&gt; b1）</text>
+  <text x="848" y="480" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="bold">循环体内部：小 DAG</text>
+  <text x="848" y="500" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle">单独排拓扑序（这里就一条直链）</text>
+  <text x="848" y="524" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle">跨迭代的值交给控制流＋PHI 搬运</text>
+  <text x="848" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#D08A4E" text-anchor="middle" font-weight="bold">PHI 在汇合点「选边」</text>
+  <text x="848" y="566" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle">——第 17 天 SSA 的主角</text>
+  <text x="848" y="590" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="middle">回边＝CFG 的环</text>
+  <text x="848" y="608" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle">（第 15 天打的地基）</text>
+  <text x="848" y="632" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">第 18 天支配关系会回答：</text>
+  <text x="848" y="648" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">「定义为何要支配使用」</text>
+  <path d="M 59.8 716.2 L 941.4 715.9 L 940.0 768.2 L 59.0 768.0 Z" fill="#DCE9F5" stroke="none"/>
+  <path d="M 59.8 716.2 L 941.4 715.9 L 940.0 768.2 L 59.0 768.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 60.2 716.8 L 940.4 715.5 L 939.0 768.9 L 59.5 767.1 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="500" y="740" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">两条出路共同点：把「环」从数据依赖里拿掉——要么展开成链（DAG），要么把循环显式化、循环体内部保持无环</text>
+  <text x="500" y="758" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-style="italic">拓扑排序始终只面对 DAG；循环本身交给控制流（第 15 天）和 PHI（第 17 天）</text>
+</svg>

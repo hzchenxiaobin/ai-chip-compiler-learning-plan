@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob3" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <marker id="arrO" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#D79B00"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .codec { font-family:Consolas, Menlo, Courier New, monospace; fill:#B85450; }
+      .codeg { font-family:Consolas, Menlo, Courier New, monospace; fill:#4A7A42; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .bbox { fill:#DAE8FC; stroke:#5B8DB8; stroke-width:2.4; stroke-linejoin:round; }
+      .obox { fill:#FFE6CC; stroke:#D79B00; stroke-width:3; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .rbox { fill:#F8CECC; stroke:#B85450; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowB { stroke:#5B8DB8; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowR { stroke:#B85450; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowG { stroke:#82B366; stroke-width:2.4; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+      .arrowO { stroke:#D79B00; stroke-width:2.6; fill:none; stroke-linecap:round; marker-end:url(#arrO); }
+      .dash { stroke:#8A8378; stroke-width:1.8; fill:none; stroke-dasharray:6 5; stroke-linecap:round; }
+      .chip { fill:#FFFFFF; stroke:#2F2B27; stroke-width:1.8; stroke-linejoin:round; }
+    </style>
+  </defs>
+  <rect class="bg" width="1000" height="640"/>
+  <text class="t-title" x="30" y="42">挂钩的文件级接线：从 1 行开关到驱动收集</text>
+  <text class="t-s" x="975" y="66" text-anchor="end">三处接缝＝同一条数据流的三站；错误 3 就是第一站断开的样子</text>
+
+  <g filter="url(#wob)"><rect class="bbox" x="28" y="96" width="400" height="94" rx="12" transform="rotate(-0.3 228.0 143.0)"/></g>
+  <text class="t-h" x="48" y="122">① include/mini/MiniOps.td（改 1 行）</text>
+  <text class="code" x="48" y="148" font-size="12">let hasCanonicalizer = 1;</text>
+  <text class="t-s" x="48" y="172">写在 Mini_ReluOp 定义里的开关</text>
+
+  <path class="arrowB" d="M228 194 L228 228"/>
+  <text class="t-s" x="240" y="216">mlir-tblgen 生成</text>
+
+  <g filter="url(#wob2)"><rect class="box" x="28" y="236" width="400" height="94" rx="12" transform="rotate(0.3 228.0 283.0)"/></g>
+  <text class="t-h" x="48" y="262">生成的 MiniOps.h.inc（build 目录）</text>
+  <text class="code" x="48" y="288" font-size="10.5">class ReluOp {</text>
+  <text class="code" x="48" y="304" font-size="10.5">  static void getCanonicalizationPatterns(</text>
+  <text class="code" x="48" y="320" font-size="10.5">      RewritePatternSet &amp;, MLIRContext *);</text>
+
+  <path class="arrowB" d="M228 334 L228 368"/>
+  <text class="t-s" x="240" y="356">声明要有人定义</text>
+
+  <g filter="url(#wob3)"><rect class="obox" x="28" y="376" width="400" height="110" rx="12" transform="rotate(-0.4 228.0 431.0)"/></g>
+  <text class="t-h" x="48" y="402">② lib/ReluCanonicalization.cpp（新文件）</text>
+  <text class="code" x="48" y="428" font-size="11">void mini::ReluOp::getCanonicalizationPatterns(</text>
+  <text class="code" x="48" y="444" font-size="11">    (RewritePatternSet &amp;results, MLIRContext *ctx) {</text>
+  <text class="codeg" x="48" y="460" font-size="11">  results.add&lt;SimplifyDoubleRelu&gt;(context);</text>
+  <text class="t-s" x="48" y="480">本体：把 Pattern 塞进驱动发来的 results</text>
+
+  <g filter="url(#wob)"><rect class="gbox" x="28" y="516" width="400" height="84" rx="12" transform="rotate(0.4 228.0 558.0)"/></g>
+  <text class="t-h" x="48" y="542">③ lib/CMakeLists.txt（改 1 行）</text>
+  <text class="code" x="48" y="566" font-size="12">ReluCanonicalization.cpp</text>
+  <text class="t-s" x="48" y="588">登记源文件 → 编进 libMLIRMini.a → 链进 mini-opt</text>
+
+  <path class="arrowG" d="M228 512 L228 492"/>
+  <text class="t-s" x="240" y="507">编译进库</text>
+
+  <g filter="url(#wob2)"><rect class="obox" x="540" y="96" width="432" height="210" rx="12" transform="rotate(0.3 756.0 201.0)"/></g>
+  <text class="t-h" x="560" y="122">现成驱动：-canonicalize（Canonicalizer）</text>
+  <text class="t-b" x="560" y="150">初始化：对上下文里每个已注册算子</text>
+  <text class="t-b" x="560" y="170">调用钩子收集 Pattern</text>
+  <text class="code" x="560" y="192" font-size="10.5">getCanonicalizationPatterns(patterns, ctx)</text>
+  <text class="t-b" x="560" y="218">SimplifyDoubleRelu 进入规则库；</text>
+  <text class="t-b" x="560" y="238">运行：贪婪工作表迭代到不动点</text>
+  <text class="t-s" x="560" y="262">（匹配前顺带 folding ＋ 简单 DCE）</text>
+  <text class="t-s" x="560" y="284">住在 mini-opt 里（Day 41 已注册，今天一行不改）</text>
+
+  <path class="arrowO" d="M540 200 C505 270, 470 360, 430 426"/>
+  <text class="t-s" x="478" y="240" text-anchor="middle">初始化时</text>
+  <text class="t-s" x="478" y="258" text-anchor="middle">调用钩子</text>
+
+  <g filter="url(#wob3)"><rect class="rbox" x="540" y="330" width="432" height="130" rx="12" transform="rotate(-0.3 756.0 395.0)"/></g>
+  <text class="t-h" x="560" y="358">错误 3 的失败路径（§6 实测复现）</text>
+  <text class="t-b" x="560" y="384">开关没开 → tblgen 不生成声明</text>
+  <text class="t-b" x="560" y="404">→ .cpp 里的定义成了「无主函数」</text>
+  <text class="codec" x="560" y="430" font-size="10.5">ReluCanonicalization.cpp:96:6: error: no declaration matches</text>
+  <text class="t-s" x="560" y="452">报错位置正好指向挂钩定义处——对照 MiniOps.td 查开关</text>
+
+  <g filter="url(#wob)"><rect class="box" x="540" y="490" width="432" height="110" rx="12" transform="rotate(0.25 756.0 545.0)"/></g>
+  <text class="t-h" x="560" y="518">一句话记住</text>
+  <text class="t-b" x="560" y="546">开关生声明，本体填内容，登记进工具，</text>
+  <text class="t-b" x="560" y="566">驱动来调用——三方各司其职，mini-opt 一行不改。</text>
+  <text class="t-s" x="560" y="592">Day 46 的 Add(x, 0) → x：给 mini.add 照抄同一条流水线。</text>
+</svg>

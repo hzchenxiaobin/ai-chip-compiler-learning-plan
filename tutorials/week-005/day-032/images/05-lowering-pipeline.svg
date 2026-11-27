@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="760" viewBox="0 0 1150 760">
+<rect width="1150" height="760" fill="#fdfaf2"/>
+<text x="40" y="40" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="21" fill="#3b352d" text-anchor="start" font-weight="bold">实验⑥：一条命令、八个 Pass，从 tensor 走到 LLVM</text>
+<text x="40" y="64" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12.5" fill="#84796a" text-anchor="start">mlir-opt-18 → /tmp/day032_run.llvm.mlir（LLVM dialect）→ mlir-cpu-runner-18 打印 13（IR 均为本机真实输出摘录）</text>
+<path d="M 40.0,73.0 Q 370.2,73.9 700.0,74.0" fill="none" stroke="#c9923d" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 56.0,92.0 Q 301.3,91.1 544.0,92.0 M 544.0,92.0 Q 544.6,121.6 544.0,148.0 M 544.0,148.0 Q 301.6,146.7 56.0,148.0 M 56.0,148.0 Q 56.6,120.5 56.0,92.0" fill="#dce7f6" stroke="#5d8fc9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="72" y="124" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#5d8fc9" text-anchor="start" font-weight="bold">①</text>
+<text x="94" y="114" font-family="Courier New, Courier, monospace" font-size="10.5" fill="#3b352d" text-anchor="start" font-weight="bold">bias_scale_run.mlir</text>
+<text x="94" y="136" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">tensor／scf／arith 世界</text>
+<path d="M 56.0,160.0 Q 300.0,161.9 544.0,160.0 M 544.0,160.0 Q 544.1,184.8 544.0,210.0 M 544.0,210.0 Q 301.8,210.5 56.0,210.0 M 56.0,210.0 Q 55.2,184.2 56.0,160.0" fill="#f6e8cf" stroke="#c9923d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="180" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--one-shot-bufferize</text>
+<text x="70" y="198" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">tensor&lt;2x3xf32&gt;→memref；extract→load、insert→store；常量→memref.global</text>
+<path d="M 300.0,210.0 Q 300.0,214.6 300.0,222.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,216.8 L 300.0,222.0 L 303.6,216.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,222.0 Q 300.4,222.9 544.0,222.0 M 544.0,222.0 Q 543.7,248.4 544.0,272.0 M 544.0,272.0 Q 301.7,272.2 56.0,272.0 M 56.0,272.0 Q 56.7,245.5 56.0,222.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="242" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--convert-scf-to-cf</text>
+<text x="70" y="260" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">双层 scf.for → 基本块＋cf.cond_br／cf.br</text>
+<path d="M 300.0,272.0 Q 298.6,279.5 300.0,284.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,278.8 L 300.0,284.0 L 303.6,278.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,284.0 Q 299.1,282.9 544.0,284.0 M 544.0,284.0 Q 545.6,310.0 544.0,334.0 M 544.0,334.0 Q 298.5,333.3 56.0,334.0 M 56.0,334.0 Q 55.0,308.1 56.0,284.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="304" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--convert-cf-to-llvm</text>
+<text x="70" y="322" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">cf.cond_br／cf.br → llvm.cond_br／llvm.br</text>
+<path d="M 300.0,334.0 Q 298.4,340.1 300.0,346.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,340.8 L 300.0,346.0 L 303.6,340.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,346.0 Q 299.2,345.6 544.0,346.0 M 544.0,346.0 Q 542.7,369.4 544.0,396.0 M 544.0,396.0 Q 298.1,397.5 56.0,396.0 M 56.0,396.0 Q 57.0,371.2 56.0,346.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="366" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--convert-func-to-llvm</text>
+<text x="70" y="384" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">func.func @main → llvm.func，带来 @malloc 声明</text>
+<path d="M 300.0,396.0 Q 298.8,400.9 300.0,408.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,402.8 L 300.0,408.0 L 303.6,402.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,408.0 Q 298.5,407.3 544.0,408.0 M 544.0,408.0 Q 542.2,432.1 544.0,458.0 M 544.0,458.0 Q 298.8,456.8 56.0,458.0 M 56.0,458.0 Q 56.6,432.8 56.0,408.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="428" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--convert-arith-to-llvm</text>
+<text x="70" y="446" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">addf→llvm.fadd、mulf→llvm.fmul、fptosi→llvm.fptosi</text>
+<path d="M 300.0,458.0 Q 299.9,463.5 300.0,470.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,464.8 L 300.0,470.0 L 303.6,464.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,470.0 Q 300.2,471.1 544.0,470.0 M 544.0,470.0 Q 543.2,493.3 544.0,520.0 M 544.0,520.0 Q 299.9,519.5 56.0,520.0 M 56.0,520.0 Q 57.1,493.4 56.0,470.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="490" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--convert-index-to-llvm</text>
+<text x="70" y="508" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">index → i64：循环计数、下标全换成 i64</text>
+<path d="M 300.0,520.0 Q 301.2,524.4 300.0,532.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,526.8 L 300.0,532.0 L 303.6,526.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,532.0 Q 300.2,531.8 544.0,532.0 M 544.0,532.0 Q 543.3,558.6 544.0,582.0 M 544.0,582.0 Q 300.8,580.7 56.0,582.0 M 56.0,582.0 Q 56.0,557.4 56.0,532.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="552" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--finalize-memref-to-llvm</text>
+<text x="70" y="570" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">memref → !llvm.struct 五元组（右下）＋ getelementptr 算地址</text>
+<path d="M 300.0,582.0 Q 298.5,586.7 300.0,594.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,588.8 L 300.0,594.0 L 303.6,588.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,594.0 Q 300.4,594.9 544.0,594.0 M 544.0,594.0 Q 543.9,618.7 544.0,644.0 M 544.0,644.0 Q 300.0,643.0 56.0,644.0 M 56.0,644.0 Q 57.5,620.8 56.0,594.0" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="614" font-family="Courier New, Courier, monospace" font-size="10" fill="#3b352d" text-anchor="start" font-weight="bold">--canonicalize</text>
+<text x="70" y="632" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9" fill="#84796a" text-anchor="start">清理死代码与化简，产出最终 LLVM dialect</text>
+<path d="M 300.0,644.0 Q 299.9,648.5 300.0,656.0" fill="none" stroke="#84796a" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M 296.4,650.8 L 300.0,656.0 L 303.6,650.8" fill="none" stroke="#84796a" stroke-width="1.08" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 56.0,656.0 Q 299.6,657.2 544.0,656.0 M 544.0,656.0 Q 543.3,682.4 544.0,712.0 M 544.0,712.0 Q 298.7,712.8 56.0,712.0 M 56.0,712.0 Q 56.5,683.1 56.0,656.0" fill="#dce7f6" stroke="#5d8fc9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="72" y="688" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="14" fill="#5d8fc9" text-anchor="start" font-weight="bold">③</text>
+<text x="94" y="676" font-family="Courier New, Courier, monospace" font-size="10.5" fill="#3b352d" text-anchor="start" font-weight="bold">/tmp/day032_run.llvm.mlir</text>
+<text x="94" y="698" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">llvm.br／llvm.load／llvm.fadd…：LLVM dialect</text>
+<text x="524" y="190" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="13" fill="#c9923d" text-anchor="start" font-weight="bold">②</text>
+<path d="M 544.0,120.0 Q 570.4,128.8 596.0,136.0" fill="none" stroke="#84796a" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3 3"/>
+<path d="M 590.0,137.9 L 596.0,136.0 L 592.1,137.9" fill="none" stroke="#84796a" stroke-width="0.9900000000000001" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 544.0,186.0 Q 571.5,236.1 596.0,284.0" fill="none" stroke="#84796a" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3 3"/>
+<path d="M 590.4,281.1 L 596.0,284.0 L 596.7,281.1" fill="none" stroke="#84796a" stroke-width="0.9900000000000001" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 544.0,662.0 Q 569.8,544.0 596.0,424.0" fill="none" stroke="#84796a" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3 3"/>
+<path d="M 598.4,429.8 L 596.0,424.0 L 591.4,429.8" fill="none" stroke="#84796a" stroke-width="0.9900000000000001" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 544.0,700.0 Q 571.4,708.2 596.0,714.0" fill="none" stroke="#84796a" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="3 3"/>
+<path d="M 590.0,716.1 L 596.0,714.0 L 591.9,716.1" fill="none" stroke="#84796a" stroke-width="0.9900000000000001" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 596.0,92.0 Q 846.0,92.3 1094.0,92.0 M 1094.0,92.0 Q 1094.0,155.4 1094.0,216.0 M 1094.0,216.0 Q 845.5,216.9 596.0,216.0 M 596.0,216.0 Q 594.9,152.4 596.0,92.0" fill="#fbf8ee" stroke="#5d8fc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="112" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5d8fc9" text-anchor="start" font-weight="bold">① 输入：tensor／scf 世界</text>
+<text x="612" y="136" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%out_i = scf.for %i = %c0 to %c2 … iter_args(%acc_i = %x)</text>
+<text x="612" y="154" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">  -&gt; (tensor&lt;2x3xf32&gt;) {</text>
+<text x="612" y="172" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%xe = tensor.extract %x[%i, %j] : tensor&lt;2x3xf32&gt;</text>
+<text x="612" y="190" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%ins = tensor.insert %mul into %acc[%i, %j] : tensor&lt;2x3xf32&gt;</text>
+<text x="612" y="208" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">张量是值：extract 拿出来、insert 放回去</text>
+<path d="M 596.0,228.0 Q 844.1,228.3 1094.0,228.0 M 1094.0,228.0 Q 1094.3,288.8 1094.0,352.0 M 1094.0,352.0 Q 843.8,353.8 596.0,352.0 M 596.0,352.0 Q 594.3,291.7 596.0,228.0" fill="#fbf8ee" stroke="#c9923d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="248" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#c9923d" text-anchor="start" font-weight="bold">② 第 1 个 Pass 后：memref 世界</text>
+<text x="612" y="272" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%0 = memref.get_global @__constant_2x3xf32_0 : memref&lt;2x3xf32&gt;</text>
+<text x="612" y="290" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%6 = memref.load %0[%arg0, %arg2] : memref&lt;2x3xf32&gt;</text>
+<text x="612" y="308" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%8 = arith.addf %6, %7 : f32</text>
+<text x="612" y="326" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">memref.store %9, %arg3[%arg0, %arg2] : memref&lt;2x3xf32&gt;</text>
+<text x="612" y="344" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">tensor 全没了——类型被 Pass 改写，每一步 Verifier 重验契约</text>
+<path d="M 596.0,364.0 Q 846.1,364.3 1094.0,364.0 M 1094.0,364.0 Q 1096.0,439.7 1094.0,514.0 M 1094.0,514.0 Q 843.0,515.8 596.0,514.0 M 596.0,514.0 Q 595.7,440.7 596.0,364.0" fill="#fbf8ee" stroke="#6a9c59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="384" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#6a9c59" text-anchor="start" font-weight="bold">③ 八个 Pass 全部走完：LLVM dialect</text>
+<text x="612" y="408" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%43 = llvm.getelementptr %7[%42] : (!llvm.ptr, i64) -&gt; !llvm.ptr, f32</text>
+<text x="612" y="426" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%44 = llvm.load %43 : !llvm.ptr -&gt; f32</text>
+<text x="612" y="444" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%49 = llvm.fadd %44, %48 : f32</text>
+<text x="612" y="462" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%50 = llvm.fmul %49, %1 : f32</text>
+<text x="612" y="480" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">llvm.store %50, %54 : f32, !llvm.ptr</text>
+<text x="612" y="498" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">%62 = llvm.fptosi %61 : f32 to i32</text>
+<path d="M 596.0,526.0 Q 846.3,524.6 1094.0,526.0 M 1094.0,526.0 Q 1092.2,597.1 1094.0,672.0 M 1094.0,672.0 Q 846.1,673.2 596.0,672.0 M 596.0,672.0 Q 594.9,597.5 596.0,526.0" fill="#dce7f6" stroke="#5d8fc9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="546" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#5d8fc9" text-anchor="start" font-weight="bold">memref 的 LLVM 落脚：五元组描述符</text>
+<text x="612" y="568" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">!llvm.struct&lt;(ptr, ptr, i64, array&lt;2 x i64&gt;, array&lt;2 x i64&gt;)&gt;</text>
+<text x="612" y="590" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">① ptr：分配的指针——llvm.call @malloc 要来的</text>
+<text x="612" y="607" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">② ptr：对齐后的指针（alignment = 64）</text>
+<text x="612" y="624" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">③ i64：偏移 offset ＝ 0</text>
+<text x="612" y="641" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">④ array&lt;2 x i64&gt;：形状 sizes ＝ [2, 3]</text>
+<text x="612" y="658" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.5" fill="#84796a" text-anchor="start">⑤ array&lt;2 x i64&gt;：跨度 strides ＝ [3, 1]（行主序）</text>
+<path d="M 596.0,684.0 Q 844.5,685.2 1094.0,684.0 M 1094.0,684.0 Q 1095.0,715.5 1094.0,744.0 M 1094.0,744.0 Q 846.9,745.0 596.0,744.0 M 596.0,744.0 Q 597.3,712.1 596.0,684.0" fill="#e2efd9" stroke="#6a9c59" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="612" y="708" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">$ mlir-cpu-runner-18 /tmp/day032_run.llvm.mlir \ </text>
+<text x="612" y="728" font-family="Courier New, Courier, monospace" font-size="9.5" fill="#3b352d" text-anchor="start">    --entry-point-result=i32</text>
+<text x="1000" y="720" font-family="Courier New, Courier, monospace" font-size="22" fill="#6a9c59" text-anchor="start" font-weight="bold">13</text>
+</svg>

@@ -260,6 +260,10 @@ rc=1
 
 两次都是 `rc=1`，但拒绝理由**不同**——这正是 Day 40 `ShapeRelation` 三分支的出口：`2x3` 对 `2x2` 是永久 `Mismatch`（怎么对齐都对不上），`1x2` 对 `2x2` 是 `BroadcastOnly`（语义上可行、工具暂不支持，留到 Day 60）。报错精确到行列（`11:10`），并且把"现在怎么办"也告诉了用户（把小操作数扩成完全相同的 shape）。区分这两种失败是诊断质量的分水岭：把"永远不可能"和"暂时做不到"混成一句话，用户就会在死路上浪费时间。
 
+![mini.add 的三种 shape 裁决：Mismatch、BroadcastOnly、Same](images/04-shape-relation.svg)
+
+**图 3**：左列是三组只差 bias shape 的输入（`2x3`、`1x2`、对照的 `2x2`），中间是 Day 40 `classifyShapePair` 的逐维判定——从右往左配对、秩不同缺位当 1，右列是三个出口。`Mismatch` 和 `BroadcastOnly` 都是 `rc=1`，但报错关键句一横一竖：`not broadcast-compatible either`＝永久拒绝，`would broadcast`＝语义可行、Day 60 再支持；对照的 `2x2` 逐维全等走 `Same` 放行，就是 5.3 节的 round-trip。
+
 ### 5.5 通用变换 Pass：-cse 合并重复计算
 
 现在给工具接上 Pass 流水线。`cse_dup_matmul.mlir` 是专门为 CSE（Common Subexpression Elimination，公共子表达式消除）准备的探针：同一对 `(a, b)` 乘两遍、加两遍、relu 两遍：
@@ -284,7 +288,7 @@ rc=0
 
 ![CSE 前后对照：重复的计算如何被合并](images/03-example.svg)
 
-**图 3**：左右两个面板是同一张探针图跑 `-cse` 之前和之后的样子。看点有三处：右图里第二个 matmul/add/relu 方框被划掉，说明"查无此人"；两条 return 边都改指向幸存的那条 relu；合并能成立的三要素写在中间——**操作数相同、属性相同、Pure（无副作用）**。CSE 完全不知道 `mini` 方言的存在，它只看这三条通用性质——这就是"Pass 与 Dialect 正交"的含义。
+**图 4**：左右两个面板是同一张探针图跑 `-cse` 之前和之后的样子。看点有三处：右图里第二个 matmul/add/relu 方框被划掉，说明"查无此人"；两条 return 边都改指向幸存的那条 relu；合并能成立的三要素写在中间——**操作数相同、属性相同、Pure（无副作用）**。CSE 完全不知道 `mini` 方言的存在，它只看这三条通用性质——这就是"Pass 与 Dialect 正交"的含义。
 
 ### 5.6 自定义 Pass：-mini-count-ops 用 remark 报清单
 
@@ -425,3 +429,5 @@ cd tutorials/week-006/day-041/code && bash run_all.sh
 今天从"官方工具不认识 `mini`"这个真实失败出发，把 Day 36～40 的散装零件拼成了一个能用的工具：`mini-opt` 用 **Dialect 注册表**决定谁能被解析，用 **Pass 注册表**决定哪些变换可用，两张表各管各的——对照实验证明抽掉 Pass 注册后 round-trip 照常、`-cse` 却变成未知参数。第一张端到端 mini IR（MatMul → Add → Relu）完整走了解析、验证、打印三关，负例区分了"永久不匹配"和"只差广播"，CSE 则证明上游 Pass 对自定义方言同样生效。至此，"定义方言 → 写 Verifier → 拼工具 → 跑 Pass"的最小闭环已经打通。
 
 明天是第 6 周复盘（Day 42）：不再新增机制，而是独立定义一个 `mini.mul` 算子——从 ODS、构建到合法性测试全流程自己走一遍，并回答复盘的核心问题："哪些约束放 ODS，哪些放 Verifier"。
+
+<!-- tutorial-review: v1 -->

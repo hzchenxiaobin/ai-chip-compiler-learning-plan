@@ -315,6 +315,10 @@ rc=1
 - **定位**：错误精确挂在 `func.return` 那一行，且消息把两个类型都打出来了。
 - **修复**：今天范围内最简单的做法是**让细化结果就地观察、不外传**（8 个探针里 7 个都这么写）；正解是让 Pass 同步更新函数签名——留给选做挑战。
 
+![细化结果 return 出函数的失败机制：左卡是存在 Value 上的类型便签（setType 后从 ?x? 变 2x2），右卡是函数 function_type 属性里的签名（仍是 ?x?），func.return 的操作数从 Value 读到 2x2，--verify-each 在 Pass 之后重新验证时与签名对不上而报错](images/04-value-type-vs-signature.svg)
+
+**图 4**：两个"类型存放点"是理解 6.3 的钥匙。左卡蓝框是 **Value 本身**——`setType` 换掉 `%0` 的类型便签，`func.return` 读操作数类型，看到的就是 2x2；右卡橙框是 **函数的 `function_type` 属性**——它贴在 FuncOp 上，`setType` 碰不到，签名仍是 `?x?`。中卡是时间线：解析时 `?x?` 对 `?x?` 完全合法，Pass 之后 `--verify-each` 重新验证，2x2 对 `?x?` 当场撞车（红框里是真实报错）。底部绿条是两条出路：就地观察不外传（其余 7 个探针的写法），或让 Pass 同步更新签名（选做挑战）。
+
 ### 6.4 期待 Pass 改写已有数字：冲突不是"自动纠正"
 
 - **现象**：对 `probe_conflict.mlir` 跑 Pass，报 `error: 'mini.matmul' op shape inference conflicts with the statically known result shape: inferred 4, 2, 2 but result type is 'tensor<2x2x2xf32>'`，rc=1。
@@ -359,3 +363,5 @@ func.func @batch_both_unknown(%a: tensor<?x?x3xf32>, %b: tensor<?x3x2xf32>) {
 今天把 Day 43 的规则表从 Python 搬进了真实流水线：**问题**是 `?x?` 结果类型原样穿过 mini-opt、后面的优化拿不到 shape；**机制**是三层结构——纯函数推导（R0～R4）、`refineShape` 合并（`?` 补、数字留、冲突报错）、Pass 壳（`walk` + `setType`）；**实践**是 4 处接缝改动把 `-mini-infer-shape` 注册进 mini-opt；**验证**靠 8 个探针的真实输出——细化（`2x2`）、保留（`2x?`）、不碰 IR（静态）和两种失败路径（Verifier 拦截、Pass 冲突）全部实测在案。
 
 明天（Day 45）从"改类型"升级到"改图"：第一个 RewritePattern——实现 `Relu(Relu(x)) → Relu(x)` 的模式重写，学习 Pattern 匹配、Rewriter 替换与擦除 Operation。今天 `setType` 只动了一个 Value 的类型；明天要动的，是图本身的拓扑。
+
+<!-- tutorial-review: v1 -->

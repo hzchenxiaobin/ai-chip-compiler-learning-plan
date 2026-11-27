@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能把第 72～75 天的四本账（ΔB 收益账、spill 资源账、重算流量账、舒适区阈值）装进一个**统一计价的 Cost Model v0.1**：输入 = 融合候选 ＋ 机器假设卡 ＋ 模式，输出 = **评分（itemized 明细账）＋ 决策（fuse/refuse）＋ 理由（每项可追溯到公式出处）＋ 融合前后的 IR 对照**。它会用**两种模式**工作——**force 强制融合**（合法性过了就融，评分照记，是 A/B 校准的测量工具）和 **auto 自动决策**（评分 > 0 且过三个硬门槛才融）。你会验证这台报价机**复现了第 75 天案例库的全部 16 例判决**（ground truth 回归，逐例机检），看到**形式排序**怎么把 R1 的 keep 形式（−2 MiB）和重算形式（+13.25 MiB）放进同一张账单，还会用两个**只拧一个参数的实弹**理解**误差来源**：换一张 256 KiB 寄存器堆的机器卡，R4 的判决从 refuse 翻成 fuse（参数误差）；把 Shape 拧成动态（−1），评分直接变「未知」（输入误差）。所有数字都能本机跑出来逐位核对：仪器化记账器与评分公式在 20 组随机 (M,K,N,K₁,组外数) 上**逐位一致**。
 > **预计时间**：学习 35 分钟＋实践 45 分钟
 > **前置准备**：四块旧地基：第 72 天的 ΔB 公式（`ΔB = passes·elems·itemsize`，组外使用者只省组内读）、第 73 天的资源账（活集 → 三级容量阶梯 → spill 两趟税）与舒适区、第 74 天的三层门（`can_fuse`/`should_fuse`/`decide` 的接口分离）、第 75 天的案例库（16 例判决 + `price_recompute` 重算账 + L3b/L6 规则）。工具：Python 3.10+（本机 3.11.4，aarch64 Linux；只用标准库 `dataclasses`/`random`/`inspect`，不需要 numpy/MLIR/NPU——机器参数是写明的玩具假设卡，可整体替换重算）。
-> **今日产出**：`code/cost_model.py`（Cost Model v0.1：双形式计价＋itemized 明细＋两种模式＋IR 发射器＋记账对拍，31 项检查）、`code/test_cost_model.py`（33 项独立验收：16 例 ground truth 回归＋恒等式＋门槛归因）、决策结果表（16 例 × force/auto，`code/outputs/cost_model.txt` §7）、融合前后 IR 对照（§2 与 §6）、4 张手绘风示意图。
+> **今日产出**：`code/cost_model.py`（Cost Model v0.1：双形式计价＋itemized 明细＋两种模式＋IR 发射器＋记账对拍，31 项检查）、`code/test_cost_model.py`（33 项独立验收：16 例 ground truth 回归＋恒等式＋门槛归因）、决策结果表（16 例 × force/auto，`code/outputs/cost_model.txt` §7）、融合前后 IR 对照（§2 与 §6）、5 张手绘风示意图。
 
 ## 1. 今天解决什么问题？
 
@@ -120,7 +120,7 @@ CostReport「P3 全融合」  mode=auto  form=keep  pattern=mini.fused_matmul_bi
 ```text
 tutorials/week-011/day-076/
 ├── README.md
-├── images/                        ← 4 张手绘风示意图（由 make_images.py 生成）
+├── images/                        ← 5 张手绘风示意图（01–04 由 make_images.py 生成）
 └── code/
     ├── cost_model.py              ← Cost Model v0.1：计价＋门槛＋模式＋IR＋对拍（31 项检查）
     ├── test_cost_model.py         ← 独立验收：ground truth 回归＋数字＋归因（33 项检查）
@@ -214,6 +214,10 @@ for fname, fs in rep.forms.items():    # 形式排序提示（E6：只提示，�
 
 **块四：mini-IR 发射器与记账执行器**（`cost_model.py:598` 的 `emit_ir_after` 与 `:646` 的 `ledger_bytes`）——第二、三份产出的来源。IR 发射器按「链上中间 = 算子 i 的输出」约定走一遍图：融合前每个算子一个 kernel、中间显式 `memref.alloc` 落盘；融合后一个 kernel，keep 形式的 kept 中间照样 alloc（outs 里带 `%g`），recompute 不落盘（kernel 名加 `_recompute` 后缀）。记账执行器是 D72 仪器化执行器去掉数值的版本：按 kernel 边界记读写，重算形式假设组外使用者把生产者含进自己的 kernel（E4 口径）。
 
+![融合前后的 mini-IR 对照：中间落盘怎么消失、kept 中间怎么保留](images/05-ir-before-after.svg)
+
+**图 3**：块四的 IR 发射器到底发射了什么。左上是贯穿例 P3：融合前 3 个 kernel、%c/%e 两次中间落盘，融合后 1 个 fused kernel、1 次 alloc——消失的两趟落盘正是 ΔB 64 B（D72 的账）；右侧是 R1 的双形式：keep 形式的 kept 中间 %g 照常 alloc（组外还要读，只省组内读），recompute 形式 %g 彻底消失、组外使用者自己重算（付 786,432 B 重读罚）。看图先对照两张账单的 spill 行：同为 10,485,760 B（融合核结构一样），所以 recompute 评分 +13,893,632 B 更高仍被一票否决——决策在声明形式上做（E6），分差只进 hints。图中省略 memref 类型标注，完整 IR 见 `code/outputs/cost_model.txt` §2（P3）与 §6（R1/R3 双形式）。
+
 ### 5.3 运行与观察
 
 以下输出为 **2026-11-13 在本机的真实运行结果**（Python 3.11.4，aarch64 Linux；`bash run_all.sh` 逐段生成，完整输出在 `code/outputs/`）。
@@ -256,7 +260,7 @@ for fname, fs in rep.forms.items():    # 形式排序提示（E6：只提示，�
 
 ![决策结果表：16 例 × force/auto 的判决与理由归属](images/03-decision-table.svg)
 
-**图 3**：16 行 × 两种模式的完整决策结果表。读法看三处：**auto 列的颜色**（红拒绿融）与 D75 案例库逐例一致；**R1ctl 行**（评分 +6,291,456 B 正、spill 327,680 B 非 0）和 **R4 行**（评分 +67,108,864 B 正、零 spill、R并发 1）证明三种拒绝理由真的各管一类；**R1 与 R3recompute 两行的提示**（↳ recompute/keep 形式评分更高）是统一计价带来的新信息——D75 的判决日志里没有这一列。
+**图 4**：16 行 × 两种模式的完整决策结果表。读法看三处：**auto 列的颜色**（红拒绿融）与 D75 案例库逐例一致；**R1ctl 行**（评分 +6,291,456 B 正、spill 327,680 B 非 0）和 **R4 行**（评分 +67,108,864 B 正、零 spill、R并发 1）证明三种拒绝理由真的各管一类；**R1 与 R3recompute 两行的提示**（↳ recompute/keep 形式评分更高）是统一计价带来的新信息——D75 的判决日志里没有这一列。
 
 独立验收（`code/test_cost_model.py`）不共用主实验的任何运行结果，重新构造、重新计价，33 项检查全部通过，其中 A1 是 ground truth 回归、B 组逐个核对昨天背下来的数字、E 组重演换卡翻转。
 
@@ -286,7 +290,7 @@ for fname, fs in rep.forms.items():    # 形式排序提示（E6：只提示，�
 
 ![误差四轴：参数/输入/口径/未计价的实弹与边界](images/04-error-sources.svg)
 
-**图 4**：四个象限各画一条误差轴。左上的参数轴和右上的输入轴是今天跑出来的两个实弹；左下的口径轴画的是对拍边界（记账器看得见 ΔB 16,777,216 B、看不见 spill 10,485,760 B）；右下的未计价轴是 R3keep 的警告清单（staging 失败仍融、并发是 proxy 不是吞吐）。底部横条给出收口路线：force 模式存在的意义就是校准——强制融合、跑实测、对照评分、修口径或修参数。
+**图 5**：四个象限各画一条误差轴。左上的参数轴和右上的输入轴是今天跑出来的两个实弹；左下的口径轴画的是对拍边界（记账器看得见 ΔB 16,777,216 B、看不见 spill 10,485,760 B）；右下的未计价轴是 R3keep 的警告清单（staging 失败仍融、并发是 proxy 不是吞吐）。底部横条给出收口路线：force 模式存在的意义就是校准——强制融合、跑实测、对照评分、修口径或修参数。
 
 
 
@@ -350,10 +354,12 @@ for fname, fs in rep.forms.items():    # 形式排序提示（E6：只提示，�
 - [ ] 我能解释「进评分 / 进门槛 / 只报告」三分法，并说出为什么并发门槛用寄存器并发（工作集）而 staging 只作警告（复用）——R4 与 R3keep 是分别的实弹
 - [ ] 我能预测并验证两类拧参数实验：换机器卡（R4 refuse→fuse、评分不变）和动态 Shape（评分未知、auto 拒 force 融），也能完成必做练习的 tile=128 一档
 - [ ] 我能定位「拒绝理由」的归属：合法性 / 评分 ≤ 0 / spill 一票否决 / 并行度门槛四类前缀各自来自哪一层，形式提示（R1、R3recompute 两处）为什么不算决策
-- [ ] 我保存了 Cost Model v0.1（`cost_model.py`）、决策结果表（`code/outputs/cost_model.txt` §7）、融合前后 IR 对照（§2/§6）和四张手绘风示意图
+- [ ] 我保存了 Cost Model v0.1（`cost_model.py`）、决策结果表（`code/outputs/cost_model.txt` §7）、融合前后 IR 对照（§2/§6）和五张手绘风示意图
 
 ## 9. 一句话总结与明天预告
 
 今天把第 72～75 天的四本账装进了一台报价机。**机制**上：`CostModel.evaluate` 用一条流水回答「值不值得融合」——合法性（D75 规则集原样）→ 双形式计价（keep：ΔB − spill；recompute：消除 − 重读罚 − spill，每项带 [D72]/[D73]/[D75] 出处）→ 声明形式决策（force 合法即融、评分照记；auto 过三门槛：评分 > 0 ∧ 零 spill ∧ 寄存器并发 ≥ 3）。**实践**上：统一计价让 R1 的两种形式第一次同台排序（keep −2,097,152 B < recompute +13,893,632 B，差 15,990,784 B），但 spill 两形式共享，硬门槛把两个都拦下——排序赢家不是判决赢家；三分法（进评分 / 进门槛 / 只报告）把「不编数字」的纪律工程化。**验证**上：auto 判决与 D75 案例库 16/16 逐例一致（ground truth 回归）；记账对拍 20/20 与 13/13 逐位一致（流量项没算错），对拍边界（看不见 spill）如实写成断言；主实验 31/31、独立验收 33/33 全部真实运行；两个误差实弹（换卡翻转 R4、动态 Shape 拒之门外）让误差四轴不只是清单。
 
 明天（第 77 天）是第 11 周复盘：用一个具体 Shape 把「融合**合法**」「融合后**正确**」「融合后**更快**」三件事彻底分开——今天的评分正好是「更快」的前半程（流量口径），复盘要看它和「正确」（数值语义）、「合法」（结构）在哪几个案例上曾经被混为一谈。
+
+<!-- tutorial-review: v1 -->

@@ -180,7 +180,7 @@ return %s2                        ; (3,2)
 ```text
 tutorials/week-010/day-069/
 ├── README.md                     本教程
-├── images/                       4 张手绘风 SVG 信息图
+├── images/                       5 张手绘风 SVG 信息图
 └── code/
     ├── combo_lab.py              主实验（零件清点 + 混合链 + 顺序研究
     │                                 + 无限变换 + 压力对拍 + MLIR 对表）
@@ -379,6 +379,10 @@ mlir-opt order_cast.mlir  --cse --canonicalize     → 2 个 linalg.generic
 
 把混合链里 `%c = cast %t2` 的类型对从 `f32→f32` 改成 `f32→f16`（只改一行），其余不动：**noop Cast 消除从此拒绝触发**（`dtypes[0] != dtypes[1]`，精度语义变了）——终点从 4 op 退化为 5 op：cast 消不掉，以 `fused_add_relu` 操作数的身份留在最终 IR 里（融合仍会发生，因为 cast 不在 add 与 relu 之间）；数值对拍**仍然逐位相等**——f16 截断是改写前后共有的真实语义，优化只是不再假装它不存在。这个对照实验说明：**消除规则的守卫不是官僚作风，是语义边界**——第 67 天的裁决今天在组合管道里兑现。再试把 `RECOMMENDED_PATTERNS` 里 `fuse_add_relu` 挪到列表第一位（`patterns.insert(0, patterns.pop(5))`）：混合链终点不变（hash `c784b0c7`，消除类与融合合流）；但把 `push` 挪到第一位就会换终点（`c404512b`，3 个计算 op）——合流对怎么换都行，竞争对一换就变。
 
+![Cast 守卫对照实验：改一行类型对，两个终点的对照](images/05-cast-guard.svg)
+
+**图 5**：左边是 Day 67 无操作 Cast 守卫的唯一判据——类型对完全一致才透传；中间和右边是 5.5 节只改一行（`f32→f32` 改 `f32→f16`）后的两个真实终点：A 的 cast 是真无操作，被透传后终点 4 op；B 的 cast 带精度语义，守卫拒绝触发，以 `fused_add_relu` 操作数的身份留在终点 IR（5 op，图中橙色框标出）。两个终点融合都发生、数值都与改写前逐位相等——差别只在优化是否「假装 f16 截断不存在」。
+
 ## 6. 常见错误与排查
 
 **错误 1：把一次性管道当成不动点调度**
@@ -430,3 +434,4 @@ mlir-opt order_cast.mlir  --cse --canonicalize     → 2 个 linalg.generic
 
 
 
+<!-- tutorial-review: v1 -->

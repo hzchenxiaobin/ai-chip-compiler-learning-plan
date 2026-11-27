@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="Bradley Hand, Comic Sans MS, Segoe Print, Kaiti SC, KaiTi, cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="41" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M2 2 C5 1.5, 9 4, 10 6 C9 8, 5 10.5, 2 10 C4 8, 4 4, 2 2 Z" fill="#2F2B27"/>
+    </marker>
+    <style>
+      .bg { fill:#FBF9F3; }
+      .t-title { font-size:21px; fill:#2F2B27; font-weight:bold; }
+      .t-h { font-size:15px; fill:#2F2B27; font-weight:bold; }
+      .t-b { font-size:12.5px; fill:#2F2B27; }
+      .t-s { font-size:11px; fill:#5A544C; }
+      .code { font-family:Consolas, Menlo, Courier New, monospace; fill:#1F3B57; }
+      .box { fill:#FFFFFF; stroke:#2F2B27; stroke-width:2.2; stroke-linejoin:round; }
+      .gbox { fill:#D5E8D4; stroke:#82B366; stroke-width:2.4; stroke-linejoin:round; }
+      .rbox { fill:#F8CECC; stroke:#B85450; stroke-width:2.4; stroke-linejoin:round; }
+      .arrow { stroke:#2F2B27; stroke-width:2.2; fill:none; stroke-linecap:round; marker-end:url(#arr); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1000" height="660"/>
+  <text class="t-title" x="30" y="44">TDD 三步轨迹：同一张 15 行测试表拷问三个版本</text>
+  <text class="t-s" x="970" y="68" text-anchor="end" fill="#8A8378">bash tdd_replay.sh 一键重放 · 5.3 节真实输出</text>
+
+  <!-- ===== v0 stub ===== -->
+  <g filter="url(#wob)">
+    <rect class="box" x="28" y="88" width="240" height="372" rx="12" transform="rotate(-0.4 148 274)"/>
+  </g>
+  <text class="t-h" x="44" y="118">v0 stub（只会举手）</text>
+  <g filter="url(#wob2)">
+    <rect class="rbox" x="44" y="130" width="176" height="24" rx="8"/>
+  </g>
+  <text class="code" x="132" y="147" text-anchor="middle" font-size="12" fill="#A0433F" font-weight="bold">0/15 全红 · rc=1</text>
+  <text class="t-b" x="44" y="184">15 行全部抛异常：</text>
+  <text class="code" x="44" y="208" font-size="12">EXC:NotImplementedError</text>
+  <text class="t-s" x="44" y="238">stub 的唯一动作是</text>
+  <text class="code" x="44" y="258" font-size="12">raise NotImplementedError</text>
+  <path d="M44 286 Q148 292 252 286" fill="none" stroke="#CBD5DF" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text class="t-b" x="44" y="316" font-weight="bold">价值：测试真的在测东西</text>
+  <text class="t-s" x="44" y="340">没有任何一行能被</text>
+  <text class="t-s" x="44" y="358">"空实现"糊弄过去</text>
+
+  <!-- ===== v1 直觉版 ===== -->
+  <g filter="url(#wob)">
+    <rect x="330" y="88" width="340" height="372" rx="12" fill="#FFFFFF" stroke="#B85450" stroke-width="2.6" stroke-linejoin="round" transform="rotate(0.3 500 274)"/>
+  </g>
+  <text class="t-h" x="350" y="118">v1 直觉版</text>
+  <g filter="url(#wob2)">
+    <rect class="rbox" x="500" y="102" width="154" height="24" rx="8"/>
+  </g>
+  <text class="code" x="577" y="119" text-anchor="middle" font-size="12" fill="#A0433F" font-weight="bold">12/15 三行红 · rc=1</text>
+
+  <g filter="url(#wob2)">
+    <rect class="rbox" x="350" y="140" width="300" height="48" rx="9"/>
+    <rect class="rbox" x="350" y="196" width="300" height="48" rx="9"/>
+    <rect class="rbox" x="350" y="252" width="300" height="48" rx="9"/>
+  </g>
+  <text class="code" x="360" y="162" font-size="12">T11  ?x2x3·2x3x2 → ?x2x2</text>
+  <text class="t-s" x="360" y="180" fill="#A0433F">信息在手却扔掉 → 错误 1</text>
+  <text class="code" x="360" y="218" font-size="12">T14  2x3·2x3x2 → 2x2</text>
+  <text class="t-s" x="360" y="236" fill="#A0433F">静默错：秩不等却推出 shape → 错误 2</text>
+  <text class="code" x="360" y="274" font-size="12">T15  3·3 → EXC:IndexError</text>
+  <text class="t-s" x="360" y="292" fill="#A0433F">崩溃：取 rhs[-2] 越界 → 错误 2</text>
+
+  <text class="t-b" x="350" y="336" fill="#4C7A43" font-weight="bold">其余 12 行 PASS——M/N/K 三角色的直觉是对的</text>
+  <path d="M350 358 Q500 364 650 358" fill="none" stroke="#CBD5DF" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text class="t-s" x="350" y="386">12 行绿说明 M、N、K 的直觉正确；</text>
+  <text class="t-s" x="350" y="404">栽跟头全在"前提"和"双侧来源"两个没想透的角落</text>
+  <text class="t-s" x="350" y="434" fill="#A0433F">↑ 三行红就是第 6 节错误 1、错误 2 的证据</text>
+
+  <!-- ===== v2 最终版 ===== -->
+  <g filter="url(#wob)">
+    <rect x="732" y="88" width="240" height="372" rx="12" fill="#FFFFFF" stroke="#82B366" stroke-width="2.6" stroke-linejoin="round" transform="rotate(-0.3 852 274)"/>
+  </g>
+  <text class="t-h" x="748" y="118">v2 最终版（R0～R4）</text>
+  <g filter="url(#wob2)">
+    <rect class="gbox" x="748" y="130" width="176" height="24" rx="8"/>
+  </g>
+  <text class="code" x="836" y="147" text-anchor="middle" font-size="12" fill="#4C7A43" font-weight="bold">15/15 全绿 · rc=0</text>
+
+  <g filter="url(#wob2)">
+    <rect class="gbox" x="748" y="164" width="208" height="44" rx="9"/>
+    <rect class="gbox" x="748" y="218" width="208" height="44" rx="9"/>
+    <rect class="gbox" x="748" y="272" width="208" height="44" rx="9"/>
+  </g>
+  <text class="code" x="758" y="184" font-size="11.5">T11 → 2x2x2</text>
+  <text class="t-s" x="758" y="202" fill="#4C7A43">R1：batch 取 rhs 的 2</text>
+  <text class="code" x="758" y="238" font-size="11.5">T14 → FAIL(rank mismatch)</text>
+  <text class="t-s" x="758" y="256" fill="#4C7A43">R0：秩不等，防御性失败</text>
+  <text class="code" x="758" y="292" font-size="11.5">T15 → FAIL(rank&lt;2)</text>
+  <text class="t-s" x="758" y="310" fill="#4C7A43">R0：rank&lt;2，防御性失败</text>
+  <text class="code" x="758" y="340" font-size="11.5">T13 → FAIL(K mismatch)</text>
+  <text class="t-s" x="758" y="358" fill="#4C7A43">R4：K 静态不等 → failure</text>
+  <path d="M748 382 Q852 388 956 382" fill="none" stroke="#CBD5DF" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text class="t-b" x="748" y="410" fill="#4C7A43" font-weight="bold">三行红全部转绿——靠实现补上规则，</text>
+  <text class="t-s" x="748" y="430">15 行测试的期望值一行未改</text>
+
+  <!-- ===== 顶部卡之间的箭头 ===== -->
+  <g filter="url(#wob2)">
+    <path class="arrow" d="M276 272 Q300 266 322 271"/>
+    <path class="arrow" d="M678 272 Q700 266 722 271"/>
+  </g>
+  <text class="t-s" x="299" y="252" text-anchor="middle">直觉版</text>
+  <text class="t-s" x="700" y="252" text-anchor="middle">补 R0＋R1</text>
+
+  <!-- ===== 底部：两条修复链路 ===== -->
+  <text class="t-h" x="30" y="486">两条『红 → 绿』修复链路</text>
+
+  <g filter="url(#wob2)">
+    <rect class="rbox" x="28" y="498" width="430" height="56" rx="10"/>
+    <rect class="rbox" x="28" y="570" width="430" height="56" rx="10"/>
+  </g>
+  <text class="t-h" x="44" y="522">错误 1｜batch 一律抄 lhs（T11）</text>
+  <text class="t-s" x="44" y="542">rhs 给了 batch=2，却把 lhs 的 ? 抄进输出</text>
+  <text class="t-h" x="44" y="594">错误 2｜不查前提（T14、T15）</text>
+  <text class="t-s" x="44" y="614">T14 内维恰好相等掩盖秩不等；T15 取 rhs[-2] 崩溃</text>
+
+  <g filter="url(#wob2)">
+    <path class="arrow" d="M464 526 Q490 520 524 526"/>
+    <path class="arrow" d="M464 598 Q490 592 524 598"/>
+  </g>
+
+  <g filter="url(#wob)">
+    <rect class="gbox" x="532" y="498" width="440" height="56" rx="10"/>
+    <rect class="gbox" x="532" y="570" width="440" height="56" rx="10"/>
+  </g>
+  <text class="t-h" x="548" y="522">R1｜batch 取已知一侧</text>
+  <text class="t-s" x="548" y="542">lhs 静态取 lhs，否则取 rhs；两侧都 ? 才输出 ?</text>
+  <text class="t-h" x="548" y="594">R0｜前提检查排在最前</text>
+  <text class="t-s" x="548" y="614">ranked / rank≥2 / 秩相等 → failure 早于一切计算</text>
+
+  <!-- v1 的红行汇入链路；修复汇入 v2 -->
+  <g filter="url(#wob2)">
+    <path class="arrow" d="M392 464 Q320 480 252 492"/>
+    <path class="arrow" d="M800 494 Q840 478 872 464"/>
+  </g>
+
+  <text class="t-s" x="970" y="650" text-anchor="end" fill="#8A8378">Day 43 · TDD 轨迹 · Ubuntu 20.04.5 · Python 3.11.4</text>
+</svg>

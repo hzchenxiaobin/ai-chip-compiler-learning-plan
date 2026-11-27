@@ -70,6 +70,10 @@ func.func @graph_f64_add_relu(%arg0: tensor<2x2xf64>, %arg1: tensor<2x2xf64>) ->
 - **verifier_reject**：图本身就是非法的，parse + verify 当场报错，Pattern 根本没机会看到它；
 - **半融合不动点**：`fused_matmul_bias + relu`——C08/M04 的终点，任何路线、任何遍历都停在这里（`%s` 的第二个使用者是 return，删不得）。
 
+![C07 与 C08 的 use 表对照：乘积多使用者导致恒等拒绝，加法结果被 return 共用导致半融合不动点](images/05-half-fusion-usedef.svg)
+
+**图 3**：读 use 表的两个典型样本。左：C07 的乘积 `%m` 被 add 和第二个 relu 各握一次（use=2），生产者删不得，P1/P2/P3/P51g 全部收手，整条链原样保留——identity（遍数 10→10）；右：C08 的加法结果 `%s` 被 relu 和 return 共用（use=2），MatMul+Bias 照融（`%m` 独占），但 Relu 吸不走——停在半融合不动点（遍数 8→6）。底部三条规矩是第 52 天铁律的两种结局：`func.return` 也是使用者。
+
 ### 3.3 恒等拒绝：为什么「不动」也要验收
 
 直觉上「没融就是没融」，还需要检查吗？需要——因为拒绝的实现路径和融合**共享同一套改写机制**（`Rewriter`）。一次失败的匹配如果在 return failure 之前不小心动了图（比如先建了新算子再发现条件不满足），拒绝就不再是恒等。所以 R2 把「拒绝」钉死成两条断言：IR 逐字不变、代价账本不变。单元测试里还有第三条：同名值的 use 计数原样（`test_identity_rejection_has_no_side_effects`）。
@@ -210,7 +214,7 @@ Python 层能做数值对账，但它是我们**自己写的玩具 IR**——万
 
 ![mini-accept 的验收流程：同一输入走 bottom-up 与 top-down 两条路，R1 同形态、R2 恒等断言，三种判决](images/03-acceptance-flow.svg)
 
-**图 3**：左列是主流程——闸门一拦下 M08/M09/M10（`verifier_reject`）；通过者走 A、B 两条遍历路，R1 要求两路最终算子名单相同，R2 要求负例 IR 逐字恒等；右上是「为什么两条路」（第 54 天抢跑事故的教训），右下是 Python 层补的 R3/R4。
+**图 4**：左列是主流程——闸门一拦下 M08/M09/M10（`verifier_reject`）；通过者走 A、B 两条遍历路，R1 要求两路最终算子名单相同，R2 要求负例 IR 逐字恒等；右上是「为什么两条路」（第 54 天抢跑事故的教训），右下是 Python 层补的 R3/R4。
 
 关键实现（真实节选，`code/mlir-mini/mini-accept.cpp`）——两条路用的是**同一个 Pattern 集**，只改 `GreedyRewriteConfig::useTopDownTraversal`：
 
@@ -333,7 +337,7 @@ C14   f64_matmul_chain      负例·类型(Verifier)   verifier_reject  verifier
 
 ![两层验收结果矩阵与拆闸门对照实验：Python 14/14、MLIR 10/10、no-type-guard 11/14 三处失守](images/04-results-matrix.svg)
 
-**图 4**：左边是 24 例的判决总表（八类特征 × 三种判决，两层一致）；右上是拆闸门实验的三处失守；右下是两个值得盯住的正例细节（半融合不动点、主线优化前后）；底部是复跑命令。
+**图 5**：左边是 24 例的判决总表（八类特征 × 三种判决，两层一致）；右上是拆闸门实验的三处失守；右下是两个值得盯住的正例细节（半融合不动点、主线优化前后）；底部是复跑命令。
 
 ## 7. 常见错误
 
@@ -388,3 +392,4 @@ C14   f64_matmul_chain      负例·类型(Verifier)   verifier_reject  verifier
 
 
 
+<!-- tutorial-review: v1 -->

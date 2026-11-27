@@ -333,6 +333,10 @@ ninja: build stopped: subcommand failed.
 - 定位：检查计时循环所在函数的签名——只要形参是具体类型而非 `NodeVisitor&`，就有被去虚化的风险。
 - 修复：循环挪进独立翻译单元（`bench.cpp`），签名只暴露 `NodeVisitor&`。泛化教训：**测量一个机制之前，先确认测的确实是它**。
 
+![去虚化陷阱：同翻译单元会被优化掉，独立翻译单元才能测到真实分发代价](images/04-devirtualization-pitfall.svg)
+
+**图 4**：错误三的机器视图。左（红）是踩坑路径：`CounterVisitor` 的定义与计时循环同住 `main.cpp` 一个翻译单元，编译器看得见 `counter` 的具体类型，`-O3` 去虚化＋内联把虚调用变成直接调用，测出的"visitor ≈ switch"是假象；右（绿）是修复路径：循环搬进独立翻译单元 `bench.cpp`，函数签名只暴露 `NodeVisitor&`，动态类型对编译器不可知，虚表间接调用真实发生——Release 下 8.05 vs 6.95 ns／次（≈ 1.16 倍）才是动态分发的真实代价。下半部分对应错误三的四步排查路径：现象 → 原因 → 定位 → 修复。
+
 **错误四：把 -Wswitch 警告当耳旁风（5.4 节步骤 1 的真实状态）**
 
 - 现象：给 `OpKind` 加 `Mul` 后构建照样通过，13 条警告躺在输出里。
@@ -364,3 +368,5 @@ ninja: build stopped: subcommand failed.
 今天的核心动作是把"按算子选动作"的分发从各文件的 `if/else`／`switch` 里收拢到 `apply_visitor` 的唯一 switch，把"做什么"开放给可以无限新增的只读访问者：`NodeVisitor` 四个纯虚入口 ＋ 一处故意不写 `default` 的 switch，构成两道编译期保险——新增访问者零改动，新增算子先警告、后点名。重构 `to_string()` 一字不差、三个访问者互不知情、解释器数字纹丝不动，是行为不变的证明；1000 万次分发的真实计时（Debug 1.26 倍、Release 1.16 倍、每次贵 1～2 ns）说明动态分发的代价对编译器无感；CRTP 演示了"编译期已知类型"时零虚表的另一条路，也解释了为什么"一个类 ＋ kind"的我们用不上它。
 
 明天第 12 天：图的合法性检查。今天 `bugs/err_unhandled_kind.cpp` 里那个一路绿灯的假 kind 还没人拦——Verifier（验证器）就是来堵这个口子的：检查输入数量、空指针、Shape 兼容性和简单类型约束，并把"构造失败、验证失败、运行失败"三种错误分清楚。它正是今天 Visitor 的第一个正式客户。
+
+<!-- tutorial-review: v1 -->

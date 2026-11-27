@@ -390,6 +390,10 @@ mini_ghost_op.mlir:7:10: error: Dialect `mini' not found for custom op 'mini.foo
 
 下面四个错误都在本机**真实触发过**，按“现象 → 原因 → 定位 → 修复”展开。
 
+![排错地图：四个真实错误分别落在生成、编译、链接、运行四环——错误②生成期报 selected dialect does not exist（-dialect 过滤器找不到 mini）、错误①编译期报 MiniDialect has not been declared（类在 mini 命名空间里）、错误③链接期报 undefined reference（漏 include .cpp.inc）、错误④运行期报 Dialect not found（链接≠注册）；每张卡片含原因、定位、修复三行](images/04-error-map.svg)
+
+**图 4**：先看顶部流水线，四个错误**恰好各守一环**：卡片从左到右按“生成→编译→链接→运行”排列（编号保留第 6 节原文的①～④，所以是②①③④的顺序）。前三个错误让 `cmake --build` 直接红灯（构建期），错误④构建全绿、跑探针才 `rc=1`（运行期）——分界线正是 5.3 节的注册表。排查时先认报错第一行的关键词（`-dialect`／`declared`／`undefined reference`／`not found`），再进对应小节看四步展开。
+
 **① 编译错误：`error: 'MiniDialect' has not been declared`**
 
 ```console
@@ -440,3 +444,5 @@ MiniOpt.cpp:(.text.startup.main+0x40): undefined reference to `mlir::detail::Typ
 今天把第 5 周的“读 IR”翻面成“造 IR”：用 84 行手写代码搭起一个 out-of-tree 的 `mini` 方言工程——`.td` 填表、`mlir-tblgen` 盖章、`MLIRMini` 库承重、`registry.insert` 上户口，最后用注册表、round-trip、双探针和改名实验四种方式证明了“空方言”真实存在。分界线实验是今天最值钱的收获：**解析器认识什么，完全由注册表说了算；注册表里登记的字符串，就是方言的全部身份。**
 
 明天（Day 37）定义第一个算子 `mini.matmul`：`MiniOps.td` 里写 ODS（名字、两个输入、一个结果、Tensor 类型约束），`initialize()` 里的 `addOperations<...>()` 让方言第一次“住进住户”——今天刻意保留下来的 `MiniOpsDialect.*.inc` 命名和 `class Mini_Op` 基类，会在那时一处不改地接上。
+
+<!-- tutorial-review: v1 -->

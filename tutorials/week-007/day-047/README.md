@@ -351,6 +351,10 @@ module {
   add 消失了，取而代之的是一个**空的** `dense<>` 常量——fold 算好的 6 个元素被静默丢弃。全程 **rc=0、无任何报错**，比 Day 46 同款实验（rc=1 验证失败）更危险。
 
 - **原因**：拆开看是一串连锁。① 护栏删除后，`resType` 是动态形状 `?x3`，而 `ShapedType::getNumElements()` 的契约是"仅静态形状可调用，否则 abort"（头文件注释原话），靠 `assert(hasStaticShape())` 把守——**Release 构建里 assert 被编译掉**；② `?` 维在 MLIR 内部是哨兵值 `kDynamic = INT64_MIN`，"元素个数"算成 `INT64_MIN × 3`，回绕后仍是负数，于是尺寸护栏 `负数 > 1024` 判假放行；③ `DenseElementsAttr::get` 拿着这个垃圾尺寸建属性，得到 0 个元素的空属性；④ `materializeConstant` 里 `AllTypesMatch` 让新常量的结果类型跟属性走（也是 `?x3`），顶替 add 后 `func.return` 的 `?x3` 对 `?x3`，**验证通过**。Debug 构建里 ① 的 assert 会当场 abort（本机实测 Debug 构建被一个无关的 MLIR statistics 链接问题挡住，未跑到这一步，此为头文件注明的行为，未当作已执行结果）。
+
+  ![错误 2 机制链图：上部是 @typeguard 的合法输入与删掉类型护栏的变体 mini-opt；中部是四步连锁——动态形状闯进 getNumElements、元素个数算成垃圾负数骗过尺寸护栏、DenseElementsAttr::get 产出空属性、空常量静默顶替 add 后 ?x3 对 ?x3 验证通过；下部是 rc=0 的真实输出（空常量 dense<>）与护栏在位、先跑 -mini-infer-shape 的对照出路](images/04-empty-constant-chain.svg)
+
+  **图 4**：把错误 2 的"为什么"画成一条可核对的链。第 1 步动态形状闯进 `getNumElements()`（Release 里 assert 被编译掉）；第 2 步元素个数算成垃圾负数；第 3 步尺寸护栏被负数骗过、`DenseElementsAttr::get` 产出空属性；第 4 步空常量静默顶替 add，`?x3` 对 `?x3` 验证通过——四步没有一步报错。右下是对照与出路：护栏在位时同一条 add 原样保留，想优化它先跑 `-mini-infer-shape` 细化 `?`，而不是拆安全带。
 - **定位**：输出里出现 `dense<>` 就是这个错误的指纹；另一个探雷器是"负例计数"——`@typeguard` 的 add 本应保留，被无声换成了空常量。
 - **修复**：护栏留着，一行不许省。想让这条 add 能被优化，正确做法是先跑 `-mini-infer-shape` 把 `?` 细化成数字（Day 46 的结论原样适用），而不是拆安全带。
 
@@ -404,3 +408,5 @@ module {
 今天给 mini 方言接上了第三条化简生产线：**问题**是"常量碰常量"的运算在运行期白算——`add(1.0, 2.0)` 的答案编译期就已确定；**机制**是"fold 返回值、驱动管节点"——`AddOp::fold` 读进两张纸条、过三道关卡（常量进门、类型、尺寸）、用 `APFloat` 逐元素算出和返回属性，`materializeConstant` 把值物化成新常量，`OperationFolder` 顺带用 (方言, 属性, 类型) 表全局去重，旧 add 与旧常量一起出局；**实践**只动了 5 处接缝，`mini-opt` 一行不改；**验证**是 7 个探针 FileCheck 全绿＋uniquing 对照（2/1/1/1）＋上游 arith 逐项对齐＋真实计时压测（护栏挡下 8 倍编译时间）＋三个"弄坏它"实验（构建失败、静默空常量、fold 白算）。最有工程价值的观察：fold 的安全性不靠自觉靠关卡——类型护栏挡住的不是报错，是**静默丢数据**。
 
 明天（Day 48）把这些能力接进同一条管道：Shape 推导（Day 44）、Relu 消除（Day 45）、代数化简（Day 46）、常量折叠（Day 47）分散在四种不同的挂载点上，互相制造机会也互相错过窗口——组合管道与不动点（跑到没有变化为止）就来解决这个问题。
+
+<!-- tutorial-review: v1 -->

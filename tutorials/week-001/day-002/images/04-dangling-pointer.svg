@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<rect x="0" y="0" width="1200" height="675" fill="#fdfaf4"/>
+<text x="600" y="44" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="27" fill="#3a4657" text-anchor="middle" font-weight="600">悬垂指针：返回栈对象的地址，g++ 把返回值换成空指针</text>
+<text x="600" y="74" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#6b7686" text-anchor="middle" font-weight="500">第 6 节错误三的机制拆解：栈帧随函数返回弹掉、b 已析构；g++ 9.4 用空指针代替失效地址，一解引用就是 SIGSEGV（exit 139）</text>
+<rect x="40.5" y="100.8" width="430" height="214" fill="#fffdf8" stroke="none"/>
+<rect x="52" y="184" width="406" height="24" fill="#fbeadd" opacity="0.6" stroke="none"/>
+<path d="M 41.6 101.2 C 172.0 99.8, 340.2 101.5, 469.4 100.6" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 469.2 101.5 C 470.8 168.4, 469.6 240.9, 470.2 313.7" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 469.6 313.4 C 312.0 315.1, 172.5 313.9, 41.2 314.2" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.9 313.8 C 40.2 240.5, 41.7 170.2, 40.6 101.9" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="126" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">dangling.cpp（复现核心＋调用方）</text>
+<text x="58" y="152" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer* make_buffer() {</text>
+<text x="58" y="173.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    Buffer b(16, "local");</text>
+<text x="58" y="195" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">    return &amp;b;   // ← 警告在这一行</text>
+<text x="58" y="216.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">}</text>
+<text x="58" y="238" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">int main() {</text>
+<text x="58" y="259.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    Buffer* p = make_buffer();</text>
+<text x="58" y="281" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">    printf("p = %p\n", (void*)p);</text>
+<text x="58" y="302.5" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="11.5" fill="#6b7686" text-anchor="start" font-weight="500">    // 之后使用 p（如 p-&gt;size()）</text>
+<rect x="40.7" y="327.2" width="430" height="74" fill="#fbeadd" stroke="none"/>
+<path d="M 41.2 328.0 C 182.0 326.6, 340.5 328.4, 469.8 327.2" fill="none" stroke="#e0884f" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<path d="M 469.4 327.9 C 470.9 350.4, 469.7 377.6, 470.3 400.2" fill="none" stroke="#e0884f" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<path d="M 469.6 400.0 C 300.5 401.4, 170.0 400.2, 41.4 400.8" fill="none" stroke="#e0884f" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<path d="M 41.0 400.4 C 40.5 377.1, 41.9 350.8, 40.8 328.3" fill="none" stroke="#e0884f" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 7"/>
+<text x="58" y="352" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#3a4657" text-anchor="start" font-weight="500">dangling.cpp:6:12: warning: address of local</text>
+<text x="58" y="372" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#3a4657" text-anchor="start" font-weight="500">variable 'b' returned [-Wreturn-local-addr]</text>
+<text x="58" y="391" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">编译期 g++ 已拉响警报：return 的正是栈对象的地址</text>
+<rect x="40.3" y="415.5" width="430" height="210" fill="#fffdf8" stroke="none"/>
+<path d="M 41.2 416.0 C 172.4 414.7, 339.8 416.4, 469.6 415.3" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 469.3 416.2 C 470.7 482.0, 469.5 545.2, 470.1 623.9" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 469.5 623.6 C 321.0 625.2, 169.4 624.0, 41.1 624.3" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.8 623.8 C 40.3 544.7, 41.8 481.9, 40.7 416.4" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="440" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">本机真实输出（aarch64 · g++ 9.4.0）</text>
+<text x="58" y="466" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#3a4657" text-anchor="start" font-weight="500">[ctor] Buffer "local" 出生：在堆上</text>
+<text x="58" y="484" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#3a4657" text-anchor="start" font-weight="500">    拿到 16 字节 @ 0x…ed0</text>
+<text x="58" y="502" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#6aa673" text-anchor="start" font-weight="600">[dtor] Buffer "local" 销毁：归还</text>
+<text x="58" y="520" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#6aa673" text-anchor="start" font-weight="500">    堆上 16 字节</text>
+<text x="452" y="520" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6aa673" text-anchor="end" font-weight="600">← 对象死于使用之前</text>
+<text x="58" y="538" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#e0884f" text-anchor="start" font-weight="600">p = (nil)</text>
+<text x="452" y="538" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#e0884f" text-anchor="end" font-weight="600">← 空指针替换的结果</text>
+<text x="58" y="556" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#cc6b6b" text-anchor="start" font-weight="600">Segmentation fault (core dumped)</text>
+<text x="452" y="556" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#cc6b6b" text-anchor="end" font-weight="600">← 解引用空指针</text>
+<rect x="58" y="576" width="262" height="30" fill="#f7e7e7" stroke="none"/>
+<path d="M 58.9 577.0 C 142.0 575.8, 240.4 576.9, 319.6 576.4" fill="none" stroke="#cc6b6b" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 319.2 576.7 C 320.6 585.8, 319.4 596.4, 319.9 605.2" fill="none" stroke="#cc6b6b" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 319.5 604.9 C 217.0 606.1, 130.5 605.5, 59.2 605.8" fill="none" stroke="#cc6b6b" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 58.8 605.4 C 58.3 595.9, 59.7 586.2, 58.6 577.3" fill="none" stroke="#cc6b6b" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="189" y="596" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="middle" font-weight="600">exit = 139（128 ＋ SIGSEGV）</text>
+<rect x="490.6" y="100.9" width="200" height="330" fill="#fffdf8" stroke="none"/>
+<path d="M 491.4 101.3 C 555.0 100.1, 640.5 101.6, 690.3 100.8" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 689.8 101.5 C 690.9 174.6, 689.7 268.4, 690.2 429.7" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 689.6 429.4 C 615.0 430.8, 548.4 429.6, 491.2 430.1" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 490.9 429.8 C 490.3 267.5, 491.8 173.8, 490.7 101.7" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="590" y="128" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">① 调用期间</text>
+<text x="590" y="145" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">make_buffer() 还没返回</text>
+<rect x="505" y="160" width="180" height="58" fill="#e7f0f9" stroke="none"/>
+<path d="M 505.8 160.9 C 556.0 159.9, 640.2 160.8, 684.9 160.2" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.4 160.5 C 685.6 179.8, 684.4 199.2, 685.0 217.6" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.6 217.3 C 622.0 218.4, 549.8 217.5, 506.1 217.9" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 505.7 217.5 C 505.1 198.8, 506.5 179.2, 505.4 161.2" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="595" y="182" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">main 的栈帧</text>
+<text x="595" y="202" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">p（等待返回值）</text>
+<rect x="505" y="230" width="180" height="74" fill="#e9f4ea" stroke="none"/>
+<path d="M 505.7 230.9 C 570.0 229.8, 645.2 230.9, 684.8 230.3" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.3 230.6 C 685.5 254.8, 684.3 281.4, 684.9 303.7" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.5 303.4 C 616.4 304.6, 546.4 303.7, 506.0 304.1" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 505.6 303.6 C 505.0 280.9, 506.4 254.5, 505.3 231.1" fill="none" stroke="#6aa673" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="595" y="252" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">make_buffer 的栈帧</text>
+<text x="595" y="272" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">b 的对象本体住在这里</text>
+<text x="595" y="291" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">（data_／size_／name_）</text>
+<path d="M 560.3 331.6 C 559.9 325.0, 560.5 318.2, 560.1 311.8" fill="none" stroke="#e0884f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<path d="M 554.8 315.0 C 556.6 312.4, 558.3 310.2, 560.1 308.3" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 565.4 315.2 C 563.5 312.6, 561.8 310.4, 560.2 308.6" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="590" y="344" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#e0884f" text-anchor="middle" font-weight="600">&amp;b：b 本体的地址（在栈上）</text>
+<rect x="505" y="356" width="180" height="46" fill="#fffdf8" stroke="none"/>
+<path d="M 505.6 357.0 C 568.0 355.9, 644.0 356.9, 684.7 356.3" fill="none" stroke="#e0884f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<path d="M 684.2 356.6 C 685.4 371.0, 684.2 385.8, 684.8 401.3" fill="none" stroke="#e0884f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<path d="M 684.4 400.9 C 614.0 402.1, 545.4 401.3, 505.9 401.7" fill="none" stroke="#e0884f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<path d="M 505.5 401.1 C 504.9 385.4, 506.3 370.8, 505.2 357.4" fill="none" stroke="#e0884f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/>
+<text x="595" y="376" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">b 的 16B 数据在堆上</text>
+<text x="595" y="394" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">（data_ 指过去，[dtor] 时归还）</text>
+<path d="M 692.5 262.0 C 703.0 261.6, 714.0 261.8, 724.2 262.2" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 717.9 257.6 C 719.9 259.4, 722.0 261.1, 724.1 262.7" fill="none" stroke="#6b7686" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 718.1 266.9 C 720.0 265.1, 722.1 263.6, 724.3 262.4" fill="none" stroke="#6b7686" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="708" y="248" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#6b7686" text-anchor="middle" font-weight="500">返回</text>
+<rect x="725.4" y="100.6" width="200" height="330" fill="#fffdf8" stroke="none"/>
+<path d="M 726.2 101.2 C 790.0 100.0, 855.4 101.5, 925.2 100.7" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 924.7 101.4 C 925.8 180.6, 924.6 268.9, 925.1 429.6" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 924.5 429.3 C 850.0 430.7, 783.2 429.5, 726.0 430.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 725.7 429.7 C 725.1 268.0, 726.5 180.0, 725.4 101.6" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="825" y="128" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">② 返回瞬间</text>
+<text x="825" y="145" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">栈帧弹出，返回值被替换</text>
+<rect x="740" y="160" width="180" height="58" fill="#e7f0f9" stroke="none"/>
+<path d="M 740.8 160.8 C 800.0 159.8, 880.2 160.7, 919.9 160.1" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 919.4 160.4 C 920.6 179.8, 919.4 199.1, 920.0 217.6" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 919.6 217.3 C 856.0 218.4, 784.8 217.5, 741.1 217.9" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 740.7 217.5 C 740.1 198.9, 741.5 179.2, 740.4 161.1" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="830" y="182" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">main 的栈帧</text>
+<text x="830" y="202" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="500">p ← 接住返回值</text>
+<rect x="740" y="230" width="180" height="74" fill="#e9f4ea" opacity="0.35" stroke="none"/>
+<path d="M 740.7 230.9 C 806.0 229.8, 875.2 230.9, 919.8 230.3" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<path d="M 919.3 230.6 C 920.5 254.8, 919.3 281.4, 919.9 303.7" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<path d="M 919.5 303.4 C 851.4 304.6, 781.4 303.7, 741.0 304.1" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<path d="M 740.6 303.6 C 740.0 280.9, 741.4 254.5, 740.3 231.1" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 5"/>
+<text x="830" y="252" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">make_buffer 的栈帧（弹出）</text>
+<text x="830" y="272" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">b 随栈帧析构</text>
+<text x="830" y="291" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6aa673" text-anchor="middle" font-weight="600">[dtor] 在此刻打印</text>
+<text x="825" y="326" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="middle" font-weight="500">应返回 &amp;b</text>
+<path d="M 775.6 322.0 C 792.0 323.1, 860.4 322.6, 874.8 321.6" fill="none" stroke="#6b7686" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 825.0 334.0 C 825.4 340.6, 824.8 347.2, 825.2 353.8" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 819.4 347.9 C 821.4 349.9, 823.2 351.8, 825.1 353.9" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 830.8 348.1 C 828.9 350.0, 827.1 351.9, 825.3 354.1" fill="none" stroke="#e0884f" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="750" y="358" width="150" height="30" fill="#fbeadd" stroke="none"/>
+<path d="M 750.7 358.8 C 800.0 357.9, 876.2 358.7, 899.9 358.2" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 899.4 358.5 C 900.6 368.0, 899.4 377.5, 900.0 387.3" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 899.6 387.0 C 846.0 388.1, 794.8 387.3, 751.1 387.7" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 750.6 387.2 C 750.0 377.6, 751.4 368.0, 750.3 359.0" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="825" y="378" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="middle" font-weight="600">实际返回 0x0（空指针）</text>
+<text x="825" y="400" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">g++ 9.4 检测后替换（本机实测）</text>
+<path d="M 927.3 262.0 C 937.8 261.6, 948.6 261.8, 958.8 262.2" fill="none" stroke="#6b7686" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 952.5 257.6 C 954.5 259.4, 956.6 261.1, 958.7 262.7" fill="none" stroke="#6b7686" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 952.7 266.9 C 954.6 265.1, 956.7 263.6, 958.9 262.4" fill="none" stroke="#6b7686" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="943" y="248" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="9.5" fill="#6b7686" text-anchor="middle" font-weight="500">使用</text>
+<rect x="960.2" y="101.1" width="200" height="330" fill="#fffdf8" stroke="none"/>
+<path d="M 961.0 101.5 C 1030.0 100.3, 1095.4 101.8, 1159.8 101.0" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1159.3 101.6 C 1160.4 180.8, 1159.2 269.1, 1159.7 429.8" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1159.5 429.5 C 1085.0 430.9, 1018.2 429.7, 961.0 430.2" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 960.7 429.9 C 960.1 268.2, 961.5 180.2, 960.4 101.8" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1060" y="128" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">③ 调用方使用</text>
+<text x="1060" y="145" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10" fill="#6b7686" text-anchor="middle" font-weight="500">拿到空指针再解引用</text>
+<rect x="975" y="160" width="180" height="58" fill="#e7f0f9" stroke="none"/>
+<path d="M 975.8 160.8 C 1035.0 159.8, 1115.2 160.7, 1154.9 160.1" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1154.4 160.4 C 1155.6 179.8, 1154.4 199.1, 1155.0 217.6" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1154.6 217.3 C 1091.0 218.4, 1019.8 217.5, 976.1 217.9" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 975.7 217.5 C 975.1 198.9, 976.5 179.2, 975.4 161.1" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1065" y="182" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#3a4657" text-anchor="middle" font-weight="600">main 的栈帧</text>
+<text x="1065" y="202" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#3a4657" text-anchor="middle" font-weight="600">p ＝ (nil)</text>
+<text x="975" y="240" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="600">p-&gt;size()</text>
+<path d="M 1065.0 226.0 C 1065.4 233.6, 1064.8 242.0, 1065.2 251.4" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1059.7 245.8 C 1061.6 247.8, 1063.4 249.7, 1065.1 251.7" fill="none" stroke="#cc6b6b" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1070.5 246.0 C 1068.6 247.9, 1066.8 249.8, 1065.3 251.9" fill="none" stroke="#cc6b6b" stroke-width="1.748" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="985" y="256" width="150" height="44" fill="#f7e7e7" stroke="none"/>
+<path d="M 985.7 256.8 C 1035.0 255.9, 1106.2 256.7, 1134.9 256.2" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1134.4 256.5 C 1135.6 270.0, 1134.4 283.4, 1135.0 299.3" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1134.6 299.0 C 1080.0 300.1, 1024.8 299.3, 986.1 299.7" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 985.6 299.2 C 985.0 283.6, 986.4 270.0, 985.3 257.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1060" y="276" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="middle" font-weight="600">解引用空指针</text>
+<text x="1060" y="294" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">→ SIGSEGV</text>
+<rect x="985" y="312" width="150" height="44" fill="#f7e7e7" stroke="none"/>
+<path d="M 985.7 312.8 C 1035.0 311.9, 1106.2 312.7, 1134.9 312.2" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1134.4 312.5 C 1135.6 326.0, 1134.4 339.4, 1135.0 355.3" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1134.6 355.0 C 1080.0 356.1, 1024.8 355.3, 986.1 355.7" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 985.6 355.2 C 985.0 339.6, 986.4 326.0, 985.3 313.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1060" y="332" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.2" fill="#3a4657" text-anchor="middle" font-weight="600">Segmentation fault</text>
+<text x="1060" y="350" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">exit = 139</text>
+<text x="1060" y="384" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">exit 139 ＝ 128 ＋ SIGSEGV(11)</text>
+<text x="1060" y="406" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="10.5" fill="#6b7686" text-anchor="middle" font-weight="500">警告与崩溃之间只隔一次使用</text>
+<rect x="490.5" y="445.4" width="670" height="180" fill="#fffdf8" stroke="none"/>
+<path d="M 491.3 446.0 C 720.0 444.7, 960.4 446.3, 1159.6 445.2" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1159.2 445.8 C 1160.7 511.5, 1159.5 568.2, 1160.1 623.8" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1159.5 623.5 C 940.0 625.1, 700.4 623.9, 491.2 624.3" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 490.8 623.7 C 490.3 568.0, 491.7 511.4, 490.6 446.3" fill="none" stroke="#3a4657" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="510" y="472" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="start" font-weight="600">证据链：三处互相印证</text>
+<path d="M 532.4 496.2 L 531.3 500.5 L 528.3 503.6 L 523.9 504.6 L 519.5 503.4 L 516.6 500.1 L 515.6 495.8 L 516.7 491.6 L 519.7 488.5 L 524.1 487.6 L 528.5 488.7 L 531.4 492.0 Z" fill="#fffdf8" stroke="#5b8db8" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="524" y="500" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#5b8db8" text-anchor="middle" font-weight="600">1</text>
+<text x="544" y="500" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">编译期：warning [-Wreturn-local-addr] 精确指向 return &amp;b 那一行</text>
+<path d="M 532.4 526.2 L 531.3 530.5 L 528.3 533.6 L 523.9 534.6 L 519.5 533.4 L 516.6 530.1 L 515.6 525.8 L 516.7 521.6 L 519.7 518.5 L 524.1 517.6 L 528.5 518.7 L 531.4 522.0 Z" fill="#fffdf8" stroke="#6aa673" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="524" y="530" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#6aa673" text-anchor="middle" font-weight="600">2</text>
+<text x="544" y="530" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">运行日志：[dtor] 打印在 p = (nil) 之前——对象死于被使用之前</text>
+<path d="M 532.4 556.2 L 531.3 560.5 L 528.3 563.6 L 523.9 564.6 L 519.5 563.4 L 516.6 560.1 L 515.6 555.8 L 516.7 551.6 L 519.7 548.5 L 524.1 547.6 L 528.5 548.7 L 531.4 552.0 Z" fill="#fffdf8" stroke="#e0884f" stroke-width="1.9" stroke-linejoin="round"/>
+<text x="524" y="560" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10" fill="#e0884f" text-anchor="middle" font-weight="600">3</text>
+<text x="544" y="560" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="500">结果：p = (nil) 而非随机地址——g++ 的空指针替换，解引用即 exit 139</text>
+<rect x="520" y="578" width="610" height="26" fill="#e9f4ea" opacity="0.5" stroke="none"/>
+<text x="825" y="596" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#3a4657" text-anchor="middle" font-weight="600">规则：不保存、不返回栈对象的地址——按值返回、输出参数或智能指针（第 5 天）</text>
+<text x="1180" y="660" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 2 · 04-dangling-pointer</text>
+</svg>

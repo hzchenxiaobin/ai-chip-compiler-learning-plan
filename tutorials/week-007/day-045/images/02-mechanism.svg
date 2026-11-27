@@ -61,7 +61,7 @@
   <text class="t-h" x="408" y="124">matchAndRewrite(outer)</text>
   <text class="t-b" x="408" y="150">① 匹配：顺边看一步</text>
   <text class="code" x="408" y="170" font-size="11">outer.getInput()</text>
-  <text class="code" x="408" y="186" font-size="11">  .getDefiningOp&amp;lt;ReluOp&amp;gt;()</text>
+  <text class="code" x="408" y="186" font-size="11">  .getDefiningOp&lt;ReluOp&gt;()</text>
   <text class="t-s" x="408" y="206">是 mini.relu？→ inner</text>
   <text class="t-s" x="408" y="222">块参数 / 别的算子？→ failure()</text>
   <text class="t-b" x="408" y="250">② 重写：只动边，不动值</text>

@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="780" viewBox="0 0 1000 780">
+  <rect x="0" y="0" width="1000" height="780" fill="#FDFBF4"/>
+  <text x="500" y="34" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="21" fill="#3A322A" text-anchor="middle" font-weight="bold">环位置实验：环长恒 3、位置前移——三组读数怎么变</text>
+  <text x="500" y="58" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#8A8378" text-anchor="middle" font-style="italic">5 节点 relu 链 c0→c1→c2→c3→c4（箭头＝生产→使用）；rewire 把 c_i 的输入改接 %v_{i+2}，环长恒为 3</text>
+  <text x="500" y="80" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">诊断里的环路径按「谁等谁」方向打印（如 c2 等 c4），与图里箭头方向相反——首尾同节点即同一个环</text>
+  <path d="M 36.3 95.5 L 325.9 96.1 L 324.2 665.4 L 36.3 666.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 36.3 95.5 L 325.9 96.1 L 324.2 665.4 L 36.3 666.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 36.5 94.9 L 325.6 97.1 L 323.3 665.0 L 37.4 665.9 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">环从 c2 起（改接 %v4）</text>
+  <path d="M 105.1 144.4 L 253.5 145.4 L 254.1 188.3 L 104.7 189.4 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 105.1 144.4 L 253.5 145.4 L 254.1 188.3 L 104.7 189.4 Z" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 106.3 144.3 L 254.7 146.4 L 253.5 187.5 L 103.9 190.1 Z" fill="none" stroke="#7FA65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="164" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n0</text>
+  <text x="180" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c0</text>
+  <path d="M 180 189 L 180 220" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 176.0 211.0 L 180 220 L 184.0 211.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 103.4 221.9 L 254.7 223.5 L 253.8 265.9 L 104.1 267.7 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 103.4 221.9 L 254.7 223.5 L 253.8 265.9 L 104.1 267.7 Z" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 102.6 222.4 L 255.0 222.8 L 253.9 265.8 L 103.9 268.7 Z" fill="none" stroke="#7FA65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="242" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n1</text>
+  <text x="180" y="258" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c1</text>
+  <path d="M 180 267 L 180 298" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 176.0 289.0 L 180 298 L 184.0 289.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 103.6 300.2 L 254.4 302.1 L 255.0 345.6 L 103.7 345.0 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 103.6 300.2 L 254.4 302.1 L 255.0 345.6 L 103.7 345.0 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 104.5 300.2 L 255.4 302.9 L 254.7 344.6 L 104.3 344.3 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="320" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n2</text>
+  <text x="180" y="336" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c2</text>
+  <path d="M 180 345 L 180 376" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 176.0 367.0 L 180 376 L 184.0 367.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 105.2 379.4 L 256.0 378.4 L 255.5 424.1 L 106.3 422.1 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 105.2 379.4 L 256.0 378.4 L 255.5 424.1 L 106.3 422.1 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 105.6 379.6 L 256.0 379.3 L 255.6 424.0 L 107.4 422.4 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="398" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n3</text>
+  <text x="180" y="414" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c3</text>
+  <path d="M 180 423 L 180 454" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 176.0 445.0 L 180 454 L 184.0 445.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 105.1 457.2 L 256.1 458.1 L 256.2 500.6 L 106.4 500.8 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 105.1 457.2 L 256.1 458.1 L 256.2 500.6 L 106.4 500.8 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 104.6 456.4 L 256.1 457.4 L 255.7 500.8 L 107.1 501.3 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="180" y="476" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n4</text>
+  <text x="180" y="492" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c4</text>
+  <path d="M 255 479 L 291 479 L 291 323 L 259 323" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="8,6"/>
+  <path d="M 268.0 319.0 L 259 323 L 268.0 327.0" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 246.9 388.1 L 333.5 386.4 L 336.5 413.5 L 245.8 412.6 Z" fill="#FDFBF4" stroke="none"/>
+  <path d="M 246.9 388.1 L 333.5 386.4 L 336.5 413.5 L 245.8 412.6 Z" fill="none" stroke="#C96A6A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 247.8 387.9 L 332.4 387.2 L 335.6 413.7 L 246.1 412.5 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="291" y="404.0" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">改接 %v4</text>
+  <text x="180" y="530" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle" font-weight="bold">环路径: relu%n2 -&gt; relu%n4</text>
+  <text x="180" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle">-&gt; relu%n3 -&gt; relu%n2</text>
+  <text x="180" y="575" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="bold">已剥 2（c0、c1）· 卡住 3 · 波数 2</text>
+  <text x="180" y="600" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">环上 3 个：c2、c3、c4</text>
+  <text x="180" y="620" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">下游：无（c4 是链尾）</text>
+  <text x="180" y="645" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle" font-style="italic">基线（无环）：已剥 5 · 5 波</text>
+  <path d="M 343.9 95.5 L 635.4 94.9 L 634.1 665.8 L 346.0 665.0 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 343.9 95.5 L 635.4 94.9 L 634.1 665.8 L 346.0 665.0 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 343.9 95.0 L 634.2 94.7 L 634.3 665.0 L 346.7 664.5 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">环从 c1 起（改接 %v3）</text>
+  <path d="M 415.2 145.7 L 565.8 146.0 L 564.3 190.3 L 415.2 189.7 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 415.2 145.7 L 565.8 146.0 L 564.3 190.3 L 415.2 189.7 Z" fill="none" stroke="#7FA65A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 415.8 146.6 L 565.2 145.8 L 564.8 190.5 L 415.8 189.4 Z" fill="none" stroke="#7FA65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="164" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n0</text>
+  <text x="490" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c0</text>
+  <path d="M 490 189 L 490 220" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 486.0 211.0 L 490 220 L 494.0 211.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 414.5 224.4 L 566.5 224.2 L 565.9 268.1 L 413.4 267.4 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 414.5 224.4 L 566.5 224.2 L 565.9 268.1 L 413.4 267.4 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 413.8 224.8 L 566.3 224.3 L 566.0 268.2 L 414.2 268.3 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="242" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n1</text>
+  <text x="490" y="258" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c1</text>
+  <path d="M 490 267 L 490 298" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 486.0 289.0 L 490 298 L 494.0 289.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 415.6 299.9 L 565.4 302.0 L 566.1 345.0 L 415.4 344.6 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 415.6 299.9 L 565.4 302.0 L 566.1 345.0 L 415.4 344.6 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 415.6 299.1 L 565.8 302.2 L 565.5 344.8 L 416.0 344.5 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="320" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n2</text>
+  <text x="490" y="336" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c2</text>
+  <path d="M 490 345 L 490 376" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 486.0 367.0 L 490 376 L 494.0 367.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 415.4 378.8 L 565.7 377.8 L 565.6 422.6 L 415.3 422.1 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 415.4 378.8 L 565.7 377.8 L 565.6 422.6 L 415.3 422.1 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 415.1 378.3 L 565.3 378.2 L 565.6 423.6 L 415.5 421.5 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="398" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n3</text>
+  <text x="490" y="414" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c3</text>
+  <path d="M 490 423 L 490 454" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 486.0 445.0 L 490 454 L 494.0 445.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 414.1 456.7 L 564.0 456.7 L 565.2 501.4 L 414.2 500.6 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 414.1 456.7 L 564.0 456.7 L 565.2 501.4 L 414.2 500.6 Z" fill="none" stroke="#D08A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 413.3 457.3 L 563.5 457.5 L 564.2 500.4 L 414.0 500.4 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="490" y="476" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n4</text>
+  <text x="490" y="492" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c4</text>
+  <path d="M 565 401 L 601 401 L 601 245 L 569 245" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="8,6"/>
+  <path d="M 578.0 241.0 L 569 245 L 578.0 249.0" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 556.6 308.2 L 643.9 310.2 L 645.2 335.5 L 557.2 334.7 Z" fill="#FDFBF4" stroke="none"/>
+  <path d="M 556.6 308.2 L 643.9 310.2 L 645.2 335.5 L 557.2 334.7 Z" fill="none" stroke="#C96A6A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 557.2 308.4 L 644.6 310.5 L 646.1 335.4 L 556.3 334.0 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="601" y="326.0" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">改接 %v3</text>
+  <text x="490" y="530" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle" font-weight="bold">环路径: relu%n1 -&gt; relu%n3</text>
+  <text x="490" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle">-&gt; relu%n2 -&gt; relu%n1</text>
+  <text x="490" y="575" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="bold">已剥 1（c0）· 卡住 4 · 波数 1</text>
+  <text x="490" y="600" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">环上 3 个：c1、c2、c3</text>
+  <text x="490" y="620" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">下游 1 个：c4（被环堵死）</text>
+  <text x="490" y="645" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle" font-style="italic">基线（无环）：已剥 5 · 5 波</text>
+  <path d="M 656.5 94.0 L 943.5 96.4 L 944.0 663.9 L 655.5 664.6 Z" fill="#FFFFFF" stroke="none"/>
+  <path d="M 656.5 94.0 L 943.5 96.4 L 944.0 663.9 L 655.5 664.6 Z" fill="none" stroke="#5B8BB9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 657.4 93.5 L 944.6 96.0 L 944.2 664.8 L 655.9 665.4 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">环从 c0 起（改接 %v2）</text>
+  <path d="M 724.9 146.1 L 873.5 144.4 L 876.5 189.5 L 723.8 188.6 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 724.9 146.1 L 873.5 144.4 L 876.5 189.5 L 723.8 188.6 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 725.8 145.9 L 872.4 145.2 L 875.6 189.7 L 724.1 188.5 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="164" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n0</text>
+  <text x="800" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c0</text>
+  <path d="M 800 189 L 800 220" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 796.0 211.0 L 800 220 L 804.0 211.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 724.6 222.2 L 873.9 224.2 L 875.2 267.5 L 725.2 266.7 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 724.6 222.2 L 873.9 224.2 L 875.2 267.5 L 725.2 266.7 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 725.2 222.4 L 874.6 224.5 L 876.1 267.4 L 724.3 266.0 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="242" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n1</text>
+  <text x="800" y="258" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c1</text>
+  <path d="M 800 267 L 800 298" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 796.0 289.0 L 800 298 L 804.0 289.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 725.4 299.7 L 874.3 300.2 L 875.8 345.5 L 726.3 343.8 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 725.4 299.7 L 874.3 300.2 L 875.8 345.5 L 726.3 343.8 Z" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 725.3 298.7 L 873.6 300.2 L 874.6 344.9 L 726.6 343.9 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="320" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n2</text>
+  <text x="800" y="336" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c2</text>
+  <path d="M 800 345 L 800 376" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 796.0 367.0 L 800 376 L 804.0 367.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 723.5 379.5 L 873.9 378.9 L 875.5 423.8 L 724.9 423.0 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 723.5 379.5 L 873.9 378.9 L 875.5 423.8 L 724.9 423.0 Z" fill="none" stroke="#D08A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 722.4 379.4 L 873.6 379.6 L 875.7 424.3 L 724.7 422.3 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="398" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n3</text>
+  <text x="800" y="414" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c3</text>
+  <path d="M 800 423 L 800 454" fill="none" stroke="#5B8BB9" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 796.0 445.0 L 800 454 L 804.0 445.0" fill="none" stroke="#5B8BB9" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 724.7 457.1 L 876.2 456.1 L 874.1 499.7 L 723.8 499.6 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 724.7 457.1 L 876.2 456.1 L 874.1 499.7 L 723.8 499.6 Z" fill="none" stroke="#D08A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 723.9 457.1 L 877.3 456.5 L 873.8 499.5 L 724.2 499.3 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="800" y="476" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11" fill="#3A322A" text-anchor="middle" font-weight="bold">relu%n4</text>
+  <text x="800" y="492" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">c4</text>
+  <path d="M 875 323 L 911 323 L 911 167 L 879 167" fill="none" stroke="#C96A6A" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="8,6"/>
+  <path d="M 888.0 163.0 L 879 167 L 888.0 171.0" fill="none" stroke="#C96A6A" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 867.4 229.7 L 954.3 230.2 L 955.8 257.5 L 868.3 255.8 Z" fill="#FDFBF4" stroke="none"/>
+  <path d="M 867.4 229.7 L 954.3 230.2 L 955.8 257.5 L 868.3 255.8 Z" fill="none" stroke="#C96A6A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 867.3 228.7 L 953.6 230.2 L 954.6 256.9 L 868.6 255.9 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="911" y="248.0" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#C96A6A" text-anchor="middle" font-weight="bold">改接 %v2</text>
+  <text x="800" y="530" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle" font-weight="bold">环路径: relu%n0 -&gt; relu%n2</text>
+  <text x="800" y="548" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C96A6A" text-anchor="middle">-&gt; relu%n1 -&gt; relu%n0</text>
+  <text x="800" y="575" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle" font-weight="bold">已剥 0 · 卡住 5 · 波数 0</text>
+  <text x="800" y="600" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">环上 3 个：c0、c1、c2</text>
+  <text x="800" y="620" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle">下游 2 个：c3、c4（堵死）</text>
+  <text x="800" y="645" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#8A8378" text-anchor="middle" font-style="italic">基线（无环）：已剥 5 · 5 波</text>
+  <path d="M 42.0 683.3 L 64.4 683.3 L 63.9 701.3 L 40.7 699.5 Z" fill="#E7F0DC" stroke="none"/>
+  <path d="M 42.0 683.3 L 64.4 683.3 L 63.9 701.3 L 40.7 699.5 Z" fill="none" stroke="#7FA65A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 42.4 682.5 L 63.6 683.9 L 65.1 701.0 L 39.9 700.4 Z" fill="none" stroke="#7FA65A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="72" y="696" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start">已剥＝环上游的安全前缀</text>
+  <path d="M 339.2 684.0 L 360.9 684.9 L 361.1 700.1 L 341.4 699.7 Z" fill="#F6DCDC" stroke="none"/>
+  <path d="M 339.2 684.0 L 360.9 684.9 L 361.1 700.1 L 341.4 699.7 Z" fill="none" stroke="#C96A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 340.3 684.5 L 361.0 685.2 L 361.3 699.9 L 342.6 699.5 Z" fill="none" stroke="#C96A6A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="370" y="696" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start">环上＝去重后 3 个，才是环长</text>
+  <path d="M 641.5 682.8 L 662.7 684.0 L 663.4 699.7 L 641.3 699.0 Z" fill="#F8E7CC" stroke="none"/>
+  <path d="M 641.5 682.8 L 662.7 684.0 L 663.4 699.7 L 641.3 699.0 Z" fill="none" stroke="#D08A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 642.7 682.6 L 662.0 683.6 L 663.7 698.8 L 641.1 698.1 Z" fill="none" stroke="#D08A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="670" y="696" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#3A322A" text-anchor="start">下游＝不在环上，也被堵死</text>
+  <path d="M 60.4 717.1 L 939.9 716.6 L 941.4 768.1 L 60.7 768.6 Z" fill="#DCE9F5" stroke="none"/>
+  <path d="M 60.4 717.1 L 939.9 716.6 L 941.4 768.1 L 60.7 768.6 Z" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 61.2 716.2 L 939.1 717.6 L 942.0 767.6 L 61.3 768.0 Z" fill="none" stroke="#5B8BB9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <text x="500" y="740" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="middle">位置每前移一格：已剥 2→1→0，卡住 3→4→5——多出来的全是下游；环长恒为 3（路径首尾同节点）</text>
+  <text x="500" y="758" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9.5" fill="#8A8378" text-anchor="middle" font-style="italic">读诊断分三个字段：环上（环长）／已剥（安全前缀）／卡住（环＋下游）——别拿卡住数当环长</text>
+</svg>

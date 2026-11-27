@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC',KaiTi,楷体,cursive">
+  <defs>
+    <filter id="wob" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wob2" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="31" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="660" fill="#fffdf5"/>
+
+  <!-- 标题 -->
+  <text x="36" y="48" font-size="24" fill="#1e1e1e" transform="rotate(-0.5 36 48)">同一个 mini.add，三种裁决：classifyShapePair 三分支</text>
+  <path d="M38 60 q 260 8 520 2" stroke="#e8590c" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#wob2)"/>
+
+  <!-- 列标题 -->
+  <text x="40" y="100" font-size="13" fill="#8a8a8a" transform="rotate(-0.4 40 100)">输入：只差 bias 的三组 shape</text>
+  <text x="690" y="100" font-size="13" fill="#8a8a8a" transform="rotate(-0.4 690 100)">三个出口（决定报错措辞）</text>
+
+  <!-- ======== 左列：三组输入 ======== -->
+  <g filter="url(#wob)">
+    <rect x="40" y="116" width="225" height="88" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="56" y="142" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 56 142)">实验 1 bad_bias_shape.mlir</text>
+  <text x="56" y="164" font-size="14" fill="#42566b" transform="rotate(-0.6 56 164)">matmul 结果 : 2×2</text>
+  <text x="56" y="188" font-size="14" fill="#c92a2a" font-weight="bold" transform="rotate(-0.6 56 188)">bias      : 2×3</text>
+
+  <g filter="url(#wob)">
+    <rect x="40" y="224" width="225" height="88" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="56" y="250" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 56 250)">实验 2 broadcast_bias.mlir</text>
+  <text x="56" y="272" font-size="14" fill="#42566b" transform="rotate(-0.6 56 272)">matmul 结果 : 2×2</text>
+  <text x="56" y="296" font-size="14" fill="#b3541e" font-weight="bold" transform="rotate(-0.6 56 296)">bias      : 1×2</text>
+
+  <g filter="url(#wob)">
+    <rect x="40" y="332" width="225" height="88" rx="10" fill="#ffec99" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="56" y="358" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 56 358)">对照 target_graph.mlir</text>
+  <text x="56" y="380" font-size="14" fill="#42566b" transform="rotate(-0.6 56 380)">matmul 结果 : 2×2</text>
+  <text x="56" y="404" font-size="14" fill="#2f9e44" font-weight="bold" transform="rotate(-0.6 56 404)">bias      : 2×2</text>
+
+  <!-- 输入 → 裁判 箭头 -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M268 160 q 24 2 50 0"/>
+    <path d="M306 154 L318 160 L305 167"/>
+    <path d="M268 268 q 24 2 50 0"/>
+    <path d="M306 262 L318 268 L305 275"/>
+    <path d="M268 376 q 24 2 50 0"/>
+    <path d="M306 370 L318 376 L305 383"/>
+  </g>
+
+  <!-- ======== 中间：裁判 ======== -->
+  <g filter="url(#wob)">
+    <rect x="326" y="116" width="310" height="340" rx="14" fill="#a5d8ff" stroke="#1971c2" stroke-width="2.6"/>
+  </g>
+  <text x="346" y="150" font-size="17" fill="#1971c2" font-weight="bold" transform="rotate(-0.6 346 150)">classifyShapePair（Day 40）</text>
+  <text x="346" y="174" font-size="13" fill="#42566b" transform="rotate(-0.6 346 174)">从右往左逐维配对；秩不同缺位当 1</text>
+  <text x="346" y="204" font-size="13.5" fill="#1e1e1e" transform="rotate(-0.6 346 204)">维对相等 → 继续</text>
+  <text x="346" y="230" font-size="13.5" fill="#1e1e1e" transform="rotate(-0.6 346 230)">一方是 1 → 记"广播维"，继续</text>
+  <text x="346" y="256" font-size="13.5" fill="#c92a2a" font-weight="bold" transform="rotate(-0.6 346 256)">双方静态不等且无 1 → Mismatch</text>
+  <text x="346" y="284" font-size="13.5" fill="#1e1e1e" transform="rotate(-0.6 346 284)">循环走完仍无 Mismatch：</text>
+  <text x="362" y="310" font-size="13.5" fill="#b3541e" font-weight="bold" transform="rotate(-0.6 362 310)">见过广播维 → BroadcastOnly</text>
+  <text x="362" y="336" font-size="13.5" fill="#2f9e44" font-weight="bold" transform="rotate(-0.6 362 336)">否则 → Same（放行）</text>
+  <text x="346" y="366" font-size="12.5" fill="#5c5c5c" transform="rotate(-0.6 346 366)">实验 1：维对 (3,2) 不等且无 1</text>
+  <text x="346" y="390" font-size="12.5" fill="#5c5c5c" transform="rotate(-0.6 346 390)">实验 2：维对 (2,2) 相等；(1,2) 含 1</text>
+  <text x="346" y="414" font-size="12.5" fill="#5c5c5c" transform="rotate(-0.6 346 414)">对照：维对 (2,2)(2,2) 全相等</text>
+  <text x="346" y="440" font-size="12.5" fill="#8a8a8a" transform="rotate(-0.6 346 440)">动态维 ? 视为"无法反驳"，保守跳过</text>
+
+  <!-- 裁判 → 出口 箭头 -->
+  <g stroke="#1e1e1e" stroke-width="2.4" fill="none" filter="url(#wob2)">
+    <path d="M640 174 q 20 2 42 0"/>
+    <path d="M670 168 L682 174 L669 181"/>
+    <path d="M640 306 q 20 2 42 0"/>
+    <path d="M670 300 L682 306 L669 313"/>
+    <path d="M640 428 q 20 2 42 0"/>
+    <path d="M670 422 L682 428 L669 435"/>
+  </g>
+
+  <!-- ======== 右列：三个出口 ======== -->
+  <g filter="url(#wob)">
+    <rect x="690" y="116" width="272" height="116" rx="12" fill="#ffc9c9" stroke="#c92a2a" stroke-width="2.4"/>
+  </g>
+  <text x="706" y="144" font-size="15" fill="#c92a2a" font-weight="bold" transform="rotate(-0.6 706 144)">Mismatch：永久拒绝　rc=1</text>
+  <text x="706" y="168" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 168)">报错关键句：</text>
+  <text x="706" y="186" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 186)">…not broadcast-</text>
+  <text x="706" y="204" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 204)">compatible either</text>
+  <text x="706" y="224" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 706 224)">← 实验 1（2×3 撞 2×2）</text>
+
+  <g filter="url(#wob)">
+    <rect x="690" y="248" width="272" height="116" rx="12" fill="#fff3bf" stroke="#e8590c" stroke-width="2.4"/>
+  </g>
+  <text x="706" y="276" font-size="15" fill="#b3541e" font-weight="bold" transform="rotate(-0.6 706 276)">BroadcastOnly：暂不支持　rc=1</text>
+  <text x="706" y="300" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 300)">报错关键句：</text>
+  <text x="706" y="318" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 318)">…would broadcast; broadcasting</text>
+  <text x="706" y="336" font-size="12.5" fill="#42566b" transform="rotate(-0.6 706 336)">is not supported yet (see Day 60)</text>
+  <text x="706" y="356" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 706 356)">← 实验 2（1×2 只差广播）</text>
+
+  <g filter="url(#wob)">
+    <rect x="690" y="380" width="272" height="96" rx="12" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2.4"/>
+  </g>
+  <text x="706" y="408" font-size="15" fill="#2f9e44" font-weight="bold" transform="rotate(-0.6 706 408)">Same：放行　rc=0</text>
+  <text x="706" y="432" font-size="12.5" fill="#2b5a35" transform="rotate(-0.6 706 432)">round-trip 照常完成（5.3 节）</text>
+  <text x="706" y="456" font-size="13" fill="#1e1e1e" transform="rotate(-0.6 706 456)">← 对照（2×2 逐维全等）</text>
+
+  <!-- ======== 底部结论 ======== -->
+  <g filter="url(#wob2)">
+    <rect x="40" y="524" width="920" height="72" rx="12" fill="#ffffff" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="8 6"/>
+  </g>
+  <text x="60" y="552" font-size="14" fill="#1e1e1e" transform="rotate(-0.3 60 552)">两种 rc=1 措辞不同："not broadcast-compatible either"＝怎么对齐都救不了；"would broadcast"＝语义上可行、Day 60 再支持。</text>
+  <text x="60" y="578" font-size="14" fill="#1e1e1e" transform="rotate(-0.3 60 578)">区分"永久不可能"与"暂时做不到"是诊断分水岭；Day 60 把验收放宽为"收 Same＋BroadcastOnly"后，第二个出口也会放行。</text>
+
+  <text x="60" y="634" font-size="13" fill="#8a8a8a" transform="rotate(-0.3 60 634)">框内报错关键句均截取自 5.4 节真实输出；判定规则与 Day 40 lib/ShapeRelation.h 一致。</text>
+</svg>

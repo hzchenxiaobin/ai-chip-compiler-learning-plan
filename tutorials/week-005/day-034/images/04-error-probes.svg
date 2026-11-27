@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">
+<title>两道报错关卡对比：解析器拦截 vs Verifier 拦截</title>
+<rect x="0" y="0" width="1200" height="675" fill="#fbf9f3"/>
+<text x="40" y="52" font-size="26" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">两道报错关卡：同一个 i64，两种报错</text>
+<path d="M 40 60 Q 300 62 560 59 L 562 78 Q 300 82 42 76 Z" fill="#e09b3d" opacity="0.22" stroke="none"/>
+<text x="40" y="82" font-size="13" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">探针 4a 死在关卡①（解析器 · 组装 IR），探针 4b 死在关卡②（op 自己的 Verifier）——两条报错均为本机真实输出</text>
+<text x="40" y="116" font-size="13.5" fill="#a06a20" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">探针 4a · foo_bad_type.mlir</text>
+<path d="M 35.6 128.4 Q 187.5 129.2 339.5 128.6 Q 339.28 230.0 339.7 331.5 Q 187.5 330.8 35.4 331.3 Q 35.84 230.0 35.6 128.4 Z" fill="#dde9f7" stroke="#3b3a36" stroke-width="1.8" stroke-linejoin="round" opacity="1.0"></path>
+<text x="50" y="152" font-size="12.5" fill="#5b8bd0" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">foo_bad_type.mlir</text>
+<text x="50" y="172" font-size="11" fill="#a06a20" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">块参数声明 i32，使用处写 i64</text>
+<text x="50" y="200" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace"><tspan fill="#3b3a36">func.func @main(%arg0: </tspan><tspan fill="#2f5f94">i32</tspan><tspan fill="#3b3a36">) {</tspan></text>
+<text x="50" y="222" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace"><tspan fill="#3b3a36">  %0 = standalone.foo %arg0 : </tspan><tspan fill="#a04a3c">i64</tspan></text>
+<path d="M 211 212 Q 221 213 231 211 L 231 226 Q 221 227 211 226 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="1.2" opacity="0.85"/>
+<text x="50" y="300" font-size="10.5" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">同名的 %arg0 被用在</text>
+<text x="50" y="316" font-size="10.5" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">两种类型上——冲突</text>
+<path d="M 380.6 128.4 Q 515.0 129.2 649.5 128.6 Q 649.28 186.5 649.7 244.5 Q 515.0 243.8 380.4 244.3 Q 380.84 186.5 380.6 128.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="2.2" stroke-linejoin="round" opacity="1.0"></path>
+<text x="396" y="152" font-size="12.5" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">关卡① 解析器 · 组装 IR</text>
+<text x="396" y="178" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif"><tspan fill="#a04a3c">✗ 拦下：同名 %arg0 </tspan></text>
+<text x="396" y="196" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">   i32 / i64 类型对不上</text>
+<text x="396" y="214" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">   IR 组不出来</text>
+<path d="M 680.6 128.4 Q 815.0 129.2 949.5 128.6 Q 949.28 186.5 949.7 244.5 Q 815.0 243.8 680.4 244.3 Q 680.84 186.5 680.6 128.4 Z" fill="#fbf9f3" stroke="#8a8780" stroke-width="1.6" stroke-linejoin="round" opacity="1.0" stroke-dasharray="7,6"></path>
+<text x="696" y="152" font-size="12.5" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">关卡② op 自己的 Verifier</text>
+<text x="696" y="178" font-size="11" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">（虚线＝未到达）</text>
+<text x="696" y="196" font-size="11" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">IR 没组完，轮不到</text>
+<text x="696" y="214" font-size="11" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">Verifier 检查</text>
+<path d="M 980.6 150.4 Q 1072.5 151.2 1164.5 150.6 Q 1164.28 184.0 1164.7 217.5 Q 1072.5 216.8 980.4 217.3 Q 980.84 184.0 980.6 150.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="1.8" stroke-linejoin="round" opacity="1.0"></path>
+<text x="996" y="176" font-size="12.5" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">exit = 1</text>
+<text x="996" y="198" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">报错在解析阶段</text>
+<path d="M 342 186 Q 360.0 188.5 378 186" fill="none" stroke="#3b3a36" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 378 186 Q 369.0 189.5 367.0 186.0" fill="none" stroke="#3b3a36" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 378 186 Q 369.0 182.5 367.0 186.0" fill="none" stroke="#3b3a36" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 652 186 Q 665.0 188.5 678 186" fill="none" stroke="#8a8780" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="6,5"/>
+<path d="M 678 186 Q 669.0 189.5 667.0 186.0" fill="none" stroke="#8a8780" stroke-width="1.62" stroke-linecap="round"/>
+<path d="M 678 186 Q 669.0 182.5 667.0 186.0" fill="none" stroke="#8a8780" stroke-width="1.62" stroke-linecap="round"/>
+<path d="M 952 186 Q 965.0 188.5 978 186" fill="none" stroke="#8a8780" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="6,5"/>
+<path d="M 978 186 Q 969.0 189.5 967.0 186.0" fill="none" stroke="#8a8780" stroke-width="1.62" stroke-linecap="round"/>
+<path d="M 978 186 Q 969.0 182.5 967.0 186.0" fill="none" stroke="#8a8780" stroke-width="1.62" stroke-linecap="round"/>
+<path d="M 515 247 Q 515.0 257.0 515 262" fill="none" stroke="#d97c6b" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 515 262 Q 511.5 253.0 515.0 251.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 515 262 Q 518.5 253.0 515.0 251.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 380.6 264.4 Q 772.5 265.2 1164.5 264.6 Q 1164.28 298.0 1164.7 331.5 Q 772.5 330.8 380.4 331.3 Q 380.84 298.0 380.6 264.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="2.0" stroke-linejoin="round" opacity="1.0"></path>
+<text x="396" y="288" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">foo_bad_type.mlir:3:23: error: use of value '%arg0' expects different type than prior uses: 'i64' vs 'i32'</text>
+<text x="396" y="314" font-size="11" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">特征：不带 op 名 · 指向『值的类型』——发生在组装 IR 时</text>
+<text x="40" y="368" font-size="13.5" fill="#2f5f94" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">探针 4b · foo_bad_verifier.mlir</text>
+<path d="M 35.6 380.4 Q 187.5 381.2 339.5 380.6 Q 339.28 482.0 339.7 583.5 Q 187.5 582.8 35.4 583.3 Q 35.84 482.0 35.6 380.4 Z" fill="#dde9f7" stroke="#3b3a36" stroke-width="1.8" stroke-linejoin="round" opacity="1.0"></path>
+<text x="50" y="404" font-size="12.5" fill="#5b8bd0" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">foo_bad_verifier.mlir</text>
+<text x="50" y="424" font-size="11" fill="#2f5f94" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">块参数本来就是 i64，语法自洽</text>
+<text x="50" y="452" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace"><tspan fill="#3b3a36">func.func @main(%arg0: </tspan><tspan fill="#2f5f94">i64</tspan><tspan fill="#3b3a36">) {</tspan></text>
+<text x="50" y="474" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace"><tspan fill="#3b3a36">  %0 = standalone.foo %arg0 : </tspan><tspan fill="#2f5f94">i64</tspan></text>
+<text x="50" y="552" font-size="10.5" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">类型前后一致，</text>
+<text x="50" y="568" font-size="10.5" fill="#8a8780" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">能通过解析、组出 IR</text>
+<path d="M 380.6 380.4 Q 515.0 381.2 649.5 380.6 Q 649.28 438.5 649.7 496.5 Q 515.0 495.8 380.4 496.3 Q 380.84 438.5 380.6 380.4 Z" fill="#e1eedd" stroke="#6fae74" stroke-width="2.2" stroke-linejoin="round" opacity="1.0"></path>
+<text x="396" y="404" font-size="12.5" fill="#3f6f45" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">关卡① 解析器 · 组装 IR</text>
+<text x="396" y="430" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif"><tspan fill="#3f6f45">✓ 通过：语法自洽，</tspan></text>
+<text x="396" y="448" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">   %arg0 全程 i64</text>
+<text x="396" y="466" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">   IR 组装成功</text>
+<path d="M 680.6 380.4 Q 815.0 381.2 949.5 380.6 Q 949.28 438.5 949.7 496.5 Q 815.0 495.8 680.4 496.3 Q 680.84 438.5 680.6 380.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="2.2" stroke-linejoin="round" opacity="1.0"></path>
+<text x="696" y="404" font-size="12.5" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">关卡② standalone.foo 的 Verifier</text>
+<text x="696" y="430" font-size="11" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">✗ 拦下：operand #0 不是</text>
+<text x="696" y="448" font-size="11" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">   32 位 signless 整数</text>
+<text x="696" y="466" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">约束来自 .td：I32:$input</text>
+<path d="M 980.6 402.4 Q 1072.5 403.2 1164.5 402.6 Q 1164.28 436.0 1164.7 469.5 Q 1072.5 468.8 980.4 469.3 Q 980.84 436.0 980.6 402.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="1.8" stroke-linejoin="round" opacity="1.0"></path>
+<text x="996" y="428" font-size="12.5" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">exit = 1</text>
+<text x="996" y="450" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">报错在验证阶段</text>
+<path d="M 342 438 Q 360.0 440.5 378 438" fill="none" stroke="#3b3a36" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 378 438 Q 369.0 441.5 367.0 438.0" fill="none" stroke="#3b3a36" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 378 438 Q 369.0 434.5 367.0 438.0" fill="none" stroke="#3b3a36" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 652 438 Q 665.0 440.5 678 438" fill="none" stroke="#6fae74" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 678 438 Q 669.0 441.5 667.0 438.0" fill="none" stroke="#6fae74" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 678 438 Q 669.0 434.5 667.0 438.0" fill="none" stroke="#6fae74" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 952 438 Q 965.0 440.5 978 438" fill="none" stroke="#d97c6b" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 978 438 Q 969.0 441.5 967.0 438.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 978 438 Q 969.0 434.5 967.0 438.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 815 499 Q 815.0 509.0 815 514" fill="none" stroke="#d97c6b" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 815 514 Q 811.5 505.0 815.0 503.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 815 514 Q 818.5 505.0 815.0 503.0" fill="none" stroke="#d97c6b" stroke-width="1.9800000000000002" stroke-linecap="round"/>
+<path d="M 380.6 516.4 Q 772.5 517.2 1164.5 516.6 Q 1164.28 550.0 1164.7 583.5 Q 772.5 582.8 380.4 583.3 Q 380.84 550.0 380.6 516.4 Z" fill="#f8e0d8" stroke="#d97c6b" stroke-width="2.0" stroke-linejoin="round" opacity="1.0"></path>
+<text x="396" y="540" font-size="10.5" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Courier New','Nimbus Mono PS',monospace">foo_bad_verifier.mlir:4:8: error: 'standalone.foo' op operand #0 must be 32-bit signless integer, but got 'i64'</text>
+<text x="396" y="566" font-size="11" fill="#a04a3c" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">特征：以『op全名』op 开头 · 指向『第几个操作数』· 文案由 .td 约束自动生成</text>
+<path d="M 35.6 606.4 Q 600.0 607.2 1164.5 606.6 Q 1164.28 632.0 1164.7 657.5 Q 600.0 656.8 35.4 657.3 Q 35.84 632.0 35.6 606.4 Z" fill="#edeae2" stroke="#3b3a36" stroke-width="1.8" stroke-linejoin="round" opacity="1.0"></path>
+<text x="52" y="628" font-size="12" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">判断关卡再动手：不带 op 名、指向『值的类型』→ 解析器关卡（改声明或使用处的类型写法）；</text>
+<text x="52" y="648" font-size="12" fill="#3b3a36" text-anchor="start" opacity="1.0" font-family="'Comic Sans MS','Segoe Print','Kaiti SC','KaiTi','STKaiti','marker felt',sans-serif">以『op全名』op 开头、标注 operand #N → Verifier 关卡（改 .td 的约束或换类型）</text>
+</svg>

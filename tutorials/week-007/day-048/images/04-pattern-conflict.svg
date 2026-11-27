@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="820" viewBox="0 0 1250 820">
+<rect x="0" y="0" width="1250" height="820" fill="#FDFBF4"/>
+<text x="36" y="42" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="20" fill="#3A322A" text-anchor="start" font-weight="bold">Pattern 冲突三局面：同一根 mini.add，fold 与 Pattern 谁能动手</text>
+<text x="36" y="66" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12" fill="#84796a" text-anchor="start">conflict_regimes.mlir 实测（run_all.sh 2/8 节，FileCheck 通过）；驱动先试 fold，再按收益顺序试 Pattern</text>
+<path d="M 40.2 93.2 L 341.1 94.0 L 342.2 258.5 L 41.3 258.3 Z" fill="#ffffff" stroke="none"/>
+<path d="M 40.2 93.2 L 341.1 94.0 L 342.2 258.5 L 41.3 258.3 Z" fill="none" stroke="#5B8BB9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 42.7 95.1 L 339.0 94.8 L 340.7 258.5 L 43.1 256.5 Z" fill="none" stroke="#5B8BB9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="58" y="122" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#5B8BB9" text-anchor="start" font-weight="bold">生产线① fold：常量折叠（Day 47）</text>
+<text x="58" y="146" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="bold">上岗条件（三条全过才动手）：</text>
+<text x="66" y="166" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">① 两个操作数都是常量（属性进门）</text>
+<text x="66" y="185" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">② 结果类型 ＝ 两个操作数类型</text>
+<text x="66" y="204" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">③ 元素个数 ≤ 1024（尺寸护栏）</text>
+<text x="58" y="232" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">动作：编译期把数值直接算出来，</text>
+<text x="58" y="250" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">交回驱动物化成新常量节点</text>
+<path d="M 38.6 282.9 L 337.8 285.0 L 338.3 448.1 L 41.0 449.0 Z" fill="#ffffff" stroke="none"/>
+<path d="M 38.6 282.9 L 337.8 285.0 L 338.3 448.1 L 41.0 449.0 Z" fill="none" stroke="#D08A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 37.7 282.0 L 339.6 283.8 L 339.1 450.4 L 41.4 447.8 Z" fill="none" stroke="#D08A4E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="58" y="312" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#D08A4E" text-anchor="start" font-weight="bold">生产线② SimplifyAddNegZero</text>
+<text x="58" y="330" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#84796a" text-anchor="start">（代数化简·Day 46）</text>
+<text x="58" y="352" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start" font-weight="bold">上岗条件（两条全过才动手）：</text>
+<text x="66" y="372" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">① 某一侧是 splat -0.0 常量</text>
+<text x="66" y="391" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">   （全体元素恰好都是 -0.0）</text>
+<text x="66" y="410" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">② 保留那一侧的类型 ＝ 结果类型</text>
+<text x="58" y="436" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">动作：整批换边——add 的所有</text>
+<text x="58" y="454" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">使用者改指保留的那个值</text>
+<path d="M 38.2 478.8 L 338.4 477.5 L 341.6 567.4 L 38.9 565.3 Z" fill="#ffffff" stroke="none"/>
+<path d="M 38.2 478.8 L 338.4 477.5 L 341.6 567.4 L 38.9 565.3 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 37.1 477.7 L 338.4 475.5 L 339.6 565.6 L 38.0 565.5 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="58" y="502" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">工程红线：收益排序只决定谁先试，</text>
+<text x="58" y="520" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">不豁免谁做数学题——竞争的每条</text>
+<text x="58" y="538" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">规则都必须自己正确。</text>
+<path d="M 379.1 91.7 L 1211.4 93.4 L 1209.6 137.9 L 377.5 136.4 Z" fill="#ffffff" stroke="none"/>
+<path d="M 379.1 91.7 L 1211.4 93.4 L 1209.6 137.9 L 377.5 136.4 Z" fill="none" stroke="#3A322A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="512" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">局面（conflict_regimes.mlir 里的三个 add）</text>
+<text x="735" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#5B8BB9" text-anchor="middle" font-weight="bold">fold</text>
+<text x="905" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#D08A4E" text-anchor="middle" font-weight="bold">Pattern</text>
+<text x="1100" y="120" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="11.5" fill="#3A322A" text-anchor="middle" font-weight="bold">实测结局</text>
+<path d="M 380.9 149.5 L 644.6 148.8 L 646.3 270.5 L 380.3 273.1 Z" fill="#ffffff" stroke="none"/>
+<path d="M 380.9 149.5 L 644.6 148.8 L 646.3 270.5 L 380.3 273.1 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 382.6 151.8 L 642.9 147.0 L 645.2 272.2 L 380.7 274.3 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="398" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">(1) %both = add(5.0s, -0.0s)</text>
+<text x="398" y="200" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">两个 splat 常量相加</text>
+<path d="M 654.7 150.1 L 817.4 149.5 L 814.6 272.8 L 656.8 274.0 Z" fill="#ffffff" stroke="none"/>
+<path d="M 654.7 150.1 L 817.4 149.5 L 814.6 272.8 L 656.8 274.0 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 654.8 147.8 L 815.3 147.0 L 812.1 273.5 L 656.1 271.9 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="671" y="184" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#6FA573" text-anchor="start" font-weight="bold">✓ 两个常量，直接算：</text>
+<text x="671" y="204" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">5.0 + (-0.0) = 5.0</text>
+<path d="M 826.5 150.5 L 985.1 151.7 L 983.0 271.8 L 825.4 271.9 Z" fill="#ffffff" stroke="none"/>
+<path d="M 826.5 150.5 L 985.1 151.7 L 983.0 271.8 L 825.4 271.9 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 825.1 151.9 L 986.9 154.3 L 983.5 270.2 L 824.1 269.5 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="841" y="184" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#6FA573" text-anchor="start" font-weight="bold">✓ 右侧 -0.0 splat，</text>
+<text x="841" y="204" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">换成左侧那个 5.0</text>
+<path d="M 997.4 149.6 L 1203.9 147.6 L 1204.1 274.4 L 995.8 269.9 Z" fill="#DFEEDD" stroke="none"/>
+<path d="M 997.4 149.6 L 1203.9 147.6 L 1204.1 274.4 L 995.8 269.9 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 996.0 151.9 L 1202.9 149.0 L 1204.9 272.1 L 997.8 271.7 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="1013" y="180" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">两条路殊途同归：</text>
+<text x="1013" y="200" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">最终只剩一个 5.0 常量</text>
+<text x="1013" y="220" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">（输掉的常量失去使</text>
+<text x="1013" y="240" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">用者，被当死代码收走）</text>
+<path d="M 382.1 283.0 L 643.7 284.1 L 646.6 407.3 L 382.3 408.4 Z" fill="#ffffff" stroke="none"/>
+<path d="M 382.1 283.0 L 643.7 284.1 L 646.6 407.3 L 382.3 408.4 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 379.9 283.5 L 641.5 285.8 L 644.1 406.2 L 382.9 410.1 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="398" y="315" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">(2) %foldonly =</text>
+<text x="398" y="335" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">add([[1,2],[3,4]], 2.0s)</text>
+<text x="398" y="355" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">非 splat 常量 × splat 常量</text>
+<path d="M 653.1 286.6 L 813.0 284.4 L 816.4 406.8 L 655.9 406.8 Z" fill="#ffffff" stroke="none"/>
+<path d="M 653.1 286.6 L 813.0 284.4 L 816.4 406.8 L 655.9 406.8 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 653.9 288.1 L 812.9 282.8 L 813.8 406.6 L 654.4 405.8 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="671" y="319" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#6FA573" text-anchor="start" font-weight="bold">✓ 逐元素照算不误：</text>
+<text x="671" y="339" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">[[3,4],[5,6]]</text>
+<path d="M 823.5 283.4 L 987.4 284.2 L 987.1 404.7 L 825.2 408.9 Z" fill="#ffffff" stroke="none"/>
+<path d="M 823.5 283.4 L 987.4 284.2 L 987.1 404.7 L 825.2 408.9 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 824.1 281.9 L 988.3 284.4 L 987.2 405.0 L 826.1 410.4 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="841" y="319" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start" font-weight="bold">✗ 两侧都不满足：</text>
+<text x="841" y="339" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">2.0 ≠ -0.0；[[…]]</text>
+<text x="841" y="359" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">不是 splat</text>
+<path d="M 992.7 287.4 L 1205.6 284.4 L 1203.0 405.6 L 992.8 408.4 Z" fill="#ffffff" stroke="none"/>
+<path d="M 992.7 287.4 L 1205.6 284.4 L 1203.0 405.6 L 992.8 408.4 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 991.3 285.3 L 1205.3 285.5 L 1201.3 407.4 L 995.3 409.3 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="1013" y="315" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">只有 fold 能动</text>
+<text x="1013" y="335" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">（没有单一恒等值</text>
+<text x="1013" y="355" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">可匹配，但逐元素</text>
+<text x="1013" y="375" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">计算照样成立）</text>
+<path d="M 377.9 421.3 L 646.8 419.6 L 646.9 541.2 L 377.9 543.7 Z" fill="#ffffff" stroke="none"/>
+<path d="M 377.9 421.3 L 646.8 419.6 L 646.9 541.2 L 377.9 543.7 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 376.6 423.3 L 647.9 419.2 L 647.4 541.4 L 377.0 545.3 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="398" y="450" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">(3) %patonly =</text>
+<text x="398" y="470" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">add(%x, -0.0s)</text>
+<text x="398" y="490" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10.5" fill="#3A322A" text-anchor="start">入口参数 × splat 常量</text>
+<path d="M 656.7 418.5 L 815.6 421.3 L 815.0 543.5 L 657.2 543.2 Z" fill="#ffffff" stroke="none"/>
+<path d="M 656.7 418.5 L 815.6 421.3 L 815.0 543.5 L 657.2 543.2 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 655.0 420.9 L 817.6 420.3 L 816.6 541.3 L 658.7 543.6 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="671" y="454" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start" font-weight="bold">✗ lhs 是入口参数，</text>
+<text x="671" y="474" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">fold 无从下手</text>
+<path d="M 826.9 419.6 L 986.0 421.5 L 986.5 540.8 L 822.9 541.5 Z" fill="#ffffff" stroke="none"/>
+<path d="M 826.9 419.6 L 986.0 421.5 L 986.5 540.8 L 822.9 541.5 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 825.9 422.2 L 983.8 423.3 L 987.7 542.4 L 821.2 543.2 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="841" y="454" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#6FA573" text-anchor="start" font-weight="bold">✓ 右侧 -0.0 splat，</text>
+<text x="841" y="474" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#C4574A" text-anchor="start">把 add 换成 %x</text>
+<path d="M 997.0 421.8 L 1205.9 420.8 L 1206.4 543.9 L 996.7 539.9 Z" fill="#ffffff" stroke="none"/>
+<path d="M 997.0 421.8 L 1205.9 420.8 L 1206.4 543.9 L 996.7 539.9 Z" fill="none" stroke="#3A322A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 994.7 422.0 L 1203.3 421.9 L 1208.1 543.5 L 996.8 538.5 Z" fill="none" stroke="#3A322A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="1013" y="450" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">只有 Pattern 能动</text>
+<text x="1013" y="470" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">（fold 要求两侧都</text>
+<text x="1013" y="490" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">是常量；代数化简只</text>
+<text x="1013" y="510" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">要求某一侧是 -0.0）</text>
+<path d="M 344.4 178.8 Q 496.3 148.5 650.0 120.0" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="none"/><path d="M 639.3 128.1 L 650.0 120.0 L 637.1 116.3" fill="none" stroke="#5B8BB9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 344.8 368.3 Q 581.4 244.9 820.0 122.0" fill="none" stroke="#D08A4E" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="none"/><path d="M 812.1 132.8 L 820.0 122.0 L 806.6 122.2" fill="none" stroke="#D08A4E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.2 587.5 L 1212.1 590.2 L 1210.5 792.3 L 40.6 791.0 Z" fill="#ffffff" stroke="none"/>
+<path d="M 40.2 587.5 L 1212.1 590.2 L 1210.5 792.3 L 40.6 791.0 Z" fill="none" stroke="#D08A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 41.4 586.9 L 1212.3 590.0 L 1212.2 793.2 L 42.6 788.9 Z" fill="none" stroke="#D08A4E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+<text x="62" y="618" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="12.5" fill="#D08A4E" text-anchor="start" font-weight="bold">全部合在一起的真实输出（-canonicalize，FileCheck 断言通过）</text>
+<text x="66" y="648" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">func.func @conflict(%arg0: tensor&lt;2x2xf32&gt;) -&gt; tensor&lt;2x2xf32&gt; {</text>
+<text x="66" y="670" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">  %0 = mini.constant dense&lt;[[8.000000e+00, 9.000000e+00], [1.000000e+01, 1.100000e+01]]&gt; : tensor&lt;2x2xf32&gt;</text>
+<text x="66" y="692" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">  %1 = mini.add %0, %arg0 : tensor&lt;2x2xf32&gt;, tensor&lt;2x2xf32&gt; -&gt; tensor&lt;2x2xf32&gt;</text>
+<text x="66" y="714" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">  return %1 : tensor&lt;2x2xf32&gt;</text>
+<text x="66" y="736" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#3A322A" text-anchor="start">}</text>
+<text x="66" y="726" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#D08A4E" text-anchor="start">↳ 三层 add 级联折叠出 [[8,9],[10,11]]；(3) 的 %patonly 被 Pattern 塌缩成 %arg0</text>
+<text x="66" y="748" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="10" fill="#D08A4E" text-anchor="start">↳ 只剩一个 add：两条生产线各领各的活，谁也不挡谁的路</text>
+<text x="1210" y="796" font-family="'Comic Sans MS','Segoe Print','Bradley Hand','Kaiti SC','KaiTi','楷体',cursive" font-size="9" fill="#84796a" text-anchor="end">图 4／数据与 conflict_regimes.mlir 真实输出一致</text>
+</svg>

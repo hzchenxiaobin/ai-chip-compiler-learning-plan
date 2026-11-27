@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660">
+<rect x="0" y="0" width="1000" height="660" fill="#fdfaf4"/>
+<text x="500" y="44" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="27" fill="#3a4657" text-anchor="middle" font-weight="600">三类所有权失误的发现时机：编译期、有症状、无症状</text>
+<text x="500" y="74" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14.5" fill="#6b7686" text-anchor="middle" font-weight="500">对应第 6 节三个真实复现：同样的失误，越往右越安静、越难抓，修复成本越高</text>
+<path d="M 80.0 122.0 C 333.2 125.0, 713.0 123.8, 924.0 122.0" fill="none" stroke="#6b7686" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 914.5 127.5 C 918.7 125.0, 922.1 123.1, 924.0 122.0" fill="none" stroke="#6b7686" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M 914.5 116.5 C 918.7 119.0, 922.1 120.9, 924.0 122.0" fill="none" stroke="#6b7686" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="110" y="106" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#5b8db8" text-anchor="middle" font-weight="600">编译期</text>
+<text x="500" y="106" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#e0884f" text-anchor="middle" font-weight="600">运行期 · 有症状</text>
+<text x="882" y="106" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="middle" font-weight="600">运行期 · 无症状</text>
+<rect x="46" y="160" width="290" height="380" fill="#e7f0f9" stroke="none" transform="rotate(-0.3 191.0 350.0)"/>
+<g transform="rotate(-0.3 191.0 350.0)">
+<path d="M 46.0 160.0 C 142.7 161.5, 239.3 158.4, 191.0 158.6 S 340.4 160.0, 336.0 160.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 336.0 160.0 C 335.0 286.7, 337.0 413.3, 335.6 350.0 S 336.0 545.7, 336.0 540.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 336.0 540.0 C 239.3 540.0, 142.7 539.9, 191.0 541.4 S 41.6 540.0, 46.0 540.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 46.0 540.0 C 47.4 413.3, 45.2 286.7, 45.3 350.0 S 46.0 154.3, 46.0 160.0" fill="none" stroke="#5b8db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="191" y="188" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#5b8db8" text-anchor="middle" font-weight="600">错误一：漏写 std::move</text>
+<text x="66" y="214" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">Buffer b = a;</text>
+<text x="66" y="234" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">把“想交接”写成了拷贝</text>
+<text x="66" y="264" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">现象：</text>
+<text x="66" y="286" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">error: use of deleted function</text>
+<text x="66" y="304" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">'Buffer::Buffer(const Buffer&amp;)'</text>
+<text x="66" y="326" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">exit 1 · 程序一行都没跑</text>
+<text x="66" y="356" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">拦截者：编译器（= delete）</text>
+<text x="66" y="376" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">拷贝请求在编译期就被拒绝，</text>
+<text x="66" y="394" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">note 行直接指出删除处</text>
+<text x="66" y="424" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">日志特征：</text>
+<text x="66" y="444" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">没有日志——只有一行编译错误</text>
+<text x="66" y="508" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#5b8db8" text-anchor="start" font-weight="600">发现成本 ★（最低）</text>
+<path d="M 191.0 128.0 C 187.0 136.4, 188.6 149.0, 191.0 156.0" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 186.5 148.2 C 188.5 151.7, 190.1 154.4, 191.0 156.0" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 195.5 148.2 C 193.5 151.7, 191.9 154.4, 191.0 156.0" fill="none" stroke="#5b8db8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="355" y="160" width="290" height="380" fill="#fbeadd" stroke="none" transform="rotate(-0.3 500.0 350.0)"/>
+<g transform="rotate(-0.3 500.0 350.0)">
+<path d="M 355.0 160.0 C 451.7 158.5, 548.3 159.5, 500.0 160.1 S 649.4 160.0, 645.0 160.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 645.0 160.0 C 644.9 286.7, 646.5 413.3, 643.5 350.0 S 645.0 545.7, 645.0 540.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 645.0 540.0 C 548.3 538.5, 451.7 539.1, 500.0 539.5 S 350.6 540.0, 355.0 540.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 355.0 540.0 C 353.6 413.3, 355.8 286.7, 354.2 350.0 S 355.0 154.3, 355.0 160.0" fill="none" stroke="#e0884f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="500" y="188" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#e0884f" text-anchor="middle" font-weight="600">错误二：忘清空原对象</text>
+<text x="375" y="214" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">漏写 other.data_ = nullptr;</text>
+<text x="375" y="234" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">移动构造抄了指针没置空</text>
+<text x="375" y="264" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">现象：</text>
+<text x="375" y="286" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] "a" 归还 16 字节</text>
+<text x="375" y="304" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">[dtor] ""  归还 16 字节</text>
+<text x="375" y="326" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">free(): double free detected</text>
+<text x="375" y="344" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">in tcache 2 · Aborted</text>
+<text x="375" y="366" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">exit 134 ＝ 128 ＋ SIGABRT</text>
+<text x="375" y="394" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">拦截者：glibc 堆检查</text>
+<text x="375" y="414" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">第二次归还同一块内存时</text>
+<text x="375" y="432" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">当场崩溃</text>
+<text x="375" y="462" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">日志特征：</text>
+<text x="375" y="482" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">出生 1 次、归还 2 次——</text>
+<text x="375" y="500" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">账对不上，收尾时崩</text>
+<text x="375" y="522" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#e0884f" text-anchor="start" font-weight="600">发现成本 ★★</text>
+<path d="M 500.0 128.0 C 496.0 136.4, 497.6 149.0, 500.0 156.0" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 495.5 148.2 C 497.5 151.7, 499.1 154.4, 500.0 156.0" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 504.5 148.2 C 502.5 151.7, 500.9 154.4, 500.0 156.0" fill="none" stroke="#e0884f" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="664" y="160" width="290" height="380" fill="#f7e7e7" stroke="none" transform="rotate(-0.3 809.0 350.0)"/>
+<g transform="rotate(-0.3 809.0 350.0)">
+<path d="M 664.0 160.0 C 760.7 159.5, 857.3 159.7, 809.0 158.9 S 958.4 160.0, 954.0 160.0" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.0 160.0 C 954.6 286.7, 953.0 413.3, 954.1 350.0 S 954.0 545.7, 954.0 540.0" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 954.0 540.0 C 857.3 540.0, 760.7 541.0, 809.0 539.7 S 659.6 540.0, 664.0 540.0" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 664.0 540.0 C 662.4 413.3, 664.1 286.7, 662.5 350.0 S 664.0 154.3, 664.0 160.0" fill="none" stroke="#cc6b6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="809" y="188" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="14" fill="#cc6b6b" text-anchor="middle" font-weight="600">错误三：忘归还旧资源</text>
+<text x="684" y="214" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#3a4657" text-anchor="start" font-weight="500">漏写 delete[] data_;</text>
+<text x="684" y="234" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">旧指针被覆盖，内存失踪</text>
+<text x="684" y="264" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">现象：</text>
+<text x="684" y="290" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12.5" fill="#cc6b6b" text-anchor="start" font-weight="600">没有现象！</text>
+<text x="684" y="312" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">程序正常结束 exit 0，</text>
+<text x="684" y="330" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">alive 归零、日志无怨言——</text>
+<text x="684" y="348" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">32 字节无声泄漏</text>
+<text x="684" y="378" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">拦截者：要靠工具（ASan）</text>
+<text x="684" y="400" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">LeakSanitizer: detected leaks</text>
+<text x="684" y="418" font-family="'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, monospace" font-size="10.5" fill="#cc6b6b" text-anchor="start" font-weight="500">Direct leak of 32 byte(s)</text>
+<text x="684" y="438" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">（-fsanitize=address 编译，</text>
+<text x="684" y="456" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">本机需 LD_PRELOAD libasan）</text>
+<text x="684" y="486" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#3a4657" text-anchor="start" font-weight="600">日志特征：</text>
+<text x="684" y="506" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11" fill="#6b7686" text-anchor="start" font-weight="500">肉眼看不出——必须请工具</text>
+<text x="684" y="524" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="11.5" fill="#cc6b6b" text-anchor="start" font-weight="600">发现成本 ★★★（最高）</text>
+<path d="M 809.0 128.0 C 805.0 136.4, 806.6 149.0, 809.0 156.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 804.5 148.2 C 806.5 151.7, 808.1 154.4, 809.0 156.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/><path d="M 813.5 148.2 C 811.5 151.7, 809.9 154.4, 809.0 156.0" fill="none" stroke="#cc6b6b" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="150" y="570" width="700" height="46" fill="#e9f4ea" stroke="none" transform="rotate(-0.3 500.0 593.0)"/>
+<g transform="rotate(-0.3 500.0 593.0)">
+<path d="M 150.0 570.0 C 383.3 570.4, 616.7 570.6, 500.0 570.5 S 860.5 570.0, 850.0 570.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 850.0 570.0 C 848.8 585.3, 849.8 600.7, 850.3 593.0 S 850.0 616.7, 850.0 616.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 850.0 616.0 C 616.7 615.2, 383.3 616.8, 500.0 617.0 S 139.5 616.0, 150.0 616.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 150.0 616.0 C 149.4 600.7, 151.5 585.3, 150.2 593.0 S 150.0 569.3, 150.0 570.0" fill="none" stroke="#6aa673" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="500" y="588" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="13" fill="#3a4657" text-anchor="middle" font-weight="600">同样的所有权失误：一个被编译器拦下、一个当场崩溃、一个沉默泄漏</text>
+<text x="500" y="606" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#6aa673" text-anchor="middle" font-weight="600">发现成本天差地别——把能拦的都拦在编译期（= delete），其余交给测试与 Sanitizer</text>
+<text x="980" y="646" font-family="Xiaolai, 'Kaiti SC', KaiTi, STKaiti, 'Comic Sans MS', 'Segoe Print', cursive" font-size="12" fill="#b9b0a0" text-anchor="end" font-weight="500">AI 编译器 168 天 · Day 3 · 05-error-detection</text>
+</svg>

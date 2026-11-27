@@ -425,3 +425,5 @@ MLIR 的 `add_mlir_dialect_library` 沿用 LLVM 构建系统的规矩：目录�
 今天的问题：trait 只会"字面相等"，误拒合法的动态细化 IR，报错也说不清病因。机制：`classifyShapePair` 用右对齐、缺位补 1、`?` 保守跳过的四问流程，把两个 shape 的关系分成 Same（放行）、BroadcastOnly（拒绝但给出路）、Mismatch（永久拒绝）三类。实践：摘 trait、开 `hasVerifier`、写两条 `verify()`，13 个测试全部真实通过，回归无伤。验证：三个"故意改坏"实验（秩初始化、对齐方向、CMake 登记）都真实复现并归位。
 
 明天（Day 41）：构造第一张端到端 mini IR——今天的 `pipeline_regression.mlir` 已经把 `MatMul -> Add -> Relu` 的骨架完整跑通，明天我们让它成为正式示例，并打通 pass 注册与命令行加载自定义 dialect 的最后一环。
+
+<!-- tutorial-review: v1 -->

@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能对任意一行 IR 指出它的方言名（`arith.constant` 的 `arith`、`!llvm.ptr` 的 `!llvm`、`#arith.fastmath<none>` 的 `#arith`），说清 **Dialect（方言）** 作为 op／Type／Attribute 户口本的三件事；能用 generic form 数出"一个模块里住了几个方言"；能独立跑通 `linalg.matmul` 的**五级台阶**（图/张量层 → 缓冲区层 → 循环层 → CFG 层 → LLVM 层），边跑边说出**谁退场、谁进场、类型怎么搬**；能回答本日灵魂问题——**为什么从 mini 到 LLVM 要一层层降，而不是一步降到机器码**；能画（并解释）本项目 `mini → loop → LLVM` 的分层塔和每层职责；能认出 7 类真实报错各违反了哪一级的"合法性门"。
 > **预计时间**：学习 25 分钟 ＋ 实践 45 分钟
 > **前置准备**：Day 29 的 MLIR 环境（`mlir-opt-18`、`mlir-cpu-runner-18` 可用）；Day 30 的 Operation 五件套（今天给"名字"补上方言姓）；Day 31 的 Region／Block（`linalg.matmul` 的 generic form 里藏着今天最漂亮的回访）；Day 32 的 Type／Attribute（`!`／`#` 两个前缀今天认祖归宗）。
-> **今日产出**：`code/` 下 4 个文件：`matmul_run.mlir`（主例子：一条 op 走完五级台阶）、`matmul_run_k4.mlir`（5.4 对照：K=3→4）、`matmul_nofill.mlir`（翻车探针：未初始化 outs）、`probe.sh`（一键重放 3 组实验＋7 个探针），以及它们在本机的真实运行记录；外加三张图，其中图 2 底部的**项目 Dialect 分层塔**就是今天计划要求的交付物。
+> **今日产出**：`code/` 下 4 个文件：`matmul_run.mlir`（主例子：一条 op 走完五级台阶）、`matmul_run_k4.mlir`（5.4 对照：K=3→4）、`matmul_nofill.mlir`（翻车探针：未初始化 outs）、`probe.sh`（一键重放 3 组实验＋7 个探针），以及它们在本机的真实运行记录；外加四张图，其中图 2 底部的**项目 Dialect 分层塔**就是今天计划要求的交付物。
 
 ## 1. 今天解决什么问题？
 
@@ -97,7 +97,7 @@ Day 32 结尾埋了一串伏笔：探针⑦里没户口的 `!foo.bar`、反复�
 ```text
 tutorials/week-005/day-033/
 ├── README.md                 ← 本教程
-├── images/                   ← 三张图
+├── images/                   ← 四张图
 └── code/
     ├── matmul_run.mlir       ← ① 主例子：linalg.matmul 替身 mini.matmul（K=3）
     ├── matmul_run_k4.mlir    ← ② 5.4 对照：K=3→4
@@ -164,6 +164,10 @@ $ mlir-opt-18 matmul_run.mlir --mlir-print-op-generic | grep -o '"[a-z][a-z0-9_]
 
 **(a)** Day 31 的 Region 回来了：`linalg.matmul` 持有一个 Region，里面是**标量体**——块参数 `%arg0, %arg1, %arg2`（两个乘数一个累加值）、`arith.mulf`＋`arith.addf`、`linalg.yield` 带回结果。"一条 op ＝ 一次矩阵乘"不是口号，是**一个 Region ＋ 访存映射**：文件最上面的 `#map = affine_map<(d0, d1, d2) -> (d0, d2)>` 三张映射就是 A[i,k]、B[k,j]、C[i,j] 的下标公式——`affine` 方言藏在属性里，数 op 数不出它。**(b)** 8 条 `arith` op 里有两条（mulf／addf）住在 linalg 的 Region 里——**op 数按 generic form 清点才作数**，pretty 打印会骗你。
 
+![pretty 与 generic 打印对照图：左上面板 pretty 打印三行缩影（linalg.fill／linalg.matmul／tensor.extract 各一行，Region 与 #map 属性被折叠看不见）；右上面板 generic form 户口正本（linalg.matmul 完整 op：operandSegmentSizes 属性、Region 内 ^bb0 块参数与 arith.mulf／arith.addf／linalg.yield 标量体、末行 linalg.memoized_indexing_maps 属性引用三张 map）；左下面板三张 affine_map（#map→A[i,k]、#map1→B[k,j]、#map2→C[i,j]）与实验② s2 的 memref.load／memref.store 下标逐一印证、5.4 K=3→4 自动传播说明；右下面板按 generic form 清点的五方言户口（8 arith＋1 builtin＋2 func＋4 linalg＋2 tensor＝17 条 op）；底部一句话：pretty 是门面、generic 是户口正本](images/04-generic-form.svg)
+
+**图 3**：左右对照读。**左上**是 pretty 打印——`linalg.matmul` 只剩一行，Region 和 `#map` 属性都被打印格式折叠了（看不见 ≠ 不存在）；**右上**是同一条 op 的 generic form 正本——Region（`^bb0` 块＋mulf／addf／yield 标量体）和 `linalg.memoized_indexing_maps` 属性全部现形，mulf／addf 就是 (b) 里说的 arith 暗住户；**左下**把三张 affine_map（A[i,k]／B[k,j]／C[i,j] 的下标公式）与实验② s2 的 load／store 下标一一对上号；**右下**是五方言户口清点（8＋1＋2＋4＋2＝17）。这张图就是"op 数按 generic form 清点才作数"的完整答案。
+
 **实验② 五级台阶：逐级 dump，谁退场谁进场**
 
 按 3.4 的路线，把主例子一级一级往下送（probe.sh 会重建全部文件到 `/tmp/day033/`）：
@@ -229,7 +233,7 @@ C ＝ A×B ＝ [[58, 64], [139, 154]]，取 C[1][0] ＝ 4·7＋5·9＋6·11 ＝ 
 
 ![实验对照图：面板A五级台阶实测表（行数16→97、op数17→68、方言退场进场）、面板B循环层s2代码缩影（三重循环与i/j/k上界标注）、面板C三组JIT对照（主例子139、改K=4得270且k上界%c3→%c4自动传播、未清零outs三连跑-2147483648/139/139翻车现场）、面板D六张罚单清单（未注册方言/静默无效/欠条/ memref·func·scf not found）、底部三级合法性门（解析层认注册方言→转换层清单闭合→执行层只认llvm）](images/03-example.svg)
 
-**图 3**：四个面板收拢全部真实结果——A 是实验②的统计表：每级一行，谁退场谁进场一目了然；B 是 s2 的代码缩影，标注了 i/j/k 上界分别来自 M/N/K；C 是三组 JIT 对照：主例子 139、5.4 改 K 得 270、未清零 outs 的三连跑翻车现场；D 是六张罚单，对应第 6 节的错误 2～7。底部一句话收束：越接近执行，户口本越挑剔——解析层认注册方言、转换层要清单闭合、执行层只认 llvm。
+**图 4**：四个面板收拢全部真实结果——A 是实验②的统计表：每级一行，谁退场谁进场一目了然；B 是 s2 的代码缩影，标注了 i/j/k 上界分别来自 M/N/K；C 是三组 JIT 对照：主例子 139、5.4 改 K 得 270、未清零 outs 的三连跑翻车现场；D 是六张罚单，对应第 6 节的错误 2～7。底部一句话收束：越接近执行，户口本越挑剔——解析层认注册方言、转换层要清单闭合、执行层只认 llvm。
 
 ### 5.4 修改一个参数再观察：改 K=3→4
 
@@ -321,3 +325,5 @@ $ mlir-cpu-runner-18 /tmp/day033/k4.llvm.mlir --entry-point-result=i32
 ## 9. 一句话总结与明天预告
 
 今天的问题是"Day 32 那串前缀背后的户口本是什么、以及为什么从 mini 到机器码要一层层下台阶"；机制上要记住的是：**Dialect 是 op／Type／Attribute 的命名空间和注册表，一个模块可以混住任意多个方言；渐进式 Lowering 每级只拆一个抽象——ConversionTarget 是每级的验收单，TypeConverter 把类型一起搬走，搬不动就打 unrealized cast 欠条**；实践上用一条 `linalg.matmul` 走了五级台阶：17 条 op 的图降到 68 条 op 的 LLVM 方言，JIT 打印 139、改 K 得 270、忘清零 outs 现场翻车，七类报错全是"合法性门"在不同层的执法记录。明天（Day 34）跑通 Toy 或 Standalone 示例：今天替身出演的 `linalg` 旁边，站着一个**真实 Dialect 的完整工程**——Operation 定义、TableGen 生成代码、Pass 注册、配套 `toy-opt` 工具一应俱全，正好把今天"户口本"里的每一页翻给你看。
+
+<!-- tutorial-review: v1 -->

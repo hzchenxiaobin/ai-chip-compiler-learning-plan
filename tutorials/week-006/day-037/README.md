@@ -308,6 +308,10 @@ undefined reference to `mini::MatmulOp::verifyInvariantsImpl()'
 
 ## 6. 常见错误与排查
 
+![第 37 天排错分诊图：四类报错按口径分诊到四个层级——解析期 rc=74 的 Dialect not found 对应关卡 0 注册表，修法是换用 mini-opt；解析期 rc=1 的 op unknown 对应装配链断裂，修法是补 Ops.h 与 addOperations 两处装配点；验证期 rc=1 的 must be…but got 对应 ODS 类型约束把关，修法是改 .td 约束或改 IR 类型；链接期 undefined reference 对应 .inc 宏开关没打开，修法是把 GET_OP_CLASSES 放回 include 之前](images/04-error-triage.svg)
+
+**图 4**：遇到报错先认口径，再定层级。四行对应第 6 节的错误 2（`Dialect not found`→注册表）、错误 3（`op unknown`→装配链）、5.3 节负例（`must be … but got`→类型约束）和错误 1（链接期 `undefined reference`→宏开关），每行三步：① 报错长什么样 → ② 哪一层出问题 → ③ 怎么修。自上而下层层收窄：前两类是“工具与装配”问题，后两类是“约束与代码生成”问题——与今日验收第 4 条的四个口径一一对应。错误 4（内维不匹配放行）不是报错，不在图上，它正是第三行注脚“内维／Shape 检查是 Day 39 Verifier 的活”要说的事。
+
 **错误 1：链接期 `undefined reference to mini::MatmulOp::parse/print/verifyInvariantsImpl`**
 - 现象：`cmake --build` 到链接 `mini-opt` 时报上节那三条 undefined reference（5.4 节末尾是真实报错）。
 - 原因：`MiniDialect.cpp` 里漏了 `#define GET_OP_CLASSES`（或写在了 `#include` 之后）。`.inc` 的大块内容被 `#ifdef` 包着，宏没定义就整块跳过，编译期不报错、链接期才暴露。
@@ -348,7 +352,7 @@ undefined reference to `mini::MatmulOp::verifyInvariantsImpl()'
 - [ ] 我能独立运行 `bash code/run_all.sh`，指出 6 步各自的退出码（0、0、0、三个 1、0、74）并解释每个数字为什么是它；
 - [ ] 我能修改 `.td` 的秩约束（2→3）并**预测**哪个文件会从放行变成拒绝、报错文案会怎么变（5.4 节对照实验）；
 - [ ] 我能根据报错口径定位错误层级：`Dialect not found`→注册表问题（用错工具）、`op unknown`→装配链问题、`must be … but got`→类型约束问题、链接期 `undefined reference`→`.inc` 宏开关问题；
-- [ ] 我保存了 mini 工程（12 个文件）、5 个 `.mlir` 测试、`run_all.sh` 和 3 张图，并能解释内维探针今天为什么放行、Day 39 要补什么。
+- [ ] 我保存了 mini 工程（12 个文件）、5 个 `.mlir` 测试、`run_all.sh` 和 4 张图，并能解释内维探针今天为什么放行、Day 39 要补什么。
 
 ## 9. 一句话总结与明天预告
 
@@ -359,3 +363,5 @@ undefined reference to `mini::MatmulOp::verifyInvariantsImpl()'
 
 
 
+
+<!-- tutorial-review: v1 -->

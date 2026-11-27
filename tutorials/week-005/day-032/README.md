@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能对任意一行 IR（比如 `%bias = arith.constant dense<[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]> : tensor<2x3xf32>`）一口气指出哪些词是 **Type**、哪些词是 **Attribute**、各自长在谁身上；能逐字符拆解 `tensor<2x3xf32>`，说清静态维、动态维 `?`、混合维和 0 维张量各自意味着什么、`?` 的数值靠什么在运行期拿到；能回答本日灵魂问题——**为什么常量值住在 Attribute 里而不是 Type 里**，并用 `--canonicalize` 折叠实验给出证据；能说出 `inferred shape of elements literal ([2]) does not match type ([2, 3])` 等 8 类真实报错各违反了哪条契约；并用 JIT 跑出真实的 13 和 15。
 > **预计时间**：学习 25 分钟 ＋ 实践 45 分钟
 > **前置准备**：Day 29 的 MLIR 环境（`mlir-opt-18`、`mlir-cpu-runner-18` 可用）；Day 30 的 Operation 五件套（名字·操作数·属性·Region·结果——今天填满其中"属性"和"类型"两块）；Day 31 的块参数与 `scf.for`（可执行示例里会再次用到）；Day 4 的 TensorDesc（Shape／Dtype 三件套）。
-> **今日产出**：`code/` 下 7 个文件：`bias_scale.mlir`（张量版主示例）、`bias_scale_run.mlir`／`bias_scale_run7.mlir`（可执行版与 5.4 对照版）、`type_gallery.mlir`（10 个合法类型的画廊）、`dyn_dims.mlir`（动态维）、`fold_demo.mlir`（折叠实验）、`probe.sh`（一键重放 6 组实验＋8 个错误探针），以及它们在本机的真实运行记录；外加三张 Type／Attribute 机制图。
+> **今日产出**：`code/` 下 7 个文件：`bias_scale.mlir`（张量版主示例）、`bias_scale_run.mlir`／`bias_scale_run7.mlir`（可执行版与 5.4 对照版）、`type_gallery.mlir`（10 个合法类型的画廊）、`dyn_dims.mlir`（动态维）、`fold_demo.mlir`（折叠实验）、`probe.sh`（一键重放 6 组实验＋8 个错误探针），以及它们在本机的真实运行记录；外加三张 Type／Attribute 机制图、一张标量循环数据流图和一张 Lowering 管线图。
 
 ## 1. 今天解决什么问题？
 
@@ -96,7 +96,7 @@ Day 30 和 Day 31 各埋了一处伏笔。Day 30 的解剖图里，Operation 的
 ```text
 tutorials/week-005/day-032/
 ├── README.md                 ← 本教程
-├── images/                   ← 三张图
+├── images/                   ← 五张图
 └── code/
     ├── bias_scale.mlir       ← ① 主示例：张量版（读／拆用）
     ├── bias_scale_run.mlir   ← ② 可执行版：标量循环展开（JIT 出 13）
@@ -153,6 +153,10 @@ func.func @main() -> i32 {
 ```
 
 这个文件是前两天概念的总装配：`scf.for` 的 `iter_args` 是块参数（Day 31）；循环边界是 `index`（Day 31 的翻车点）；`tensor.extract` 吃张量吐标量、`tensor.insert` 反过来——**张量 op 的语义＝对每个元素做标量运算**，这正是 Day 88 要让编译器自动生成的循环的样子。
+
+![标量循环数据流图：左侧输入区两张 2×3 网格（x 全 0.5、bias 1.0～6.0，各自 [1][2] 格高亮）加标量 scale 2.0，中间双层 scf.for 框（外层 i 走行 0..1、内层 j 走列 0..2，循环体六行：两次 tensor.extract、arith.addf、arith.mulf、tensor.insert）与 iter_args 块参数说明，右侧出口链 tensor.extract [1][2] 取出 13.0、arith.fptosi 向零截断、return，mlir-cpu-runner-18 打印 13；底部类型变换链五站：tensor<2x3xf32> 经 extract 变 f32、addf/mulf 保持 f32、insert 变回 tensor<2x3xf32>、再 extract 变 f32、fptosi 变 i32](images/04-scalar-loop-dataflow.svg)
+
+**图 3**：从左往右三段读。左段是**输入**：`%x`（splat 0.5）和 `%bias`（1.0～6.0）两张 2×3 网格，高亮格就是最终要取的 [1][2] 位置；`%scale` 是 f32 标量常量。中段是**双层循环**：外层 `%i` 走行（0..1）、内层 `%j` 走列（0..2），循环体六行——`extract` 两次各拿出一个 `f32` 标量、`addf`／`mulf` 做标量算术、`insert` 把结果放回张量的同一位置；`iter_args(%acc = %acc_i)` 是块参数：每圈 `scf.yield` 交回 insert 出来的**新张量**，函数式更新，不改原地。右段是**出口**：循环结束后取 [1][2] 得 13.0，`arith.fptosi` 向零截断成 i32 的 13。底部把整条链的类型变换排成五站：**类型切换只发生在 extract（出）、insert（进）、fptosi（换种类）这些显式 op 上**，循环体内清一色 f32——这就是"没有隐式转换"在数据流上的样子。
 
 ### 5.3 运行与观察：六个实验（全部本机真实输出）
 
@@ -272,9 +276,13 @@ module {
 
 三个观察：**(a)** **类型被 Pass 改写了**——`tensor<2x3xf32>` 全部变成 `memref<2x3xf32>`，常量属性升级成 `memref.global` 全局量；这是"换类型"而非"改数据"，每一步都有 Verifier 重新验契约；**(b)** `tensor.extract` → `memref.load`、`tensor.insert` → `memref.store`，张量世界退役，缓冲区世界上场（Day 57 的预告）；**(c)** 标量 `arith.addf : f32` 原样通过——**one-shot-bufferize 只改写与 tensor 有关的 op**，这也是张量版 `bias_scale.mlir` 卡住的原因：`arith.addf` 的张量形态没有转换规则。最后 JIT 打印 **13**：x[1][2]=0.5，bias[1][2]=6.0，(0.5+6.0)×2.0=13.0，`fptosi` 向零截断得 13。
 
+![实验⑥ Lowering 管线图：左侧从 bias_scale_run.mlir（tensor/scf/arith 世界）出发，八个 Pass 竖向依次排列——--one-shot-bufferize 琥珀高亮（tensor→memref、extract→load、insert→store、常量→memref.global）、--convert-scf-to-cf（scf.for→基本块＋cf.cond_br/cf.br）、--convert-cf-to-llvm、--convert-func-to-llvm（func.func→llvm.func，带来 @malloc 声明）、--convert-arith-to-llvm（addf→llvm.fadd 等）、--convert-index-to-llvm（index→i64）、--finalize-memref-to-llvm（memref→!llvm.struct 五元组＋getelementptr）、--canonicalize，产出 /tmp/day032_run.llvm.mlir；右侧四张卡：输入 tensor/scf 世界 IR 摘录、缓冲区后 memref 世界 IR 摘录、八 Pass 后 LLVM dialect 真实摘录（llvm.getelementptr/llvm.load/llvm.fadd/llvm.fmul/llvm.store/llvm.fptosi）、memref 五元组 !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)> 逐字段拆解（分配指针、对齐指针、偏移 0、形状 [2,3]、跨度 [3,1] 行主序）；底部 mlir-cpu-runner-18 命令与打印 13](images/05-lowering-pipeline.svg)
+
+**图 4**：把实验⑥那条两步命令拆成逐级台阶。左列从上到下八个 Pass 依次进场：琥珀高亮的 `--one-shot-bufferize` 就是上面"中间产物"的制造者；其后 `--convert-scf-to-cf` 把双层 `scf.for` 拆成基本块和分支，`--convert-index-to-llvm` 把 `index` 落成 `i64`（循环计数、下标全换），`--finalize-memref-to-llvm` 把 memref 落成五元组 `!llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)>`——分配指针、对齐指针、偏移、形状 [2,3]、跨度 [3,1]。右列三张 IR 快照都是本机真实输出摘录，对照着看：**同一个程序，三种世界（tensor／memref／LLVM），每换一层世界都是 Pass 在改类型**——5.4 节"改类型必须全链路对齐"的工程版。
+
 ![实验对照图：面板A实验② generic form 三区域标注（圆括号操作数／尖括号属性字典／冒号后类型签名）、面板B实验⑤ canonicalize 折叠前后 IR 对照（9 条折成 1 条 constant 6.0）、面板C实验⑥与 5.4 的 JIT 对照（bias 6.0 打印 13、改 7.0 打印 15、改类型 2x3→2x4 当场报错）、面板D八个错误探针对应的八条契约清单](images/03-example.svg)
 
-**图 3**：四个面板收拢全部真实结果——A 是实验②的三区域标注：属性字典里没有任何"值"的影子，值与类型写在别处，**分界线肉眼可见**；B 是实验⑤的折叠：9 条进、1 条出，右边绿框里那条 `6.000000e+00` 就是属性读出来算出来的；C 是实验⑥和 5.4 的 JIT 对照：改属性里一个数 13→15，改类型当场被解析层拦截；D 是八个探针对应的八条契约（第 6 节逐个拆）。
+**图 5**：四个面板收拢全部真实结果——A 是实验②的三区域标注：属性字典里没有任何"值"的影子，值与类型写在别处，**分界线肉眼可见**；B 是实验⑤的折叠：9 条进、1 条出，右边绿框里那条 `6.000000e+00` 就是属性读出来算出来的；C 是实验⑥和 5.4 的 JIT 对照：改属性里一个数 13→15，改类型当场被解析层拦截；D 是八个探针对应的八条契约（第 6 节逐个拆）。
 
 ### 5.4 修改一个参数再观察：改数据 vs 改类型
 
@@ -364,8 +372,10 @@ dense 字面量的形状必须与类型一致——解析层当场拦截，连�
 - [ ] 我能用自己的话解释"为什么常量值不是 Type"，并指着实验⑤的输出说出折叠发生在哪一层（读 value 属性—编译期计算—物化新属性）；
 - [ ] 我能独立运行 `bash code/probe.sh`，指出实验⑥中间产物里哪些类型被 `--one-shot-bufferize` 从 tensor 改写成了 memref、`tensor.extract`／`tensor.insert` 变成了什么；
 - [ ] 我能逐字符拆解 `tensor<2x3xf32>`，说出 `tensor<2x?xf32>` 与 `tensor<?x?xf32>` 的差别，以及动态维的数值在运行期靠什么拿到；
-- [ ] 我能说出 8 个真实报错各违反哪条契约（dense 形状一致／标量配标量／属性类型==结果类型／一值一类型／形状即类型／动态维不能 dense／类型要有方言户口／索引个数=秩），并保存了 probe.sh 的运行记录、自制示例表和三张图。
+- [ ] 我能说出 8 个真实报错各违反哪条契约（dense 形状一致／标量配标量／属性类型==结果类型／一值一类型／形状即类型／动态维不能 dense／类型要有方言户口／索引个数=秩），并保存了 probe.sh 的运行记录、自制示例表和五张图。
 
 ## 9. 一句话总结与明天预告
 
 今天的问题是"Day 30 类型巡游欠下的账：`tensor<2x3xf32>` 和 `<{value = …}>` 到底是什么"；机制上要记住的是：**Type 是长在值身上的种类标签（三处出现、全局一份、不可变），Attribute 是挂在 op 身上的铭牌（一串字典、可被 Pass 读出来计算、自带类型且必须与结果类型相等）；常量值住在属性里，因为种类有限而数值无限，且只有属性能参与"读数—算数—挂新铭牌"的编译期计算**；实践上用 `bias_scale` 走了"读→拆→验→跑"的完整闭环：generic form 里三区域各归各位、10 个合法类型入画廊、8 个探针守住契约、JIT 打印 13、改一个属性数字打印 15、改一个类型维度当场被拦。明天（Day 33）Dialect 与渐进式 Lowering：探针⑦里没户口的 `!foo.bar`、今天反复出场的 `#arith.fastmath<none>`、还有 `arith.`／`tensor.` 这些名字前缀，都指向同一个词——**Dialect，Type／Attribute／Operation 的户口本**；为什么从 `mini` 到 `loop` 再到 `LLVM` 要一层层换抽象而不一步到位，答案就藏在今天的 uniquing 和属性家族里。
+
+<!-- tutorial-review: v1 -->

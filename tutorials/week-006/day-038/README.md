@@ -268,6 +268,10 @@ rc=1
 **错误 4：报错 `custom op 'mini.add' invalid kind of type specified` 看不懂**
 - 现象：用无秩张量 `tensor<*xf32>` 做加法，报错信息很短、不带我们写的 summary、位置指在类型上，且**没有**验证期错误那条 `note: see current operation` 附注。
 - 原因：这是**解析期**的报错，不是验证期的。看生成的解析代码（构建目录里的 `MiniOps.cpp.inc`）：assemblyFormat 里每个 `type(...)` 槽位的存储类型都是 `RankedTensorType`，解析器先把读到的类型做 `dyn_cast<RankedTensorType>`——无秩张量（UnrankedTensorType）连这一步都过不去，于是用 MLIR 的通用模板报"invalid kind of type specified"。对比实验（本机实测）：`tensor<2x2xf64>` **能**通过解析槽位（它是有秩张量，只是 dtype 不对），留到验证期才被 `Mini_F32Tensor` 拒绝，报错带我们的 summary 文本——两种报错长相完全不同，根源就在这一层。
+
+![mini-opt 拦截时机：五条负例与 f64 探针在解析期、验证期的落点与关键规则](images/04-parse-vs-verify.svg)
+
+**图 4**：上排流水线把 5.3 节的五条负例钉到各自被拦的阶段——C/D 卡在解析期的类型槽与 dense 核对（短报错、无 note），A/B/E 走到验证期的 trait 与类型约束（报错带 note 与 summary 文本）；中间一行是错误 4 的 f64 探针路线（过解析、验证期被拒）；底部规则解释了为什么"解析期错误一出现，shape 错误根本不会被报告"——即使是写在它前面的函数也一样。
 - 定位：把 `*` 换成具体形状重跑；或改用 `tensor<?xf32>`（动态维度但仍**有秩**，Day 61 专门讨论）。想亲眼看"拦截时机"的差别，可以把无秩错误和 shape 错误写进同一个 `.mlir`：解析期错误一出现，后面的 shape 错误根本不会被报告（本机已实测）。
 - 修复：给 mini 的算子一律使用有秩张量（`Mini_F32Tensor` 已经表达了这条规矩）。
 
@@ -292,3 +296,5 @@ rc=1
 ## 9. 一句话总结与明天预告
 
 今天用三个 ODS 定义回答了三个问题：逐元素算子用 `SameOperandsAndResultType` 把"类型完全一致"变成机器可检查的规则；`Pure` 为后面所有优化发放"可搬动"许可；常量数据走属性而非操作数，`AllTypesMatch` 让类型只写一遍。全程在本机 MLIR 18.1.8 上构建并运行，一条正例 round-trip 通过、五类非法 IR 被拦、Day 37 的 matmul 回归无恙。同时今天的探针也暴露了 ODS 的边界：内维不匹配的 matmul 依旧放行，bias 想要 broadcast 也只能等第 60 天。明天（Day 39）实现 MatMul Verifier：把"ODS 管不了的检查"接过来，写出带好诊断信息的手写 `verify()`——今天所有"报错时机"的观察，都会在明天变成分工依据。
+
+<!-- tutorial-review: v1 -->

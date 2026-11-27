@@ -322,3 +322,5 @@ $B --pass-pipeline='builtin.module(func.func(canonicalize{max-num-rewrites=1}))'
 复盘周把三种机制放在同一张实验台上拷问：**职责上**，Shape 推导补信息不动图、Fold 只算值不碰图、RewritePattern 认形状改结构，三者失败语义一致（交回驱动、不中断编译），挂载位置的不同就是职责的不同；**协作上**，`combo.mlir` 用 8 → 6 → 4 → 3 的隔离矩阵证明优化机会互相创造——fold 造出 1.0 乘一才有得匹配，乘一塌缩后双 Relu 结构才出现，关掉任何一环就停在半路；**边界上**，`combo_shape.mlir` 用 9 → 6 卡住 vs 9 → 4 放行证明"迭代到不动点 ≠ 最简"——图会变的靠回表和轮次，信息不齐的只能换机制先补类型。全部结论都有真实命令和逐字节 diff 沉淀在 `run_all.sh` 里，复盘的产出是可重放的证据，不是记忆。
 
 明天进入第 8 周（算子融合）：定义 `mini.fused_add_relu` 和 `mini.fused_matmul_bias_relu`。今天的接力链是"多个算子被逐个消去"，明天要问相反的问题——**能不能把多个算子合并成一个**，让 `Add + Relu` 压根不产生中间结果。今天的 Pattern 机制（认形状、改结构、经 Rewriter）就是融合 Pattern 的直接底座，区别只在重写的方向：消减靠"替换成已有值"，融合靠"生成新算子"。
+
+<!-- tutorial-review: v1 -->

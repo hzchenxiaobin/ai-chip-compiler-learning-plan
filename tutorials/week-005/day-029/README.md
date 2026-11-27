@@ -98,7 +98,7 @@ cmake --build . --target mlir-opt mlir-cpu-runner FileCheck   # 只编需要的�
 ```text
 tutorials/week-005/day-029/
 ├── README.md            ← 本教程
-├── images/              ← 三张图
+├── images/              ← 四张图
 └── code/
     ├── env_check.sh     ← ④ 环境记录：逐项检查工具与版本＋冒烟测试
     ├── checkin.mlir     ← ① 主示例（含 FileCheck 考卷注释）
@@ -201,6 +201,10 @@ $ bash code/env_check.sh
 
 **图 3**：左 panel 是输入的 8 条 op，三个琥珀圈标出冗余（注意圈旁边标注的"Day 23 代数化简""Day 24 常量计算"——这两个名字来自你的第一阶段）；中间是 canonicalize 后的 2 条 op 和 FileCheck 判卷要点；右边是 JIT 的两条命令、终端的 `16`，以及 5.4 节的两个对照实验结果。一张图收拢今天全部真实输出。
 
+![lowering 前后对照：左边 run.mlir 用 func 和 arith 方言、直接喂 runner 报 Dialect func not found；中间 mlir-opt-18 的 lowering 箭头（降低抽象层级）；右边 run.llvm.mlir 本机真实内容，llvm.func、llvm.call、llvm.mlir.constant、llvm.add，琥珀圈标出 lower 时 2×3 折成 constant 6、没人用的死常量 %0～%3 留在 IR 里；底部两条命令与终端打印 16](images/04-lowering.svg)
+
+**图 4**：把 ③ 的两步拆开看。左边是 `run.mlir` 原文（func＋arith 方言，直接喂 runner 就是第 6 节的错误 1）；右边是 `run.llvm.mlir` 的本机真实内容——`func.func` 变 `llvm.func`、`func.call` 变 `llvm.call`、`arith.addi` 变 `llvm.add`；琥珀圈标出 lower 顺带做的折叠：`x+0`、`×1` 消失，`2×3` 折成 `constant 6`，没人用的 `%0～%3` 死常量留在 IR 里——5.4 节实验 3 顺带观察到的正是这件事。
+
 ### 5.4 修改一个参数再观察
 
 **实验 1：换输入，验证它真的在"算"**。把 `run.mlir` 里 `%x = arith.constant 10 : i32` 的 `10` 改成 `42`，重跑 ③ 的两条命令（本机真实执行）：
@@ -281,3 +285,5 @@ canonicalize 一步到位后，`--cse` 无事可做。对比第一阶段：同�
 ## 9. 一句话总结与明天预告
 
 今天的问题是"第二阶段开工前，工作台必须先能用"；机制上要记住的是 `mlir-opt` 的四站流水线、工具各认各的方言注册表、以及"所有工具同一 LLVM 版本"这条环境铁律；实践上装好了 18.1.8 全家桶，用 `checkin.mlir` 跑通了 canonicalize（8 条 op → 2 条 op）、FileCheck 判卷和 JIT（终端打印 `16`）的完整闭环，并用 `env_check.sh` 把环境固化成可复查的记录；验证方式就是那三个真实的绿色结果和 42→48 的对照——**你第一天写下的规则，今天在工业级基础设施上原样复现了**。明天（Day 30）我们把这 2 条 op 拆开看：Operation、Operand、Result、SSA Value 和类型系统——`%arg0`、`%c6_i32` 这些名字背后的精确含义。
+
+<!-- tutorial-review: v1 -->

@@ -286,6 +286,10 @@ module {
 
 **图 3**：三种顺序、两种命运。为什么 (a) 和 (c) 里 add 消不掉？matmul 的结果类型是 `?x2`，`-canonicalize` 跑到 add 时，类型护栏发现 lhs 是 `?x2`、结果是 `2x2`——两个不同的类型，撤退。(b) 里 `-mini-infer-shape` 先把 `?x2` 细化成 `2x2`，护栏两侧一致，add 消失。(c) 的教训最值钱：先跑的 canonicalize 被护栏拦下后，后面单独一个 Pass 做完 shape 推导**不会回头再跑一遍 canonicalize**——每条 Pass 独立地跑一遍，优化机会就永久错过了。这正是 Day 48（组合运行优化 Pass / 迭代到不动点）要解决的问题。回归用例 `pipeline_bias_nonzero.mlir` 同时确认：bias 是 `[[-1,-2],[-3,-4]]` 时，同样的命令下 add 原样保留——代数化简只对恒等运算动手（FileCheck 通过，rc=0）。
 
+![对照图：pipeline_bias_nonzero.mlir 的输入骨架与 -mini-infer-shape -canonicalize 实测输出逐行对照——add 因 bias 非零原样保留，但常量被搬到 matmul 之前、SSA 名全员重编号、dense 数值改印科学计数法；下排三张机制账单分别解释常量搬家（驱动装表时 OperationFolder 的登记动作，不是 Pattern 干的）、改名（打印器按顺序现编 SSA 名）、换装（科学计数法与 return 简写，纯 round-trip 也会发生）——三处都不改语义](images/04-output-reformat.svg)
+
+**图 4**：负例"原样保留"的可验证口径是**算子一个不少**，不是字节不变。左输入右输出逐行对照：bias 常量被搬到 matmul 之前、`%bias/%m/%r2` 重编号成 `%0/%1/%3`、`dense<[[-1.0, ...]]>` 印成科学计数法——下排三张账单说明这三处"化妆"都不改语义：常量搬家是驱动装填工作表时 OperationFolder 的登记动作（本机实测：没有任何 Pattern 点火的用例常量照样前移），改名与换装是打印器行为，纯 round-trip 也会发生。真正动语义的只有两处：`?x2` 细化成 `2x2`（Pass 的活）、双 relu 塌成单 relu（Pattern 的活）。所以判负例守没守住，用数算子（FileCheck / `grep -c mini.add`），不要逐字节 diff。
+
 ### 5.4 对照实验：亲手弄坏两处，看负例怎么守住
 
 **实验 A：删掉类型护栏。** 把 `x.getType() != add.getRes().getType()` 两处检查删掉重新构建，跑同一个 `type_guard_negative.mlir`（`run_all.sh` 第 6 步真实输出）：
@@ -452,3 +456,5 @@ module {
 今天给 mini 方言写下了第二、三条 RewritePattern：**问题**是图里"加零、乘一"的算子白占节点和带宽，但计划原文的 `Add(x, 0) → x` 在 IEEE 754 上根本不是恒等式（`x = -0.0` 时符号会翻，`1/x` 从 `-inf` 变 `+inf`）；**机制**是三连问＋一道护栏——常量匹配（`getDefiningOp<ConstantOp>`）、属性读取（`isSplat()`＋`isNegZero()`/`isExactlyValue(1.0)`）、类型护栏（`?x3` 换不动 `2x3`），全过才 `replaceAllUsesWith`＋`eraseOp`，安全版本因此定为 `Add(x, -0.0)` 和 `Mul(x, 1.0)`，`Mul(x, 0) → 0` 被数值与收益前提双重否决；**实践**只动了三处接缝（两个开关＋一个新 .cpp），mini-opt 一行不改；**验证**是 8 个正负例探针＋2 个主线用例 FileCheck 全绿＋两个"弄坏它"的对照实验（删护栏 rc=1、`==` 比较负例失守）＋上游 `arith` 同款取舍的佐证，外加最有工程价值的观察：`-mini-infer-shape` 与 `-canonicalize` 的顺序直接决定优化成败。
 
 明天（Day 47）做常量折叠：今天的 `both_const` 练习里两个操作数都是常量时，我们只是"选中 lhs"完事；明天把结果**真的算出来**——`Folder` 与 `Canonicalization` 的关系、常量物化（凭空造新常量的合法场景）的限制、以及"过大 Tensor 不许在编译期展开"的开销边界。挂钩、判定器骨架全部复用，新东西只有一个"算"字。
+
+<!-- tutorial-review: v1 -->

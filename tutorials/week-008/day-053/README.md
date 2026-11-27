@@ -626,3 +626,5 @@ linalg 对照 rc=0，结果见 linalg_fused.out
 ## 9. 一句话总结与明天预告
 
 今天把第 51/52 天的融合机制推广到了最终项目图 `MatMul → Add(bias) (→ Relu)`：三个新问题全部来自「matmul 不再逐元素」——bias 的形状用三分类说清（今天只放 Same，`[N]` 等第 60 天），结果类型从乘积上取（有 Verifier 兜底），多使用者的 keep 代价从一次加法放大成一整次矩阵乘（默认仍拒绝）。实践上新增了 `mini.fused_matmul_bias`、共享规则头 `MiniRules.h` 和 `mini-fuse-bias` 工具，10 个 Python 测试＋11 组 MLIR 实验＋上游对照全部真实跑通；`%s` 共用的那张「半融合」图（`relu(fused_matmul_bias)`）是今天故意留下的接口。明天（第 54 天）就接这条线：把它继续融掉的两条路线——两阶段（先两算子、再吸收 Relu 的第二个 Pattern）与直接三算子——放进同一个管道，看 Pattern 优先级和重复匹配如何决定最终形态，做到「不依赖偶然执行顺序」。
+
+<!-- tutorial-review: v1 -->

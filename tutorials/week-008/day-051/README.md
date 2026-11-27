@@ -92,7 +92,7 @@
 ```text
 tutorials/week-008/day-051/
 ├── README.md                    ← 本教程
-├── images/                      ← 4 张手绘信息图（SVG）
+├── images/                      ← 6 张手绘信息图（SVG）
 └── code/
     ├── mini_fuse.py             ← 热身：迷你图 IR + Rewriter + 融合 Pattern（180 行）
     ├── test_fusion.py           ← 5 个基础测试
@@ -351,6 +351,10 @@ $ echo $?
 
 **实验 D——擦除顺序颠倒**（`--broken=erase-order`，作用于 `add_relu.mlir`）更阴险：先 `eraseOp(add)` 再 `replaceAllUsesWith(...)`。真实运行结果：**输出看起来正确、`exit=0`**。但这只是侥幸——Add 被销毁时 Relu 的操作数已经悬空，后续擦除 Relu 时对 use 计数的修改写进了已释放的内存，是未定义行为（UB）。同一份代码换个输入、换个构建（比如打开断言的调试构建）就可能当场崩溃。所以不能拿「跑通了」当正确性证据；Python 版的 `Rewriter.erase` 把这个检查做成显式异常（见 §5.1 的测试输出），就是为了把 UB 变成确定性报错。
 
+![实验 D 擦除顺序颠倒的四步 UB 时间线：擦 Add 时 %t 仍被 Relu 使用、Add 销毁后 Relu 操作数悬空、擦 Relu 时减一写进已释放内存、表面输出正常](images/05-erase-order-ub.svg)
+
+**图 5**：把实验 D 的「表面正常」拆成四步看。① `eraseOp(add)` 执行时 `%t` 还被 Relu 使用着，擦除的前置条件被违反；② Add 连同 `%t` 的存储一起销毁，Relu 的操作数变成指向已释放内存的悬空边；③ 再擦 Relu 时，对 `%t` use 计数的「减一」写进已释放的内存——这就是那次静默的 use-after-free；④ 输出与正确版本逐字相同、`exit=0`，只是侥幸。底部绿条是正确顺序，对照图 4 小抄的第 3、4 条。
+
 **生产级对照**：上游 MLIR 自带同思想的元素级融合。用 `arith.addf`（加）和 `arith.maximumf`（即 max(x,0)，relu 的等价写法）搭一条链，先转成 `linalg.generic`，再融合：
 
 ```bash
@@ -370,6 +374,10 @@ $ echo $?
 ```
 
 两个独立的 `linalg.generic`（各自一次遍历）被合并成了一个，循环体里先 `addf` 再 `maximumf`——和我们手写的 `mini.fused_add_relu` 是同一个思想：生产者-消费者链合并成一次遍历，中间张量不再物化。输入文件 `inputs/add_relu_linalg.mlir` 的内容就是 `%t = arith.addf %a, %b` 与 `%r = arith.maximumf %t, %zero` 两行加上返回。
+
+![linalg 元素级融合前后对照：融合前两个 linalg.generic 各自遍历一次、中间张量 %0 落盘再读出；融合后一个 linalg.generic 一次遍历、块内标量不落盘](images/06-linalg-fusion.svg)
+
+**图 6**：把上面真实输出的前后对照画出来。左边两个 `linalg.generic` 各扫一遍整块张量，中间结果 `%0` 写回内存、再被第二个循环读出；右边合并成一个循环体，`addf` 的结果 `%2` 是块内标量、只活在循环体里，标量常量 `%cst` 在区域外定义、块内直接引用——与手写 `mini.fused_add_relu` 是同一思想。
 
 ## 6. 常见错误与排查
 
@@ -428,3 +436,5 @@ func.return %r2
 ## 9. 一句话总结与明天预告
 
 今天我们把「把两个算子合成一个」从一个纸面想法落成了可运行的机制：从消费者 Relu 出发回溯匹配 `Add → Relu` 链，用单使用者检查守住中间结果的独占性，再按「创建、替换、擦除」的固定顺序完成整块替换；两个故意写错的版本分别给出了「侥幸通过但已 UB」与「打印时段错误」的真实对照，Python 版的数值验证则确认了语义不变。至此融合的**机制**已经清楚，但它还只覆盖了最干净的情形：当中间结果被多个下游使用时，「删除生产者」就不再合法——是拒绝融合、保留中间节点，还是复制计算？这正是第 52 天「融合的多使用者限制」要解决的问题。
+
+<!-- tutorial-review: v1 -->

@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能钉死 Reshape 链合并的**唯一判据**——元素数量守恒 `prod(in_shape) == prod(out_shape)`（C 序下 reshape 只是「给线性排列的元素重新画分隔线」，合并 = 直接画最后一次的分隔线，中间形状 `s1` 从判据里完全消失，也没有昨天排列组合那样的方向陷阱）；能实现**两个 RewritePattern**（恒等消除 `Reshape(x, shape(x)) → x`——**不需要**唯一使用者检查，因为被删除的只是 op 自身、它的结果被整体替换走；链合并 `Reshape(Reshape(x, s1), s2) → Reshape(x, s2)`——中间值唯一使用者才允许删，`func.return` 也算使用者）；能说清**被替换的值与被删除的值**在合法性上的区别（昨天预告的「微妙」就藏在这里）；并能在本机 LLVM 18.1.8 上复现一组真实对照——**`--canonicalize` 原样保留 `tensor.reshape` 链，却会把 `tensor.collapse_shape`／`tensor.expand_shape` 链组合成单 op、把互逆对消除成 `return %arg0`**——结构化信息（reassociation）决定 stock 管道里有没有这条规则。
 > **预计时间**：学习 40 分钟＋实践 45 分钟
 > **前置准备**：第 65 天的两个 Pattern 骨架（链匹配 → 唯一使用者检查 → 替换删除 → PassManager 不动点迭代）与 `use_count`/`replace_all_uses` 工具今天全部复用；第 52 天「融合的多使用者限制」的结论继续上岗；第 64 天「视图 vs 物理搬运」的区分今天第二次兑现（reshape 合并省的主要是节点，不是搬运）。工具：Python 3.10+ 与 numpy（本机 3.11.4 / 1.26.4）、`mlir-opt`（本机 Ubuntu LLVM 18.1.8，`/usr/lib/llvm-18/bin/mlir-opt`）。不需要 NPU。
-> **今日产出**：两个 RewritePattern（`eliminate_identity_reshape` + `merge_consecutive_reshape`，`code/reshape_merge_lab.py`）、三关 Verifier 与 numel 反例、多使用者／被 return／混 order 三类反例、独立验收测试（`code/test_reshape_merge.py`）、12 场景判定表＋300 组随机链压力对拍、可复跑的 MLIR IR 文件（`reshape_chain.mlir` 与 `reassociative_chain.mlir`，实测 canonicalize 的 5 项裁决）、`outputs/` 全部真实输出，以及 4 张示意图。
+> **今日产出**：两个 RewritePattern（`eliminate_identity_reshape` + `merge_consecutive_reshape`，`code/reshape_merge_lab.py`）、三关 Verifier 与 numel 反例、多使用者／被 return／混 order 三类反例、独立验收测试（`code/test_reshape_merge.py`）、12 场景判定表＋300 组随机链压力对拍、可复跑的 MLIR IR 文件（`reshape_chain.mlir` 与 `reassociative_chain.mlir`，实测 canonicalize 的 5 项裁决）、`outputs/` 全部真实输出，以及 5 张示意图。
 
 ## 1. 今天解决什么问题？
 
@@ -137,7 +137,7 @@ B(2,3,4) = arange(24)（行主序线性排列就是 0..23）
 ```text
 tutorials/week-010/day-066/
 ├── README.md
-├── images/                        # 4 张示意图（本文图 1–4）
+├── images/                        # 5 张示意图（本文图 1–5）
 └── code/
     ├── reshape_merge_lab.py       # 主实验：numel 守恒 + 两个 Pattern + 激进版 + MLIR 对表（22 项检查）
     ├── test_reshape_merge.py      # 独立验收测试（A–G 七段 30 个测试点）
@@ -382,6 +382,12 @@ S11/S12 两张特殊图补上了判定表的边界：**链被多使用者切成�
 
 5a 是今天最值得咀嚼的一行输出：保守版说「多使用者，拒绝」；激进版说「两条路都直连，中间值就没人要了，删」——**同一个图，两种策略的 op 数是 3 和 2**，中间隔着的正是「删除才有条件」这半句话的两种实现选择。5c 则给出激进版的诚实边界：被 return 的 `%t` 是图输出，必须物化保留，改写不省拷贝，只省路径。
 
+混 order 终审的三组数字为什么长这样——把 (6,4) 的格子摊开、从「读法」上看，如图 5：
+
+![Order 陷阱图解：C∘F 链的读序现场与两个候选的对照](images/05-order-trap.svg)
+
+**图 5**：左图是 (6,4) 格子现场——C 序第一跳把 0..23 按行摆入（线性顺序不变），F 序第二跳按列读出，红字标注读出顺序：先走完第 1 列 0→4→8→12→16→20、再第 2 列 1→5→…，得到链的值 `0,4,8,12,16,20,1,5`；右图是两个候选的读法对照——单个 C 序 reshape 按行读 B（0,1,2,3…），单个 F 序 reshape 以 i 维最快直接读 B（0,12,4,16…，与第二跳按列读 (6,4) 的方式不同），两种读法都给不出链的排列，所以两个 False；底部钉死结论——混 order 链不满足「s1 从判据消失」的合并前提，P2 要求两跳都是 C 序（场景 G 拒绝且值不变），而同形状恒等与 order 无关（测试 B3）。
+
 ### 5.4 修改一个参数再观察
 
 **对照实验：把链尾形状从 `(24,)` 改成 `(2,3,4)`——只动一个数字，看命运从「合并成 1 个」翻到「整体消除」。**
@@ -455,10 +461,12 @@ EOF
 - [ ] 我能解释 order 在合并里的角色：C/F 各自合法（E3 只查认不认），但 P2 要求两跳同为 C——`C∘F` 不等于任何单个 reshape（numpy 实测 `0,4,8,12,16,20,1,5` 的现场）；
 - [ ] 我能复述 MLIR 侧的实测事实及其含义：`tensor.reshape` 链 `--canonicalize` 原样保留（stock 无此规则），而 collapse/expand 连链折叠成 `[[0, 1, 2]]`、互逆对消除为 `return %arg0`、非互逆保留——结构化信息决定 stock 里有没有规则，mini 的 numel 判据反而更宽；
 - [ ] 我能独立运行 `bash code/run_all.sh` 复现全部结果（22/22 + 30/30 + 静态 IR 实测），并定位今天列出的四类错误（漏使用者检查、P1 多余约束、激进版漏删除条件、混 order）各自的证据；
-- [ ] 我保存了两个 RewritePattern 与激进版（`code/reshape_merge_lab.py`）、30 项验收测试（`code/test_reshape_merge.py`）、两份静态 IR 文件、全部真实输出（`code/outputs/`）和 4 张示意图。
+- [ ] 我保存了两个 RewritePattern 与激进版（`code/reshape_merge_lab.py`）、30 项验收测试（`code/test_reshape_merge.py`）、两份静态 IR 文件、全部真实输出（`code/outputs/`）和 5 张示意图。
 
 ## 9. 一句话总结与明天预告
 
 今天的问题从「元素数量明明守恒的 reshape 链，stock 管道却原样保留」开始（实测：`tensor.reshape` 链 `--canonicalize` 原样保留，而带 reassociation 的结构化 reshape 却能折叠、互逆对直接消除——结构化信息决定 stock 里有没有规则），答案是把 reshape 链还原成**线性顺序上的分隔线游戏**：判据只有一个数（numel 守恒，三关 Verifier 的 E2），合并产物里中间形状 `s1` 完全消失（没有昨天的方向陷阱），链尾形状一刀决定最终 op 数（0 或 1，判定表 12/12、随机 300/300）。实践侧交付了两个 RewritePattern 和激进版对照，边界纪律是「被替换的值随便多少人用、被删除的值必须唯一使用者（含 `func.return`）」——激进版把这半句话推到「改写永远合法、删除才有条件」，实测多使用者图 3 op → 2。物理代价的诚实结论：连续输入全视图、非连续输入至多第一跳拷贝一次，合并不省搬运，省的是节点、调度和给后续 Pattern 让路。
 
 明天（Day 67）讲 **Cast 消除**：只消除输入输出类型完全一致的 Cast——今天的 P1（恒等消除、不需要唯一使用者检查）就是它的直接原型；而「可能改变数值的合并」（精度扩展/缩减链）则要像今天的混 order 一样，先划清不许动的边界再动手。
+
+<!-- tutorial-review: v1 -->

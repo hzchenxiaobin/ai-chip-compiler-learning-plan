@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能把第 10 周六天（Day 64–69：Transpose 语义、转置消除、Reshape 合并、Cast 消除、Layout 传播、组合测试）收拢成一句话——**图结构相同不代表内存语义相同**——并用机器可检的形式证明它：同一个 `state_hash`（结构账本）的图，在「视图世界」（框架前端，transpose/reshape 是 0 字节的记账戏法）和「物理世界」（降级后端，每个算子都真搬字节）跑出**两种内存轨迹**（同一条 4-op 链实测：48B/1 次分配 vs 144B/3 次分配，输出值逐位相等）。然后整理出 **7 个「看似能消除但实际不能消除」的反例**（计划要求 ≥5）：精度 Cast 往返（f32→f16→f32 实测 6/6 元素变值）、双层同目标 Reshape（Day 69 真实 bug 复现：透传错版被 Verifier 拦截）、Copy 消除（消除后下游原地写污染输入，写集合从 buf1 变 buf0）、无使用者的 Store（naive DCE 误删、带副作用模型的 DCE 保留）、恒等排列的物理转置（值上照抄、内存上是从 strided 到连续的物化点，双消费者下删掉它 traffic 48B→96B 翻倍）、多使用者传播（转置一个没少、逐元素计算翻倍）、非逐元素传播（`T(reduce(x,axis=0))` 推过去 shape 从 (3,1) 变 (1,2)，轴必须跟着 perm 换）。每个反例都配「图结构视角为什么诱人 → 内存/数值语义为什么不行 → 守卫怎么写」三段，再用 5 个 MLIR 探针对照 stock 编译器的答案（truncf/extf 不折叠、memref.copy 不删、死 addf 删 / memref.store 留、恒等排列 linalg.transpose 不删、reshape 链 stock 不并）。
 > **预计时间**：学习 40 分钟＋实践 45 分钟
 > **前置准备**：本周六天的内容今天只取不改：Day 64 的转置三态（维度排列 / 视图 / 物理移动）、Day 65 的 Permutation 合并律 `r[i]=p1[p2[i]]`、Day 66 的 Reshape 合并（numel 守恒 + 只并一层）与透传判据（目标 == 输入 shape）、Day 67 的无操作 Cast 限定（src==dst）、Day 68 的传播双门 C1（逐元素白名单）C2（唯一使用者）、Day 69 的组合管道与「守卫是语义边界」。第 9 周的偏移公式 `物理偏移 = offset + Σ idx×stride`（Day 57）是今天的内存账本底座。工具：Python 3.10+ 与 numpy（本机 3.11.4 / 1.26.4）、`mlir-opt`（本机 Ubuntu LLVM 18.1.8，`/usr/lib/llvm-18/bin/mlir-opt`）。不需要 NPU。
-> **今日产出**：一个主实验（`code/counterexample_lab.py`：两本账本对照 + 7 个反例逐个复现 + 守卫清单，全部真实运行）、**反例集**（`code/counterexamples.md`，7 条，每条含结构视角/语义视角/证据/守卫）、独立验收测试（`code/test_counterexamples.py`）、本周全部测试一键复跑（`code/run_week_tests.sh`，Day 64–69 六套 + 今天一套）、一页复盘（`code/review-onepage.md`）以及 4 张示意图。
+> **今日产出**：一个主实验（`code/counterexample_lab.py`：两本账本对照 + 7 个反例逐个复现 + 守卫清单，全部真实运行）、**反例集**（`code/counterexamples.md`，7 条，每条含结构视角/语义视角/证据/守卫）、独立验收测试（`code/test_counterexamples.py`）、本周全部测试一键复跑（`code/run_week_tests.sh`，Day 64–69 六套 + 今天一套）、一页复盘（`code/review-onepage.md`）以及 5 张示意图。
 
 ## 1. 今天解决什么问题？
 
@@ -93,7 +93,7 @@
 ```text
 tutorials/week-010/day-070/
 ├── README.md                        本教程
-├── images/                          4 张手绘风 SVG 信息图（图 1–4）
+├── images/                          5 张手绘风 SVG 信息图（图 1–5）
 └── code/
     ├── counterexample_lab.py        主实验：两本账本 + 7 反例 + 守卫清单
     │                                   + 5 个 MLIR 探针（39 项检查）
@@ -302,6 +302,12 @@ Day    测试文件                     结果          退出码
 - **定位**：删之前查三件事：目标是否真等于输入 shape（R2）、输入输出布局是否一致（R5）、它有几个消费者（R5 的 2×2）。
 - **修复**：reshape 合并永远替换为 `Reshape(x, 外层目标)`；恒等转置按「单消费者中性、多消费者摊销」写守卫。
 
+R5 的 2×2 账单与单消费者变体如图 5：
+
+![恒等转置 2×2：同一个节点在两个世界的四种账单与单消费者变体](images/05-identity-transpose-2x2.svg)
+
+**图 5**：左边是 R5 的图（arg → transpose(1,0) → 恒等转置 p → 两个 reshape 消费者，p 是「今天的被告」）；右边是 2×2 账单——视图世界保留/消除都是 96B（真免费），物化世界保留 48B / 消除 96B（翻倍，拷贝搬进每个消费者）；底部是 §5.5 的单消费者变体（四个格子全是 48B，traffic 中性）和守卫为什么写成「看消费者数量与布局契约」而不是一刀切「物化点不能删」。
+
 **错误 4：照抄「T 挂在算子上面就推过去」的传播模式**
 - **现象**：把传播 Pattern 用到 reduce 上，输出的 shape 直接从 (3,1) 变 (1,2)（R7）；或者中间结果另有使用者时 op 数不降反升（R6：2→3，元素计算翻倍）。
 - **原因**：传播的合法性依赖算子的**逐位置不变性**（C1 白名单）和唯一使用者（C2）——reduce 带轴语义（新 axis = `inv_perm[旧 axis]`，R7e 实测），多使用者会让传播变成复制。
@@ -330,10 +336,12 @@ Day    测试文件                     结果          退出码
 - [ ] 我能解释**值等价是必要不充分条件**，并说出三条例证（R3 写集合漂移、R4 副作用丢失、R5 布局翻倍——对拍全绿、账本翻车）；
 - [ ] 我能独立运行 `bash code/run_all.sh`，复现主实验 39/39、验收测试 33/33、MLIR 探针 5/5、本周 7 套 286/286，并说清 test 里 A 段（MemRec 与 numpy 地址对账）、E 段（哈希规范性）、F 段（40+20 组随机性质）各验证了什么；
 - [ ] 我能定位今天列出的四类错误：只看值对拍、无使用者≠死代码、恒等当 no-op 删、传播模式照抄——每类都能报出今天的实测证据（R3a 绿灯/R3c 红灯、G=None、48B→96B、(3,1)→(1,2)）；
-- [ ] 我保存了反例集（`code/counterexamples.md`）、一页复盘（`code/review-onepage.md`）、主实验与全部测试的真实输出（`code/outputs/`，含 `week_tests/` 七份日志）和 4 张示意图（`tutorials/week-010/day-070/`）。
+- [ ] 我保存了反例集（`code/counterexamples.md`）、一页复盘（`code/review-onepage.md`）、主实验与全部测试的真实输出（`code/outputs/`，含 `week_tests/` 七份日志）和 5 张示意图（`tutorials/week-010/day-070/`）。
 
 ## 9. 一句话总结与明天预告
 
 本周的问题从「哪些冗余能消除」开始，今天的复盘把它收成一句可检验的命题：**图结构相同不代表内存语义相同**——同一个 `state_hash` 的图在视图世界和物理世界跑出 48B/144B 两种账单（值逐位相等），三明治改写一边省 96B 一边只改输出布局。**机制**上，结构账本只记值怎么算，别名、布局、副作用、精度、轴语义全住在内存账本里；**实践**上，7 条反例（精度 Cast 往返 6/6 变值、双层 Reshape 被 `[V1]` 拦截、copy 消除污染输入、store 被 naive DCE 误删、恒等转置删除后 traffic 翻倍、多使用者传播元素计算翻倍、reduce 传播 shape 走样）把每条守卫的来历钉死；**验证**上，主实验 39/39、独立测试 33/33（含 MemRec 与 numpy 真实地址对账、40+20 组随机性质）、MLIR 五探针（copy/store/恒等转置不删、死 addf 删、cast 往返不折叠）、本周 7 套 286/286 一键复跑归档。
 
 明天（Day 71）讲**计算量与访存量**：FLOPs、字节数、算术强度和中间 Tensor 流量——今天内存账本里的 traffic 计量，正是明天整套「 roofline 之前先会数数」的直接前站。
+
+<!-- tutorial-review: v1 -->

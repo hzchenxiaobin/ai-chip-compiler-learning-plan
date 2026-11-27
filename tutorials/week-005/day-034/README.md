@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能对 Standalone 工程里的任一文件说出它属于哪一层（`.td` 声明／`.inc` 生成／手写胶水／工具与测试）；能用 `cmake`＋`ninja` 独立构建出 `standalone-opt`，并解释构建日志**前 7 步为什么全是 `.inc`**；能用 `--show-dialects`、round-trip、两个报错探针验证"方言已注册、Verifier 在岗"；能用**两种写法**（直连旗标 `--standalone-switch-bar-foo` 与 `--pass-pipeline`）运行 Pass，并用官方 lit 测试确认 5 通过；能按"改代码 → 重编译 → 观察三处变化 → 测试先红后绿 → 还原"的闭环修改一个输出文本（`foo`→`qux`）并预测每一步结果。
 > **预计时间**：学习 25 分钟 ＋ 实践 50 分钟
 > **前置准备**：Day 29 的 MLIR 环境（`mlir-18-tools`、`libmlir-18-dev`、`llvm-18-dev`，版本 18.1.8，外加 `cmake`、`ninja`、`lit 18.1.8`）；Day 30 的 Operation 五件套（名字／操作数／结果／Region／属性）；Day 33 的 Dialect 概念（户口本：op 名、Type、Attribute 都登记在方言名下）。
-> **今日产出**：`code/` 下一个可构建的 Standalone 示例工程（保持上游原状）＋ 4 个实验 `.mlir` 文件（round-trip 正例、主例子、两个报错探针）＋ `run_all.sh`（一键重放全部 8 组实验），以及它们在本机的真实运行记录；外加三张图：图 1 定位、图 2 讲透"op 诞生与上岗"机制、图 3 展示修改闭环全程。
+> **今日产出**：`code/` 下一个可构建的 Standalone 示例工程（保持上游原状）＋ 4 个实验 `.mlir` 文件（round-trip 正例、主例子、两个报错探针）＋ `run_all.sh`（一键重放全部 8 组实验），以及它们在本机的真实运行记录；外加四张图：图 1 定位、图 2 讲透"op 诞生与上岗"机制、图 3 展示修改闭环全程、图 4 对比两道报错关卡。
 
 ## 1. 今天解决什么问题？
 
@@ -435,6 +435,10 @@ note: Registered dialects: acc, affine, amdgpu, ... func, ...（长列表，无 
 - **定位**：报错格式可区分——解析器报错不带 op 名、指向"值的类型"；Verifier 报错以 `'op全名' op` 开头、指向"第几个操作数"（`operand #0`）。
 - **修复**：按关卡对症：改块参数声明或使用处的类型写法（前者）；改 `.td` 的约束或换正确类型（后者）。判断关卡再动手，别拿 Verifier 文案去猜语法问题。
 
+![两道报错关卡对比图：上下两条泳道。上道探针 4a（foo_bad_type.mlir，块参数声明 i32、使用处写 i64）在关卡①解析器·组装 IR 被拦下——同名 %arg0 类型对不上、IR 组不出来，关卡②的 Verifier 画成虚线未到达；下道探针 4b（foo_bad_verifier.mlir，块参数本来就是 i64、语法自洽）通过关卡①组出 IR，在关卡②被 standalone.foo 的 Verifier 拦下——operand #0 不是 32 位 signless 整数、约束来自 .td 的 I32:$input；两道各自附真实报错原文与 exit=1 结果，底部给出"判断关卡再动手"的分辨要点](images/04-error-probes.svg)
+
+**图 4**：两条泳道对照读。探针 4a 死在关卡①——报错不带 op 名、指向"值的类型"（`use of value '%arg0' ...`）；探针 4b 死在关卡②——报错以 `'standalone.foo' op` 开头、标注 `operand #0`，文案正来自 §3.2 生成的 Verifier（`isSignlessInteger(32)`）。先看报错特征定位关卡，再决定改类型写法还是改 `.td` 约束。
+
 **错误 C：改了 Pass，测试从绿变红**
 - **现象**：§5.4 的 (8d)：`check-standalone` 两个测试 `FAIL`，`Failed: 2 (33.33%)`。
 - **原因**：行为改了，期望没改——CHECK 行还在等 `@foo()`，实际输出已是 `@qux()`。
@@ -474,3 +478,4 @@ note: Registered dialects: acc, affine, amdgpu, ... func, ...（长列表，无 
 
 
 
+<!-- tutorial-review: v1 -->

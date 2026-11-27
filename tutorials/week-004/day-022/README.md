@@ -141,7 +141,8 @@ tutorials/week-004/day-022/
 └── images/
     ├── 01-overview.svg
     ├── 02-mechanism.svg
-    └── 03-example.svg
+    ├── 03-example.svg
+    └── 04-tripwire-coverage.svg
 ```
 
 运行环境：Python 3.11.4（Linux），无任何第三方依赖，`Graph`/`UnusedAnalysis`/`AnalysisManager` 从 Day 20 原样搬来，保证前后两周的演练场可以互相印证。
@@ -1137,6 +1138,10 @@ run() 返回 True；注意 noop 没改图，IR 一行没打——大图上这个
 **错误四：绕过修改方法直接改表，以为没人看见。**
 现象：`CorruptInsertPass` 直接 `statements.insert(...)`——epoch 没动，所有分析缓存**保持"有效"但其实过期**（Day 20 的隐患今天原样存在）；幸运时被绊线当场按住（[5]：语句数变了版本没动），不幸时（`CorruptRewritePass` 原地改输入，[6]）绊线是瞎的，只有把图改到**不合法**才轮到 Verifier 出手；最不幸的是改的字段碰巧合法——谁都抓不住，只能靠代码评审和 IR dump 对读。定位与修复：改图一律走 `remove_statement` / `replace_all_uses`；同时诚实记下绊线的覆盖范围——它是便宜的tripwire，不是安全边界。
 
+![绊线对账 2×2 矩阵：语句数变没变 × epoch 动没动，四种改动各有谁抓——bypass、verify 与谁也抓不住的分布](images/04-tripwire-coverage.svg)
+
+**图 4**：把 3.3 节的绊线边界画成矩阵——横轴是语句数变没变，纵轴是 epoch 动没动。上排两格是放行的正门：走 `remove_statement`（fold 删 add：epoch 2，6→5）或 `replace_all_uses`（换边：epoch 1，位置没变 Use-Def 变了），change_log 自动留痕。下排左格是 [5] 的 `corrupt-insert`：语句数 6→7 而 epoch 还是 0，对账对不上，绊线当场拉闸（bypass）。下排右格是 [6] 的 `corrupt-rewrite`：数量、版本都没动，绊线瞎了——改到不合法才由 Verifier 接手（verify），碰巧还合法就谁都抓不住（5.4 实验三关掉 Verifier 后，这一格里的坏图会一路跑到底）。矩阵里的 epoch、语句数与 5.3 节的真实输出逐项一致。
+
 ## 7. 今日练习
 
 ### 必做练习：写一个"观察器 Pass"，看死值随管线推进而变化
@@ -1165,3 +1170,5 @@ pm.add(NoOpPass(), FoldAddZeroPass(), DeadReportPass(), DcePreviewPass())
 ## 9. 一句话总结与明天预告
 
 今天的问题是"优化从两个变二十个之后，调用顺序、失败、观测、依赖谁来管"；机制是 Pass 的求职简历式契约（name ＋ requires ＋ run(graph, am) → True/False）加上调度台的六步循环——快照、运行、查返回值、绊线、验证、打印记账，五种失败一律拉闸：停下、指认、跳过、返回 False、不回滚；实践是一个约 180 行的调度台核心（Pass 接口＋PassManager，图与分析组件从 Day 20 原样搬来）：空 Pass 证明调度台能转，`fold→dce` 与 `dce→fold` 的真实对照证明顺序是语义的一部分（3 条 vs 4 条），三个反面教材把 return / bypass / verify 三种失败各演示了一遍；验证靠 33 项自测和逐行可对账的 IR dump。明天（Day 23）常量折叠转正：`fold-add-zero` 要长成完整的常量折叠 Pass——成立条件（什么类型才折）、类型提升和溢出风险，以及为什么有些"看似能折"的场合必须拒绝。
+
+<!-- tutorial-review: v1 -->

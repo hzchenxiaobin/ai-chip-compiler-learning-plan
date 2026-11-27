@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660">
+<rect width="1000" height="660" fill="#fdfaf2"/>
+<text x="46" y="44" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="21" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">探针 4 支配关系：为什么 %va 不能在 ^merge 里用</text>
+<text x="46" y="70" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="12" fill="#84796a" text-anchor="start" opacity="1.0">第 31 天 · 调试图——err_dom.mlir 的 4 块 CFG：两条入边只有一条定义过 %va（报错为本机真实输出，mlir-opt-18 / LLVM 18.1.8）</text>
+<path d="M 40.0,96.0 Q 192.6,93.7 560.0,96.0 Q 559.2,248.3 560.0,636.0 Q 391.1,633.7 40.0,636.0 Q 38.1,486.3 40.0,96.0 Z" fill="#fbf8ee" stroke="#84796a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.45"/>
+<path d="M 56.0,106.0 Q 124.3,107.4 292.0,106.0 Q 293.1,108.3 292.0,122.0 Q 216.7,121.7 56.0,122.0 Q 55.4,120.5 56.0,106.0 Z" fill="#dce7f6" stroke="#5d8fc9" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.7"/>
+<text x="174" y="117.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#3b352d" text-anchor="middle" opacity="1.0">err_dom.mlir（probe.sh 探针 4）的 CFG</text>
+<path d="M 110.0,138.0 Q 197.2,135.1 410.0,138.0 Q 413.1,155.9 410.0,204.0 Q 311.9,203.0 110.0,204.0 Q 109.1,188.3 110.0,138.0 Z" fill="#fdfbf5" stroke="#5d8fc9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.85"/>
+<text x="120" y="158" font-family="Courier New, Courier, monospace" font-size="9.3" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^bb0 入口（块参数 %flag: i1）</text>
+<path d="M 150.0,168.0 Q 208.0,166.3 350.0,168.0 Q 350.6,175.0 350.0,192.0 Q 289.2,194.0 150.0,192.0 Q 149.0,183.5 150.0,168.0 Z" fill="#f6e8cf" stroke="#c9923d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.6"/>
+<text x="250" y="183.5" font-family="Courier New, Courier, monospace" font-size="8.6" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">cf.cond_br %flag, ^a, ^b</text>
+<text x="360" y="183.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#a3722a" text-anchor="start" opacity="1.0">← 终结符</text>
+<path d="M 70.0,282.0 Q 138.4,284.9 290.0,282.0 Q 286.7,318.1 290.0,406.0 Q 222.2,406.9 70.0,406.0 Q 68.0,373.1 70.0,282.0 Z" fill="#fdfbf5" stroke="#6a9c59" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.85"/>
+<text x="80" y="302" font-family="Courier New, Courier, monospace" font-size="9.3" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^a</text>
+<text x="108" y="302" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#5a7a4c" text-anchor="start" opacity="1.0">← %va 的定义块</text>
+<path d="M 80.0,310.0 Q 140.4,308.2 276.0,310.0 Q 277.0,315.0 276.0,334.0 Q 210.1,333.0 80.0,334.0 Q 78.8,326.7 80.0,310.0 Z" fill="#fbf8ee" stroke="#84796a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.75"/>
+<text x="86" y="325.5" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">%va = arith.constant 1 : i32</text>
+<path d="M 80.0,340.0 Q 120.6,342.0 212.0,340.0 Q 215.2,349.0 212.0,362.0 Q 173.2,363.7 80.0,362.0 Q 78.6,353.9 80.0,340.0 Z" fill="#f6e8cf" stroke="#c9923d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.6"/>
+<text x="146" y="354.5" font-family="Courier New, Courier, monospace" font-size="8.6" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">cf.br ^merge</text>
+<text x="80" y="380" font-family="Courier New, Courier, monospace" font-size="7.4" fill="#84796a" text-anchor="start" opacity="1.0">note: operand defined here</text>
+<text x="80" y="392" font-family="Courier New, Courier, monospace" font-size="7.4" fill="#84796a" text-anchor="start" opacity="1.0">(op in the same region)</text>
+<path d="M 330.0,282.0 Q 390.9,282.3 530.0,282.0 Q 531.2,307.6 530.0,382.0 Q 463.8,384.5 330.0,382.0 Q 330.7,355.2 330.0,282.0 Z" fill="#fdfbf5" stroke="#5d8fc9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.85"/>
+<text x="340" y="302" font-family="Courier New, Courier, monospace" font-size="9.3" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^b</text>
+<text x="368" y="302" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#84796a" text-anchor="start" opacity="1.0">（什么都不定义）</text>
+<path d="M 340.0,340.0 Q 376.8,339.4 472.0,340.0 Q 474.9,347.1 472.0,362.0 Q 433.2,360.2 340.0,362.0 Q 339.7,357.6 340.0,340.0 Z" fill="#f6e8cf" stroke="#c9923d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.6"/>
+<text x="406" y="354.5" font-family="Courier New, Courier, monospace" font-size="8.6" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">cf.br ^merge</text>
+<path d="M 110.0,452.0 Q 199.6,453.7 410.0,452.0 Q 410.4,478.8 410.0,556.0 Q 311.2,558.9 110.0,556.0 Q 107.3,525.0 110.0,452.0 Z" fill="#fdfbf5" stroke="#a04a3c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.85"/>
+<text x="120" y="472" font-family="Courier New, Courier, monospace" font-size="9.3" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^merge（汇合块）</text>
+<path d="M 130.0,482.0 Q 173.8,483.3 280.0,482.0 Q 282.5,489.1 280.0,508.0 Q 232.0,509.7 130.0,508.0 Q 128.4,500.0 130.0,482.0 Z" fill="#f6ded7" stroke="#a04a3c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.7"/>
+<text x="205" y="498.5" font-family="Courier New, Courier, monospace" font-size="8.8" fill="#3b352d" text-anchor="middle" font-weight="bold" opacity="1.0">return %va</text>
+<text x="292" y="498.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#a04a3c" text-anchor="start" opacity="1.0">← 使用 %va</text>
+<text x="120" y="538" font-family="Courier New, Courier, monospace" font-size="7.6" fill="#a04a3c" text-anchor="start" font-weight="bold" opacity="1.0">error: operand #0 does not dominate this use</text>
+<path d="M 200.0,204.0 Q 181.4,243.6 160.0,280.0" fill="none" stroke="#6a9c59" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 160.0,280.0 Q 154.1,271.1 159.3,271.5" fill="none" stroke="#6a9c59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 160.0,280.0 Q 159.3,280.6 167.4,275.8" fill="none" stroke="#6a9c59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="178" y="246" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.4" fill="#5a7a4c" text-anchor="start" font-weight="bold" opacity="1.0">真</text>
+<path d="M 320.0,204.0 Q 367.3,247.7 410.0,280.0" fill="none" stroke="#a04a3c" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 410.0,280.0 Q 409.0,276.5 401.6,278.8" fill="none" stroke="#a04a3c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 410.0,280.0 Q 411.9,281.8 407.5,271.9" fill="none" stroke="#a04a3c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="352" y="246" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="9.4" fill="#a04a3c" text-anchor="start" font-weight="bold" opacity="1.0">假</text>
+<path d="M 180.0,406.0 Q 190.7,422.1 205.0,450.0" fill="none" stroke="#6a9c59" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 205.0,450.0 Q 199.7,445.4 197.5,446.0" fill="none" stroke="#6a9c59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 205.0,450.0 Q 201.3,440.3 205.4,441.5" fill="none" stroke="#6a9c59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="432" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#5a7a4c" text-anchor="start" font-weight="bold" opacity="1.0">这条路 %va 已定义</text>
+<path d="M 412.0,382.0 Q 364.0,420.4 325.0,450.0" fill="none" stroke="#a04a3c" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7,5"/>
+<path d="M 325.0,450.0 Q 321.0,447.4 327.8,442.0" fill="none" stroke="#a04a3c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 325.0,450.0 Q 325.7,445.9 333.5,449.2" fill="none" stroke="#a04a3c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="438" y="414" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#a04a3c" text-anchor="start" font-weight="bold" opacity="1.0">这条路 %va 不存在</text>
+<path d="M 58.0,570.0 Q 302.8,567.6 540.0,570.0" fill="none" stroke="#84796a" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="590" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.6" fill="#84796a" text-anchor="start" opacity="1.0">绿实线 = 经 ^a 的路径（%va 已定义）；红虚线 = 经 ^b 的路径（%va 不存在）</text>
+<text x="58" y="610" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.6" fill="#84796a" text-anchor="start" opacity="1.0">支配检查以 Region 为范围：定义、使用同在一个 Region 时，按块级 CFG 判定。</text>
+<path d="M 580.0,96.0 Q 691.8,95.7 960.0,96.0 Q 961.4,133.1 960.0,228.0 Q 840.9,227.4 580.0,228.0 Q 580.2,192.3 580.0,96.0 Z" fill="#fbf8ee" stroke="#5d8fc9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.45"/>
+<path d="M 596.0,106.0 Q 635.3,107.3 728.0,106.0 Q 727.8,108.3 728.0,122.0 Q 683.1,123.7 596.0,122.0 Q 597.7,120.2 596.0,106.0 Z" fill="#dce7f6" stroke="#5d8fc9" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.7"/>
+<text x="662" y="117.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#3b352d" text-anchor="middle" opacity="1.0">为什么违规（支配的定义）</text>
+<text x="596" y="140" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">支配：从入口到使用点的每条路径都要先经过定义。</text>
+<text x="596" y="158" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">真→^a→^merge：经过 ^a，%va 已定义，这条没问题；</text>
+<text x="596" y="176" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">假→^b→^merge：整条路没见过 %va——一条路不满足，</text>
+<text x="596" y="194" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">整体即不支配，Verifier 当场拒绝（Day 18 支配树执法）。</text>
+<text x="596" y="214" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.4" fill="#4c6f9e" text-anchor="start" opacity="1.0">红虚线路走到汇合块时，%va 根本还没出生。</text>
+<path d="M 580.0,240.0 Q 695.3,240.5 960.0,240.0 Q 957.7,302.6 960.0,456.0 Q 835.7,455.5 580.0,456.0 Q 577.5,394.8 580.0,240.0 Z" fill="#fbf8ee" stroke="#6a9c59" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.45"/>
+<path d="M 596.0,250.0 Q 648.1,249.6 774.0,250.0 Q 775.5,254.7 774.0,266.0 Q 715.2,267.7 596.0,266.0 Q 597.6,263.5 596.0,250.0 Z" fill="#e2efd9" stroke="#6a9c59" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.7"/>
+<text x="685" y="261.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#3b352d" text-anchor="middle" opacity="1.0">MLIR 惯用修复：值变成块参数（由边携带）</text>
+<text x="596" y="286" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^bb0: %c0 = arith.constant 0 : i32</text>
+<text x="596" y="303" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">      cf.cond_br %flag, ^a, ^b</text>
+<text x="596" y="320" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^a:   %va = arith.constant 1 : i32</text>
+<text x="596" y="337" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">      cf.br ^merge(%va : i32)</text>
+<text x="748" y="337" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="7.6" fill="#84796a" text-anchor="start" opacity="1.0">← ^a 交出 %va</text>
+<text x="596" y="354" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^b:   cf.br ^merge(%c0 : i32)</text>
+<text x="748" y="354" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="7.6" fill="#84796a" text-anchor="start" opacity="1.0">← ^b 交默认值 0</text>
+<text x="596" y="371" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">^merge(%r: i32):</text>
+<text x="596" y="388" font-family="Courier New, Courier, monospace" font-size="8.2" fill="#3b352d" text-anchor="start" font-weight="bold" opacity="1.0">      return %r : i32</text>
+<text x="748" y="388" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="7.6" fill="#84796a" text-anchor="start" opacity="1.0">← %r 就是 phi</text>
+<path d="M 596.0,402.0 Q 764.4,403.4 944.0,402.0" fill="none" stroke="#84796a" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,4"/>
+<text x="596" y="416" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.6" fill="#5a7a4c" text-anchor="start" opacity="1.0">汇合块参数 %r 接住两条边各自带来的值——正是</text>
+<text x="596" y="432" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.6" fill="#5a7a4c" text-anchor="start" opacity="1.0">3.3 节的块参数机制：值由边携带，不再依赖支配。</text>
+<text x="596" y="448" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.0" fill="#84796a" text-anchor="start" opacity="1.0">（此修复写法已实测通过 Verifier）</text>
+<path d="M 580.0,468.0 Q 696.8,466.6 960.0,468.0 Q 957.9,516.9 960.0,636.0 Q 837.4,635.4 580.0,636.0 Q 582.2,588.3 580.0,468.0 Z" fill="#fbf8ee" stroke="#c9923d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.45"/>
+<path d="M 596.0,478.0 Q 622.7,476.3 692.0,478.0 Q 690.9,483.7 692.0,494.0 Q 660.4,495.6 596.0,494.0 Q 593.0,488.0 596.0,478.0 Z" fill="#f6e8cf" stroke="#c9923d" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.7"/>
+<text x="644" y="489.5" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.5" fill="#3b352d" text-anchor="middle" opacity="1.0">报错定位口诀</text>
+<text x="596" y="514" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">error 行指向使用处：return %va 那一行；</text>
+<text x="596" y="532" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">note 行指回定义处：%va = arith.constant…；</text>
+<text x="596" y="550" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">note 尾巴 (op in the same region)：定义与使用</text>
+<text x="596" y="568" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">同在一个 Region，按块级 CFG 支配判定；</text>
+<text x="596" y="586" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.8" fill="#3b352d" text-anchor="start" opacity="1.0">两行对起来读，非法使用一眼定位（第 6 节 错误 4）。</text>
+<text x="596" y="612" font-family="Comic Sans MS, Comic Neue, Segoe Print, Kaiti SC, KaiTi, 楷体, cursive" font-size="8.2" fill="#84796a" text-anchor="start" opacity="1.0">另一条修复路：把 %va 的定义挪进支配 ^merge 的块（如 ^bb0）。</text>
+</svg>

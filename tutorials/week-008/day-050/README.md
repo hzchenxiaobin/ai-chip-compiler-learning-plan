@@ -364,3 +364,5 @@ remark: 4 ops in @fused_matmul_bias_relu_ok (func.func=1, func.return=1,
 ## 9. 一句话总结与明天预告
 
 今天回答的问题是"融合成什么"：不做换名字的假融合，而是定义语义完整、零属性的独立算子——公式进 description，中间结果退出 SSA 世界。机制上只做了一件事：**Verifier 规则求并集**（add 两条、matmul 四条，全部物理共享），`fused_matmul_bias_relu` 只新增一条 bias 规则。实践上 15 个测试全过、老图回归无损，还实测了"漏一条规则，坏 IR 立刻 rc=0 溜进来"的反面教材。明天（第 51 天）开始写第一个 RewritePattern：`Add + Relu → FusedAddRelu`——今天定义的算子从"被验证的公民"变成"被生成的目标"，Pattern 的右半边已经就位。
+
+<!-- tutorial-review: v1 -->

@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能说清 Shape 特化（specialization）用一份运行期观测到的具体 Shape，把 IR 里的动态维度替换成常量、得到一份全静态产物时，**收益**（循环上界变成编译期常数、`memref.dim` 消失、循环可完全展开、Verifier 的静态检查重新生效）与**代价**（每个不同 Shape 一份产物、编译时间随 Shape 种类增长、代码体积变大）各来自哪里；能解释为什么任何特化系统都必须配一条**通用实现回退**（generic fallback）路径；并亲手做出一个最小 `specialize-shape` 工具：给定 `a=2x3,b=3x2` 这样的替换清单，把动态 IR 改写成静态 IR、用 mini 推导器加 `mlir-opt` 双重重新验证，再量化对比特化前后的降级 IR（`memref.dim` 计数、展开能力、编译耗时）与分发命中/回退行为。
 > **预计时间**：学习 40 分钟＋实践 45 分钟
 > **前置准备**：第 61 天的三种维度表示（静态 `int` / 符号 `Sym` / 未知 `None`）与三档约束表（`bindings` / `renames` / `runtime`）——今天的替换清单就是昨天的 `bindings`；第 57 天的 Shape / Stride 词汇表；Python 3.10+ 与 numpy（本机 3.11.4 / 1.26.4）；`mlir-opt`、`mlir-cpu-runner`（本机 Ubuntu LLVM 18.1.8）。不需要 NPU。
-> **今日产出**：一个最小 Shape 特化工具（`code/specialize.py`，含 `--specialize-shape` 命令行选项与双重重新验证）、特化前后 IR（`code/matmul_dyn.mlir` → `code/outputs/matmul_spec.mlir`）、一个产物数量与分发实验（`code/products_lab.py`，产物数、编译耗时、`memref.dim` 计数全部实测）、一个可真实执行的分发现场（`code/dispatch.mlir`，命中特化版 / 回退通用版 / 缓存增长后再命中三条路径都跑到）、一组验收测试（`code/test_specialize.py`，28 个测试点）以及 4 张示意图。
+> **今日产出**：一个最小 Shape 特化工具（`code/specialize.py`，含 `--specialize-shape` 命令行选项与双重重新验证）、特化前后 IR（`code/matmul_dyn.mlir` → `code/outputs/matmul_spec.mlir`）、一个产物数量与分发实验（`code/products_lab.py`，产物数、编译耗时、`memref.dim` 计数全部实测）、一个可真实执行的分发现场（`code/dispatch.mlir`，命中特化版 / 回退通用版 / 缓存增长后再命中三条路径都跑到）、一组验收测试（`code/test_specialize.py`，28 个测试点）以及 5 张示意图。
 
 ## 1. 今天解决什么问题？
 
@@ -116,7 +116,7 @@ spec：     a=2x3                  （运行期观测到 batch=2）
 ```text
 tutorials/week-009/day-062/
 ├── README.md
-├── images/                        # 4 张示意图（本文图 1–4）
+├── images/                        # 5 张示意图（本文图 1–5）
 └── code/
     ├── specialize.py              # 今天的主角：最小 Shape 特化工具（CLI）
     ├── products_lab.py            # 收益 / 产物数量 / 编译时间 / 分发模拟（全实测）
@@ -246,6 +246,12 @@ $ python3 specialize.py k_blind.mlir --specialize-shape "a=2x4,b=3x2" \
 3. **「预编译所有 Shape」是伪选项**：M 的取值没有上界——这就是通用回退存在的根本理由。它不是性能优化，是正确性的一部分。
 4. **分发现场真实可跑**：`dispatch.mlir` 用 `mlir-cpu-runner` 执行（`outputs/dispatch_exec.txt`），三个场景的输出——场景 1 打 `1 2`（hit=1，M=2）后是 220/280/490/640；场景 2 打 `0 4`（miss，回退通用版）后是 220/280/490/640/760/1000/1030/1360；场景 3 打 `1 4`（缓存长出第二份特化后再命中）后是同样八个值。**场景 2 与场景 3 逐位一致**：通用版与特化版对同一输入算出同一结果，这就是特化语义保持的直接证据（测试 F 段与 numpy 对拍确认）。
 
+hit 标志的 `1/0` 从哪来、八个数各自走的哪条路——把分发器的判断结构逐层展开，如图 5：
+
+![分发现场：dispatch_v1 的运行期判断结构、命中/回退两条路与三场景真实走线](images/05-dispatch-flow.svg)
+
+**图 5**：上半部分是 dispatch_v1 的完整分支——三个 `memref.dim` 读实际维度 (M,K,N)、三个 `arith.cmpi` 比特化键 (2,3,2)、`scf.if` 二选一：命中侧 `memref.cast` 收紧后调 `@matmul_spec_2_3_2`，未命中侧回退 `@matmul_generic`（内带 `cf.assert` 运行期 K 检查）；中间提醒两条路都把结果累加写进 `%o`（`outs` 语义，重放前要清零——错误 3 的现场）；下半部分是 v2 长出第二份特化后的 `ori` 双键结构与三场景的真实 stdout。
+
 ## 6. 常见错误与排查
 
 **错误 1：spec 想改静态维，或想「只钉输出」**
@@ -298,10 +304,12 @@ $ python3 specialize.py k_blind.mlir --specialize-shape "a=2x4,b=3x2" \
 - [ ] 我能解释为什么通用回退是正确性的一部分而不是性能选项（M 无上界 ⇒ 不可能预编译所有 Shape），并画出分发器的判断结构（读维度 → 比键 → 命中 cast 收紧调特化版 / 未命中回退带检查的通用版）；
 - [ ] 我能独立运行 `bash code/run_all.sh`，复现 specialize 4 处替换 exit=0、`memref.dim` 1→0、三次 unroll 后 `affine.for` 1→0、k_blind 的 exit=0/3/4 三种命运、6 个产物约 19 ms/份、dispatch 三场景与 numpy 逐位一致；
 - [ ] 我能定位今天的四类错误：改静态维/只钉输出（spec 越权）、`--force` 后不看退出码（验证纪律）、`outs` 累加导致重放翻倍（调用约定）、删掉通用回退（分发兜底）；
-- [ ] 我保存了特化工具、特化前后 IR、产物实验数据、dispatch 执行记录和 4 张示意图（`tutorials/week-009/day-062/`）。
+- [ ] 我保存了特化工具、特化前后 IR、产物实验数据、dispatch 执行记录和 5 张示意图（`tutorials/week-009/day-062/`）。
 
 ## 9. 一句话总结与明天预告
 
 今天的问题始于昨天的 `bindings` 表——「特化时可直接替换」只是一句注释。机制上，特化 = **替换 + 重推 + 重验**：spec 提供输入侧的观测值（`a=2x3`），输出侧永远由推导重推（`memref<?x2xf32> → memref<2x2xf32>`），mini K 对账与 mlir-opt 两层验证守住合法性（k_blind 的 exit=0/3/4 三种命运就是分工的现场）。实践中，特化把 M 的知识从描述符搬进类型：`memref.dim` 1→0、三次 full-unroll 后 `affine.for` 1→0（动态版 M 循环卡在 `%dim` 上，特化版 36 个 load 全直码），代价是 5 个不同 batch = 5 份产物 92.7 ms 编译加一倍代码体积；dispatch.mlir 三场景（命中 220/280/490/640、回退 C2 八值、缓存增长后再命中且逐位一致）证明分发 + 回退既保性能又保正确性。验证侧，`test_specialize.py` 28/28、`products_lab.py` 8/8，全部真实执行。
 
 明天（Day 63）是第 9 周复盘：把 Shape / Stride、NCHW / NHWC、Reshape、Broadcast、动态维度和今天的特化串成一页，用同一个 Tensor 回答「Shape 相同但内存布局不同」和「动态维度不等于没有约束」——今天留下的两条线（`sizes[]` 里的值与类型里的值、特化键与回退）都会在复盘里归位。
+
+<!-- tutorial-review: v1 -->

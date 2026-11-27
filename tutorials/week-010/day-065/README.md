@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能推导并钉死**连续两个转置的组合方向**——`C = T_q(T_p(A))` 时 `C.shape[i] = A.shape[p[q[i]]]`，合并排列 `r = compose(p, q)`（**内层 p 先作用，所以 p 在外圈**）；能写出一个判据回答「什么时候等价于恒等」——`q == inv(p) ⟺ compose(p, q) == 恒等`（排列群 `ab = e ⟺ b = a⁻¹`，互逆消除是一般合并的数学特例）；能实现**两个 RewritePattern**（互逆消除 `T_q(T_p(x)) → x`、一般合并 `T_q(T_p(x)) → T_r(x)`），并说清它们的**合法性边界**——中间值唯一使用者（含 `func.return`）；能用 PassManager 的**不动点迭代**消掉三连链（3-循环的阶是 3：`T T T → x`）；并能在本机 LLVM 18.1.8 上复现一个真实事实——**`--canonicalize` 不合并连续 `linalg.transpose`**，不消除的链降级后是 6 层循环、数据白搬两遍。
 > **预计时间**：学习 40 分钟＋实践 45 分钟
 > **前置准备**：第 64 天的 `inverse_perm`（逆排列）、`perm_order`（阶）、四关 Verifier 和约定 `out_shape[i] = in_shape[perm[i]]`——今天全部直接复用；第 52 天「融合的多使用者限制」的结论（中间结果被多个节点使用时不能随便删）今天在 Pattern 里正式上岗。工具：Python 3.10+ 与 numpy（本机 3.11.4 / 1.26.4）、`mlir-opt`（本机 Ubuntu LLVM 18.1.8，`/usr/lib/llvm-18/bin/mlir-opt`）。不需要 NPU。
-> **今日产出**：两个 RewritePattern（`cancel_inverse_transpose` + `merge_consecutive_transpose`，`code/transpose_elim_lab.py`）、迭代到不动点的 PassManager、独立验收测试（`code/test_transpose_elim.py`，33/33 通过）、12 场景判定表＋300 组随机链压力对拍（900 个 op → 254 个，28.2%）、可复跑的 MLIR IR 文件（`transpose_chain.mlir`，实测 `--canonicalize` 原样保留 exit=0）、`outputs/` 全部真实输出，以及 4 张示意图。
+> **今日产出**：两个 RewritePattern（`cancel_inverse_transpose` + `merge_consecutive_transpose`，`code/transpose_elim_lab.py`）、迭代到不动点的 PassManager、独立验收测试（`code/test_transpose_elim.py`，33/33 通过）、12 场景判定表＋300 组随机链压力对拍（900 个 op → 254 个，28.2%）、可复跑的 MLIR IR 文件（`transpose_chain.mlir`，实测 `--canonicalize` 原样保留 exit=0）、`outputs/` 全部真实输出，以及 5 张示意图。
 
 ## 1. 今天解决什么问题？
 
@@ -132,7 +132,7 @@ B(2,3,4) = arange(24)，strides (12, 4, 1)
 ```text
 tutorials/week-010/day-065/
 ├── README.md
-├── images/                        # 4 张示意图（本文图 1–4）
+├── images/                        # 5 张示意图（本文图 1–5）
 └── code/
     ├── transpose_elim_lab.py      # 主实验：组合数学 + 两个 Pattern + PassManager + MLIR 对表（16 项检查）
     ├── test_transpose_elim.py     # 独立验收测试（A–G 七段 33 个测试点）
@@ -298,6 +298,12 @@ PassManager 3 轮、应用 2 次（轮间 IR 存 trace）：
 
 **图 3**：四行分别是场景 B/C/D/E 的真实 mini IR 文本（左列优化前，右列优化后）。读图时注意两点：B 和 D 的右列都只剩 `func.return %in`（整链坍缩），C 的右列是一个直连 `%in` 的单转置（`perm` 变成 `(2,0,1)`），E 的右列标注「原样保留」——每行末尾写的是判据。
 
+图 3 里 D 行只给了起点和终点——合并到一半的 IR（轮间实况）长什么样？三连链的两轮逐轮拆开如图 4：
+
+![PassManager 不动点迭代：三连链的轮间 IR 实况](images/05-passmanager-iteration.svg)
+
+**图 4**：左列是场景 D 的三份真实 IR 快照——初始（3 个 op）→ 第 1 轮 P2 合并后（2 个 op：`%t2` 原地改写成 `T_(2,0,1)(%in)`，result id 不变、下游自动跟随，`%t1` 已删）→ 第 2 轮 P1 互逆消除后（0 个 op，`return %in`）；两个箭头写的是当轮哪个 Pattern 开的刀、另一个为什么没动手；第 3 轮无改动即不动点（实测 3 轮、2 次应用）。右列是 op 数轨迹 3 → 2 → 0；底部是收敛保证——Pattern 单向改写、op 数只减不增，迭代必然终止。
+
 判定表与随机压力对拍（数值终审）：
 
 ```text
@@ -318,11 +324,11 @@ S9  4D 长链 5 个          (2, 3, 4, 5)    [1, 2, 3, 0] → [1, 2, 3, 0] → [
   300 组共 900 个初始 op（平均链长 3），优化后剩 254 个（28.2%）
 ```
 
-判定表的规律一眼可见：**同款排列链长 L 的剩余 op 数由 `L mod 阶` 决定**（`(1,2,0)` 阶 3：L=1,2 剩 1 个、L=3 消除、L=4 剩 1 个……测试 E1 把 L=1..8 全部钉死）。验收测试的汇总与 MLIR 侧完整裁决如图 4：
+判定表的规律一眼可见：**同款排列链长 L 的剩余 op 数由 `L mod 阶` 决定**（`(1,2,0)` 阶 3：L=1,2 剩 1 个、L=3 消除、L=4 剩 1 个……测试 E1 把 L=1..8 全部钉死）。验收测试的汇总与 MLIR 侧完整裁决如图 5：
 
 ![MLIR 实测裁决与判定表汇总](images/04-verdicts.svg)
 
-**图 4**：左上是 `--canonicalize` 的原样保留现场（这条优化在 stock 管道不存在），左下是不消除的 loops 代价（6 层循环、96 次访存），右侧是 12 场景判定表和 300 组随机对拍（900 → 254）。三个数字放在一起就是今天存在的理由：**语义为零的链，物理代价是真实存在的，而管道不会替你消它**。
+**图 5**：左上是 `--canonicalize` 的原样保留现场（这条优化在 stock 管道不存在），左下是不消除的 loops 代价（6 层循环、96 次访存），右侧是 12 场景判定表和 300 组随机对拍（900 → 254）。三个数字放在一起就是今天存在的理由：**语义为零的链，物理代价是真实存在的，而管道不会替你消它**。
 
 ### 5.4 修改一个参数再观察
 
@@ -396,10 +402,12 @@ EOF
 - [ ] 我能用 PassManager 的不动点迭代处理长链：三连链 2 次应用消除为 `return %in`、八连链 4 轮收敛、链长 `L` 的剩余 op 数由 `L mod 阶` 决定（测试 E1：L=1..8 全对）；
 - [ ] 我能复述 MLIR 侧的实测事实并说明其含义：`--canonicalize` 不合并连续 `linalg.transpose`（LLVM 18.1.8 实测原样保留）、不消除的链降级为 6 层循环 96 次访存——这条优化要自己写；
 - [ ] 我能独立运行 `bash code/run_all.sh` 复现全部结果（16/16 + 33/33 + 静态 IR 实测），并定位今天列出的四类错误（方向反、漏使用者检查、对合当恒等、不收敛）各自的证据；
-- [ ] 我保存了两个 RewritePattern 与 PassManager（`code/transpose_elim_lab.py`）、33 项验收测试（`code/test_transpose_elim.py`）、静态 IR 文件、全部真实输出（`code/outputs/`）和 4 张示意图。
+- [ ] 我保存了两个 RewritePattern 与 PassManager（`code/transpose_elim_lab.py`）、33 项验收测试（`code/test_transpose_elim.py`）、静态 IR 文件、全部真实输出（`code/outputs/`）和 5 张示意图。
 
 ## 9. 一句话总结与明天预告
 
 今天的问题从「语义合计为零的一对转置，stock 管道却让数据白搬两遍」开始（实测：`--canonicalize` 原样保留、loops 6 层循环 96 次访存），答案是把连续转置还原成**排列的代数**：组合 `r[i] = p[q[i]]`（内层先作用，2D 对合会掩盖方向错误，3D 非对合是照妖镜）、恒等判据 `q == inv(p)`（互逆消除是一般合并的特例）、阶数给链式自乘定下限（三连链两轮消除）。实践侧交付了两个 RewritePattern（互逆消除 + 一般合并）和迭代到不动点的 PassManager，边界纪律是「中间值唯一使用者才允许删，`func.return` 也算使用者」。验证侧：主实验 16/16、验收测试 33/33（含结合律 729 组、方向陷阱真实反例）、判定表 12/12（`L mod 阶` 的消长规律）、随机链 300/300（900 个 op → 254 个，28.2%）。
 
 明天（Day 66）讲**连续 Reshape 合并**：`Reshape(Reshape(x)) → Reshape(x)`——今天的 Pattern 骨架（链匹配 → 唯一使用者检查 → 替换删除 → 迭代）原样复用，判据从「排列组合」换成「元素数量守恒」，而中间使用者的约束比今天更微妙（合并会跳过中间形状，中间结果有没有人看它长什么样，决定合法性）。
+
+<!-- tutorial-review: v1 -->

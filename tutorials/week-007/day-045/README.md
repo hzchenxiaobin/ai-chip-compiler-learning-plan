@@ -90,11 +90,15 @@ void mini::ReluOp::getCanonicalizationPatterns(RewritePatternSet &results,
 
 一个常见误解：以为 Pattern 每次只剥一层、所以三层链消不干净。边界在这里：单次 `matchAndRewrite` 确实只剥一层（外层被换掉），但**驱动会把新暴露出来的外层重新排进工作表再匹配一次**，迭代到不动点——§5.3 的 `triple_relu` 探针实测 3 层塌缩成 1 层。
 
+![Pattern 挂钩的文件级接线：左列自上而下是 MiniOps.td 的 hasCanonicalizer 开关经 mlir-tblgen 生成 ReluOp 类里的静态函数声明、ReluCanonicalization.cpp 写函数本体、CMakeLists.txt 登记源文件；右侧 -canonicalize 驱动初始化时对每个已注册算子调用钩子收集 Pattern；底部红框是错误 3 的失败路径](images/04-hook-wiring.svg)
+
+**图 2**：三处接缝其实是同一条数据流的三站：开关（.td）让 tblgen 生成**声明**，新文件（.cpp）补上**本体**，CMakeLists 把它**编进 mini-opt**，最后由现成驱动在初始化时调用钩子收集。错误 3 正是第一站断开的样子——没有声明，.cpp 里的定义就成了"无主函数"。
+
 ## 4. 图解核心机制：一次匹配重写的全过程
 
 ![SimplifyDoubleRelu 机制：左边 BEFORE 的 IR 图与两条红边，中间 matchAndRewrite 两步（顺边看一步匹配、replaceAllUsesWith+eraseOp 重写），右边 AFTER 两条绿边都改指内层；底部是贪婪驱动的工作表循环](images/02-mechanism.svg)
 
-**图 2**：上半部分用贯穿例子 `multi_user`（外层结果有 2 个使用者，最考验"替换"的完整性）走一遍单次重写：输入是左卡 IR＋两条红边，最关键的变化是右卡——两条边全部改指 `%r1`，外层 `%r2` 连定义者一起消失。下半部分是驱动的贪婪工作表循环，注意"受影响的 op 重新排队"那条回环边，它就是三层链能剥两轮的原因。
+**图 3**：上半部分用贯穿例子 `multi_user`（外层结果有 2 个使用者，最考验"替换"的完整性）走一遍单次重写：输入是左卡 IR＋两条红边，最关键的变化是右卡——两条边全部改指 `%r1`，外层 `%r2` 连定义者一起消失。下半部分是驱动的贪婪工作表循环，注意"受影响的 op 重新排队"那条回环边，它就是三层链能剥两轮的原因。
 
 按图中编号逐步讲：
 
@@ -216,7 +220,7 @@ FileCheck 汇总（`mini-opt <探针>.mlir -canonicalize | FileCheck <探针>.ml
 
 ![六个探针的真实输出结果：三张绿卡是正例塌缩，两张蓝卡是负例保留与 DCE，一张橙卡是组合流水线；底部是 count-ops 的 4→3 对照](images/03-results.svg)
 
-**图 3**：六张卡对应上面六个探针的实测结论；底部那条 count-ops 对照值得单独看——同一条命令只交换 Pass 顺序，`mini.relu` 计数从 2 变 1，这是"IR 真的变小了"的机器可读证据：
+**图 4**：六张卡对应上面六个探针的实测结论；底部那条 count-ops 对照值得单独看——同一条命令只交换 Pass 顺序，`mini.relu` 计数从 2 变 1，这是"IR 真的变小了"的机器可读证据：
 
 ```text
 $ mini-opt double_relu_basic.mlir -mini-count-ops
@@ -319,3 +323,5 @@ rewriter.replaceOp(outer, inner.getRes());   // 替换所有使用者 + 擦除 o
 今天给 mini 方言写下了第一个 RewritePattern：**问题**是 IR 里 `Relu(Relu(x))` 白付一次逐元素 pass 的算力；**机制**是两层结构——`SimplifyDoubleRelu` 本体（顺 def-use 边看一步匹配，`replaceAllUsesWith` 改掉所有使用者的边，`eraseOp` 摘除外层）加 `getCanonicalizationPatterns` 挂钩（`hasCanonicalizer = 1` 换来）；**实践**只动了三处接缝，mini-opt 一行不改；**验证**靠 6 个探针的 FileCheck 全绿和 count-ops 的 `mini.relu 2 → 1`，外加三组亲手复现的错误（静默 UB、段错误、编译期挂钩缺失）。
 
 明天（Day 46）写第二条规则：`Add(x, 0) → x`。新东西只有两个——常量匹配（操作数是不是 `mini.constant` 的 `0`）和属性读取（从 `ElementsAttr` 里把数读出来）；挂钩、驱动、FileCheck 套路全部复用今天这一套。
+
+<!-- tutorial-review: v1 -->

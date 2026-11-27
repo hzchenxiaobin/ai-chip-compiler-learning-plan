@@ -53,7 +53,10 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ├── tools/                    # 构建与生成脚本
 │   ├── build.py              # GitHub Pages 静态站构建
 │   ├── cannbot_daily_tutorial.sh  # 每日教程自动生成
-│   └── cannbot_weekly_overview.sh # 每周概览自动生成
+│   ├── cannbot_tutorial_svg_review.sh # 逐篇技术校对并按需补充 SVG
+│   ├── cannbot_svg_overlap_review.sh # 逐张检查并修复 SVG 重叠
+│   ├── cannbot_weekly_overview.sh # 每周概览自动生成
+│   └── tutorial_review_tools.py  # 技术校对报告结构校验
 ├── static/                   # 网站静态资源
 └── public/                   # 构建产物（已 gitignore）
 ```
@@ -72,6 +75,44 @@ python3 -m http.server 8000 --directory public          # http://127.0.0.1:8000
 ```text
 使用 ai-compiler-daily-tutorial，根据学习计划生成第 45 天教程。
 ```
+
+## 每日教程技术校对与 SVG 审阅
+
+`tools/cannbot_tutorial_svg_review.sh` 串行审阅每篇教程的技术内容、代码、现有图片和图解覆盖情况。
+技术校对以事实性错误为首要目标，检查概念、版本时效、代码与 API、因果关系和关键遗漏，
+按【错误】【存疑】【建议】写入每天的 `technical-review.md`。每条意见都包含原文引用和依据；
+校对报告只提出问题，不据此修改教程原文或代码。`tools/tutorial_review_tools.py` 会校验
+报告结构，并确认每条引用确实存在于对应教程中。
+
+3 张图片是最低要求而非上限：只有新增技术图能帮助理解 IR 转换、内存布局、依赖关系、
+调度时序或实验流程等内容时才补充；没有明显收益时允许不新增。
+
+```bash
+tools/cannbot_tutorial_svg_review.sh       # 依次审阅第 1～168 天
+tools/cannbot_tutorial_svg_review.sh 45    # 只审阅第 45 天
+```
+
+每篇完成后会运行校对报告、教程图片校验和整站构建，并在 `README.md` 末尾写入
+`<!-- tutorial-review: v1 -->` 标记。再次运行会跳过已完成且校验通过的教程；失败自动重试，
+随后继续下一篇。日志写入 `build/cannbot_tutorial_svg_review/`，可通过 `MAX_ATTEMPTS`
+调整重试次数；可信环境中可设置 `CANNBOT_AUTO_APPROVE=1` 自动批准 cannbot 工具权限。
+
+## SVG 重叠检查与修复
+
+`tools/cannbot_svg_overlap_review.sh` 按天串行调用 cannbot，要求实际渲染并逐张查看当天
+`images/` 下的 SVG，检查文字之间、文字与图形或连接线之间的重叠，以及文字溢出和裁切。
+发现问题时只做必要的布局调整，修复后重新渲染复检；无重叠的图片不会被重绘。
+
+```bash
+tools/cannbot_svg_overlap_review.sh       # 依次检查第 1～168 天
+tools/cannbot_svg_overlap_review.sh 45    # 只检查第 45 天
+FORCE=1 tools/cannbot_svg_overlap_review.sh 45  # 忽略已有标记，重新检查
+```
+
+每张通过检查的 SVG 会带有 `<!-- svg-overlap-review: v1 -->` 标记，再次运行时跳过，
+以便中断后继续。每篇完成后还会检查 SVG 可解析性、教程图片链接和整站构建；失败自动重试，
+随后继续下一篇。日志写入 `build/cannbot_svg_overlap_review/`，可通过 `MAX_ATTEMPTS`
+调整重试次数；可信环境中可设置 `CANNBOT_AUTO_APPROVE=1` 自动批准 cannbot 工具权限。
 
 ## 每周概览生成
 

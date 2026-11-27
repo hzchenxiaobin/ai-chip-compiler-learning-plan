@@ -294,6 +294,10 @@ mini.constant=4, mini.matmul=1, mini.mul=1, mini.relu=1)
 
 **图 3**：左表是 10 个合法性探针的真实 rc（5 正 5 负）；右侧上下两块是 5.4 节对照实验的浓缩——同一个探针、两种实现、两种诊断；底部两卡是第 11 个探针 `cse_dup_mul` 的 Pass 集成收据（CSE 合并、count-ops 计数）。看图回答：trait 版误拒的报错为什么出现在"建 op 时"而不是验证阶段？
 
+![CSE 放大镜：cse_dup_mul.mlir 合并前后的完整 IR 对照与两次合并的因果链](images/04-cse-dedup.svg)
+
+**图 4**：图 3 底部"CSE 合并"收据的放大镜——左卡是 `cse_dup_mul.mlir` 合并前的完整 IR（`-mini-count-ops` 实测 7 个 op），右卡是 `-cse` 之后的真实输出（5 个 op）；红虚线标出被合并的两行。底部两张卡拆开"三个细节"里两次合并的因果链：①先合并重复的 `mini.mul`（操作数与属性相同，`Pure` 担保无副作用）；②`%p1` 成为两个 `mini.add` 的共同输入后连带合并，`return` 两处写同一个值。带着问题看：两次合并中，Pass 查询过任何"算子名单"吗？
+
 ## 6. 常见错误与排查
 
 **错误 1：新建了 `MulVerifier.cpp`，忘了在 `lib/CMakeLists.txt` 登记**
@@ -341,3 +345,5 @@ mini.constant=4, mini.matmul=1, mini.mul=1, mini.relu=1)
 ## 9. 一句话总结与明天预告
 
 复盘周用一道实操题把第 6 周串了起来：新增 `mini.mul` 只动了 3 个文件约 89 行（`verify()` 本体 21 行），`mini-opt` 和两个 Pass 一行未改——因为算子是注册表里的数据，Pass 靠 `Pure` trait 这样的元数据工作；约束分家的答案是四个问题：单值自身归 ODS，跨值关系、诊断分级、`?` 保守放行归 Verifier，想让 Pass 查询的声明归 trait——全程本机实测 11 个探针（5 正 5 负 + 回归全对），trait 对照实验还抓到一次真实误拒。第 6 周到此收工，mini 方言有了五个算子、三层验证和一个小工具。明天（Day 43）进入第 7 周：给算子接上 Shape 推导接口——今天 `mini.mul` 的结果类型还得在 IR 里手写，明天开始让编译器自己算出来；你会看到"结果类型手写 + Verifier 检查"和"编译器推导"两条路线如何衔接。
+
+<!-- tutorial-review: v1 -->

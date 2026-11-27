@@ -102,7 +102,7 @@ func.return %r, %s
 ```text
 tutorials/week-008/day-052/
 ├── README.md                    ← 本教程
-├── images/                      ← 4 张手绘信息图（SVG）
+├── images/                     ← 5 张手绘信息图（SVG）
 └── code/
     ├── mini_fuse_multi.py       ← 热身：带 4 种策略的迷你 IR + Rewriter + 数值验证
     ├── test_multi_user.py       ← 6 个多使用者测试
@@ -454,6 +454,10 @@ module {
 - **定位**：对照 `mini-fuse-multi.cpp` 的第 (2) 步——`singleUse` 必须在任何 `eraseOp`/`replaceAllUsesWith` 之前采样。
 - **修复**：进入 Pattern 先把 `hasOneUse()` 和使用者数量存进局部变量，改写过程中只使用这份快照。
 
+![错误 3 的机理：先快照再改写与先改写后检查的对照](images/05-use-table-snapshot.svg)
+
+**图 5**：两栏走的是同一个改写序列（创建 fused、改接 `%r`、擦掉 Relu），差别只在「什么时候读使用者数量」。左栏进入 Pattern 先读 `t.hasOneUse()` 并把 `singleUse = false（2 处）` 存进快照，改写之后只看这份快照，`keep` 分支保留 `mini.add`，语义不变；右栏先改写后检查——擦掉 Relu 让 `%t` 的 use 表从 2 处变 1 处，此时才读 `hasOneUse()` 便返回「真」，`eraseOp(add)` 随之让第二个 `mini.add` 的操作数悬空。
+
 **错误 4：先创建算子、再返回 `failure`**
 - **现象**：把单使用者检查写到了创建之后——多使用者输入被「拒绝」了，但 `fused_add_relu` 已经建进图里；用默认策略重跑，输出和输入**不再逐字相同**，图里多出一个游离的融合算子。
 - **原因**：贪心驱动与 Pattern 的约定是「返回 `failure` == 本次一笔都没改」（第 45 天起反复强调的「失败必须无副作用」）；驱动器拿这个约定维护工作队列、判断不动点，它不会替失败的匹配收拾半个改写。
@@ -487,3 +491,4 @@ module {
 ## 9. 一句话总结与明天预告
 
 今天我们直面了第 51 天欠下的账：中间结果被多处使用时，「删生产者」的前提（use 表为空）不再成立——硬删破坏图、改接悄悄改变语义，两条错误路线都在真实运行里见了分晓；正确的出路只有拒绝（默认，与上游 linalg 的保守选择一致）或保留生产者（合法但复制计算，收益交给未来的 Cost Model），并且「使用者数量」必须在改写前采样。至此 `Add+Relu` 融合在正例和反例上都站住了。明天（第 53 天）把同一套机制推广到 `MatMul+Bias`：Bias 的 Shape 与输出如何对齐、两算子融合的顺序怎么定——你会看到多使用者限制在那里为什么更加致命。
+<!-- tutorial-review: v1 -->

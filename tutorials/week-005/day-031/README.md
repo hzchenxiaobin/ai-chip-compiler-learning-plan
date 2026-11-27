@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能对着 `--mlir-print-op-generic` 的输出画出任意 MLIR 的 Region／Block 嵌套层级；能解释**函数参数就是入口块参数**、**块参数取代 phi** 这两条 MLIR 铁律；能读懂 `cf.cond_br`、`cf.br`、`scf.if`、`scf.for` 四种控制流写法并说出各自持有几个 Region；能用 `--convert-scf-to-cf` 亲眼看到结构化控制流被拆成块和跳转、看到循环变量变成循环头块参数；能说出 `block with no terminator`、`branch has 0 operands for successor #1`、`operand #0 does not dominate this use` 等五类真实报错各违反了哪条块级契约。
 > **预计时间**：学习 25 分钟 ＋ 实践 45 分钟
 > **前置准备**：Day 29 的 MLIR 环境（`mlir-opt-18`、`mlir-cpu-runner-18` 可用）；Day 30 的 Operation 五件套（名字·操作数·属性·Region·结果）——今天补的就是其中空着的 Region；Day 15 的基本块／前驱后继；Day 17 的 SSA 与 phi。
-> **今日产出**：`code/` 下 5 个文件：`branch_relu.mlir`（3 块 CFG 主示例）、`if_relu.mlir`（一条 op 持 2 个 Region）、`loop_sum.mlir` 与 `loop_sum_closed.mlir`（scf.for 循环＋开区间对照）、`probe.sh`（一键重放 6 组实验和 5 个错误探针），以及它们在本机的真实运行记录；外加三张 Region／Block 结构与机制图。
+> **今日产出**：`code/` 下 5 个文件：`branch_relu.mlir`（3 块 CFG 主示例）、`if_relu.mlir`（一条 op 持 2 个 Region）、`loop_sum.mlir` 与 `loop_sum_closed.mlir`（scf.for 循环＋开区间对照）、`probe.sh`（一键重放 6 组实验和 5 个错误探针），以及它们在本机的真实运行记录；外加三张 Region／Block 结构与机制图和一张支配关系排错图。
 
 ## 1. 今天解决什么问题？
 
@@ -96,7 +96,7 @@ Day 30 结尾埋了两处伏笔：解剖图里 Operation 的 **Region 格子是�
 ```text
 tutorials/week-005/day-031/
 ├── README.md                 ← 本教程
-├── images/                   ← 三张图
+├── images/                   ← 四张图
 └── code/
     ├── branch_relu.mlir      ← ① 主示例：cf.cond_br 版 ReLU（3 块 CFG ＋ 块参数）
     ├── if_relu.mlir          ← ② scf.if：一条 op 持 2 个 Region
@@ -324,6 +324,10 @@ $ mlir-cpu-runner-18 /tmp/day031_closed.llvm.mlir --entry-point-result=i32
 定位：报错指向使用处，note 指回定义处，两行对起来看。
 修复：把值改成块参数（由边携带进来），或把定义挪到支配使用处的地方——前者正是 MLIR 的惯用解法。
 
+![支配关系探针图：左侧为 err_dom 探针的 4 块 CFG 与两条入边——绿实线路经 ^a 时 %va 已定义、红虚线路经 ^b 时 %va 不存在；右侧三张卡依次为支配的定义与逐路径判定、块参数修复写法、报错定位口诀](images/04-dominance-probe.svg)
+
+**图 4**：配合错误 4 看。左图把探针的 4 块 CFG 和两条入边画出来：**绿实线路（真→^a→^merge）经过 `%va` 的定义，红虚线路（假→^b→^merge）整条路没见过 `%va`——只要有一条路径不满足，整体即不支配**，`return %va` 因此被 Verifier 拒绝；右上是支配的定义与两条路径的逐条判定；右中是惯用修复——把值改成块参数：`^a` 交出 `%va`、`^b` 交默认值 `%c0`，汇合块参数 `%r` 接住（正是 3.3 节的 phi 机制）；右下是 error 行／note 行对着读的定位口诀，并附另一条修复路（把定义挪进 `^bb0`）。
+
 **错误 5：`error: 'scf.if' op region control flow edge from Region #0 to parent results: source has 0 operands, but target successor needs 1`**
 现象：`%r = scf.if %pos -> (i32) { }`——then Region 里忘了写 `scf.yield`。
 原因：`scf.if` 声明了产出 1 个 i32，但 Region 出口空手离场——**yield 是 Region 与父操作之间的交割单**。
@@ -348,8 +352,10 @@ $ mlir-cpu-runner-18 /tmp/day031_closed.llvm.mlir --entry-point-result=i32
 - [ ] 我能用自己的话解释"函数参数就是入口块参数"和"块参数取代 phi"，并指着 `branch_relu` 的 `^merge(%val)` 说出两条入边各带什么值；
 - [ ] 我能独立运行 `bash code/probe.sh`，指出实验⑤里哪个块是循环头、哪条是回边、`(%1, %2)` 对应 scf.for 的哪两个块参数；
 - [ ] 我能说出 `scf.for` 上界的开区间语义，并解释为什么 `sum_to_n(5)` 是 10 而 `sum_to_n(1)` 是练习里那个答案；
-- [ ] 我能说出五个真实报错各违反哪条块级契约（终结符垫底／分支操作数个数／类型一致／支配关系／Region 出口交割），并保存了 `probe.sh` 的运行记录和三张结构图。
+- [ ] 我能说出五个真实报错各违反哪条块级契约（终结符垫底／分支操作数个数／类型一致／支配关系／Region 出口交割），并保存了 `probe.sh` 的运行记录和四张结构图。
 
 ## 9. 一句话总结与明天预告
 
 今天的问题是"Day 30 解剖图里空着的 Region 格子到底是什么"；机制上要记住的是：**Operation 持有 Region，Region 是 Block 的有序列表，Block＝块参数＋操作列表＋终结符；块参数取代 phi、函数参数就是入口块参数，前驱后继关系藏在 IR 结构里**；实践上用 `branch_relu`／`if_relu`／`loop_sum` 三个例子走了"看层级→认块参数→降级→执行"的完整闭环；验证方式是打印机白送的 `// pred` 注释、`--convert-scf-to-cf` 拆出来的循环头 phi 对，以及终端里真实的 10 和 15。明天（Day 32）给今天反复出场的 `i32`、`index`、`tensor<2x3xf32>` 上户口：Type 与 Attribute——为什么常量 0 是属性 `value = 0 : i32` 而不是类型，答案就藏在"类型是值的标签、属性是 op 的铭牌"这条分工里。
+
+<!-- tutorial-review: v1 -->

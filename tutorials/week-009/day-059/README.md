@@ -392,3 +392,4 @@ bad_reshape.mlir:16:8: error: 'memref.collapse_shape' op invalid source layout
 
 
 
+<!-- tutorial-review: v1 -->
