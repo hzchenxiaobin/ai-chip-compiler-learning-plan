@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.5,5.0 Q 491.1,4.7 975.5,3.5 Q 976.7,318.6 975.0,634.8 Q 488.7,635.2 3.6,635.5 Q 4.4,320.3 4.5,5.0 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">k 结尾的顺序为什么各少 4 个——一笔反事实账</text>
+<path d="M 330.8,48.6 Q 492.0,47.8 649.0,46.7" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 46.7,57.0 Q 190.5,58.1 335.4,59.5 Q 334.3,89.4 337.3,117.0 Q 191.4,118.5 45.6,116.9 Q 47.7,86.9 46.7,57.0 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="191" y="78" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 顺序不改空间账</text>
+<text x="191" y="96" font-size="9.5" fill="#6b6257" text-anchor="middle">estimate() 没有 order 这一项</text>
+<text x="191" y="110" font-size="9.5" fill="#3B3B3B" text-anchor="middle">每顺序过闸数相同：449 × 5 = 2,245</text>
+<path d="M 337.4,85.5 Q 345.3,85.4 352.0,87.0 M 339.0,90.0 L 352.0,87.0 L 339.0,84.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 355.9,57.2 Q 499.7,59.7 644.8,58.8 Q 645.2,87.5 645.5,116.0 Q 499.4,115.8 354.4,115.6 Q 356.7,87.2 355.9,57.2 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="501" y="78" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 参数约束先剪</text>
+<text x="501" y="96" font-size="9.5" fill="#6b6257" text-anchor="middle">每顺序剪 98 个：U=16 且末位维=8</text>
+<text x="501" y="110" font-size="9.5" fill="#3B3B3B" text-anchor="middle">（49 个 tile × 2 种缓冲）</text>
+<path d="M 647.3,88.2 Q 655.6,85.6 662.0,87.0 M 649.0,90.0 L 662.0,87.0 L 649.0,84.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 667.3,57.5 Q 809.8,59.8 952.1,59.2 Q 952.8,87.3 951.0,115.9 Q 806.3,116.5 665.2,116.7 Q 668.1,85.5 667.3,57.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="809" y="78" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">③ 幸存 = 2,245 − X</text>
+<text x="809" y="96" font-size="9.5" fill="#6b6257" text-anchor="middle">X = 被剪的 98 个里</text>
+<text x="809" y="110" font-size="9.5" fill="#3B3B3B" text-anchor="middle">『本来会过闸』的数量</text>
+<path d="M 57.0,127.4 Q 201.8,128.9 345.4,128.9 Q 344.3,179.8 344.6,226.5 Q 198.4,229.5 55.9,229.0 Q 57.5,176.3 57.0,127.4 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.26"/>
+<text x="200" y="150" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">i 结尾：jki、kji</text>
+<text x="200" y="172" font-size="10" fill="#3B3B3B" text-anchor="middle">被剪 98 个里 82 个本会过闸</text>
+<text x="200" y="192" font-size="9.5" fill="#6b6257" text-anchor="middle">single 43 ＋ double 39</text>
+<text x="200" y="216" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存 2,163</text>
+<path d="M 355.0,127.3 Q 498.8,127.2 642.7,127.7 Q 641.8,179.2 644.2,226.7 Q 499.0,227.1 354.5,229.1 Q 354.1,176.2 355.0,127.3 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.26"/>
+<text x="500" y="150" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">j 结尾：ikj、kij</text>
+<text x="500" y="172" font-size="10" fill="#3B3B3B" text-anchor="middle">被剪 98 个里 82 个本会过闸</text>
+<text x="500" y="192" font-size="9.5" fill="#6b6257" text-anchor="middle">single 43 ＋ double 39</text>
+<text x="500" y="216" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存 2,163</text>
+<path d="M 654.6,128.8 Q 796.9,130.0 943.2,129.0 Q 944.4,180.1 945.4,228.7 Q 801.8,228.3 656.1,227.5 Q 653.4,177.6 654.6,128.8 Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.26"/>
+<text x="800" y="150" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">k 结尾：ijk、jik</text>
+<text x="800" y="172" font-size="10" fill="#3B3B3B" text-anchor="middle">被剪 98 个里 86 个本会过闸</text>
+<text x="800" y="192" font-size="9.5" fill="#6b6257" text-anchor="middle">single 43 ＋ double 43</text>
+<text x="800" y="216" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">幸存 2,159</text>
+<path d="M 863.6,120.6 Q 894.9,119.7 928.6,123.2 Q 930.5,134.8 929.1,146.7 Q 898.2,149.1 865.5,148.3 Q 866.3,136.3 863.6,120.6 Z" stroke="#C97B7B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.5"/>
+<text x="897" y="140" font-size="11" fill="#C97B7B" text-anchor="middle" font-weight="bold">−4 个</text>
+<text x="490" y="246" font-size="10" fill="#6b6257" text-anchor="middle">single 三家打平（43 = 43 = 43）；差 4 全部出自 double（39 vs 43）——×2 的流入项让『8 住在哪根维』变成生死题</text>
+<text x="60" y="268" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">被剪集合里 double 的 4 个生死对：同一组 tile 数字，8 住在哪根维上</text>
+<path d="M 69.1,279.5 Q 270.5,278.2 468.6,281.1 Q 466.9,295.7 469.2,309.0 Q 270.5,308.1 69.2,307.1 Q 68.0,293.3 69.1,279.5 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="86" y="299" font-size="10" fill="#3B3B3B" text-anchor="start">64×512×8 = 169,984 B ✓（8 住 tk）</text>
+<path d="M 474.5,294.4 Q 496.4,295.6 522.0,294.0 M 509.0,297.0 L 522.0,294.0 L 509.0,291.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 525.2,278.9 Q 725.3,278.2 923.6,281.3 Q 924.0,292.6 922.7,307.1 Q 726.1,308.1 527.1,308.5 Q 527.0,294.5 525.2,278.9 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.28"/>
+<text x="542" y="299" font-size="10" fill="#3B3B3B" text-anchor="start">8×512×64 = 284,672 B ✗（8 住 tm）</text>
+<path d="M 71.4,314.9 Q 269.7,316.8 466.7,315.2 Q 464.6,329.3 466.7,340.8 Q 269.3,342.9 70.3,341.4 Q 71.0,326.1 71.4,314.9 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="86" y="333" font-size="10" fill="#3B3B3B" text-anchor="start">128×256×8 = 156,672 B ✓（8 住 tk）</text>
+<path d="M 474.6,329.0 Q 497.4,326.7 522.0,328.0 M 509.0,331.0 L 522.0,328.0 L 509.0,325.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 525.3,313.5 Q 725.1,312.2 922.6,313.5 Q 921.7,326.8 923.9,341.4 Q 722.7,343.8 525.7,342.4 Q 523.4,328.5 525.3,313.5 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.28"/>
+<text x="542" y="333" font-size="10" fill="#3B3B3B" text-anchor="start">8×256×128 = 279,552 B ✗（8 住 tm）</text>
+<path d="M 71.0,348.2 Q 268.3,348.7 469.6,349.5 Q 469.2,362.2 469.2,375.4 Q 271.2,376.9 70.9,374.9 Q 68.9,363.2 71.0,348.2 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="86" y="367" font-size="10" fill="#3B3B3B" text-anchor="start">256×128×8 = 156,160 B ✓（8 住 tk）</text>
+<path d="M 475.2,361.6 Q 496.3,363.8 522.0,362.0 M 509.0,365.0 L 522.0,362.0 L 509.0,359.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 524.5,349.5 Q 723.2,349.9 925.0,347.4 Q 924.8,359.2 925.2,375.3 Q 723.5,377.3 524.9,377.4 Q 522.7,361.4 524.5,349.5 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.28"/>
+<text x="542" y="367" font-size="10" fill="#3B3B3B" text-anchor="start">8×128×256 = 283,136 B ✗（8 住 tm）</text>
+<path d="M 68.8,382.0 Q 267.0,381.2 468.1,382.5 Q 469.2,394.2 468.2,409.9 Q 270.9,409.4 69.4,408.5 Q 69.7,393.4 68.8,382.0 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="86" y="401" font-size="10" fill="#3B3B3B" text-anchor="start">512×64×8 = 168,192 B ✓（8 住 tk）</text>
+<path d="M 473.3,397.6 Q 497.3,394.1 522.0,396.0 M 509.0,399.0 L 522.0,396.0 L 509.0,393.0" stroke="#6b6257" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 526.0,381.4 Q 726.7,381.1 923.5,382.8 Q 922.8,397.2 923.9,410.7 Q 723.4,411.4 526.0,410.2 Q 524.8,395.2 526.0,381.4 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.28"/>
+<text x="542" y="401" font-size="10" fill="#3B3B3B" text-anchor="start">8×64×512 = 297,216 B ✗（8 住 tm）</text>
+<text x="490" y="428" font-size="9.5" fill="#C97B7B" text-anchor="middle">右下那位 8×64×512 = 297,216 B——正是图 3 资源层剪掉的同款合计：同一组数字，8 从 tm 挪到 tk，297,216 → 168,192 B</text>
+<path d="M 46.0,442.6 Q 490.2,442.8 932.9,440.9 Q 931.5,491.0 933.4,544.5 Q 489.7,545.5 45.5,546.9 Q 47.7,496.1 46.0,442.6 Z" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#F5EFE0" fill-opacity="1.0"/>
+<text x="490" y="464" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">账本对三根维天生不对称——这就是差 4 的根源</text>
+<text x="70" y="488" font-size="10" fill="#3B3B3B" text-anchor="start">A = tm·tk、B = tk·tn 是 DMA 流入项（double 要 ×2）；C = tm·tn 恒 ×1；bias 只住 tn</text>
+<text x="70" y="510" font-size="10" fill="#3B3B3B" text-anchor="start">8 住 tk → 大积 tm·tn 落进不 ×2 的 C → double 便宜 → 43 个过闸</text>
+<text x="70" y="532" font-size="10" fill="#3B3B3B" text-anchor="start">8 住 tm／tn → 大积落进要 ×2 的 A／B → double 吃亏 → 39 个过闸</text>
+<text x="490" y="590" font-size="9" fill="#6b6257" text-anchor="middle">出处：2159／2163、7002／5968 见 outputs/space-table.txt；82／86、39／43、449 与四对字节用当天 estimate()＋闸门对被剪集合逐一复算</text>
+</svg>

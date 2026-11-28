@@ -6,7 +6,7 @@
 >
 > **前置准备**：一台装有 MLIR/LLVM 工具链的机器（需要 `mlir-opt`、`mlir-translate`、`llvm-as`、`opt`、`llc`）＋ Python 3.11（含 llvmlite，用于跨版本双线验证）。本文所有 `code/outputs/` 冻结自 aarch64 Linux 真机（2026-11-13，Ubuntu LLVM 18.1.8，位于 `/usr/lib/llvm-18/bin`；Python 3.11.4，llvmlite 0.50.0 内嵌 LLVM 22.1.0）。**诚实声明**：D113~D116 的机器上没有 MLIR 工具链，翻译线是教学仿真；今天起每个环节都是真 MLIR 工具——但如果你在 macOS 上复跑，`/usr/lib/llvm-18/bin` 这类路径不存在（需自装 LLVM，如 Homebrew 的 `/opt/homebrew/opt/llvm/bin`）、`llc` 生成的汇编格式、llvmlite 版本都可能不同；pass 链、报错族、账目口径一致，逐字输出以你的机器为准。内容上需要：D115 的兑换表/描述符/胶水（今天真管道把它们全部兑现）、D114 的模式清单（今天每条 pass 接管清单的哪一行）、D116 的算子层模式与三层验证（今天的对照基线）、D113 的 LLVM 方言语法与导出三规则（R2 常量内联、R3 块参数→phi 今天在真工具上兑现）。
 >
-> **今日产出**：`code/lower.sh`（五阶段完整 Lowering 管道：优化 → C1 落地 → 五 pass 转换 → reconcile → 导出＋验证，每阶段中间文件单独存档）、`code/census.py`（口径对齐 D114~D116 的 op 计数器，胶水单列）、`code/run_all.sh`（一键复现 TP0~TP10，22 PASS / 0 FAIL）、三份源 IR（`gemm.mlir` 21 op 主输入、`gemm_tight.mlir` 18 op 账本回归、`gemm_strided.mlir` 错误实验）、`code/outputs/` 三组冻结文件——组 1 优化前后 MLIR（`gemm-0-optimized.mlir` 等）、组 2 LLVM Dialect（`gemm-2-llvm-dialect.mlir`＋noreconcile 胶水证据版）、组 3 LLVM IR（`gemm-3.ll`/`gemm-3.s`，外加 `gemm-O2.ll` 与 naive-direct 收敛对照、tight 全套、四个 `errors-*.txt` 真实报错存档）＋`outputs/report.txt` 真机报告＋本文 3 张图。
+> **今日产出**：`code/lower.sh`（五阶段完整 Lowering 管道：优化 → C1 落地 → 五 pass 转换 → reconcile → 导出＋验证，每阶段中间文件单独存档）、`code/census.py`（口径对齐 D114~D116 的 op 计数器，胶水单列）、`code/run_all.sh`（一键复现 TP0~TP10，22 PASS / 0 FAIL）、三份源 IR（`gemm.mlir` 21 op 主输入、`gemm_tight.mlir` 18 op 账本回归、`gemm_strided.mlir` 错误实验）、`code/outputs/` 三组冻结文件——组 1 优化前后 MLIR（`gemm-0-optimized.mlir` 等）、组 2 LLVM Dialect（`gemm-2-llvm-dialect.mlir`＋noreconcile 胶水证据版）、组 3 LLVM IR（`gemm-3.ll`/`gemm-3.s`，外加 `gemm-O2.ll` 与 naive-direct 收敛对照、tight 全套、四个 `errors-*.txt` 真实报错存档）＋`outputs/report.txt` 真机报告＋本文 4 张图。
 
 ## 1. 今天解决什么问题？
 
@@ -201,7 +201,11 @@ outputs/gemm-2-llvm-dialect.mlir: total 94 op（胶水 0 条，llvm.* 94，非 l
     llvm.extractvalue x14
 ```
 
-103−94＝9：6 条 cast 加 3 条 extractvalue——reconcile 前，内层 load 要先从 cast 重建的 struct 里 `extractvalue [1]` 取 aligned 指针再算地址；reconcile 后直接用签名里的裸指针 `%arg1`/`%arg8`（diff 两份文件可见 getelementptr 的操作数从 `%52` 变回 `%arg1`）。**胶水的代价不止是"多 6 个 op"，还有每个下游使用者都跟着绕路**。
+103−94＝9：6 条 cast 加 3 条 extractvalue——reconcile 前，内层 load 要先从 cast 重建的 struct 里 `extractvalue [1]` 取 aligned 指针再算地址；reconcile 后直接用签名里的裸指针 `%arg1`/`%arg8`（diff 两份文件可见 getelementptr 的操作数从 `%52` 变回 `%arg1`）。**胶水的代价不止是"多 6 个 op"，还有每个下游使用者都跟着绕路**。不用 diff、直接并排看同一段 k 循环头：
+
+![对照：reconcile 前后同一段 k 循环头——cast 行消失、访存从重建 struct 的 extractvalue 绕路拉直为签名裸指针](images/04-reconcile-straighten.svg)
+
+**图 3**：左右各贴一段原文（左 `gemm-2-llvm-dialect-noreconcile.mlir`、右 `gemm-2-llvm-dialect.mlir` 的 ^bb5/^bb6）——**左**（reconcile 前）循环头第一行就是 `%50 = builtin.unrealized_conversion_cast %48 : i64 to index`，load 算地址要先 `extractvalue %7[1]` 从重建的描述符 struct 取 aligned 指针再 getelementptr；**右**（reconcile 后）cast 行整行消失，getelementptr 直接落在签名裸指针 `%arg1` 上（B 矩阵同族 `%58`→`%arg8`、store 侧 `%67`→`%29`）。中间一列是这条 pass 的账目变化：103→94 op（少 9 条＝6 条 cast＋3 条 extractvalue）、extractvalue 17→14、胶水 6→0；底部贴 errors-3 原文——不清零，mlir-translate 卡在第 12 行第一条 struct→memref cast 上。
 
 **组 3：LLVM IR。** gemm-3.ll 的三处必看——malloc 的真身（第 21 行，12 个 f32＝48B）：
 
@@ -250,7 +254,7 @@ phi 4 条＝三个循环变量＋一个 f32 累加器；`llvm.mlir.constant` 在
 
 ![真实运行结果：优化前后、两条路收敛、O2 展开、账本清零与四个错误的层](images/03-example.svg)
 
-**图 3**：四块证据拼图——**① 优化前后 MLIR**（组 1）：gemm.mlir 21 op（下界 6−6、上界 2×2、3+(6−6)、重复常量 %c1a/%c1b）折叠成 gemm-0-optimized 的 18 op，并回答"为什么值得单独存两份文件"——优化在 MLIR 层真实发生，对照 A 证明跳过它直接转换两条路的 .ll 也逐字节一致，但 MLIR 优化层仍更早暴露形态；**② 两条路收敛＋③ opt -O2**：62 条 SSA 指令的导出物检阅（define 2 个、malloc＋insertvalue×7、phi×4）→ O2 后 SSA 62→67、fmul 1→18，malloc 标注 noalias＋dereferenceable_or_null(48)；**④ 账本清零**：D116 结束时 14/18＋残账 C1×4，今天 18/18——tight 版（18 op）过同一条管道纯 LLVM 方言 74 op、残账 0、胶水 0，两个源在真管道上都清零。TP7 的收敛证据——朴素源跳过阶段 0 直接转换，`gemm-naive-direct.ll` 与 `gemm-3.ll` **diff 为空**；有意思的是方言层并不相同（naive-direct 版 97 op、常量 16 条，优化路 94 op、常量 14 条——朴素冗余到方言层还活着），但翻译层 R2 把常量全部内联，两条路的 .ll **逐字节一致**——这正好说明"收敛发生在哪一层"是个可以精确回答的问题：**MLIR 优化层不是唯一的折叠点，但它是唯一能让形态提前变干净的层**；TP8 的 O2 证据——
+**图 4**：四块证据拼图——**① 优化前后 MLIR**（组 1）：gemm.mlir 21 op（下界 6−6、上界 2×2、3+(6−6)、重复常量 %c1a/%c1b）折叠成 gemm-0-optimized 的 18 op，并回答"为什么值得单独存两份文件"——优化在 MLIR 层真实发生，对照 A 证明跳过它直接转换两条路的 .ll 也逐字节一致，但 MLIR 优化层仍更早暴露形态；**② 两条路收敛＋③ opt -O2**：62 条 SSA 指令的导出物检阅（define 2 个、malloc＋insertvalue×7、phi×4）→ O2 后 SSA 62→67、fmul 1→18，malloc 标注 noalias＋dereferenceable_or_null(48)；**④ 账本清零**：D116 结束时 14/18＋残账 C1×4，今天 18/18——tight 版（18 op）过同一条管道纯 LLVM 方言 74 op、残账 0、胶水 0，两个源在真管道上都清零。TP7 的收敛证据——朴素源跳过阶段 0 直接转换，`gemm-naive-direct.ll` 与 `gemm-3.ll` **diff 为空**；有意思的是方言层并不相同（naive-direct 版 97 op、常量 16 条，优化路 94 op、常量 14 条——朴素冗余到方言层还活着），但翻译层 R2 把常量全部内联，两条路的 .ll **逐字节一致**——这正好说明"收敛发生在哪一层"是个可以精确回答的问题：**MLIR 优化层不是唯一的折叠点，但它是唯一能让形态提前变干净的层**；TP8 的 O2 证据——
 
 ```text
   SSA 指令 62 -> 67 条；fmul 1 -> 18（循环展开：指令变多、循环开销变少）
@@ -323,3 +327,5 @@ outputs/tight-2-llvm-dialect.mlir: total 74 op（胶水 0 条，llvm.* 74，非 
 ## 9. 一句话总结与明天预告
 
 今天的闭环：**问题**——D116 留下残账 C1×4 和一族胶水，且翻译线还是教学仿真，GEMM 到不了真 LLVM 面前；**机制**——七条 pass 按依赖排成流水线（scf 拆四块、memref 换描述符、func 换 ABI、arith/index 换词汇），转换边界的 6 条 unrealized_conversion_cast 胶水（i64→index ×3、struct→memref ×3）由 reconcile 显式清零，mlir-translate 把纯 LLVM 方言变成 .ll 并顺手生成 `_mlir_ciface_gemm` 包装；**实践**——21 op 的朴素 GEMM 过完整管道：优化折叠 3 条冗余、scf 清零出 9 块 3 cond_br、五 pass 转换残账归零、导出 62 条 SSA / 4 phi / malloc＋insertvalue 真身，llvm-as/opt/llc 三连＋llvmlite 22.1 跨版本双线全过，tight 版 18/18 账本回归；**验证**——22 PASS / 0 FAIL，两条路 .ll 收敛（优化不是最后一层的兜底）、O2 展开（两层优化各管一段）、四个错误全部复现存档。明天 D118 执行 LLVM IR：把 gemm-3.ll 交给 JIT（或 .s 编译链接走 AOT），用 ctypes 按 C 合同调 `_mlir_ciface_gemm`，numpy 参考按 k 序累加逐位对照——**管道的最后一站是"算对"，今天冻结的 .ll/.s 就是那一步的起跑线**。
+
+<!-- tutorial-review: v1 -->

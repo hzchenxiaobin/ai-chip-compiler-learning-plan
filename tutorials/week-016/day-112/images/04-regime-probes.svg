@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.2,3.8 Q 500.1,3.2 995.8,4.4 Q 996.9,331.5 995.5,655.8 Q 500.3,656.9 4.1,655.2 Q 2.8,329.9 4.2,3.8  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="500" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">宽 regime 拧了哪三个旋钮：谁跨过 256 边界、谁的单价涨了</text>
+<path d="M 300.5,44.2 Q 501.8,45.6 699.4,44.1" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 42.3,63.2 Q 264.1,61.8 486.4,62.6 Q 487.2,130.9 485.8,198.4 Q 263.9,199.6 41.7,198.2 Q 42.9,131.1 42.3,63.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.30"/>
+<text x="56" y="84" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">窄校准（D110 三纪律）</text>
+<text x="56" y="106" font-size="10" fill="#3B3B3B" text-anchor="start">① 单行宽度 100；② N 维探针 range(32/64/96)</text>
+<text x="56" y="124" font-size="10" fill="#3B3B3B" text-anchor="start">③ 代表列 v2 = 3；数据 ≤ 80KB、下标 ≤ 96</text>
+<text x="56" y="148" font-size="9.8" fill="#6b6257" text-anchor="start">→ 下标全落进小整数缓存 −5..256：迭代零分配</text>
+<path d="M 513.6,62.4 Q 735.9,61.6 958.2,62.8 Q 957.6,131.2 958.4,198.6 Q 735.6,199.4 513.2,198.1 Q 514.4,130.6 513.6,62.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.30"/>
+<text x="528" y="84" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">宽校准（D112 第二套单价）</text>
+<text x="528" y="106" font-size="10" fill="#3B3B3B" text-anchor="start">① 单行宽度 512（窄 100）；③ 代表列 v2 = 300</text>
+<text x="528" y="124" font-size="10" fill="#3B3B3B" text-anchor="start">② 走 N 维的探针 range(128/256/512)——跨过 256</text>
+<text x="528" y="148" font-size="9.8" fill="#6b6257" text-anchor="start">→ v ≥ 257 的每次迭代现场分配整数对象</text>
+<text x="528" y="170" font-size="9.8" fill="#6b6257" text-anchor="start">　 数据集 100×512 ≈ 400KB，远超 80KB 纪律</text>
+<text x="48" y="234" font-size="12.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">同一根数轴看两个 regime：小整数缓存边界（−5..256）是分界线</text>
+<path d="M 70.6,248.4 Q 285.2,247.1 499.5,248.2 Q 500.3,264.1 499.4,279.6 Q 285.0,280.8 70.2,279.5 Q 69.8,264.2 70.6,248.4  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.30"/>
+<text x="285" y="268" font-size="10.5" fill="#3B3B3B" text-anchor="middle">0 … 256：整数对象已缓存——迭代免分配</text>
+<path d="M 500.6,248.1 Q 715.3,247.3 929.6,248.4 Q 930.2,264.3 929.3,279.8 Q 715.1,280.6 500.4,279.4 Q 501.2,264.0 500.6,248.1  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.30"/>
+<text x="715" y="268" font-size="10.5" fill="#3B3B3B" text-anchor="middle">257 … 512：v ≥ 257 每次迭代现场分配 int</text>
+<path d="M 70.2,291.4 Q 498.6,292.8 916.8,291.2 M 916.8,291.2 L 925.4,290.6 M 916.9,291.6 L 925.6,295.1" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 70.3,286.8 L 70.1,295.6 M 231.2,286.6 L 231.4,295.4 M 499.8,287.0 L 500.2,295.8 M 929.9,286.9 L 929.7,295.7" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<text x="70" y="306" font-size="9.5" fill="#3B3B3B" text-anchor="middle">0</text>
+<text x="231" y="306" font-size="9.5" fill="#3B3B3B" text-anchor="middle">96（窄校准斜率上限）</text>
+<text x="500" y="306" font-size="9.5" fill="#3B3B3B" text-anchor="middle">256（缓存边界）</text>
+<text x="930" y="306" font-size="9.5" fill="#3B3B3B" text-anchor="middle">512</text>
+<path d="M 42.1,322.3 Q 264.2,321.2 486.5,322.4 Q 485.9,475.1 486.3,627.6 Q 264.1,628.4 42.4,627.2 Q 43.2,475.4 42.1,322.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.24"/>
+<text x="54" y="343" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">谁涨了：窄 → 宽（c-regime.txt ①，ns/行）</text>
+<text x="54" y="368" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">跨过 256 边界的行——全部上涨：</text>
+<text x="54" y="388" font-size="10" fill="#3B3B3B" text-anchor="start">loop　6.6 → 12.2　（+85.3%）</text>
+<text x="54" y="406" font-size="10" fill="#3B3B3B" text-anchor="start">j0　　55.7 → 59.9　（+7.5%）</text>
+<text x="54" y="424" font-size="10" fill="#3B3B3B" text-anchor="start">ju　　75.2 → 87.2　（+15.9%）</text>
+<text x="54" y="442" font-size="10" fill="#3B3B3B" text-anchor="start">pre　 48.3 → 60.7　（+25.6%）</text>
+<path d="M 54.2,461.8 Q 262.1,463.2 470.4,462.1" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="54" y="484" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">留在缓存区里的行——波动小：</text>
+<text x="54" y="504" font-size="10" fill="#3B3B3B" text-anchor="start">k0　 60.3 → 62.2　（+3.1%）</text>
+<text x="54" y="522" font-size="10" fill="#3B3B3B" text-anchor="start">i0　　85.1 → 81.1　（−4.8%）</text>
+<text x="54" y="540" font-size="10" fill="#3B3B3B" text-anchor="start">hd1　 27.0 → 25.7　（−4.7%）</text>
+<text x="54" y="576" font-size="9.6" fill="#6b6257" text-anchor="start">读法：上涨集中在走 N 维的行——loop +85.3% 来自</text>
+<text x="54" y="594" font-size="9.6" fill="#6b6257" text-anchor="start">v ≥ 257 的整数对象分配（pre 的操作数 512 同样越界）</text>
+<path d="M 513.4,322.1 Q 735.8,321.4 958.1,322.3 Q 957.5,475.2 958.3,627.9 Q 735.4,628.6 513.1,627.4 Q 514.1,474.8 513.4,322.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.24"/>
+<text x="526" y="343" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">5.4 剂量对照：把 regime 拧回去（独立进程）</text>
+<text x="526" y="368" font-size="10" fill="#3B3B3B" text-anchor="start">行宽  96 → j0 60.4　ju 74.8　loop  7.0 ns</text>
+<text x="526" y="386" font-size="10" fill="#3B3B3B" text-anchor="start">行宽 384 → j0 64.7　ju 85.4　loop 10.9 ns</text>
+<text x="526" y="404" font-size="10" fill="#3B3B3B" text-anchor="start">行宽 512 → j0 66.3　ju 88.9　loop 12.3 ns</text>
+<text x="526" y="430" font-size="9" fill="#6b6257" text-anchor="start">下图：曲线 = j0 / loop 相对行宽 96 的涨幅（%）；点旁数字 = 该行宽的绝对读数（ns）</text>
+<path d="M 590.3,566.2 Q 589.6,504.1 590.4,451.3 M 590.4,451.3 L 586.7,459.1 M 590.4,451.3 L 594.8,458.6" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 580.1,560.4 Q 738.2,561.8 888.6,560.2 M 888.6,560.2 L 895.3,555.8 M 888.9,560.4 L 895.4,565.2" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<path d="M 701.6,557.2 Q 701.1,506.3 701.8,456.4" stroke="#C97B7B" stroke-width="1.4" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<text x="701" y="447" font-size="9" fill="#C97B7B" text-anchor="middle">256 边界</text>
+<text x="598" y="456" font-size="9" fill="#6b6257" text-anchor="start">涨幅（%）</text>
+<text x="578" y="565" font-size="9" fill="#6b6257" text-anchor="end">0%</text>
+<text x="590" y="576" font-size="9.5" fill="#3B3B3B" text-anchor="middle">96</text>
+<text x="791" y="576" font-size="9.5" fill="#3B3B3B" text-anchor="middle">384</text>
+<text x="880" y="576" font-size="9.5" fill="#3B3B3B" text-anchor="middle">512</text>
+<text x="890" y="592" font-size="9" fill="#6b6257" text-anchor="end">行宽（斜率尺寸一起收窄）</text>
+<path d="M 590.2,560.3 Q 690.1,521.8 791.3,483.2 Q 838.2,466.4 880.1,455.6" stroke="#E8A87C" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<circle cx="590.2" cy="560.3" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.2"/>
+<circle cx="791.3" cy="483.2" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.2"/>
+<circle cx="880.1" cy="455.6" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.2"/>
+<text x="791" y="472" font-size="8.5" fill="#3B3B3B" text-anchor="middle">10.9 ns</text>
+<text x="874" y="449" font-size="8.5" fill="#3B3B3B" text-anchor="end">12.3 ns</text>
+<path d="M 590.2,560.3 Q 690.4,555.2 791.2,550.4 Q 838.1,548.6 880.2,546.5" stroke="#A9C4D4" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<circle cx="590.2" cy="560.3" r="4" fill="#A9C4D4" stroke="#3B3B3B" stroke-width="1.2"/>
+<circle cx="791.2" cy="550.4" r="4" fill="#A9C4D4" stroke="#3B3B3B" stroke-width="1.2"/>
+<circle cx="880.2" cy="546.5" r="4" fill="#A9C4D4" stroke="#3B3B3B" stroke-width="1.2"/>
+<text x="791" y="540" font-size="8.5" fill="#3B3B3B" text-anchor="middle">64.7 ns</text>
+<text x="880" y="538" font-size="8.5" fill="#3B3B3B" text-anchor="middle">66.3 ns</text>
+<circle cx="897" cy="456" r="4" fill="#E8A87C" stroke="#3B3B3B" stroke-width="1.2"/>
+<text x="906" y="460" font-size="9.5" fill="#3B3B3B" text-anchor="start">loop</text>
+<circle cx="897" cy="548" r="4" fill="#A9C4D4" stroke="#3B3B3B" stroke-width="1.2"/>
+<text x="906" y="552" font-size="9.5" fill="#3B3B3B" text-anchor="start">j0</text>
+<text x="526" y="613" font-size="9.6" fill="#6b6257" text-anchor="start">拧回窄域读数回落——漂移是 regime 的函数，不是运气</text>
+<text x="500" y="648" font-size="10" fill="#6b6257" text-anchor="middle">一句话：单价 = f(进程, regime, 窗口)——跨过 256 的行涨得最凶，domain_check 拦的就是这条边界</text>
+</svg>

@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——用自己的话讲清**为什么 CLI 先于集成**（合同是零件的插座：参数怎么传、失败怎么报、manifest 怎么记，这些今天全部定好并测试固化，D121~D125 每个零件接入时不用重新设计接口——反之先集成后设计 CLI 的项目最后会得到五个互不一致的入口脚本）；默写 minic 的**四份合同**——帮助文本（`--help`：10 个选项＋示例＋版本号，用户读的第一行文档）、退出码（0 成功／1 编译失败／2 用法错误，与 clang/gcc 同族、脚本可编程消费）、诊断体系（E1xx 用法错误 ×7、E2xx 管道错误 ×6、W1xx 警告 ×3，每条四件套：代码＋位置＋原因＋**修复建议**）、manifest.json（机器合同：version/input/tile/stages/exit_code，CI 与脚本的消费接口）；独立运行 `./run_all.sh` 复现 **25 项合同测试**（TP1 帮助文本 8 项、TP2 退出码三态 3 项、TP3 诊断逐条触发 7 项、TP4 manifest 字段 2 项、TP5 开关与警告 3 项、TP6 合同快照 2 项）；解释**诊断代码的分层设计**（E1=用户层错误重试无意义先读帮助、E2=编译器层错误改输入或修管道、W=不改变退出码仅提示——`E104 [minic] tile 参数格式错误：32,32（应为 M,N,K 三个正整数，逗号分隔）` 加一行修复建议就是完整形态）；最后对照六阶段管道骨架（S0 读入→S1 图优化→S2 循环生成→S3 Tiling→S4 LLVM Lowering→S5 代码生成→S6 验证）说出**本周排期**——D121 接 S1、D122 接 S2~S5、D123 dump 全量、D124 端到端、D125 对照实验。
 > **预计时间**：学习 35 分钟＋实践 50 分钟
 > **前置准备**：第 17 周的零件清单——图优化 Pass（D57~D84）、循环生成（D85~D90）、Tiling（D91~D97）、Lowering 管道（D114~D117）、执行验证（D118）；以及它们的"散装"调用方式（每天一个 run_all.sh）。工具只要 `python3`（argparse 标准库；本文环境：Python 3.9.6，macOS arm64，2026-11-14）。内容上需要 D117 的七 pass 管道（S4 的实现蓝本）与 D118 的四条执行路线（S5/S6 的实现蓝本）——今天不集成它们，只定接口。
-> **今日产出**：`code/minic.py`（CLI 骨架：argparse 解析＋E1xx 校验＋六阶段管道占位＋manifest 生成，约 300 行可运行）、`code/run_all.sh`（25 项合同测试一键复现，本机实测 25 PASS / 0 FAIL）、`code/outputs/report.txt`（真机合同测试报告）、`code/outputs/help.txt`（**帮助文本快照**——从此 --help 的任何变化都应反映在 diff 里）、`code/outputs/version.txt`、`code/outputs/diag-*.txt`（E101/E102/E104a/E104b/E105/E107/W102 八份诊断现场存档）、`code/outputs/case-*/manifest.json`（四种调用的机器合同样本）＋本文 3 张手绘图。
+> **今日产出**：`code/minic.py`（CLI 骨架：argparse 解析＋E1xx 校验＋六阶段管道占位＋manifest 生成，约 300 行可运行）、`code/run_all.sh`（25 项合同测试一键复现，本机实测 25 PASS / 0 FAIL）、`code/outputs/report.txt`（真机合同测试报告）、`code/outputs/help.txt`（**帮助文本快照**——从此 --help 的任何变化都应反映在 diff 里）、`code/outputs/version.txt`、`code/outputs/diag-*.txt`（E101/E102/E104a/E104b/E105/E107/W102 八份诊断现场存档）、`code/outputs/case-*/manifest.json`（四种调用的机器合同样本）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -72,10 +72,11 @@
 ```text
 tutorials/week-018/day-120/
 ├── README.md                    ← 本文
-├── images/                       ← 3 张手绘图
+├── images/                       ← 4 张手绘图
 │   ├── 01-overview.svg           # minic 全景：零件→管道→四合同
 │   ├── 02-mechanism.svg          # 生命周期：argv→退出码＋诊断解剖
-│   └── 03-example.svg            # 合同测试矩阵＋合同演化排期
+│   ├── 03-example.svg            # 合同测试矩阵＋合同演化排期
+│   └── 04-manifest-compare.svg   # manifest 真机对照：-O0 与 -O2 两份回执
 └── code/
     ├── minic.py                  # CLI 骨架（argparse＋诊断＋管道占位＋manifest）
     ├── gemm.mlir                 # 贯穿输入（D117 同款）
@@ -192,6 +193,10 @@ E101 [minic] 输入文件不存在：missing.mlir
 
 注意 S1/S3 在 -O0 下记"跳过"、其余记"骨架"——**跳过也是决策，manifest 如实记录**；S2 在 -O0 不跳过（循环生成是语义必需，不是优化——这条边界 D122 展开讲）。**③合同快照的意义**：`help.txt` 入档后，明天 D121 给 S1 加 `--no-graph-opt` 开关时，`diff help.txt` 应该只多一行——多两行说明动了不该动的合同面。
 
+![manifest 真机对照：-O0 与 -O2 两份 manifest 的字段与 stages 差异](images/04-manifest-compare.svg)
+
+**图 4**：看三块——**左侧 case-o0**（`-O0 --tile 8,8,8`）：`"opt_level": 0`、`"tile": [8, 8, 8]`、stages 7 条（S1/S3 记"跳过"）、`"diags": ["W102"]`、`"exit_code": 0`——警告不改退出码；**右侧 case-manifest**（`-O2 --tile 16,16,16`）：`"opt_level": 2`、`"tile": [16, 16, 16]`、stages 8 条——-O2 会先追加一条 `[S3] tile=(16,16,16)` 再进入 S1~S6 阶段循环，S3 因此出现两次且 id 不单调（消费侧别假设有序）、`"diags": []`——-O2 下传 tile 是正常路径；**底部**机器合同的消费方式：`json.load()` 之后按字段名取值（opt_level/tile/stages/diags/exit_code），D125 四组开关对照直接读四份 manifest 汇总收益表，零日志解析。
+
 ### 5.4 修改一个参数再观察
 
 三个便宜的实验：**实验 A（制造 E103）**：`./minic.py gemm.mlir -o /nonexistent-root/x/y`——输出目录创建失败触发 E103，观察退出码 2 与修复建议；对照 `-o` 指向只读目录（`chmod -w` 一个目录再试）。**实验 B（--emit 全形态）**：`--emit ir`、`--emit obj`、`--emit dump` 各跑一次——今天它们只进 manifest 的 emit 字段（骨架不区分行为），但 E106 校验已就位：`--emit xyz` 退出 2。**实验 C（脚本消费 manifest）**：写三行 shell `for d in case-*; do python3 -c "import json;print(json.load(open('$d/manifest.json'))['opt_level'])"; done`——体会"机器合同"的实际含义：不解析任何日志文本、字段名即接口。这三个实验分别对应合同的**防御性**（错误路径）、**完备性**（枚举值全覆盖）、**可编程性**（下游消费）。
@@ -233,3 +238,5 @@ E101 [minic] 输入文件不存在：missing.mlir
 今天的闭环：**问题**——第 17 周五种零件各居其所、调用方式是每天一个脚本，"统一入口"第一天不该急着集成而该定合同；**机制**——四份合同一次定齐并测试固化：帮助文本（10 选项＋示例）、退出码（0/1/2 与 clang 同族）、诊断体系（16 条预定义×四件套，E1xx 用法层/E2xx 管道层/W1xx 警告）、manifest.json（9 字段机器合同，D125 对照实验的基础设施）；**实践**——minic.py 约 300 行：argparse 解析＋集中校验＋Options 单一配置对象＋六阶段骨架（S0 读入真实计数 38 行 30 op、S1/S3 在 -O0 记跳过、S2~S6 记排期）＋manifest 落盘；**验证**——25 项合同测试全绿（TP1~TP6），8 份诊断现场与 4 份 manifest 样本入档。明天 D121 整合图优化 Pass：把 D57~D84 的 Shape 推导、图简化、融合、收益判断接进 S1，每个优化配独立开关（`--no-shape-infer/--no-fuse/...`），并处理 Pass 管道的**稳定顺序与重复执行**问题——第一份真实管道合同的接入。
 
 > **本周排期卡**：D120 CLI 骨架（今天，25/25）→ D121 S1 图优化＋开关 → D122 S2~S5 循环+LLVM → D123 IR Dump 可观测 → D124 端到端 MatMul+Bias+Relu → D125 优化开关对照实验 → D126 干净目录复盘。
+
+<!-- tutorial-review: v1 -->

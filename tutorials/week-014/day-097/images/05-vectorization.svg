@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','楷体',cursive">
+  <defs>
+    <filter id="rough" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="17" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <marker id="arrV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#34322c"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#b96762"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#6f9455"/>
+    </marker>
+  </defs>
+
+  <rect x="4" y="4" width="952" height="632" fill="#fdfaf2" stroke="none"/>
+  <text x="42" y="46" font-size="26" fill="#34322c" font-weight="bold">为什么 j 最内层能向量化：两种 order 的访存对照</text>
+  <text x="44" y="74" font-size="14" fill="#6b675c">同一个 tile 外壳、同一份 A/B、同一条编译命令——只换最内两层循环的顺序，机器码就从 0 条向量指令变成 6 条。</text>
+
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="40" y="100" width="426" height="40" rx="8" fill="#8fb3d9" stroke="#4f7cae" transform="rotate(-0.5 253 120)"/>
+    <rect x="494" y="100" width="426" height="40" rx="8" fill="#f0b47a" stroke="#c98340" transform="rotate(0.5 707 120)"/>
+  </g>
+  <text x="253" y="125" font-size="15" fill="#1f3a56" text-anchor="middle" font-weight="bold">ORDER=0：内层 i→j→k（k 最内层）</text>
+  <text x="707" y="125" font-size="15" fill="#7a4f1d" text-anchor="middle" font-weight="bold">ORDER=1：内层 i→k→j（j 最内层）</text>
+
+  <g filter="url(#rough)" stroke-width="2.2">
+    <rect x="40" y="152" width="426" height="58" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="494" y="152" width="426" height="58" rx="6" fill="#eae5d6" stroke="#8a8574" transform="rotate(-0.4 707 181)"/>
+  </g>
+  <text x="56" y="176" font-size="13" fill="#34322c">for k（最内层）:</text>
+  <text x="56" y="197" font-size="13" fill="#34322c">    c += A[i][k] * B[k][j]</text>
+  <text x="510" y="176" font-size="13" fill="#34322c">a = A[i][k]（本趟不变）</text>
+  <text x="510" y="197" font-size="13" fill="#34322c">for j（最内层）: C[i][j] += a * B[k][j]</text>
+
+  <text x="142" y="230" font-size="11.5" fill="#6b675c" text-anchor="middle">B：j →（沿行连续，每格 4 B）</text>
+  <text x="596" y="230" font-size="11.5" fill="#6b675c" text-anchor="middle">B：j →（沿行连续，每格 4 B）</text>
+
+  <g filter="url(#rough)" stroke-width="2">
+    <rect x="118" y="240" width="24" height="24" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="118" y="264" width="24" height="24" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="118" y="288" width="24" height="24" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="118" y="312" width="24" height="24" fill="#8fb3d9" stroke="#4f7cae"/>
+    <rect x="118" y="336" width="24" height="24" fill="#8fb3d9" stroke="#4f7cae"/>
+    <line x1="70" y1="240" x2="70" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="94" y1="240" x2="94" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="142" y1="240" x2="142" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="166" y1="240" x2="166" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="190" y1="240" x2="190" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="214" y1="240" x2="214" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="240" x2="214" y2="240" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="264" x2="214" y2="264" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="288" x2="214" y2="288" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="312" x2="214" y2="312" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="336" x2="214" y2="336" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="70" y1="360" x2="214" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="130" y1="248" x2="130" y2="352" stroke="#b96762" stroke-width="2.2" marker-end="url(#arrR)"/>
+  </g>
+  <text x="70" y="378" font-size="11.5" fill="#6b675c">k ↓（换一个 k = 换一整行 B）</text>
+  <text x="240" y="262" font-size="13" fill="#5c2a26" font-weight="bold">固定 j、k 递增：</text>
+  <text x="240" y="282" font-size="12.5" fill="#5c2a26">每步跳过一整行 B</text>
+  <text x="240" y="300" font-size="12.5" fill="#5c2a26">步长 = N×4 B = 2 KB</text>
+  <text x="240" y="330" font-size="12.5" fill="#5c2a26" font-weight="bold">→ 跨步 load，向量化被拒</text>
+
+  <g filter="url(#rough)" stroke-width="2">
+    <rect x="548" y="288" width="24" height="24" fill="#f0b47a" stroke="#c98340"/>
+    <rect x="572" y="288" width="24" height="24" fill="#f0b47a" stroke="#c98340"/>
+    <rect x="596" y="288" width="24" height="24" fill="#f0b47a" stroke="#c98340"/>
+    <rect x="620" y="288" width="24" height="24" fill="#f0b47a" stroke="#c98340"/>
+    <line x1="524" y1="240" x2="524" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="572" y1="240" x2="572" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="644" y1="240" x2="644" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="668" y1="240" x2="668" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="240" x2="668" y2="240" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="264" x2="668" y2="264" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="288" x2="668" y2="288" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="312" x2="668" y2="312" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="336" x2="668" y2="336" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="524" y1="360" x2="668" y2="360" stroke="#9a9380" stroke-width="1.6"/>
+    <line x1="544" y1="300" x2="648" y2="300" stroke="#6f9455" stroke-width="2.2" marker-end="url(#arrG)"/>
+  </g>
+  <text x="524" y="378" font-size="11.5" fill="#6b675c">k 固定，j 沿一行连续走 4 格</text>
+  <text x="692" y="262" font-size="13" fill="#7a4f1d" font-weight="bold">B[k][j..j+3]：</text>
+  <text x="692" y="282" font-size="12.5" fill="#7a4f1d">连续 4×float = 16 B</text>
+  <text x="692" y="300" font-size="12.5" fill="#7a4f1d">= 128-bit → ldr q0</text>
+  <text x="692" y="322" font-size="12.5" fill="#7a4f1d">C 行段同理 → ldr q1</text>
+
+  <g filter="url(#rough)" stroke-width="2.2">
+    <rect x="40" y="396" width="426" height="52" rx="8" fill="#e0938f" stroke="#b96762" transform="rotate(-0.5 253 422)"/>
+  </g>
+  <text x="56" y="418" font-size="12.5" fill="#5c2a26">GCC 诊断（D96 实测）：not suitable for strided load</text>
+  <text x="56" y="438" font-size="12.5" fill="#5c2a26">→ 退化为标量 fmul/fadd，一次 1 个 MAC</text>
+
+  <text x="494" y="392" font-size="12.5" fill="#7a4f1d" font-weight="bold">ORDER=1 的机器码（objdump 实测，恰好 6 条）：</text>
+  <g filter="url(#rough)" stroke-width="2">
+    <rect x="494" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="565" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="636" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="707" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="778" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <rect x="849" y="400" width="62" height="34" rx="6" fill="#eae5d6" stroke="#8a8574"/>
+    <line x1="557" y1="417" x2="563" y2="417" stroke="#34322c" marker-end="url(#arrV)"/>
+    <line x1="628" y1="417" x2="634" y2="417" stroke="#34322c" marker-end="url(#arrV)"/>
+    <line x1="699" y1="417" x2="705" y2="417" stroke="#34322c" marker-end="url(#arrV)"/>
+    <line x1="770" y1="417" x2="776" y2="417" stroke="#34322c" marker-end="url(#arrV)"/>
+    <line x1="841" y1="417" x2="847" y2="417" stroke="#34322c" marker-end="url(#arrV)"/>
+  </g>
+  <text x="525" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">dup v3.4s</text>
+  <text x="596" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">ldr q0</text>
+  <text x="667" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">ldr q1</text>
+  <text x="738" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">fmul v0.4s</text>
+  <text x="809" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">fadd v0.4s</text>
+  <text x="880" y="421" font-size="10.5" fill="#34322c" text-anchor="middle">str q0</text>
+  <text x="525" y="450" font-size="10" fill="#6b675c" text-anchor="middle">广播 A 元素</text>
+  <text x="596" y="450" font-size="10" fill="#6b675c" text-anchor="middle">取 B 行段</text>
+  <text x="667" y="450" font-size="10" fill="#6b675c" text-anchor="middle">取 C 行段</text>
+  <text x="738" y="450" font-size="10" fill="#6b675c" text-anchor="middle">v0=q0×v3</text>
+  <text x="809" y="450" font-size="10" fill="#6b675c" text-anchor="middle">v0=v0+q1</text>
+  <text x="880" y="450" font-size="10" fill="#6b675c" text-anchor="middle">写回 C 行段</text>
+
+  <g filter="url(#rough)" stroke-width="2.5">
+    <rect x="40" y="464" width="426" height="44" rx="8" fill="#f7efdd" stroke="#4f7cae" transform="rotate(0.4 253 486)"/>
+    <rect x="494" y="464" width="426" height="44" rx="8" fill="#a9c98f" stroke="#6f9455" transform="rotate(-0.4 707 486)"/>
+  </g>
+  <text x="56" y="482" font-size="13" fill="#1f3a56" font-weight="bold">机器码：0 条向量指令（纯标量）</text>
+  <text x="56" y="500" font-size="12.5" fill="#1f3a56">512 中位数：2.3～3.1 GFLOPS（ijk 集团）</text>
+  <text x="510" y="482" font-size="13" fill="#25401a" font-weight="bold">机器码：6 条向量指令（一次 4 个 float）</text>
+  <text x="510" y="500" font-size="12.5" fill="#25401a">512 中位数：12.1～13.6 GFLOPS（ikj 集团）</text>
+
+  <g filter="url(#rough)" stroke-width="2.5">
+    <rect x="40" y="524" width="880" height="84" rx="10" fill="#f7efdd" stroke="#b5a87f" transform="rotate(-0.3 480 566)"/>
+  </g>
+  <text x="60" y="552" font-size="14" fill="#34322c" font-weight="bold">同源代码只换最内两层：j 连续 → 128-bit 向量（一次 4 个 float）；k 跨步 → 纯标量（一次 1 个）</text>
+  <text x="60" y="576" font-size="12.5" fill="#55503f">512 上 4.3× 集团差距（ikj 12.1～13.6 vs ijk 2.3～3.1 GFLOPS）全部来自这里——柱状图见图 4</text>
+  <text x="60" y="598" font-size="11" fill="#8a8574">真实数据：outputs/vec-instr.txt（objdump 实测）｜与 5.2 节 tiled_matmul&lt;ORDER&gt; 模板对应｜aarch64 GCC 9.4 -O3 -ffp-contract=off</text>
+</svg>

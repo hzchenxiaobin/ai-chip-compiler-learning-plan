@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——用自己的话讲清 TypeConverter 在最终 Lowering 里管什么（把 `index` 换成 `i64`、把 `memref` 换成 5 字段描述符结构体、把不认识的类型挡在门外）、ConversionTarget 的"终态合法性"和"本 Pass 合法性"差在哪（终态：终图只允许 `llvm.*`）；独立填出 `mini`／循环／内存三类 Operation 的转换目标清单，并说清每一行"目标 op 序列"和"暂不支持"的理由；用同一段 Pattern 注册表分别跑 **全量转换** 和 **部分转换**，预测并解释两种模式下残留 op 的差别（缺 `scf.for` 模式时残留几个、缺 `memref` 模式时又如何），读懂残留报告；独立运行 `final_lowering.py` 复现类型表、合法性清单、目标形态与真机验证（llvmlite 22.1.0 JIT 执行 GEMM 与参考逐位一致），以及三个探针的真实失败数字。
 > **预计时间**：学习 40 分钟＋实践 50 分钟
 > **前置准备**：Python 3.11＋numpy＋llvmlite（本文环境：aarch64 Linux，Python 3.11.4，numpy 1.26.4，llvmlite 0.50.0 内嵌 LLVM 22.1.0，与 D113 同机）。本机没有安装 MLIR——与 D57~D113 一致，用 Python 复刻 MLIR DialectConversion 的角色分工（TypeConverter／ConversionTarget／ConversionPattern／驱动器），但**目标形态本身用真 LLVM（llvmlite）验证**。内容上需要：D85 的"四角色"结论（第一次 Lowering 的施工图）、D86~D105 的循环与内存表示（今天的输入就是它们的产物）、D113 的 LLVM Dialect 语法与三条导出规则（R1 重编号、R2 常量内联、R3 块参数变 phi）。
-> **今日产出**：`code/final_lowering.py`（类型表＋合法性清单＋模式注册表＋两种驱动＋测试与探针，全部可运行）、`code/loop_ir.mlir`（输入源 IR）、`code/variants/residual.mlir`（残留对照输入）、`code/outputs/design-doc.md`（最终 Lowering 设计文档）、`code/outputs/legality-checklist.md`（合法性清单——今日主产出）、`code/outputs/llvm-dialect-target.mlir`（目标形态样板）、`code/outputs/gemm.ll`（真机验证用 LLVM IR）、`code/outputs/conversion-report.txt`（检查＋对照实验报告）＋本文 3 张手绘图。
+> **今日产出**：`code/final_lowering.py`（类型表＋合法性清单＋模式注册表＋两种驱动＋测试与探针，全部可运行）、`code/loop_ir.mlir`（输入源 IR）、`code/variants/residual.mlir`（残留对照输入）、`code/outputs/design-doc.md`（最终 Lowering 设计文档）、`code/outputs/legality-checklist.md`（合法性清单——今日主产出）、`code/outputs/llvm-dialect-target.mlir`（目标形态样板）、`code/outputs/gemm.ll`（真机验证用 LLVM IR）、`code/outputs/conversion-report.txt`（检查＋对照实验报告）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -93,6 +93,10 @@ llvm.func @gemm(%a: !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)
 3. **C1 发射循环骨架**：`scf.for` 拆成四个块——前置块 `br` 传初值；头块带**块参数**（归纳变量＋iter_args，导出后就是 phi，D113 规则 R3）；体块放 body；回边把 `scf.yield` 的值传回头块。**每个循环贡献的"新东西"是控制流和 phi，数值计算一条不少地来自 body**；
 4. **驱动器验收**（下层）：全部 18 个 op 过完海关后，驱动器用合法集扫一遍终图——任何残留，full 模式整体退回，partial 模式记入账本。今天的两条真实账目：扣掉 C1 重跑（实验 A），partial 的账本上是 4 条 scf 残留；喂 tensor 图（实验 B），账本上是 3 条"类型转换失败＋非法方言"。
 
+![C1 模式把一条 scf.for 拆成四块：前置块传初值、头块块参数导出后是 phi、体块经回边传新值、出口块接住 iter_args 终值](images/04-loop-lowering.svg)
+
+**图 3**：对照左侧源 IR（最里层的 k 循环，`iter_args(%acc = %zero)`）看右侧四个块——**前置块 `^j_body`**：一条 `llvm.br ^k_hdr(%c0, %zero)` 同时传两份初值（循环下界与 iter_args 初值）；**头块 `^k_hdr(%k, %acc_h)`**：块参数就是"活着"的归纳变量和 iter_args，`icmp`＋`cond_br` 判退出——true 边带着 `%k`、`%acc_h` 进体块，false 边带着 `%acc_h` 进出口块；**体块 `^k_body`**：数值计算一条不少全在这里（两个 load 的地址计算、fmul、fadd、归纳变量自增），回边把新值 `%kn`、`%s` 传回头块——`scf.yield` 就折叠在这条回边上，目标形态里没有 yield；**出口块 `^k_done(%acc)`**：块参数接住 iter_args 终值，store 之后交回 j 循环 latch。左下是导出 LLVM IR 后（D113 规则 R3）头块参数变成的两条真实 phi——每条 phi 两个入边：初值来自前置块、新值来自回边。右下红框是 P3 探针的断线点：`fadd` 的第一个操作数应为 `%acc_h`，断线时接的是 `%zero`——phi 还在转但没人消费，每个 (i,j) 只剩最后一项乘积（实测 max|diff|=191.1975）。
+
 ## 5. 动手实践：把清单跑成一份可验证的报告
 
 ### 5.1 准备文件
@@ -100,7 +104,7 @@ llvm.func @gemm(%a: !llvm.struct<(ptr, ptr, i64, array<2 x i64>, array<2 x i64>)
 ```text
 tutorials/week-017/day-114/
 ├── README.md                    ← 本文
-├── images/                      ← 3 张手绘图（数字出自 outputs/ 冻结运行）
+├── images/                      ← 4 张手绘图（数字出自 outputs/ 冻结运行）
 └── code/
     ├── final_lowering.py        # 今天主角：类型表＋清单＋模式注册表＋两种驱动＋检查
     ├── loop_ir.mlir             # 输入源 IR（18 op，脚本可按 --shape 重新生成）
@@ -225,7 +229,7 @@ python3 final_lowering.py            # 或 ./run_all.sh
 
 ![真实运行结果对照：全量转换、两种驱动、探针与对照实验的实际数字](images/03-example.svg)
 
-**图 3**：三个面板各讲一件事——**面板①②**：全量转换的膨胀账（18→69、10 块）和两条执行路径的逐位一致（解释器 211 步、真机 JIT，均 `bitwise True`），右上是换形状 2×3×2 的对照（同样全绿，strides 与 malloc 字节数随 shape 自动重算）；**面板④**：两种驱动的对照实验 A（partial 14/18 SUCCESS / full 同配置 FAIL）和对照实验 B（tensor 图 0/3，三种残留原因：两条"类型转换失败"＋一条"非法方言"）；**面板⑤**：三个探针的真实失败数字——P1 填反 strides：有限部分 max|diff|=120.0132，另有 **2 个元素根本没被写**（malloc 的未初始化内存在仿真里是 NaN，直接暴露）；P3 iter_args 断线：max|diff|=191.1975（每个 (i,j) 只剩最后一项乘积）；P2 index 残留：目标形态 23 处 index 类型，被静态类型检查拦截。**注意 P1 的 NaN**：它把 D87/D96 的老教训带到了新层面——描述符错误不只是"值错"，还会让某些元素永远不被写，而未初始化内存不会自己报告自己。
+**图 4**：三个面板各讲一件事——**面板①②**：全量转换的膨胀账（18→69、10 块）和两条执行路径的逐位一致（解释器 211 步、真机 JIT，均 `bitwise True`），右上是换形状 2×3×2 的对照（同样全绿，strides 与 malloc 字节数随 shape 自动重算）；**面板④**：两种驱动的对照实验 A（partial 14/18 SUCCESS / full 同配置 FAIL）和对照实验 B（tensor 图 0/3，三种残留原因：两条"类型转换失败"＋一条"非法方言"）；**面板⑤**：三个探针的真实失败数字——P1 填反 strides：有限部分 max|diff|=120.0132，另有 **2 个元素根本没被写**（malloc 的未初始化内存在仿真里是 NaN，直接暴露）；P3 iter_args 断线：max|diff|=191.1975（每个 (i,j) 只剩最后一项乘积）；P2 index 残留：目标形态 23 处 index 类型，被静态类型检查拦截。**注意 P1 的 NaN**：它把 D87/D96 的老教训带到了新层面——描述符错误不只是"值错"，还会让某些元素永远不被写，而未初始化内存不会自己报告自己。
 
 ### 5.4 修改一个参数再观察
 
@@ -282,3 +286,5 @@ python3 final_lowering.py            # 或 ./run_all.sh
 ## 9. 一句话总结与明天预告
 
 今天的闭环：**问题**——D113 读完了目标语言，但"怎么翻"还没定案；**机制**——同一个 DialectConversion 四角色再走一遍：类型兑换表（index→i64、memref→五字段描述符、tensor 拒收）、终态合法集（只允许 llvm.*）、9 条模式的翻译手册、full/partial 两种执法；**实践**——18 op 的 GEMM 循环 IR 全量转换成 69 op 的目标形态（膨胀 3.8 倍），numpy 解释器 211 步与 llvmlite 真机 JIT 双双与参考逐位一致，三个探针（strides 填反、index 漏兑换、iter_args 断线）全部被检查咬住，两个对照实验（扣模式、喂 tensor 图）把 partial 的账本和管道顺序纪律变成了可复现的证据；**验证**——7/7 PASS，产出清单、样板、报告三类文件。明天 D115 进入实现：把清单第一段的 F1/R1/A1（函数签名与类型转换）落成真代码——对照实验 B 的"两道闸"就是它的验收标准，DataLayout 与 ABI 的细节（今天 56 字节按值传参的伏笔）届时展开。
+
+<!-- tutorial-review: v1 -->

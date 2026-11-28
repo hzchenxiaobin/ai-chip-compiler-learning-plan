@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 24px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .leg { font-size: 12.5px; font-weight: bold; }
+    .legn { font-size: 11px; fill: #5a554d; }
+    .tick { font-size: 12px; font-weight: bold; fill: #5a554d; }
+    .axl { font-size: 13px; font-weight: bold; }
+    .val { font-size: 11.5px; font-weight: bold; }
+    .ann { font-size: 12.5px; font-weight: bold; }
+    .annr { font-size: 12.5px; font-weight: bold; fill: #D98484; }
+    .con { font-size: 12px; }
+    .ban { font-size: 14.5px; font-weight: bold; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .grid { stroke: #E7DFCE; stroke-width: 1.4; }
+    .axis { stroke: #3B3B3B; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="1192" height="667" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="600" y="36" text-anchor="middle" class="title">顺序敏感窗口：峰值随捷径宽度 W 的变化</text>
+  <path d="M 380,46 Q 600,42 820,47" stroke="#E8A87C" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <text x="600" y="64" text-anchor="middle" class="sub">每个点都是一次真实运行（--skip-width W，W = 32…256，步长 32）；绿色虚线是 concat 硬下界</text>
+
+  <!-- 坐标轴 -->
+  <text x="150" y="118" text-anchor="middle" class="axl">峰值内存（元素）</text>
+  <path class="axis" d="M 150,562 Q 147,350 151,134"/>
+  <path class="axis" d="M 151,134 l -6,12 M 151,134 l 6,12"/>
+  <path class="axis" d="M 148,560 Q 640,564 1140,560"/>
+  <path class="axis" d="M 1140,560 l -12,-6 M 1140,560 l -12,6"/>
+  <text x="640" y="608" text-anchor="middle" class="axl">捷径宽度 W（元素）—— s、w_sk、y 随 W 同步变宽</text>
+
+  <!-- 网格线 -->
+  <path class="grid" d="M 150,140 L 1130,140"/><text x="140" y="144" text-anchor="end" class="tick">600</text>
+  <path class="grid" d="M 150,224 L 1130,224"/><text x="140" y="228" text-anchor="end" class="tick">500</text>
+  <path class="grid" d="M 150,308 L 1130,308"/><text x="140" y="312" text-anchor="end" class="tick">400</text>
+  <path class="grid" d="M 150,392 L 1130,392"/><text x="140" y="396" text-anchor="end" class="tick">300</text>
+  <path class="grid" d="M 150,476 L 1130,476"/><text x="140" y="480" text-anchor="end" class="tick">200</text>
+  <text x="140" y="564" text-anchor="end" class="tick">100</text>
+
+  <!-- x 轴刻度 -->
+  <path class="axis" stroke-width="1.6" d="M 170,560 L 170,566 M 304,560 L 304,566 M 439,560 L 439,566 M 573,560 L 573,566 M 707,560 L 707,566 M 841,560 L 841,566 M 976,560 L 976,566 M 1110,560 L 1110,566"/>
+  <text x="170" y="584" text-anchor="middle" class="tick">32</text>
+  <text x="304" y="584" text-anchor="middle" class="tick">64</text>
+  <text x="439" y="584" text-anchor="middle" class="tick">96</text>
+  <text x="573" y="584" text-anchor="middle" class="tick" fill="#D98484">128</text>
+  <text x="707" y="584" text-anchor="middle" class="tick">160</text>
+  <text x="841" y="584" text-anchor="middle" class="tick">192</text>
+  <text x="976" y="584" text-anchor="middle" class="tick">224</text>
+  <text x="1110" y="584" text-anchor="middle" class="tick">256</text>
+
+  <!-- 顺序敏感窗口（两条峰值线之间的区域） -->
+  <path d="M 170,375.2 L 304.3,348.3 L 438.6,321.4 L 572.9,294.5 L 707.1,267.6 L 841.4,240.7 L 975.7,213.8
+           L 841.4,267.6 L 707.1,321.4 L 572.9,375.2 L 438.6,375.2 L 304.3,375.2 L 170,375.2 Z"
+        fill="#E8A87C" fill-opacity="0.12"/>
+
+  <!-- W=128 参考虚线 -->
+  <path d="M 572.9,554 L 572.9,258" stroke="#C9C2B8" stroke-width="1.6" stroke-dasharray="6 5"/>
+
+  <!-- concat 硬下界（绿色虚线，W≥128 起被蓝线贴住） -->
+  <path d="M 170,536.5 Q 239,508.5 304.3,482.7 Q 369,455 438.6,428.9 Q 508,401.5 572.9,375.2"
+        stroke="#93C6A0" stroke-width="2.6" stroke-dasharray="9 7" fill="none" stroke-linecap="round"/>
+  <text x="196" y="545" text-anchor="start" class="con" fill="#5a7d5a">concat 硬下界（64+2W）</text>
+
+  <!-- 主干优先（蓝） -->
+  <path d="M 170,375.2 Q 237,373 304.3,375.2 Q 371,377 438.6,375.2 Q 506,373.5 572.9,375.2
+           Q 642,347 707.1,321.4 Q 772,293 841.4,267.6 Q 911,240 975.7,213.8 Q 1041,186 1110,160.2"
+        stroke="#7FA8D9" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 捷径优先（红） -->
+  <path d="M 170,375.2 Q 237,363.5 304.3,348.3 Q 371,333 438.6,321.4 Q 508,307 572.9,294.5
+           Q 638,280 707.1,267.6 Q 776,253.5 841.4,240.7 Q 907,227 975.7,213.8 Q 1045,186 1110,160.2"
+        stroke="#D98484" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 数据点：两线重合处（W=32/224/256）蓝实心 + 红圈 -->
+  <circle cx="170" cy="375.2" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="170" cy="375.2" r="9.5" fill="none" stroke="#D98484" stroke-width="2.2"/>
+  <circle cx="975.7" cy="213.8" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="975.7" cy="213.8" r="9.5" fill="none" stroke="#D98484" stroke-width="2.2"/>
+  <circle cx="1110" cy="160.2" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="1110" cy="160.2" r="9.5" fill="none" stroke="#D98484" stroke-width="2.2"/>
+  <!-- 分开处：蓝点 / 红点 -->
+  <circle cx="304.3" cy="375.2" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="438.6" cy="375.2" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="572.9" cy="375.2" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="707.1" cy="321.4" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="841.4" cy="267.6" r="5.5" fill="#7FA8D9" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="304.3" cy="348.3" r="5.5" fill="#D98484" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="438.6" cy="321.4" r="5.5" fill="#D98484" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="572.9" cy="294.5" r="5.5" fill="#D98484" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="707.1" cy="267.6" r="5.5" fill="#D98484" stroke="#3B3B3B" stroke-width="2"/>
+  <circle cx="841.4" cy="240.7" r="5.5" fill="#D98484" stroke="#3B3B3B" stroke-width="2"/>
+
+  <!-- 图例 -->
+  <path class="box" d="M 162,138 Q 401,134 640,138 Q 644,185 640,232 Q 401,236 162,232 Q 158,185 162,138 Z" fill="#F5F0E4"/>
+  <path d="M 174,160 Q 190,156 206,160" stroke="#7FA8D9" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <text x="216" y="164" class="leg">主干优先：峰值 = max(320, concat 界)</text>
+  <path d="M 174,180 Q 190,176 206,180" stroke="#D98484" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <text x="216" y="184" class="leg">捷径优先：峰值 = max(288+W, concat 界)</text>
+  <path d="M 174,200 Q 190,196 206,200" stroke="#93C6A0" stroke-width="2.6" stroke-dasharray="9 7" fill="none" stroke-linecap="round"/>
+  <text x="216" y="204" class="leg">concat 硬下界 = t2+s+y = 64+2W</text>
+  <text x="174" y="226" class="legn">320 = x+t1+t2（顺序A步骤2）；288+W = x+t1+s（t1 的陪跑账）</text>
+
+  <!-- 关键标注 -->
+  <text x="573" y="250" text-anchor="middle" class="annr">W=128（默认）</text>
+  <path d="M 572.9,304 L 572.9,366" stroke="#D98484" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 572.9,304 l -5,10 M 572.9,304 l 5,10 M 572.9,366 l -5,-10 M 572.9,366 l 5,-10" stroke="#D98484" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <text x="560" y="344" text-anchor="end" class="ann">差 96（+30%）</text>
+  <text x="560" y="362" text-anchor="end" class="con">＝ s(128) − t2(32)</text>
+  <text x="566" y="288" text-anchor="end" class="val">416</text>
+  <text x="304" y="335" text-anchor="middle" class="val">352</text>
+  <text x="439" y="308" text-anchor="middle" class="val">384</text>
+  <text x="390" y="366" text-anchor="middle" class="val">320（平段）</text>
+  <text x="707" y="341" text-anchor="middle" class="val">384</text>
+  <text x="841" y="288" text-anchor="middle" class="val">448</text>
+  <text x="716" y="292" text-anchor="middle" class="con">顺序敏感窗口</text>
+  <text x="584" y="384" text-anchor="start" class="con">W≥128：主线峰值＝concat 界</text>
+  <text x="966" y="198" text-anchor="end" class="ann">W=224：红线也贴上 concat 界，两序相等 512</text>
+  <text x="1122" y="156" text-anchor="start" class="val">576</text>
+  <text x="182" y="410" text-anchor="start" class="con">W=32：s=t2=32，陪跑账 320＝常数 320，两序相等</text>
+
+  <!-- 底部结论 -->
+  <text x="640" y="636" text-anchor="middle" class="ban">差距先拉大（0→96）再归零：W=128 最深 96 元素；W≥224 两种顺序都被 concat 下界接管——没有万能的最优顺序</text>
+  <text x="640" y="658" text-anchor="middle" class="foot">数据：逐档真实运行 lifetime.py --order main-first / skip-first --skip-width W；W=256 两端（576）与 outputs/skip-width-256-*.txt 一致</text>
+</svg>

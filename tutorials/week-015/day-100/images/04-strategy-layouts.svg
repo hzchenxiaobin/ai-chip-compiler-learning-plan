@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .pt { font-size: 14px; font-weight: bold; }
+    .ps { font-size: 12px; fill: #6b6257; }
+    .h { font-size: 12.5px; font-weight: bold; }
+    .nd { font-size: 13.5px; font-weight: bold; }
+    .lab { font-size: 12.5px; font-weight: bold; }
+    .sm { font-size: 11px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .note { font-size: 12.5px; font-weight: bold; fill: #D98484; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="1192" height="667" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="600" y="34" text-anchor="middle" class="title">同一张区间表，两种放置顺序：H1 多花的 640 B 在哪里</text>
+  <path d="M 350,46 Q 600,42 850,47" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="600" y="62" text-anchor="middle" class="sub">横轴 = 执行步骤（主干优先 t1→t2→s→y），纵轴 = 字节地址；两栏同一比例尺（310 px = 1920 B），每个矩形：宽 = 活跃区间，高 = 字节范围</text>
+
+  <!-- 左栏：H1 -->
+  <path class="box" d="M 30,82 Q 302,77 572,82 Q 576,323 572,566 Q 300,571 34,566 Q 28,323 30,82 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="300" y="104" text-anchor="middle" class="pt">H1 按定义点放置（放置顺序 x→t1→t2→s→y）</text>
+  <text x="300" y="122" text-anchor="middle" class="ps">workspace 1920 B（碎片 +640 B）</text>
+
+  <text x="127.5" y="142" text-anchor="middle" class="h">步骤 0</text>
+  <text x="127.5" y="158" text-anchor="middle" class="nd">图前</text>
+  <text x="202.5" y="142" text-anchor="middle" class="h">步骤 1</text>
+  <text x="202.5" y="158" text-anchor="middle" class="nd">t1</text>
+  <text x="277.5" y="142" text-anchor="middle" class="h">步骤 2</text>
+  <text x="277.5" y="158" text-anchor="middle" class="nd">t2</text>
+  <text x="352.5" y="142" text-anchor="middle" class="h">步骤 3</text>
+  <text x="352.5" y="158" text-anchor="middle" class="nd">s</text>
+  <text x="427.5" y="142" text-anchor="middle" class="h">步骤 4</text>
+  <text x="427.5" y="158" text-anchor="middle" class="nd">y</text>
+  <text x="502.5" y="142" text-anchor="middle" class="h">步骤 5</text>
+  <text x="502.5" y="158" text-anchor="middle" class="nd">图后</text>
+
+  <path d="M 165,168 L 165,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 240,168 L 240,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 315,168 L 315,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 390,168 L 390,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 465,168 L 465,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 90,458.7 L 540,458.7" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,417.5 L 540,417.5" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,376.2 L 540,376.2" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,335.0 L 540,335.0" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,252.5 L 540,252.5" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,211.2 L 540,211.2" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,190.0 L 540,190.0" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 90,500 L 540,500" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="84" y="128" text-anchor="end" class="det">地址(B)</text>
+  <text x="84" y="194" text-anchor="end" class="det">1920</text>
+  <text x="84" y="256" text-anchor="end" class="det">1536</text>
+  <text x="84" y="339" text-anchor="end" class="det">1024</text>
+  <text x="84" y="421" text-anchor="end" class="det">512</text>
+  <text x="84" y="504" text-anchor="end" class="det">0</text>
+
+  <path d="M 90,293.7 L 540,293.7" stroke="#D98484" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="95" y="289" class="note">峰值下界 1280 B</text>
+
+  <!-- H1 布局：x@0 t1@128 s@128 t2@1152 y@1280 -->
+  <rect x="92" y="479.3" width="296" height="20.7" rx="5" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="240" y="494" text-anchor="middle" class="sm">x · 128 B · [0,128)</text>
+  <rect x="167" y="314.0" width="146" height="165.3" rx="6" fill="#E8A87C" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="240" y="385" text-anchor="middle" class="nd">t1 · 1024 B</text>
+  <text x="240" y="403" text-anchor="middle" class="det">@128 [128,1152)</text>
+  <rect x="317" y="396.7" width="146" height="82.5" rx="6" fill="#D98484" fill-opacity="0.48" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="390" y="432" text-anchor="middle" class="nd">s · 512 B</text>
+  <text x="390" y="450" text-anchor="middle" class="det">@128 [128,640)</text>
+  <rect x="242" y="293.7" width="221" height="20.7" rx="5" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="352" y="308" text-anchor="middle" class="sm">t2 · 128 B · [1152,1280)</text>
+  <rect x="392" y="190.0" width="146" height="103.3" rx="6" fill="#C9C2B8" fill-opacity="0.75" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="465" y="228" text-anchor="middle" class="nd">y · 640 B</text>
+  <text x="465" y="246" text-anchor="middle" class="det">@1280</text>
+  <text x="465" y="263" text-anchor="middle" class="det">[1280,1920)</text>
+
+  <text x="245" y="212" text-anchor="middle" class="note">y 只能顶到 1280 之上</text>
+  <text x="245" y="231" text-anchor="middle" class="note">多出的 640 B = workspace − 峰值下界</text>
+  <path class="arr" d="M 355,240 Q 378,248 394,256" stroke="#D98484" stroke-width="2.2"/>
+  <path d="M 394,256 l -9,-1 M 394,256 l -3,-9" stroke="#D98484" stroke-width="2.2" fill="none"/>
+
+  <text x="300" y="522" text-anchor="middle" class="foot">y 要连续 640 B；[0,1280) 内的空位被 s（[128,640)）和 t2（[1152,1280)）切碎，只能向上顶</text>
+  <text x="300" y="542" text-anchor="middle" class="foot">s 仍顶替 t1 的字节（都 @128）：共享照样发生，坑的是最后到场的 y</text>
+
+  <!-- 右栏：H3 -->
+  <path class="box" d="M 628,82 Q 900,77 1170,82 Q 1174,323 1170,566 Q 898,571 632,566 Q 626,323 628,82 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="900" y="104" text-anchor="middle" class="pt">H3 按最后使用点放置（放置顺序 t1→x→t2→s→y）</text>
+  <text x="900" y="122" text-anchor="middle" class="ps">workspace 1280 B（0 B，达下界）</text>
+
+  <text x="722.5" y="142" text-anchor="middle" class="h">步骤 0</text>
+  <text x="722.5" y="158" text-anchor="middle" class="nd">图前</text>
+  <text x="797.5" y="142" text-anchor="middle" class="h">步骤 1</text>
+  <text x="797.5" y="158" text-anchor="middle" class="nd">t1</text>
+  <text x="872.5" y="142" text-anchor="middle" class="h">步骤 2</text>
+  <text x="872.5" y="158" text-anchor="middle" class="nd">t2</text>
+  <text x="947.5" y="142" text-anchor="middle" class="h">步骤 3</text>
+  <text x="947.5" y="158" text-anchor="middle" class="nd">s</text>
+  <text x="1022.5" y="142" text-anchor="middle" class="h">步骤 4</text>
+  <text x="1022.5" y="158" text-anchor="middle" class="nd">y</text>
+  <text x="1097.5" y="142" text-anchor="middle" class="h">步骤 5</text>
+  <text x="1097.5" y="158" text-anchor="middle" class="nd">图后</text>
+
+  <path d="M 760,168 L 760,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 835,168 L 835,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 910,168 L 910,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 985,168 L 985,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 1060,168 L 1060,500" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 685,458.7 L 1135,458.7" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,417.5 L 1135,417.5" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,376.2 L 1135,376.2" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,335.0 L 1135,335.0" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,252.5 L 1135,252.5" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,211.2 L 1135,211.2" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,190.0 L 1135,190.0" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 685,500 L 1135,500" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="679" y="128" text-anchor="end" class="det">地址(B)</text>
+  <text x="679" y="194" text-anchor="end" class="det">1920</text>
+  <text x="679" y="256" text-anchor="end" class="det">1536</text>
+  <text x="679" y="339" text-anchor="end" class="det">1024</text>
+  <text x="679" y="421" text-anchor="end" class="det">512</text>
+  <text x="679" y="504" text-anchor="end" class="det">0</text>
+
+  <path d="M 685,293.7 L 1135,293.7" stroke="#D98484" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="690" y="289" class="note">峰值下界 1280 B</text>
+
+  <!-- H3 布局：t1@0 s@0 y@512 x@1024 t2@1152 -->
+  <rect x="762" y="335.0" width="146" height="165.3" rx="6" fill="#E8A87C" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="835" y="405" text-anchor="middle" class="nd">t1 · 1024 B</text>
+  <text x="835" y="423" text-anchor="middle" class="det">@0 [0,1024)</text>
+  <rect x="687" y="314.0" width="296" height="20.7" rx="5" fill="#7FA8D9" fill-opacity="0.55" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="835" y="328" text-anchor="middle" class="sm">x · 128 B · [1024,1152)</text>
+  <rect x="837" y="293.7" width="221" height="20.7" rx="5" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="947" y="308" text-anchor="middle" class="sm">t2 · 128 B · [1152,1280)</text>
+  <rect x="912" y="417.5" width="146" height="82.5" rx="6" fill="#D98484" fill-opacity="0.48" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="985" y="452" text-anchor="middle" class="nd">s · 512 B</text>
+  <text x="985" y="470" text-anchor="middle" class="det">@0 [0,512)</text>
+  <rect x="987" y="314.0" width="146" height="103.3" rx="6" fill="#C9C2B8" fill-opacity="0.75" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="1060" y="350" text-anchor="middle" class="nd">y · 640 B</text>
+  <text x="1060" y="368" text-anchor="middle" class="det">@512</text>
+  <text x="1060" y="385" text-anchor="middle" class="det">[512,1152)</text>
+
+  <text x="990" y="200" text-anchor="middle" class="det" font-weight="bold">y 住进 [512,1152)：与 t1、x 分段共享</text>
+  <text x="990" y="219" text-anchor="middle" class="det" font-weight="bold">早退房的 t1 先占低地址，腾出的洞正好装下 y</text>
+  <path class="arr" d="M 1100,232 Q 1102,270 1100,302" stroke="#93C6A0" stroke-width="2.2"/>
+  <path d="M 1100,302 l -6,-8 M 1100,302 l 7,-7" stroke="#93C6A0" stroke-width="2.2" fill="none"/>
+
+  <text x="900" y="522" text-anchor="middle" class="foot">t1 早退房先占 [0,1024)；s 搬进 [0,512)、y 搬进 [512,1152)——铺满下界</text>
+  <text x="900" y="542" text-anchor="middle" class="foot">同一张区间表、同一个首次适应，只是放置顺序不同</text>
+
+  <text x="600" y="612" text-anchor="middle" class="foot">左 = order-sweep.txt 的 H1（1920 B）｜右 = main-first.txt 的 H3 分配表（1280 B）；两栏同比例尺</text>
+  <text x="600" y="638" text-anchor="middle" class="foot">虚线 = 峰值活跃集合 1280 B（任何合法布局的下界）：复用做到位后，一次排序决定仍值 640 B（+50%）</text>
+</svg>

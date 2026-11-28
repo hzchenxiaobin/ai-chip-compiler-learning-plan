@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.9,4.4 Q 488.9,4.3 974.7,4.8 Q 976.7,331.0 975.3,656.3 Q 490.8,657.8 2.7,655.8 Q 2.8,330.9 3.9,4.4  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军 vs 缺省：16 项工程量清单的对照（S1 = 64×64×64）</text>
+<text x="490.0" y="57" font-size="9.5" fill="#6b6257" text-anchor="middle">预测 = Σ 次数 × 单价（calibration.txt 单价，保留 2 位）；实测与名次出自 model-table.txt</text>
+<path d="M 39.8,72.7 Q 259.3,73.6 477.4,74.8 Q 477.4,231.5 476.4,389.5 Q 257.4,389.7 38.8,388.6 Q 38.4,232.8 39.8,72.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="259.0" y="94" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">冠军 64³ kij U=1（单 tile）</text>
+<text x="259.0" y="110" font-size="9.2" fill="#3B3B3B" text-anchor="middle">预测 19.42 ms ← 实测 15.81 ms（模型第 2 / 实测第 1）</text>
+<text x="56" y="134" font-size="9.3" fill="#3B3B3B" text-anchor="start" font-weight="bold">j0 内层语句  Ci[v3] += a*Bv[v3]</text>
+<text x="462" y="134" font-size="9.3" fill="#3B3B3B" text-anchor="end" font-weight="bold">262,144 × 60.2 = 15.78 ms</text>
+<text x="56" y="160" font-size="9.3" fill="#3B3B3B" text-anchor="start">hsm 行提升·单+双  Ci=C[v2]; a=A[v2][v1]</text>
+<text x="462" y="160" font-size="9.3" fill="#3B3B3B" text-anchor="end">4,096 × 44.5 = 0.18 ms</text>
+<text x="56" y="186" font-size="9.3" fill="#3B3B3B" text-anchor="start">hs1 行提升·单下标  Bv = B[v1]</text>
+<text x="462" y="186" font-size="9.3" fill="#3B3B3B" text-anchor="end">64 × 17.0 = 0.001 ms</text>
+<text x="56" y="212" font-size="9.3" fill="#3B3B3B" text-anchor="start">pre 展开前奏  n = (hi-lo)-(hi-lo)%U</text>
+<text x="462" y="212" font-size="9.3" fill="#3B3B3B" text-anchor="end">4,096 × 52.8 = 0.22 ms</text>
+<text x="56" y="238" font-size="9.3" fill="#3B3B3B" text-anchor="start">range3 三参建立  for v3 in range(lo, lo+n, U)</text>
+<text x="462" y="238" font-size="9.3" fill="#3B3B3B" text-anchor="end">4,099 × 181.1 = 0.74 ms</text>
+<text x="56" y="264" font-size="9.3" fill="#3B3B3B" text-anchor="start">range2 二参建立  v1 / v2 / 尾循环</text>
+<text x="462" y="264" font-size="9.3" fill="#3B3B3B" text-anchor="end">4,161 × 169.3 = 0.70 ms</text>
+<text x="56" y="290" font-size="9.3" fill="#3B3B3B" text-anchor="start">loop 循环机器  FOR_ITER+STORE</text>
+<text x="462" y="290" font-size="9.3" fill="#3B3B3B" text-anchor="end">266,307 × 6.7 = 1.79 ms</text>
+<text x="56" y="316" font-size="9.3" fill="#3B3B3B" text-anchor="start">min3 外壳三连 min  ×1</text>
+<text x="462" y="316" font-size="9.3" fill="#3B3B3B" text-anchor="end">1 × 525.5 = 0.0005 ms</text>
+<path d="M 51.5,332.8 Q 256.7,333.9 466.0,332.1" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="3,3"/>
+<text x="56" y="354" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">预测合计 19.42 ms（误差 +22.8%，模型第 2 名）</text>
+<path d="M 501.1,74.3 Q 719.9,73.8 940.4,74.2 Q 941.5,232.7 939.7,391.3 Q 719.6,392.0 500.4,390.7 Q 500.8,230.9 501.1,74.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="721.0" y="94" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">缺省 32³ ijk U=1（2×2×2 = 8 个 tile）</text>
+<text x="721.0" y="110" font-size="9.2" fill="#3B3B3B" text-anchor="middle">预测 21.67 ms ← 实测 18.85 ms（模型第 9 / 实测第 8）</text>
+<text x="518" y="134" font-size="9.3" fill="#3B3B3B" text-anchor="start" font-weight="bold">k0 内层语句  c += Ai[v3]*B[v3][v2]</text>
+<text x="924" y="134" font-size="9.3" fill="#3B3B3B" text-anchor="end" font-weight="bold">262,144 × 61.2 = 16.05 ms</text>
+<text x="518" y="160" font-size="9.3" fill="#3B3B3B" text-anchor="start">hd1 行提升·双下标  c = C[v1][v2]</text>
+<text x="924" y="160" font-size="9.3" fill="#3B3B3B" text-anchor="end">8,192 × 31.2 = 0.26 ms</text>
+<text x="518" y="186" font-size="9.3" fill="#3B3B3B" text-anchor="start">s2 尾部写回  C[v1][v2] = c</text>
+<text x="924" y="186" font-size="9.3" fill="#3B3B3B" text-anchor="end">8,192 × 22.5 = 0.18 ms</text>
+<text x="518" y="212" font-size="9.3" fill="#3B3B3B" text-anchor="start">hs1 行提升·单下标  Ai = A[v1]</text>
+<text x="924" y="212" font-size="9.3" fill="#3B3B3B" text-anchor="end">256 × 17.0 = 0.004 ms</text>
+<text x="518" y="238" font-size="9.3" fill="#3B3B3B" text-anchor="start">pre 展开前奏  n = (hi-lo)-(hi-lo)%U</text>
+<text x="924" y="238" font-size="9.3" fill="#3B3B3B" text-anchor="end">8,192 × 52.8 = 0.43 ms</text>
+<text x="518" y="264" font-size="9.3" fill="#3B3B3B" text-anchor="start">range3 三参建立  for v3 in range(lo, lo+n, U)</text>
+<text x="924" y="264" font-size="9.3" fill="#3B3B3B" text-anchor="end">8,199 × 181.1 = 1.48 ms</text>
+<text x="518" y="290" font-size="9.3" fill="#3B3B3B" text-anchor="start">range2 二参建立  v1 / v2 / 尾循环</text>
+<text x="924" y="290" font-size="9.3" fill="#3B3B3B" text-anchor="end">8,456 × 169.3 = 1.43 ms</text>
+<text x="518" y="316" font-size="9.3" fill="#3B3B3B" text-anchor="start">loop 循环机器  FOR_ITER+STORE</text>
+<text x="924" y="316" font-size="9.3" fill="#3B3B3B" text-anchor="end">270,606 × 6.7 = 1.82 ms</text>
+<text x="518" y="342" font-size="9.3" fill="#3B3B3B" text-anchor="start">min3 外壳三连 min  ×8</text>
+<text x="924" y="342" font-size="9.3" fill="#3B3B3B" text-anchor="end">8 × 525.5 = 0.004 ms</text>
+<path d="M 514.2,360.1 Q 723.0,359.7 929.1,357.8" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="3,3"/>
+<text x="518" y="380" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">预测合计 21.67 ms（误差 +15.0%，模型第 9 名）</text>
+<path d="M 468.7,363.4 Q 488.2,365.8 510.0,364.0 M 497.0,367.0 L 510.0,364.0 L 497.0,361.0" stroke="#6b6257" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<text x="490.0" y="350" font-size="9.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">＋2.25 ms</text>
+<path d="M 40.4,406.9 Q 488.4,407.6 939.4,408.6 Q 942.3,463.7 941.1,522.5 Q 489.3,525.6 38.6,524.9 Q 38.4,467.3 40.4,406.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.5"/>
+<text x="490" y="428" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">多付的 +2.25 ms 在哪（21.67 − 19.42，缺省 − 冠军）</text>
+<text x="58" y="450" font-size="9.4" fill="#3B3B3B" text-anchor="start">· range3 ＋ range2：＋1.47 ms —— 8 个 tile → v2 体 8,192 个（冠军 4,096 个），每个 v2 体都要重新建 range</text>
+<text x="58" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">· 内层语句单价：＋0.27 ms —— 行数同为 262,144，k0 61.2 vs j0 60.2 ns/行（近对价差）</text>
+<text x="58" y="488" font-size="9.4" fill="#3B3B3B" text-anchor="start">· 行提升：＋0.26 ms —— hd1 ＋ s2 两个新行种（各 8,192 行）替换 hsm（4,096 行）</text>
+<text x="58" y="507" font-size="9.4" fill="#3B3B3B" text-anchor="start">· pre 前奏：＋0.22 ms（4,096 → 8,192 行）；其余（loop / min3 / hs1）：＋0.03 ms</text>
+<path d="M 39.1,540.3 Q 490.7,540.2 939.3,540.2 Q 941.4,583.7 941.5,628.8 Q 491.9,628.4 40.0,626.9 Q 37.5,584.7 39.1,540.3  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="490" y="560" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">一句话（第 7 节练习的答案：它为什么比冠军慢——多付了哪些行？）</text>
+<text x="490" y="582" font-size="9.6" fill="#3B3B3B" text-anchor="middle">两个候选的内层语句行数完全相同（262,144）——缺省慢的主因不是内层算得慢，</text>
+<text x="490" y="600" font-size="9.6" fill="#3B3B3B" text-anchor="middle">而是 tile 切成 8 份带来的外壳账（range / pre / 行提升），外加 k 内层家族的 hd1＋s2。</text>
+</svg>

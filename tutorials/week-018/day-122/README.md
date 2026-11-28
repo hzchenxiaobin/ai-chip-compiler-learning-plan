@@ -241,3 +241,5 @@ outputs/t-e204/stage-2-loop.mlir:5:10: error: custom op 'vector.reduce' is unkno
 今天的闭环：**问题**——minic 的 S1 是真的、S2~S6 是骨架；计划点名"接入循环生成、Tiling 和 LLVM Lowering，处理不支持场景"。**机制**——loop_lower.py：gen_loop_ir（shape 三来源推断、tile 进步长、bias 契约对齐）＋PASSES 表（D117 顺序合同数据化、逐条跑）＋run_s45（stderr 逐条捕获、失败现场保留、陈旧清理）；minic 0.3.0 的 E202/E204/E205 分层失败处理（退出码 1、manifest 如实记录）。**实践**——一条命令从 11 节点图到汇编：11 个 stage 文件按序号落盘；stage-5.ll 里 D115 的三份合同在场（19 参数拆包、malloc、sret 四指针包装）；两条失败路径现场存档。**验证**——25 PASS / 0 FAIL：主线 7 项（含胶水 0——D117 结论复现）、tile 生效、E202/E204 触发与现场、合同回归、跨天对账（D117 gemm.mlir 走 minic S4 全过）。明天 D123 IR Dump 与可观测性：今天的 stage 序号文件是地基——补的是**每条 pass 的改写记录**（audit 结构化）、dump 粒度控制（全存 vs 按需）、时间线呈现（哪个阶段最贵、哪条 pass 改写最多）——让"看进编译器"从翻文件升级成查表。
 
 > **本周进度卡**：D120 CLI 骨架（25/25）→ D121 S1 图优化（25/25）→ **D122 S2~S5 循环+LLVM（25/25，11 个 stage 文件）** → D123 IR Dump → D124 端到端 → D125 对照实验 → D126 复盘。
+
+<!-- tutorial-review: v1 -->

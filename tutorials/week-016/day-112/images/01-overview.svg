@@ -7,7 +7,7 @@
 <text x="153.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 13 周｜Lowering</text>
 <text x="153.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">mini.matmul → 三重循环</text>
 <text x="153.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">输出初始化 / 尾部 / 边界</text>
-<text x="153.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">D90：8 组 Shape 对照</text>
+<text x="153.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">D90：15 组 Shape 对照</text>
 <path d="M 280.5,83.4 Q 385.3,80.9 489.1,81.2 Q 487.8,142.3 490.2,201.2 Q 385.1,200.8 278.9,199.7 Q 279.9,139.8 280.5,83.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
 <text x="385.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 14 周｜Tiling</text>
 <text x="385.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">循环顺序家族（j/k/i 内层）</text>
@@ -15,7 +15,7 @@
 <text x="385.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">Unroll / 多配置实验</text>
 <path d="M 510.6,82.1 Q 616.6,83.0 722.6,82.5 Q 724.6,139.3 723.4,199.6 Q 617.9,200.7 511.7,199.5 Q 512.2,140.5 510.6,82.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.4"/>
 <text x="617.0" y="101" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 15 周｜内存</text>
-<text x="617.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">生命周期 → 复用（峰值 −30%）</text>
+<text x="617.0" y="120.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">生命周期 → 复用（峰值 −47%）</text>
 <text x="617.0" y="136.5" font-size="9.6" fill="#3B3B3B" text-anchor="middle">片上空间 256 KiB fail-closed</text>
 <text x="617.0" y="153.0" font-size="9.6" fill="#3B3B3B" text-anchor="middle">DMA 依赖 / 双缓冲</text>
 <path d="M 743.1,81.4 Q 849.6,80.0 953.6,80.6 Q 956.5,141.5 955.5,199.5 Q 849.9,200.3 743.8,201.5 Q 745.0,143.3 743.1,81.4  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.4"/>

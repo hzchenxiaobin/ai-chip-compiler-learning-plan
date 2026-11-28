@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——对 minic 管道的 **11 个决策点**逐项审计"谁负责"（Shape 确定／Stride 布局／Tile 参数／Kernel 选择／**内存分配**／**内存释放**／输入搬运／同步／验证／Kernel 缓存／错误恢复），每个决策点带**三重证据**：minic 的实现证据（哪个文件哪行）、真实系统对照（TVM/PyTorch 2.x/cuDNN 怎么划）、教学评注；说出 **minic 的审计结论**——它是"纯静态派"：COMPILE×4（Shape/Stride/Tile/Kernel 选择全编译期固化——`stage-2-loop.mlir` 的签名 `memref<4x6xf32, strided<[6,1]>>` 是铁证）、RUNTIME×1（内存分配——kernel 内 `call ptr @malloc(48)` 每次调用都发生）、CALLER×1（输入搬运——driver 构造描述符传指针，CPU 天然零拷贝）、IMPLICIT×1（同步——C 调用返回＝完成）、**NONE×2（内存释放与 Kernel 缓存——"没人负责"也是一种划分，真实系统不能留的空位）**；用实测证据支撑审计（TP2/TP3：stage-5.ll 含 1 处 malloc、**零处 free**——"释放=NONE"的铁证；shape 在 S2 签名固化、在 .ll 里内联成循环边界常量 `icmp slt i64 %38, 4`）；画出**运行时流程图**（计划点名的交付物：一次推理调用在 minic 体系里的八步旅程——①driver 准备输入构造 desc→②调用 ciface→③wrapper 拆描述符→④malloc 输出缓冲（D131 要接管的一步）→⑤三重循环计算→⑥sret 返回描述符→⑦隐式同步→⑧读 dc.alloc，每步标注归属泳道）；对比**三个真实系统的划法**（minic 纯静态派／TVM 编译期做完全静态+运行时引擎加载／PyTorch 2.x 动态派——JIT 按 shape 特化编译＋lru_cache＋回退 eager——**D129/D130 的思想源头**），并说出划界的三条规律（越静态性能越好灵活性越差／动态派需要"特化＋缓存＋回退"三件套兜底／没有标准答案只有显式选择）。
 > **预计时间**：学习 35 分钟＋实践 45 分钟
 > **前置准备**：第 18 周的 minic 全家桶（今天的审计对象——特别是 manifest 的字段与 stage-5.ll 的结构）、D118 的 C 合同与 malloc 债务（"分配在运行期"的第一手证据）、D115~D117 的 ABI 细节（wrapper 拆描述符的③步）。工具：python3＋git 里的冻结产物（今天的审计大量引用上游 outputs/）；本文环境：Python 3.9.6，macOS arm64，2026-11-14。
-> **今日产出**：`code/responsibility.py`（11 决策点的审计表生成器＋JSON 版＋5 项自检）、`code/run_all.sh`（9 项测试：职责表＋运行期行为实测＋编译期证据＋排期对应）、`code/outputs/responsibility-table.txt`（**今日主产出：职责划分表**——每决策点带 minic 证据/真实对照/评注）、`code/outputs/responsibility-table.json`（机器可读版）、`code/outputs/report.txt`（9 PASS / 0 FAIL）、`code/outputs/self-check.txt`（5/5）＋本文 3 张手绘图（图 2 即计划点名的"运行时流程图"交付物）。
+> **今日产出**：`code/responsibility.py`（11 决策点的审计表生成器＋JSON 版＋5 项自检）、`code/run_all.sh`（9 项测试：职责表＋运行期行为实测＋编译期证据＋排期对应）、`code/outputs/responsibility-table.txt`（**今日主产出：职责划分表**——每决策点带 minic 证据/真实对照/评注）、`code/outputs/responsibility-table.json`（机器可读版）、`code/outputs/report.txt`（9 PASS / 0 FAIL）、`code/outputs/self-check.txt`（5/5）＋本文 4 张手绘图（图 2 即计划点名的"运行时流程图"交付物）。
 
 ## 1. 今天解决什么问题？
 
@@ -69,7 +69,7 @@
 ```text
 tutorials/week-019/day-127/
 ├── README.md                    ← 本文
-├── images/                       ← 3 张手绘图（图 2＝运行时流程图交付物）
+├── images/                       ← 4 张手绘图（图 2＝运行时流程图交付物）
 └── code/
     ├── responsibility.py        # 11 决策点审计表生成器
     ├── gen_images.py / run_all.sh
@@ -140,6 +140,10 @@ TABLE = [
 
 三组观察：**①归属的铁证**（TP2）——malloc 计数 1、free 计数 0：两个 grep 就是两条归属的判决书；不需要读代码，产物自己说话。**②shape 的两段旅程**（TP3）——S2 签名里它是类型（`memref<4x6xf32, strided<[6,1]>>`）、.ll 里它变成常量（`icmp slt i64 %38, 4` 的 4 就是 M）——**同一份信息在 Lowering 中换了形态但没换归属**（始终编译期），这是"固化"的完整含义。**③审计的规划价值**（TP4）——表里每一格"非理想归属"（NONE×2、裸 malloc、隐式同步）都精确对应下周一天（D131/D129/D132）——审计表就是排期表。
 
+![shape 与 stride 的两段旅程：S2 签名里的类型固化成 stage-5.ll 里的常量](images/04-shape-journey.svg)
+
+**图 4**：看左右两栏——**左栏（蓝，类型层）**：S2 产物 `stage-2-loop.mlir` 的签名——`%a: memref<4x6xf32, strided<[6, 1]>>`、`%b: memref<6x3xf32, strided<[3, 1]>>`、`%bias: memref<3xf32, strided<[1]>>`、返回 `memref<4x3xf32>`——shape 与 stride 全部住在类型里（TP3 断言的"签名"证据），4＝M、3＝N、6＝K 三个数字从图 IR 的三来源经推断写死；**中间箭头**：S4/S5 的 8 条 Lowering pass 把类型兑换成常量；**右栏（橙，常量层）**：`stage-5.ll` 里的同三个数字——循环边界（`%49 = icmp slt i64 %48, 4`、`%53 = icmp slt i64 %52, 3`、`%61 = icmp slt i64 %59, 6`）、地址步进（`%64 = mul nuw nsw i64 %48, 6`＝A 行主序、`%69 = mul nuw nsw i64 %59, 3`＝B 行主序）、C 描述符的 sizes 字段（`%43/%44 insertvalue` 把 4/3 写进字段）——TP3 的"边界常量"证据。**读图要点**：同一份信息换了形态、没换归属——两段都是 COMPILE（观察②的口径）；唯一例外是 `%39 = call ptr @malloc(i64 48)`——48＝4×3×4B 是编译期算出的常量，但分配动作发生在每次调用的运行期（RUNTIME——TP2 的证据）；底部金框是 D128 预告：Shape 翻成 RUNTIME 要动三处（签名 `memref<?x?x?>`＋描述符 sizes 从常量变参数＋循环边界从 icmp 常量变 load）。
+
 ### 5.4 修改一个参数再观察
 
 三个便宜的实验：**实验 A（加决策点）**：往 TABLE 里加"数据类型确定"（dtype）——归属是什么？（COMPILE——签名里的 f32；但 PyTorch 2.x 的混合精度是运行期决策……你能找到 minic 的证据吗：gen_loop_ir_full 硬编码 f32）；**实验 B（归属翻转思想实验）**：如果把"Shape 确定"从 COMPILE 翻成 RUNTIME，哪些东西必须动？（签名从 `memref<4x6>` 变 `memref<?x?>`→描述符的 sizes 字段从常量变参数→循环边界从 icmp 常量变 load 描述符——**D128 的完整工作量预演**）；**实验 C（对照深挖）**：选 TVM 的一个决策点（比如"内存分配"）读它的文档/源码——验证审计表"真实系统"列的那一行是否准确——教学审计升级为源码考证的第一步。
@@ -181,3 +185,5 @@ TABLE = [
 今天的闭环：**问题**——Compiler 与 Runtime 的边界在哪里；计划条目"Shape、内存、Kernel 选择和同步分别由谁负责"。**机制**——11 决策点逐项审计：每行四元组（决策点/归属/证据/对照）＋七枚归属枚举先于填表；三重锚定让表格经得起追问（代码/产物/对照）。**结论**——minic 是纯静态派：COMPILE×4（Shape/Stride/Tile/Kernel 全固化）、RUNTIME×1（分配——malloc 每次 48B）、NONE×2（释放/缓存——真实系统不能留的空位）；两个 grep 铁证（malloc 1 处、free 0 处）。**交付**——运行时流程图（八步旅程×三泳道×归属标注，计划点名交付物）＋三系统对照（静态换性能、动态要三件套）。**验证**——9 PASS / 0 FAIL：审计表＋行为实测＋编译期证据＋排期对应。明天 D128 运行期参数与 Shape：把"Shape 确定"从 COMPILE 翻成 RUNTIME 的完整实现——签名 `memref<?x?x?>` 怎么写、描述符 sizes 字段怎么用、循环边界从常量变 load——今天实验 B 的预演落地成代码。
 
 > **第 19 周积分卡**：**D127 职责审计（9/9，11 决策点）** → D128 运行期参数 → D129 静态特化 → D130 通用回退 → D131 内存（malloc 债务结清）→ D132 异步同步 → D133 复盘。
+
+<!-- tutorial-review: v1 -->

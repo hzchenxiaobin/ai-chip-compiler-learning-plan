@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.1,4.0 Q 488.8,3.2 976.5,4.9 Q 975.2,322.8 977.4,637.2 Q 489.7,637.1 5.4,636.2 Q 3.7,320.3 4.1,4.0 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对齐扫描：33³ int8·single 的生死在零头里</text>
+<path d="M 329.6,45.5 Q 488.5,48.6 649.9,47.7" stroke="#A9C4D4" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="490" y="68" font-size="10.5" fill="#6b6257" text-anchor="middle">同一个候选，网格 32 → 64 → 128 B：每项向上取整，零头越攒越多</text>
+<path d="M 43.6,81.3 Q 157.6,80.2 272.5,79.5 Q 274.9,232.3 274.3,381.4 Q 159.4,379.7 45.5,381.4 Q 43.2,233.0 43.6,81.3 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.25"/>
+<text x="159" y="108" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">未对齐的原始账</text>
+<text x="159" y="126" font-size="10" fill="#6b6257" text-anchor="middle">（合计 6,666 B）</text>
+<text x="60" y="152" font-size="9.5" fill="#6b6257" text-anchor="start">A（33×33）</text>
+<text x="258" y="152" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">1,089 B</text>
+<text x="60" y="174" font-size="9.5" fill="#6b6257" text-anchor="start">B（33×33）</text>
+<text x="258" y="174" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">1,089 B</text>
+<text x="60" y="196" font-size="9.5" fill="#6b6257" text-anchor="start">C（33×33，acc 4 B）</text>
+<text x="258" y="196" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">4,356 B</text>
+<text x="60" y="218" font-size="9.5" fill="#6b6257" text-anchor="start">bias（33×4）</text>
+<text x="258" y="218" font-size="9.5" fill="#3B3B3B" text-anchor="end" font-weight="bold">132 B</text>
+<path d="M 58.6,232.9 Q 158.9,232.3 258.4,234.6" stroke="#6b6257" stroke-width="1.1" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
+<path d="M 61.4,247.2 Q 161.6,248.5 257.4,247.8 Q 258.5,276.6 258.0,302.6 Q 160.6,304.0 59.7,305.4 Q 61.6,275.7 61.4,247.2 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="159" y="270" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">align_up(n, a) = ⌈n/a⌉ × a</text>
+<text x="159" y="290" font-size="9.5" fill="#6b6257" text-anchor="middle">每项各自向上取整到网格</text>
+<path d="M 58.9,315.3 Q 158.2,317.0 258.6,316.6 Q 257.9,343.0 257.2,372.9 Q 157.1,373.8 58.8,372.2 Q 59.0,342.6 58.9,315.3 Z" stroke="#3B3B3B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.25"/>
+<text x="159" y="336" font-size="9.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对照组：64³ fp32·double</text>
+<text x="159" y="352" font-size="9.5" fill="#6b6257" text-anchor="middle">2 幂 tile 各项天然落网格</text>
+<text x="159" y="368" font-size="9.5" fill="#6b6257" text-anchor="middle">三档合计恒 82,176 B</text>
+<text x="380" y="112" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对齐 32 B</text>
+<text x="380" y="128" font-size="9.5" fill="#C97B7B" text-anchor="middle">对齐零头 +118 B</text>
+<text x="380" y="204.40320000000003" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">合计 6,784 B</text>
+<path d="M 334.0,487.9 Q 382.0,488.9 425.7,487.8 Q 423.9,515.6 424.4,540.5 Q 380.6,541.7 336.1,541.2 Q 334.3,514.8 334.0,487.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="435" y="516.788" font-size="9.5" fill="#3B3B3B" text-anchor="start">A 1,120</text>
+<path d="M 335.1,433.7 Q 379.9,435.4 426.5,432.8 Q 423.8,460.1 424.0,485.9 Q 378.7,486.5 336.2,488.1 Q 337.0,460.9 335.1,433.7 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="435" y="463.36400000000003" font-size="9.5" fill="#3B3B3B" text-anchor="start">B 1,120</text>
+<path d="M 334.1,224.0 Q 380.1,222.6 424.0,223.2 Q 423.7,328.6 424.0,432.7 Q 380.6,433.7 334.7,432.2 Q 334.9,329.6 334.1,224.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="435" y="332.09360000000004" font-size="9.5" fill="#3B3B3B" text-anchor="start">C 4,384</text>
+<path d="M 333.7,217.0 Q 378.7,216.0 425.7,215.5 Q 427.7,219.0 426.0,225.3 Q 379.7,223.7 333.9,224.2 Q 334.3,221.8 333.7,217.0 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="435" y="223.71920000000006" font-size="9.5" fill="#3B3B3B" text-anchor="start">bias 160</text>
+<text x="580" y="112" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对齐 64 B</text>
+<text x="580" y="128" font-size="9.5" fill="#C97B7B" text-anchor="middle">对齐零头 +246 B</text>
+<text x="580" y="198.2976" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">合计 6,912 B</text>
+<path d="M 534.4,484.2 Q 578.9,483.3 623.8,484.8 Q 624.0,514.5 625.3,540.0 Q 580.7,540.7 534.6,539.0 Q 536.6,510.3 534.4,484.2 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="635" y="516.0248" font-size="9.5" fill="#3B3B3B" text-anchor="start">A 1,152</text>
+<path d="M 535.6,430.9 Q 580.5,429.3 623.7,429.1 Q 625.4,456.9 623.8,485.6 Q 579.3,485.5 536.3,485.4 Q 537.7,459.0 535.6,430.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="635" y="461.07439999999997" font-size="9.5" fill="#3B3B3B" text-anchor="start">B 1,152</text>
+<path d="M 533.6,219.6 Q 581.7,218.0 626.5,218.3 Q 625.5,325.2 625.9,430.8 Q 580.8,431.5 533.9,428.7 Q 531.6,324.7 533.6,219.6 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="635" y="328.2776" font-size="9.5" fill="#3B3B3B" text-anchor="start">C 4,416</text>
+<path d="M 534.9,211.8 Q 579.4,211.9 625.0,210.2 Q 623.6,217.1 623.7,220.9 Q 578.7,221.2 536.3,219.0 Q 537.6,216.9 534.9,211.8 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="635" y="218.3768" font-size="9.5" fill="#3B3B3B" text-anchor="start">bias 192</text>
+<path d="M 534.6,211.6 Q 578.1,209.5 624.9,210.4 Q 624.0,214.9 624.7,216.0 Q 579.2,215.7 536.1,214.8 Q 535.8,213.9 534.6,211.6 Z" stroke="#C97B7B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.85"/>
+<text x="780" y="112" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对齐 128 B</text>
+<text x="780" y="128" font-size="9.5" fill="#C97B7B" text-anchor="middle">对齐零头 +374 B</text>
+<text x="780" y="192.192" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">合计 7,040 B</text>
+<path d="M 734.3,485.9 Q 777.5,483.7 824.0,484.2 Q 824.4,510.5 826.3,540.4 Q 783.4,538.4 736.6,540.5 Q 734.4,512.6 734.3,485.9 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="835" y="516.0248" font-size="9.5" fill="#3B3B3B" text-anchor="start">A 1,152</text>
+<path d="M 733.5,431.1 Q 780.5,431.3 825.9,428.9 Q 825.2,457.3 826.2,486.1 Q 779.7,485.1 734.4,484.7 Q 735.3,458.5 733.5,431.1 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.45"/>
+<text x="835" y="461.07439999999997" font-size="9.5" fill="#3B3B3B" text-anchor="start">B 1,152</text>
+<path d="M 735.0,217.6 Q 777.7,215.4 824.4,215.2 Q 822.2,324.0 823.5,430.4 Q 779.1,430.0 733.6,429.5 Q 733.6,322.2 735.0,217.6 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="835" y="326.7512" font-size="9.5" fill="#3B3B3B" text-anchor="start">C 4,480</text>
+<path d="M 734.9,203.6 Q 780.6,204.8 824.2,203.0 Q 823.9,208.3 825.6,216.2 Q 779.5,214.3 733.8,215.5 Q 735.9,210.8 734.9,203.6 Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.9"/>
+<text x="835" y="213.7976" font-size="9.5" fill="#3B3B3B" text-anchor="start">bias 256</text>
+<path d="M 735.9,203.4 Q 779.3,203.8 825.5,204.1 Q 825.6,210.1 825.8,215.3 Q 779.8,216.2 735.9,215.1 Q 734.8,210.1 735.9,203.4 Z" stroke="#C97B7B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.85"/>
+<path d="M 310.9,214.9 Q 623.9,217.3 938.9,215.7" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none" stroke-dasharray="7 5"/>
+<text x="480" y="238.40320000000003" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">贴线预算 6,784 B</text>
+<text x="480" y="254.40320000000003" font-size="9" fill="#6b6257" text-anchor="middle">（= 32 B 档合计）</text>
+<path d="M 308.7,538.7 Q 626.2,542.3 939.7,542.3" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<text x="380" y="562" font-size="10" fill="#4d7c4f" text-anchor="middle" font-weight="bold">✓ 贴线放行（合计 == 预算）</text>
+<text x="580" y="562" font-size="10" fill="#C97B7B" text-anchor="middle" font-weight="bold">✗ 拒绝，超 128 B</text>
+<text x="780" y="562" font-size="10" fill="#C97B7B" text-anchor="middle" font-weight="bold">✗ 拒绝，超 256 B</text>
+<text x="490" y="618" font-size="10" fill="#6b6257" text-anchor="middle">数字来自 code/outputs/align-sweep.txt 的真实运行（堆叠段自下而上为 A／B／C／bias，柱高按字节等比绘制）</text>
+</svg>

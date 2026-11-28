@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.2,4.4 Q 488.8,5.3 976.2,5.1 Q 974.2,322.8 975.9,637.0 Q 488.8,637.5 5.1,635.6 Q 2.5,318.7 3.2,4.4  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">断点续跑：两个进程拼成一整轮——results.jsonl 的 110 行是怎么长出来的</text>
+<path d="M 299.7,46.6 Q 491.7,47.5 679.4,46.2" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="60" y="82" font-size="12" fill="#3B3B3B" text-anchor="start" font-weight="bold">results.jsonl（追加式：写一行、立刻 flush 一行）</text>
+<path d="M 55.6,92.2 Q 263.7,90.4 475.2,92.2 Q 476.6,251.5 477.6,408.3 Q 269.1,407.3 56.7,408.4 Q 58.3,249.5 55.6,92.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.9"/>
+<path d="M 68.7,112.7 Q 266.1,114.1 461.6,112.5 Q 461.0,150.4 462.6,188.5 Q 265.8,190.0 69.8,188.7 Q 70.0,151.0 68.7,112.7  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.38"/>
+<text x="266" y="132" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">part1 追加 28 行</text>
+<text x="266" y="150" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S1：screen 24 行（2 tile × 6 顺序 × U{1,4}）</text>
+<text x="266" y="166" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S1：final 4 行（top-3 ∪ 缺省 32³ ijk U=1）</text>
+<text x="266" y="206" font-size="9.5" fill="#C97B7B" text-anchor="middle">—— 切断点 = shape 边界（--limit 28 恰好收在 S1 完整跑完）</text>
+<path d="M 68.6,212.3 Q 265.0,211.8 461.1,211.9" stroke="#C97B7B" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="7 5"/>
+<path d="M 69.7,225.2 Q 266.6,223.1 460.5,225.0 Q 463.2,282.2 462.0,340.4 Q 265.4,343.1 68.5,342.3 Q 67.6,283.1 69.7,225.2  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.35"/>
+<text x="266" y="242" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">part2 追加 82 行</text>
+<text x="266" y="260" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S2：screen 36 + final 4 = 40 行</text>
+<text x="266" y="277" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S3：screen 38 + final 4 = 42 行</text>
+<text x="266" y="294" font-size="9.5" fill="#C97B7B" text-anchor="middle">其中被拒 2 行（jki U=4/no-tail，err=10.07，不计时）</text>
+<text x="266" y="311" font-size="9.5" fill="#6b6257" text-anchor="middle">part1 已写的 28 行一条不重写、一条不重测</text>
+<text x="266" y="378" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">合计 110 行 = screen 98 + final 12</text>
+<text x="266" y="430" font-size="9.5" fill="#6b6257" text-anchor="middle">每行一条自包含记录（env＋protocol 随行，过门样本全带）</text>
+<text x="266" y="448" font-size="9.5" fill="#6b6257" text-anchor="middle">中途死掉，损失最多『当时正在测的那一个候选』</text>
+<path d="M 521.5,92.1 Q 727.0,93.1 936.8,93.0 Q 935.3,134.2 936.1,176.6 Q 728.9,177.0 518.8,177.0 Q 521.6,136.3 521.5,92.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.38"/>
+<text x="728" y="110" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">进程 part1：tune --limit 28（预算到站收工）</text>
+<text x="728" y="128" font-size="9.5" fill="#3B3B3B" text-anchor="middle">新测 28 条 / 跳过 0 条；编译 24 次（缓存命中 4，Σcompile 7.3 ms）</text>
+<text x="728" y="145" font-size="9.5" fill="#3B3B3B" text-anchor="middle">墙钟 8.0 s（bench Σwall 8.0 s），内核调用 364 次</text>
+<path d="M 600.5,178.8 Q 600.4,190.3 600.0,199.0 M 597.0,186.0 L 600.0,199.0 L 603.0,186.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="616" y="194" font-size="9.5" fill="#6b6257" text-anchor="start">同一目录、同一命令重启：先读旧文件，28 个键全部命中</text>
+<path d="M 520.7,203.5 Q 729.8,202.3 935.4,203.4 Q 933.6,250.4 934.9,300.4 Q 728.8,301.9 519.6,300.0 Q 520.9,249.9 520.7,203.5  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.35"/>
+<text x="728" y="221" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">进程 part2：按键跳过 28，续测 82 到终点</text>
+<text x="728" y="239" font-size="9.5" fill="#3B3B3B" text-anchor="middle">新测 82 条 / 跳过 28 条；编译 50 次（缓存命中 32，Σcompile 15.6 ms）</text>
+<text x="728" y="256" font-size="9.5" fill="#3B3B3B" text-anchor="middle">墙钟 60.7 s（bench Σwall 60.6 s），内核调用 994 次</text>
+<text x="728" y="273" font-size="9.5" fill="#6b6257" text-anchor="middle">跳过已完成的候选：0 次测量、0 次编译、0 行重写</text>
+<text x="728" y="290" font-size="9.5" fill="#6b6257" text-anchor="middle">唯一重做的是『读旧文件、查键』本身——便宜到不记账</text>
+<path d="M 518.9,310.1 Q 727.3,312.8 934.7,311.4 Q 933.5,358.0 935.0,407.2 Q 726.3,406.6 519.0,405.9 Q 520.0,359.9 518.9,310.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.7"/>
+<text x="728" y="329" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">续跑键 = (shape, kernel 名（含 /no-tail）, stage)</text>
+<text x="728" y="347" font-size="9.5" fill="#3B3B3B" text-anchor="middle">查键只看名字、不编译——缓存账不被『查个名字』污染</text>
+<text x="728" y="364" font-size="9.5" fill="#3B3B3B" text-anchor="middle">('S1','tiled-matmul/32³ ijk U=1','screen') → 已在 → 跳过</text>
+<text x="728" y="381" font-size="9.5" fill="#3B3B3B" text-anchor="middle">('S2','tiled-matmul/96³ kij U=1','screen') → 不在 → 测量并追加</text>
+<path d="M 519.6,418.3 Q 728.1,418.2 935.6,417.6 Q 935.7,447.8 936.6,480.0 Q 725.9,480.8 519.5,480.2 Q 519.7,447.8 519.6,418.3  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.32"/>
+<text x="728" y="435" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">续跑的真实代价（账上如实记）</text>
+<text x="728" y="453" font-size="9.5" fill="#3B3B3B" text-anchor="middle">编译缓存不跨进程：part2 重编它新测的 50 个候选，</text>
+<text x="728" y="470" font-size="9.5" fill="#3B3B3B" text-anchor="middle">其中 24 个 part1 编过（32³/64³ 公共配置）——血统不变，账要重付</text>
+<path d="M 42.7,506.4 Q 488.9,507.0 935.5,506.6 Q 933.3,551.2 935.0,598.6 Q 487.6,600.0 42.8,598.8 Q 42.6,553.6 42.7,506.4  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.6"/>
+<text x="490" y="530" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对账：28 + 82 = 110 条 ｜ 8.0 + 60.7 = 68.7 s ｜ 364 + 994 = 1,358 次内核调用（与 search-cost.txt 总账一致）</text>
+<text x="490" y="552" font-size="10.5" fill="#3B3B3B" text-anchor="middle">part2 没有为 part1 已完成的任何一条记录多花一次测量；</text>
+<text x="490" y="572" font-size="10.5" fill="#C97B7B" text-anchor="middle">切断点钉在 shape 边界——同一张排名表不混两个进程的读数（D107 实测跨进程漂移约 8.6%）</text>
+<text x="490" y="626" font-size="9.5" fill="#6b6257" text-anchor="middle">数字全部来自 outputs/：resume-part1.txt、tune-run.txt、tune-summary.json、results.jsonl、search-cost.txt</text>
+</svg>

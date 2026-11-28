@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——用自己的话讲清"为什么先用 Relu/Add 验证完整路径、再碰 MatMul"（三条理由：C1 依赖未清、嫌疑人集合最小、参考可逐位对齐），并说出今天每个新输入的账本（@add 21/21、@relu 22/22、@step 5/5，full 全 SUCCESS；GEMM 14/18、残账 C1×4）；默写三类访存模式的目标序列——M1 的一条 load 是"4 次 extractvalue＋2 乘 2 加＋getelementptr＋llvm.load"共 10 条、M2 同一条地址公式换成 store、M3 是"malloc＋7 次 insertvalue 填描述符"，并说出 A2/A3/A4 只是词汇映射（index 乘加→i64、f32 乘加→fadd/fmul、cmpf/select→fcmp/select）；解释参考验证为什么必须**三层**（契约层抓描述符字段、数值层按描述符读回、布局层按裸内存行主序），并复述 P1 探针的狡猾之处（strides 填反在 2×2 上是缓冲区上的双射——数值层 4/4 全对照样放走 bug，布局层 2/4 咬住）；独立运行 `./run_all.sh` 复现 9/9 PASS（主运行）＋10/10 PASS（2×3 对照），指出 D115 的 8 条胶水今天的去向（desc↔memref 的 3 条死于 M1/M2/M3 直接消费新类型，i64→index 的 5 条留给 C1）；说出边界包装 `_mlir_ciface` 为什么存在——今天在汇编里亲眼看到的两份合同（LLVM 内部按值聚合拆 x0..x6，C 边界只说指针），以及 4 个真实踩过的坑（np.maximum 当参考、命名结构体与字面结构体是两个类型、方言名与 IR 指令名不同、函数属性放错位置）是怎么被发现和修复的。
 > **预计时间**：学习 40 分钟＋实践 50 分钟
 > **前置准备**：Python 3.11＋numpy＋llvmlite（本文环境：aarch64 Linux，Python 3.11.4，numpy 1.26.4，llvmlite 0.50.0 内嵌 LLVM 22.1.0，与 D113~D115 同机）。本机没有 MLIR 工具链——与 D57~D115 一致：模式注册表与驱动器是 MLIR DialectConversion 的**教学仿真**，但发射出的 LLVM IR 文本交给**真 LLVM** parse、verify、MCJIT 编译执行，结果与 numpy 参考逐点 bitwise 对照，汇编证据来自同一台真机。内容上需要：D115 的兑换表/描述符/胶水（今天的模式全部站在它定义的新类型上）、D114 的模式清单与目标序列（今天实现它的 M1/M2/M3/A2~A4 段）、D113 的 LLVM 方言语法与导出三规则（今天的翻译器直接复刻 R1/R2，R3 今天刻意用不到）。
-> **今日产出**：`code/op_lowering.py`（模式注册表＋六类模式发射器＋翻译器＋边界包装＋三层验证＋探针，全部可运行）、四份源 IR（`add_ir.mlir`、`relu_ir.mlir`、`step_ir.mlir`、`gemm_ir.mlir`）、`code/run_all.sh`（一键复现，本机实测 1 秒内主运行＋对照）、`code/outputs/op-report.txt`（9/9 PASS 真机报告——今日主产出）、`code/outputs/op-report-s23.txt`（2×3 对照 10/10 PASS）、`code/outputs/{add,relu,step}-target.mlir`＋`.ll`（LLVM 方言与 LLVM IR 三组对照文件）、`code/outputs/ciface-disasm.s`（边界包装的真实汇编证据）＋本文 3 张手绘图。
+> **今日产出**：`code/op_lowering.py`（模式注册表＋六类模式发射器＋翻译器＋边界包装＋三层验证＋探针，全部可运行）、四份源 IR（`add_ir.mlir`、`relu_ir.mlir`、`step_ir.mlir`、`gemm_ir.mlir`）、`code/run_all.sh`（一键复现，本机实测 1 秒内主运行＋对照）、`code/outputs/op-report.txt`（9/9 PASS 真机报告——今日主产出）、`code/outputs/op-report-s23.txt`（2×3 对照 10/10 PASS）、`code/outputs/{add,relu,step}-target.mlir`＋`.ll`（LLVM 方言与 LLVM IR 三组对照文件）、`code/outputs/ciface-disasm.s`（边界包装的真实汇编证据）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -90,7 +90,7 @@ A2/A3/A4 相形之下只是**词汇映射**：`arith.addi/muli : index` → `add
 ```text
 tutorials/week-017/day-116/
 ├── README.md                    ← 本文
-├── images/                      ← 3 张手绘图（数字出自 outputs/ 冻结运行）
+├── images/                      ← 4 张手绘图（数字出自 outputs/ 冻结运行）
 └── code/
     ├── op_lowering.py           # 今天主角：模式注册表＋发射器＋翻译器＋包装＋三层验证＋探针
     ├── add_ir.mlir              # 输入①：elementwise Add 2×2（展开形态，21 op）
@@ -248,6 +248,10 @@ python3 op_lowering.py            # 或 ./run_all.sh
   **定位**：改用裸内存行主序读（布局层）——只有 2/4 点对；再看契约层字段检查——strides 直接是 [1,2]，一眼定罪。
   **修复**：三层验证全部保留（谁都不能代表谁），并在探针日志里写明各层判定；形状改 2×3 时干脆跳过 P1——非方形上反序让 store 越界写坏堆，探针要先做安全分析。教训：**验证"结果数组"和验证"返回内存"是两件事**——缺了布局层，描述符自洽的错误就永远检查不出来。
 
+![P1 探针的内存解剖：填反的 strides 在 2×2 缓冲区上构成双射——数值层自洽 4/4、布局层 2/4 咬住；2×3 反序越界所以跳过](images/04-probe-p1-memory.svg)
+
+**图 4**：把上一条的"双坐标"画成内存图——**左**是正确坐标系（strides [2,1]）：store 按 `off+i×2+j×1` 落位，裸读就是行主序，数值层和布局层都是 4/4；**中**是 P1（strides [1,2]）：(0,0)→槽0、(0,1)→槽2、(1,0)→槽1、(1,1)→槽3——写和读用同一套错误公式，数值层把值原样搬回逻辑网格（4/4 自洽），裸读却得到 [11.75, 3.0, -3.0, 7.75]，只有首尾 2/4 对；**右**是 2×3 对照：反序 strides [1,3] 的最大线性地址 1×1+2×3=7，malloc 24B 只有 6 个槽——位置 6、7 在缓冲区外，store 会写坏堆，这就是探针只在方形上跑的原因。底部是三层判读表：数值层验证"坐标系内部自洽"、布局层验证"坐标系本身"、契约层直查字段。
+
 - **现象**：导出的 .ll 被 LLVM 拒收：`error: '%a' defined with type '%desc = type { ptr, ptr, i64, [2 x i64], [2 x i64] }' but expected '{ ptr, ptr, i64, [2 x i64], [2 x i64] }'`——肉眼看类型一模一样。
   **原因**：LLVM 里**命名结构体（%desc）和字面结构体（{ ... }）是两个不同的类型**：`%desc = type {...}` 定义的是"identified struct"，不是别名；`extractvalue { ... } %a` 操作的是另一个类型。
   **定位**：报错行是第一条 `extractvalue`；对比函数签名（%desc）和指令里的类型文本（字面），发现混用了两套写法——初版翻译器在签名里用 %desc、在指令里用字面文本。
@@ -284,3 +288,5 @@ python3 op_lowering.py            # 或 ./run_all.sh
 ## 9. 一句话总结与明天预告
 
 今天的闭环：**问题**——D115 的工单上有 6 条算子层残账和 8 条胶水，而 GEMM 还欠 C1 的船票，验证完整路径不能靠它；**机制**——M1/M2 把下标翻译成"extractvalue×4＋元素单位乘加＋getelementptr＋load/store"，M3 用 malloc＋7 次 insertvalue 填描述符，A2/A3/A4 做词汇映射（Relu 还逼出了清单第 10 行 A4），新输入残账清零、胶水自然消失（3 条被新类型直接消费、5 条随 C1 留守）；**实践**——@add/@relu/@step 三个简单输入第一次 full SUCCESS，导出成 .ll（R2 内联 8 条常量），包装成 `_mlir_ciface`（两份合同缝在边界），MCJIT 编译执行，三层验证 4/4＋4/4 bitwise 全对，转置视图复用同一引擎也 4/4；**验证**——9/9 PASS（主运行）＋10/10 PASS（2×3 对照），三个探针全部被指定层咬住（P1 数值层放行但布局/契约层咬住——2×2 双射自洽是最深的一课），四个真实踩坑全部定位修复。明天 D117 导出 LLVM IR：C1 落地（循环拆四块、块参数变 phi——R3 规则终于登场），GEMM 的 18/18 补齐最后一块账本，剩余 5 条 i64→index 胶水由 reconcile 清零，真 mlir-translate 的完整导出管线接管今天这条手工翻译线——今天的 `add.ll`/`ciface-disasm.s` 就是那一步的对照基线。
+
+<!-- tutorial-review: v1 -->

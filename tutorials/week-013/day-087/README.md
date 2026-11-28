@@ -331,3 +331,5 @@ func @main(%a: memref<4x6xf32, strided<[6, 1]>>, %b: memref<6x3xf32, strided<[3,
 今天给 Day 86 的骨架填了第一块肉：输出初始化。**问题**——`memref.alloc` 是 malloc 不是 calloc，48 B 的输出缓冲里是什么 IR 层没有任何保证；tensor 值语义和 memref 位置语义的断层第一次真正咬人，不初始化就读改写＝未定义行为。**机制**——零起点必须显式交代，放的位置有两种：内存里（`memref.fill`，付 96 B）或 SSA 值里（`%zero` 作为 `scf.for` 的 `iter_args` 初值，零流量）；iter_args 是 SSA 给循环携带状态开的显式通道（初值进门、yield 回传、终值出门，体内体外两个同名 `%acc` 是两个值）；动态维度的保守路径是宁拒不猜——拒绝原因进调试树，full 失败／partial 残留。**实践**——`init_pass.py` 把 Day 86 骨架升级为 13 op（`%zero`＋`iter_args(%acc=%zero)`＋`yield %zero` 占位），新写了带未初始化读检测的解释执行器，用三策略预演 IR 复现 Day 85 清单③。**验证**——真实运行 5/5 PASS：结构 13 op 逐项一致、占位恒等循环＋C 零访问、B/A 位等价＋零垃圾读＋none 12 次垃圾读误差 8.5e+02、动态 `?` 保守拒绝、回滚不留痕——零起点显式化，垃圾读数为零，初始化这一层验收干净。
 
 明天（Day 88）填最后一块肉、生成三重循环的完整计算：`load %a[%i,%k]`＋`load %b[%k,%j]`＋`mulf`＋`addf %acc, %p`＋把 `yield %zero` 换成 `yield %s`＋`store %acc, %c[%i,%j]`——地址公式用 Day 85 任务清单②（6·i＋k、3·k＋j、3·i＋j），先用静态 shape 收官 16 目标 op，然后让解释执行器对 Pattern 自动产出的完整 IR 做位等价终检。今天的预留注释就是明天的填空题。
+
+<!-- tutorial-review: v1 -->

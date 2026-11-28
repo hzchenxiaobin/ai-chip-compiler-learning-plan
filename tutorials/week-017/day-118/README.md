@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——用自己的话讲清 **JIT 与 AOT 的唯一分歧点**（不是编译器不同、不是优化不同，而是"编译动作发生在离线还是在线"这一个时刻差，AOT 五步全在运行前、JIT 把③④⑤推迟到进程内首次调用前，代价是启动多一次编译、收益是可按运行期信息特化）；默写 **C 合同的三天血统**（D115 定下 56B 描述符契约 `desc_t = {alloc, aligned, off, sh[2], st[2]}` → D116 手写 `_mlir_ciface` 包装在汇编里亲眼看到两份合同 → D117 `llvm.emit_c_interface` 让真工具自动生成——今天四条路线全按这份合同调用，一个字都不用改）；独立跑通**四条执行路线**并说清各自的性格（①AOT-静态：`clang gemm-3.ll driver.c` 一次编译反复跑、50248B 落盘；②AOT-共享库：`llc → .o → libgemm.dylib`、Python ctypes 进程内调用；③JIT-lli：`lli jit_combined.ll` 零产物文件、逐次编译；④JIT-MCJIT：C++ 驱动内嵌 LLVM API，把 lli 黑盒拆成 parse→verify→create→finalize→getFunctionAddress→调用六步）；指出**结果到底在哪**——`@gemm` 内部 `memref.alloc()` 自己 `malloc(48)`，包装按 sret 语义把新描述符写回 `*out`，结果在 `dc.alloc` 指向的缓冲区里，**调用方预备的 C 数组从未被写过**（TP5 错误示范实测：C[0..11] 全 0）；最后守住**验证口径**——契约层（56B 布局逐字段与 D115 对账）、数值层（12/12 点与 numpy golden bitwise 一致 × 四条路线）、交叉层（JIT 输出与 AOT 输出逐行 diff 一致、同进程两轮调用一致），外加两笔**挂账**：malloc 债务（kernel 从不 free，教学规模无所谓、真实服务是 48MB/s 泄漏——D131 内存分配与复用结清）与 kernel 级计时（教学形状 ~百 ns，进程级 2.8ms 全是 fork+exec——D125 优化开关对照实验才做真正的计时）。
 > **预计时间**：学习 40 分钟＋实践 50 分钟
 > **前置准备**：clang/lli/llc + LLVM C++ 库（本文环境：macOS arm64，Homebrew LLVM 23.1.5 全家桶，Python 3.9.6＋numpy 1.26.4；D117 作者机为 Ubuntu LLVM 18.1.8——同一份 .ll 两个版本都能吃，见 5.4）。输入零新东西：`gemm-3.ll` 是 D117 冻结的导出产物（本文原样复制为 `baseline-gemm-3.ll`，一个字节没动）；贯穿数据是 4×6 @ 6×3 的 GEMM，A/B 全部手工可算（0.5 的倍数 × 整数），锚点 C[0][1] = 0.5×2 − 1×5 + 2×8 + 0×11 + 1.5×14 − 0.5×17 = **24.5**。内容上需要：D117 的七 pass 管道与 `_mlir_ciface_gemm` 包装（今天的全部输入）、D115 的描述符契约与 sret 证据（今天的合同）、D116 的 ctypes 三层验证法（今天照搬成 C/Python 双语版）。
-> **今日产出**：`code/run_all.sh`（一键复现四条路线＋语义实验＋时间口径，本机实测 12 PASS / 0 FAIL）、`code/driver.c`（AOT 静态驱动：56B 描述符构造＋golden 内嵌对照）、`code/driver_wrong.c`（错误示范：外部缓冲区误区，TP5 实测存档）、`code/call_ciface.py`（ctypes 路线：同进程两轮调用验证无状态）、`code/jit_main.ll`（lli 入口：全局数据＋描述符＋读回循环，与 gemm-3.ll 拼接）、`code/mcjit_driver.cpp`（MCJIT 驱动：lli 内部六步的可见版）、`code/gen_golden.py`（numpy golden 生成器）、`code/outputs/`（report.txt 真机报告、四条路线各自的 result 文件、aot/mcjit build log、golden.txt、wrong-result.txt 误区存档）＋本文 3 张手绘图。
+> **今日产出**：`code/run_all.sh`（一键复现四条路线＋语义实验＋时间口径，本机实测 12 PASS / 0 FAIL）、`code/driver.c`（AOT 静态驱动：56B 描述符构造＋golden 内嵌对照）、`code/driver_wrong.c`（错误示范：外部缓冲区误区，TP5 实测存档）、`code/call_ciface.py`（ctypes 路线：同进程两轮调用验证无状态）、`code/jit_main.ll`（lli 入口：全局数据＋描述符＋读回循环，与 gemm-3.ll 拼接）、`code/mcjit_driver.cpp`（MCJIT 驱动：lli 内部六步的可见版）、`code/gen_golden.py`（numpy golden 生成器）、`code/outputs/`（report.txt 真机报告、四条路线各自的 result 文件、aot/mcjit build log、golden.txt、wrong-result.txt 误区存档）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -45,6 +45,10 @@ D117 结束时管道停在"能导出"：`gemm.mlir` 过七 pass 转成纯 LLVM �
 
 **当天实测证据**：路线 2 共享库版在 macOS 上链接要加 `-undefined dynamic_lookup`（延迟到加载期解析）；路线 4 MCJIT 的 `getFunctionAddress` 返回非零地址——`@malloc` 被 JIT 引擎自动解析到了本进程的 libc。
 
+![运行库符号：@malloc 在四条路线与两种 OS 上的解析路径与失败时机对照](images/04-symbol-resolution.svg)
+
+**图 4**：看两列一带——**顶格**是合同本身：`gemm-3.ll` 里 `declare ptr @malloc(i64)` 只有声明没有定义，谁来履约由路线决定。**左列（AOT，蓝）**：路线 1 由链接器在链接期把 `@malloc` 绑到 libc（缺符号＝链接期 `undefined symbol`，编译期错误、上线前暴露）；路线 2 的共享库在 macOS 上要 `-undefined dynamic_lookup` 推迟到加载期解析，Linux 上 `-shared` 默认允许未解析、加载期再绑定——两个 OS 对同一份合同有两种履约时刻。**右列（JIT，绿）**：路线 3/4 的 JIT 引擎在编译到内存时回调宿主进程符号，`@malloc` 解析到本进程 libc——`getFunctionAddress` 返回非零就是履约证据；缺符号则是 `getFunctionAddress` 拿 0 或调用时崩（运行期错误，晚但定位不难）。**底部金色带**：失败时刻对照——AOT 缺符号在编译/链接期报错（早、友好），JIT 缺符号到运行期才崩（晚一步但堆栈就在现场）；运行库符号家族不止 malloc，`printf`/`memcpy`/`rt.alloc` 是 D127 的主角。
+
 ### 3.3 执行语义：sret 包装与 malloc 债务
 
 **一句话**：`_mlir_ciface_gemm` 是一层 sret（struct-return）包装——`@gemm` 返回 56B 描述符聚合超过寄存器约定，C ABI 改成"调用方传结果指针、被调方往里写"；而描述符里的 `alloc` 指针指向 kernel 内部 `memref.alloc()` 新 malloc 的缓冲区——**结果在 kernel 的缓冲区里，不在调用方预备的任何数组里**。
@@ -70,10 +74,11 @@ D117 结束时管道停在"能导出"：`gemm.mlir` 过七 pass 转成纯 LLVM �
 ```
 tutorials/week-017/day-118/
 ├── README.md                  # 本文
-├── images/                    # 3 张手绘图
+├── images/                    # 4 张手绘图
 │   ├── 01-overview.svg        # 定位图：链路六格栈＋四路线全景
 │   ├── 02-mechanism.svg       # 机制图：JIT/AOT 分岔＋MCJIT 六步
-│   └── 03-example.svg         # 现场图：sret 数据流＋malloc 债务
+│   ├── 03-example.svg         # 现场图：sret 数据流＋malloc 债务
+│   └── 04-symbol-resolution.svg # 合同图：malloc 符号解析路径＋失败时机
 └── code/
     ├── baseline-gemm-3.ll     # D117 冻结导出物（原样复制，零改动）
     ├── gemm.mlir              # D117 源 IR（备份对照，今天不重跑管道）
@@ -263,3 +268,5 @@ C 数组是静态区全零、`dc.alloc` 是堆地址——两个地址**隔着�
 ## 9. 一句话总结与明天预告
 
 今天的闭环：**问题**——D117 停在"能导出"，`.s` 只是"证明可编译"，链路缺最后一棒；**机制**——四条执行路线（AOT 静态/共享库、JIT lli/MCJIT）从"编译时机"光谱的四个采样点消费同一份 `gemm-3.ll`，全部按 D115~D117 三天铸成的 C 合同调用 `_mlir_ciface_gemm`，sret 包装把 kernel malloc 的新描述符写回 `*out`；**实践**——clang 编出 50248B 可执行文件、llc→dylib→ctypes 进程内调用、lli 零产物执行、MCJIT 驱动把 lli 拆成六步可见版；**验证**——12 PASS / 0 FAIL：四路线 × 12 点 bitwise 全对、JIT 与 AOT 输出逐行一致、同进程两轮调用一致、错误示范（外部缓冲区误区）按预期失败并存档、跨 LLVM 18/23 双环境语义收敛；**挂账**——malloc 债务（kernel 从不 free，D131 的 Runtime 分配器来接）与 kernel 级计时（教学形状 ~百 ns，D125 同进程计时法）。明天 D119 第 17 周复盘：从图 IR 到今天跑通的机器码，把七层表示的**每层保留什么、丢失什么**画成一张完整 Lowering 图——回答那个面试官最爱问的问题："为什么不能只看最终 LLVM IR 理解整个编译器？"
+
+<!-- tutorial-review: v1 -->

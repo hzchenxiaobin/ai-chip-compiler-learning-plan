@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.9,4.1 Q 488.5,4.1 974.9,3.7 Q 977.2,317.8 976.1,634.5 Q 489.3,633.0 4.7,635.7 Q 4.0,319.4 4.9,4.1  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="34" font-size="19" fill="#3B3B3B" text-anchor="middle" font-weight="bold">毫秒 → 有效 GFLOPS：同一张冠军表的两种读法（换算前后对照）</text>
+<path d="M 299.0,45.6 Q 487.7,47.0 681.5,43.2" stroke="#C97B7B" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 71.1,95.7 Q 264.4,96.6 458.7,97.3 Q 458.7,296.2 459.3,493.6 Q 263.2,495.5 69.8,494.6 Q 70.1,295.4 71.1,95.7  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<path d="M 520.3,94.9 Q 714.1,93.3 910.6,95.0 Q 909.4,297.0 911.3,495.1 Q 713.3,494.8 519.7,494.7 Q 517.9,294.8 520.3,94.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="265" y="120" font-size="13" fill="#C97B7B" text-anchor="middle" font-weight="bold">左：毫秒视角——跨 shape 不可比</text>
+<text x="715" y="120" font-size="13" fill="#9CBF8E" text-anchor="middle" font-weight="bold">右：速率视角（有效 GFLOPS）——跨 shape 可比</text>
+<path d="M 94.7,369.8 Q 132.5,367.9 166.3,369.9 Q 166.1,405.6 167.3,444.6 Q 128.7,445.1 92.6,443.5 Q 95.2,407.3 94.7,369.8  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.62"/>
+<text x="130.0" y="362.41179895206676" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">15.80 ms</text>
+<path d="M 219.3,204.4 Q 253.3,203.1 290.2,205.2 Q 291.7,326.9 291.5,445.2 Q 254.4,444.1 218.3,446.5 Q 218.4,325.3 219.3,204.4  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.62"/>
+<text x="255.0" y="196.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">51.53 ms</text>
+<path d="M 342.7,295.5 Q 379.4,295.5 415.2,294.8 Q 413.1,369.1 415.2,443.7 Q 377.6,443.4 343.6,445.5 Q 344.7,370.5 342.7,295.5  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.62"/>
+<text x="380.0" y="286.6811566078013" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">32.06 ms</text>
+<path d="M 80.2,444.0 Q 265.1,446.6 451.4,446.0" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="130.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S1 64³</text>
+<text x="255.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S2 96³</text>
+<text x="380.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S3 90×96×64</text>
+<text x="130.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">524,288 FLOPs</text>
+<text x="255.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">1,769,472 FLOPs</text>
+<text x="380.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">1,105,920 FLOPs</text>
+<text x="94" y="142" font-size="11.5" fill="#C97B7B" text-anchor="start" font-weight="bold">✗ 毫秒差 3.3×（51.53 ÷ 15.80）</text>
+<text x="94" y="161" font-size="9.8" fill="#6b6257" text-anchor="start">三个 shape 的工作量差 3.4×——毫秒差只是工作量的影子</text>
+<text x="94" y="179" font-size="9.8" fill="#6b6257" text-anchor="start">像“3 公里 18 分钟” vs “10 公里 51 分钟”：单位不对，谁快说不清</text>
+<path d="M 426.6,285.5 Q 484.0,285.0 536.0,285.0 M 523.0,288.0 L 536.0,285.0 L 523.0,282.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="482" y="266" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">换算</text>
+<text x="482" y="308" font-size="9.6" fill="#6b6257" text-anchor="middle">工作量 ÷ 时间</text>
+<path d="M 545.3,214.2 Q 580.4,213.8 615.8,214.4 Q 616.7,329.7 616.3,445.2 Q 581.1,447.4 543.8,445.4 Q 543.0,328.0 545.3,214.2  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="580.0" y="205.04347826086956" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">33.2 MFLOPS</text>
+<path d="M 667.6,204.9 Q 704.4,206.3 741.5,205.2 Q 741.3,325.9 740.9,443.9 Q 703.4,446.3 668.4,446.4 Q 666.5,326.8 667.6,204.9  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="705.0" y="197.39130434782612" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">34.3 MFLOPS</text>
+<path d="M 793.4,204.8 Q 827.6,204.0 864.9,206.4 Q 864.3,327.7 867.1,445.0 Q 831.1,442.8 793.7,444.5 Q 792.0,322.9 793.4,204.8  Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.75"/>
+<text x="830.0" y="196.0" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">34.5 MFLOPS</text>
+<path d="M 529.3,446.6 Q 714.4,447.4 902.6,444.9" stroke="#3B3B3B" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="580.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S1 64³</text>
+<text x="705.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S2 96³</text>
+<text x="830.0" y="466" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S3 90×96×64</text>
+<text x="580.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">524,288 FLOPs</text>
+<text x="705.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">1,769,472 FLOPs</text>
+<text x="830.0" y="483" font-size="9.3" fill="#6b6257" text-anchor="middle">1,105,920 FLOPs</text>
+<text x="544" y="142" font-size="11.5" fill="#9CBF8E" text-anchor="start" font-weight="bold">✓ 换算后三根柱几乎等高（33.2 → 34.5，只差 4%）</text>
+<text x="544" y="161" font-size="9.8" fill="#6b6257" text-anchor="start">同一把尺：每秒完成多少名义工作（速率，跨 shape 才可比）</text>
+<text x="544" y="179" font-size="9.8" fill="#C97B7B" text-anchor="start">这个“平”＝“解释受限”的数据指纹（3.4 节的独立证据）</text>
+<path d="M 54.7,508.4 Q 489.7,509.4 923.5,508.0 Q 924.9,540.4 924.5,572.2 Q 490.5,571.3 53.8,571.3 Q 52.4,539.6 54.7,508.4  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.8"/>
+<text x="490" y="532" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">换算：有效 GFLOPS = flops_nominal ÷ 决赛中位数（3+21）｜ S2 冠军例：1,769,472 FLOPs ÷ 51.535 ms = 34.3 MFLOPS</text>
+<text x="490" y="556" font-size="10" fill="#6b6257" text-anchor="middle">同一 shape 内毫秒名次与 GFLOPS 名次互为反序——换算改变读数、不改变 shape 内排名；跨 shape 只有速率可比</text>
+<text x="490" y="592" font-size="9.6" fill="#6b6257" text-anchor="middle">两图各自等比缩放（纵轴尺度不同）· 数字出自 outputs/perf-table.txt 决赛行与 outputs/roofline.txt 第六节</text>
+<text x="490" y="616" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">工作量差 3.4×、速率只差 4%——“毫秒不可比、GFLOPS 才可比”的直观版</text>
+</svg>

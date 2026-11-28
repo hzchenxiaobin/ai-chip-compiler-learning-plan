@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 26px; font-weight: bold; }
+    .sub { font-size: 13.5px; fill: #6b6257; }
+    .ptitle { font-size: 15px; font-weight: bold; }
+    .box1 { font-size: 13.5px; font-weight: bold; }
+    .box2 { font-size: 12px; fill: #4a453d; }
+    .fix { font-size: 12.5px; font-weight: bold; fill: #4C7BA8; }
+    .ylab { font-size: 11.5px; fill: #5a554d; }
+    .val { font-size: 12.5px; font-weight: bold; }
+    .cap { font-size: 12.5px; font-weight: bold; }
+    .gsub { font-size: 10.5px; fill: #6b6257; }
+    .ann { font-size: 12.5px; font-weight: bold; }
+    .note { font-size: 11px; fill: #5a554d; }
+    .chip { font-size: 12px; }
+    .vote { font-size: 13px; font-weight: bold; }
+    .box { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 2; stroke-linecap: round; fill: none; }
+    .grid { stroke: #D8CFBB; stroke-width: 1.4; stroke-linecap: round; }
+  </style>
+
+  <rect x="4" y="4" width="1192" height="667" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+
+  <text x="600" y="38" text-anchor="middle" class="title">性能噪声的第三层：跨进程的地址布局相位</text>
+  <text x="600" y="60" text-anchor="middle" class="sub">同一命令、三个独立进程 · tailcost 三连跑（每格 15 样本取中位数）· 对策不是加样本，是换进程＋方向票数</text>
+
+  <!-- ================= 左列：三层噪声 ================= -->
+  <g>
+    <text x="195" y="92" text-anchor="middle" class="ptitle">噪声的三层（一层压一层）</text>
+
+    <path class="box" d="M 45,105 Q 195,101 345,106 Q 347,138 345,168 Q 195,173 47,168 Q 43,136 45,105 Z" fill="#7FA8D9" fill-opacity="0.18"/>
+    <text x="195" y="128" text-anchor="middle" class="box1">① 样本级：一次运行内的离群</text>
+    <text x="195" y="148" text-anchor="middle" class="box2">15 个样本里偶发毛刺</text>
+    <text x="195" y="164" text-anchor="middle" class="fix">对策：中位数＋MAD（MAD 中位约 0.04）</text>
+
+    <path class="arr" d="M 195,175 Q 193,195 195,215"/>
+    <path class="arr" d="M 195,215 l -6,-9 M 195,215 l 7,-9"/>
+    <text x="212" y="200" class="note">中位数压得住</text>
+
+    <path class="box" d="M 45,225 Q 195,221 345,226 Q 347,258 345,288 Q 195,293 47,288 Q 43,256 45,225 Z" fill="#7FA8D9" fill-opacity="0.18"/>
+    <text x="195" y="248" text-anchor="middle" class="box1">② run 级：两次运行中位数漂移</text>
+    <text x="195" y="268" text-anchor="middle" class="box2">同一进程连跑两轮也会挪</text>
+    <text x="195" y="284" text-anchor="middle" class="fix">对策：复跑对照（D97 的 repeatability）</text>
+
+    <path class="arr" d="M 195,295 Q 193,315 195,335"/>
+    <path class="arr" d="M 195,335 l -6,-9 M 195,335 l 7,-9"/>
+    <text x="212" y="320" class="note">复跑压得住</text>
+
+    <path class="box" d="M 45,345 Q 195,340 345,346 Q 348,392 345,438 Q 195,444 47,438 Q 42,390 45,345 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="195" y="368" text-anchor="middle" class="box1">③ 进程级相位（今天的主角）</text>
+    <text x="195" y="388" text-anchor="middle" class="box2">同代码同数据，地址布局不同档</text>
+    <text x="195" y="405" text-anchor="middle" class="box2">性能长期稳定在抽中的档位上</text>
+    <text x="195" y="426" text-anchor="middle" class="fix" fill="#C25E5E">加样本看不见 → 换进程才看得见</text>
+
+    <path class="box" d="M 45,455 Q 195,451 345,456 Q 347,470 345,481 Q 195,486 47,481 Q 43,466 45,455 Z" fill="#FDFBF6"/>
+    <text x="195" y="473" text-anchor="middle" class="chip">"档位"是抽签，不是抖动</text>
+  </g>
+
+  <path d="M 362,280 L 388,280" stroke="#B9AE95" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round"/>
+
+  <!-- ================= 中列：同格三进程点图 ================= -->
+  <g>
+    <text x="610" y="92" text-anchor="middle" class="ptitle">同一格子、三个进程：进程内紧，进程间分档</text>
+    <text x="452" y="106" class="ylab">GFLOPS（越高越好）</text>
+
+    <!-- 网格：11.5..14.5 GFLOPS → y=486..78 -->
+    <path class="grid" d="M 440,486 Q 610,483 820,486"/>
+    <path class="grid" d="M 440,418 Q 610,415 820,418"/>
+    <path class="grid" d="M 440,350 Q 610,347 820,350"/>
+    <path class="grid" d="M 440,282 Q 610,279 820,282"/>
+    <path class="grid" d="M 440,214 Q 610,211 820,214"/>
+    <path class="grid" d="M 440,146 Q 610,143 820,146"/>
+    <path class="grid" d="M 440,78 Q 610,75 820,78"/>
+    <text x="432" y="490" text-anchor="end" class="ylab">11.5</text>
+    <text x="432" y="422" text-anchor="end" class="ylab">12.0</text>
+    <text x="432" y="354" text-anchor="end" class="ylab">12.5</text>
+    <text x="432" y="286" text-anchor="end" class="ylab">13.0</text>
+    <text x="432" y="218" text-anchor="end" class="ylab">13.5</text>
+    <text x="432" y="150" text-anchor="end" class="ylab">14.0</text>
+    <text x="432" y="82" text-anchor="end" class="ylab">14.5</text>
+
+    <!-- 左子图：ikj-128 · M=512 -->
+    <path class="arr" d="M 440,486 L 620,486"/>
+    <path class="arr" d="M 620,486 l -9,-4 M 620,486 l -9,5"/>
+    <path d="M 628,486 L 628,86" stroke="#B9AE95" stroke-width="1.8" stroke-dasharray="5 5" stroke-linecap="round"/>
+
+    <path d="M 487,188 L 487,216" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="487" cy="202" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="462" y="206" text-anchor="end" class="val">13.59</text>
+    <path d="M 532,112 L 532,120" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="532" cy="116" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="507" y="120" text-anchor="end" class="val">14.22</text>
+    <path d="M 577,106 L 577,115" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="577" cy="110" r="9" fill="#E8A87C" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="599" y="114" class="val">14.26</text>
+
+    <text x="532" y="516" text-anchor="middle" class="cap">ikj-128 · M=512</text>
+    <text x="532" y="533" text-anchor="middle" class="gsub">进程间中位差 4.9%（13.59→14.26）</text>
+    <text x="532" y="549" text-anchor="middle" class="gsub">进程1 MAD 0.10，进程2/3 各约 0.03</text>
+
+    <!-- 右子图：ikj-64 · M=516 -->
+    <path class="arr" d="M 628,486 L 818,486"/>
+    <path class="arr" d="M 818,486 l -9,-4 M 818,486 l -9,5"/>
+
+    <path d="M 672,340 L 672,354" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="672" cy="347" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="647" y="351" text-anchor="end" class="val">12.52</text>
+    <path d="M 718,228 L 718,234" stroke="#3B3B3B" stroke-width="1.8"/>
+    <circle cx="718" cy="231" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="743" y="235" class="val">13.38</text>
+    <path d="M 764,399 L 764,485" stroke="#C25E5E" stroke-width="2.4"/>
+    <circle cx="764" cy="442" r="9" fill="#7FA8D9" fill-opacity="0.9" stroke="#3B3B3B" stroke-width="2"/>
+    <text x="786" y="462" class="val" fill="#C25E5E">11.82</text>
+
+    <text x="745" y="516" text-anchor="middle" class="cap">ikj-64 · M=516</text>
+    <text x="745" y="533" text-anchor="middle" class="gsub">进程间中位差 13.2%（11.82→13.38）</text>
+    <text x="745" y="549" text-anchor="middle" class="gsub" fill="#C25E5E">进程3 MAD 0.31 ≈ 别人的 5 倍</text>
+
+    <path d="M 760,396 Q 700,370 642,382" stroke="#C25E5E" stroke-width="2" fill="none" stroke-dasharray="7 6" stroke-linecap="round"/>
+    <path d="M 642,382 l 10,-4 M 642,382 l 8,8" stroke="#C25E5E" stroke-width="2" stroke-linecap="round"/>
+    <text x="456" y="368" class="ann" fill="#C25E5E">须特别长 = 样本自己跨了档</text>
+    <text x="456" y="385" class="ann" fill="#C25E5E">（相位命中的判别标志）</text>
+
+    <text x="630" y="573" text-anchor="middle" class="note">点 = 该进程 15 样本的中位数；须 = ±MAD；数据：outputs/tailcost-run{1,2,3}.txt</text>
+  </g>
+
+  <path d="M 828,280 L 852,280" stroke="#B9AE95" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round"/>
+
+  <!-- ================= 右列：方向票数 ================= -->
+  <g>
+    <text x="1010" y="92" text-anchor="middle" class="ptitle">结论的口径：方向票数</text>
+
+    <path class="box" d="M 865,105 Q 1010,101 1155,106 Q 1157,142 1155,172 Q 1010,177 867,172 Q 863,138 865,105 Z" fill="#7FA8D9" fill-opacity="0.18"/>
+    <text x="1010" y="128" text-anchor="middle" class="box1">516³ 的翻转（ikj-64 赢）</text>
+    <g>
+      <path class="box" d="M 885,140 h 26 v 24 h -26 Z" fill="#7FA8D9" fill-opacity="0.85"/>
+      <path class="arr" d="M 888,153 l 7,7 l 13,-13"/>
+      <path class="box" d="M 917,140 h 26 v 24 h -26 Z" fill="#7FA8D9" fill-opacity="0.85"/>
+      <path class="arr" d="M 920,153 l 7,7 l 13,-13"/>
+      <path class="box" d="M 949,140 h 26 v 24 h -26 Z" fill="#7FA8D9" fill-opacity="0.85"/>
+      <path class="arr" d="M 952,153 l 7,7 l 13,-13"/>
+      <path class="box" d="M 981,140 h 26 v 24 h -26 Z" fill="#7FA8D9" fill-opacity="0.85"/>
+      <path class="arr" d="M 984,153 l 7,7 l 13,-13"/>
+      <path class="box" d="M 1013,140 h 26 v 24 h -26 Z" fill="#7FA8D9" fill-opacity="0.85"/>
+      <path class="arr" d="M 1016,153 l 7,7 l 13,-13"/>
+      <text x="1058" y="158" class="vote">5/5 一致</text>
+    </g>
+    <text x="1010" y="190" text-anchor="middle" class="gsub">票源：D97 · 隔离 · 确认 · 行距探针两变体</text>
+
+    <path class="box" d="M 865,215 Q 1010,211 1155,216 Q 1157,252 1155,282 Q 1010,287 867,282 Q 863,248 865,215 Z" fill="#E8A87C" fill-opacity="0.22"/>
+    <text x="1010" y="238" text-anchor="middle" class="box1">512³ 上 ikj-128 的优势</text>
+    <g>
+      <path class="box" d="M 877,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 880,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 905,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 908,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 933,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 936,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 961,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 964,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 989,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 992,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 1017,250 h 24 v 22 h -24 Z" fill="#E8A87C" fill-opacity="0.85"/>
+      <path class="arr" d="M 1020,261 l 6,6 l 11,-11"/>
+      <path class="box" d="M 1045,250 h 24 v 22 h -24 Z" fill="#FDFBF6"/>
+      <path d="M 1048,253 l 18,16 M 1066,253 l -18,16" stroke="#C25E5E" stroke-width="2.4" stroke-linecap="round"/>
+      <text x="1078" y="268" class="vote">6/7</text>
+    </g>
+    <text x="1010" y="300" text-anchor="middle" class="gsub">票源：D97·隔离·确认·tailcost×3 赢，</text>
+    <text x="1010" y="315" text-anchor="middle" class="gsub" fill="#C25E5E">行距探针输（唯一反例，只差 0.7%，噪声内）</text>
+
+    <path class="box" d="M 865,340 Q 1010,336 1155,341 Q 1157,388 1155,430 Q 1010,436 867,430 Q 863,386 865,340 Z" fill="#FDFBF6"/>
+    <text x="1010" y="364" text-anchor="middle" class="box1">方向可信，幅度只给区间</text>
+    <text x="1010" y="386" text-anchor="middle" class="box2">方向：跨进程票数定（背住）</text>
+    <text x="1010" y="404" text-anchor="middle" class="box2">幅度：随相位波动，只报区间</text>
+    <text x="1010" y="422" text-anchor="middle" class="box2">（516³ 领先 1.5%～8.6%）</text>
+
+    <path class="arr" d="M 1010,440 Q 1008,470 1010,500"/>
+    <path class="arr" d="M 1010,500 l -6,-9 M 1010,500 l 7,-9"/>
+    <path class="box" d="M 865,508 Q 1010,504 1155,509 Q 1157,540 1155,556 Q 1010,561 867,556 Q 863,532 865,508 Z" fill="#E8A87C" fill-opacity="0.26"/>
+    <text x="1010" y="528" text-anchor="middle" class="chip">反常的进程内 MAD</text>
+    <text x="1010" y="548" text-anchor="middle" class="chip">= 相位命中的判别标志</text>
+  </g>
+
+  <text x="600" y="600" text-anchor="middle" class="note">票数口径：把全部可复核进程（D97 两次、隔离、确认、行距探针、tailcost 三跑）各记一票 · 与正文 3.3 / 5.3 / 7 节一致</text>
+  <text x="600" y="622" text-anchor="middle" class="note">"档位"个数随格子而异：ikj-128·M=512 三进程挤在两档；ikj-64·M=516 的第三进程独立成档</text>
+  <text x="600" y="648" text-anchor="middle" class="note">数据：outputs/tailcost-run{1,2,3}.txt（同命令三进程）· 图中数值为各进程 15 样本的中位数与 MAD</text>
+</svg>

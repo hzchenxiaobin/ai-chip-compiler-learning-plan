@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到四件事——说清**块循环（tile loop）和点循环（point loop）的分工**：块循环 `step = 块尺寸` 每圈跳一整块，点循环 `[块起点, 块起点+块尺寸)` 在块内一格一格走，两者的 trip 分别是 `维/块` 和 `块尺寸`；讲透**今天最难的一步——跨块累加**：k 被切成 K/Tk 个块后，(i,j) 点循环被外层 k0 反复重访，寄存器存不下 Tm×Tn 个部分和，于是累加器分成两条通道（**块内走 iter_args 寄存器、跨块走 C 的读-改-写**），清零 nest 因此必须回来——这是 Day 92「k 不在最内层 → 累加器住内存」在 Tiling 世界的重现；独立复现 **29 项检查**：恒 31 op 的结构不变量、小例 8 种＋16³ 十种＋非方形 8 组共 **26 组整除测试全部位等价**（从真实访存日志重建的 (i,j,k) 三元组恰好全覆盖一次）、C 流量公式 `读=写=M·N·K/Tk`、16³ 缓存回放 **512B 缺失 4764 → 1082、B 缺失 4096 → 398**；最后能解释**为什么今天只保证整除场景**：不整除时点循环上界 `k0+Tk` 会越过 K——尾部处理是 Day 95 的内容，今天由消费门 fail-closed 拒绝（宁可拒绝运行，不可静默生成越界 IR）。
 > **预计时间**：学习 35 分钟＋实践 45 分钟
 > **前置准备**：Python 3.11＋numpy（本文环境：aarch64 Linux，Python 3.11.4，numpy 1.26.4）。本机没有安装 MLIR——与 Day 57~93 一致，复用三个只取不改的工程：Day 90 的 `shape_pass.py`（IR 内核／Rewriter／解释执行器）、Day 92 的 `order_pass.py`（untiled 基线与缓存回放器）、Day 93 的 `loop_options.py`（LoopOptions 与四道门）。内容上需要四个名词：`%zero`（归约零起点，Day 87）、`iter_args`（寄存器累加器，Day 87/88）、形态 B（k 不在最内层 → 内存累加＋清零 nest，Day 92）、`LoopOptions`（Day 93 的配置对象：昨天第④道消费门把 `tile=2x2x3` 拒之门外，报错点名「Tiling 的 lowering 是 Day 94 的内容」）。今天的新面孔只有一个算子：`arith.addi`（index 加法）——点循环的上界 `起点+块尺寸` 每圈都要现算，真实 MLIR 的 Tiling 分解生成的正是它。
-> **今日产出**：`code/tiling_pass.py`（`TilingPattern` ＋ `TilingInterp` ＋ 更新后的消费门 ＋ TL1~TL6 共 29 项检查，全部可运行）、`code/outputs/tiled-ir.txt`（计划点名的 **Tiled IR**：两份配置、31 op 的 6 层循环）、`code/outputs/divisible-tests.txt`（计划点名的**整除测试**：26 组全部位等价）、`cache-blocking.txt`（缓存收益实验：真实轨迹回放）、`consume-guard.txt`（消费契约实录）、4 张手绘图。
+> **今日产出**：`code/tiling_pass.py`（`TilingPattern` ＋ `TilingInterp` ＋ 更新后的消费门 ＋ TL1~TL6 共 29 项检查，全部可运行）、`code/outputs/tiled-ir.txt`（计划点名的 **Tiled IR**：两份配置、31 op 的 6 层循环）、`code/outputs/divisible-tests.txt`（计划点名的**整除测试**：26 组全部位等价）、`cache-blocking.txt`（缓存收益实验：真实轨迹回放）、`consume-guard.txt`（消费契约实录）、5 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -93,7 +93,7 @@ tutorials/week-014/day-094/
 │       ├── divisible-tests.txt    # 整除测试 26 组（计划点名的交付物）
 │       ├── cache-blocking.txt     # 缓存收益实验（真实轨迹回放）
 │       └── consume-guard.txt      # 消费契约实录
-└── images/                        # 4 张手绘图
+└── images/                        # 5 张手绘图
 ```
 
 `tiling_pass.py` 通过 `sys.path` 引用前三天的工程——**只取不改**：Day 90 的 `shape_pass.py`、Day 92 的 `order_pass.py`、Day 93 的 `loop_options.py`。今天对旧工程只做两处**扩展**（不是修改）：给 `TARGET_LEGAL` 注册表登记新算子 `arith.addi`（等价于真实 MLIR 的 `ConversionTarget::addLegalOp`——新 lowering 需要新算子时注册它，Day 90 的文件一行不动，code/tiling_pass.py:81），以及给解释执行器子类补上 `addi` 的语义。运行方式：
@@ -238,6 +238,10 @@ k-块数从 3 变 1，C 的读-改-写跟着从 3 轮变 1 轮（公式 `C读=C�
 - **定位**：症状很特异——结果恰好等于「最后一个 k-块的部分和」；用 `--demo acczero` 可复现，错误的行在 code/tiling_pass.py 的 `acc_init = zero.results[0] if self.acc_from_zero else cv.results[0]`（旋钮开着就是错误形态）。
 - **修复**：iter_args 初值接 `%cv`（读端），块末 store 回 C（写端）——接力棒从上一块的终点开始。位等价的机械保证（TL2e）依赖这条链完整。
 
+![跨块累加丢失的机理：正确接力链与断链的对照，数字全部来自真实运行](images/05-acczero-relay.svg)
+
+**图 5**：上图是正确链（C[0,0] 的实测值流）：清零 nest 铺 0，三个 k-块逐棒接力（load 部分和 → 块内乘加 → store），终值 −0.6924 与参考一致；下图是 `acc_from_zero` 旋钮打开后的断链：每块 iter_args 初值从 `%cv` 换成 `%zero`，三棒各自从 0 起跑（第一棒恰好与正确链相同，伤害从第二棒开始），块末 store 覆盖前棒成果——终值 +0.0658 只剩最后一个 k-块（k=2）的贡献，实测 `max|C−ref| = 1.759`、位等价 False。
+
 ### 错误 3：忘记清零 nest——Day 92 OT5 的教训在 Tiling 世界复验
 
 - **现象**：`--demo noinit`（真实输出）：`tile=2x2x1` 且 `init=False`：未初始化读 4 条（第一个 k-块的 `%cv` 全部读到垃圾 777+7·addr），与参考位等价 = False——垃圾进了跨块累加链。
@@ -272,10 +276,12 @@ k-块数从 3 变 1，C 的读-改-写跟着从 3 轮变 1 轮（公式 `C读=C�
 - [ ] 我能不运行就预测一份配置的命运：块数、C 流量（`M·N·K/Tk`）、以及不整除/unroll/组合配置会被哪道门拒绝、报错点名哪天（§7 必做）
 - [ ] 我能用 `--demo nondiv/acczero/noinit` 复现三个真实错误，并说出各自的「现象 → 原因 → 修复」
 - [ ] 我能解释 16³ 实测的收益与代价：512B 缺失 4764→1082（B 缺 4096→398）、总访问 +24% 为什么反而划算、以及 8x8x8 为什么输给 4x4x4（工作集 56 行 > 32 行）
-- [ ] 我保存了今天的代码（`code/tiling_pass.py`）、四份真实输出（`code/outputs/`）和 4 张图（`images/`）
+- [ ] 我保存了今天的代码（`code/tiling_pass.py`）、四份真实输出（`code/outputs/`）和 5 张图（`images/`）
 
 ## 9. 一句话总结与明天预告
 
 今天回答的问题是：**把三维循环切成方块，IR 怎么搭、语义怎么保、收益怎么量**。机制上，`TilingPattern` 把三重循环改造成 3 层块循环（step = 块尺寸）套 3 层点循环（lb = 块起点、ub = `arith.addi` 现算），归约维被切断后累加器分成「块内 iter_args 寄存器、跨块 C 读-改-写」两条通道，清零 nest 随之回归——Day 92 形态 B 的结论在 Tiling 世界重现；验证上，恒 31 op 的结构不变量、26 组整除测试全部位等价（k0 升序 × 块内 k 升序 = 全局升序的机械解释）、C 流量公式 `读=写=M·N·K/Tk` 逐项对齐；收益上，16³ 缓存回放给出 Day 92 预言的兑现：512B 缺失 4764 → 1082、B 缺 4096 → 398，代价是总访问 +24%——用便宜的命中换昂贵的缺失。今天最重要的一条边界原则值得再说一遍：**今天的 lowering 只保证整除契约，管不到的路径全部 fail-closed 拒绝并点名归属日**——宁可拒绝运行，不可静默生成越界 IR。
 
 明天（Day 95）处理非整除尾部：今天被消费门拒绝的 `tile=2x2x2`（Tk=2 ∤ K=3）将获得它的 lowering——上界夹 `min(k0+Tk, K)` 的剩余循环，或者掩掉越界趟的掩码思想；§3.3 的数轴图就是明天的施工图，26 组整除测试会扩成带尾部的边界用例。
+
+<!-- tutorial-review: v1 -->

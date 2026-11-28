@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——跑通**首个完整端到端管道**：一条链 `11 节点图 IR → S1 融合（matmul+bias+relu→fused）→ S2 点循环真实展开（34 行 MLIR：三重 scf.for＋load/mulf/addf/store 逐点写全）→ S4 七 pass（胶水 0）→ S5 .ll/.s → S6 AOT 执行（clang 编译内嵌 golden 的 C driver）`，最终 **12/12 点与 numpy 参考逐位一致**（C[0]=22.125、C[1]=24.25——手算锚点 `relu(-0.25 + 0.5×2−1×5+2×8+0+1.5×14−0.5×17)` 可笔算验证）；讲清计划条目"**融合算子如何映射到实际循环**"的具体答案（fused_matmul_bias_relu = 三重 scf.for＋**bias 进 iter_args 初值**（k=0 圈语义）＋k 序乘加链＋**cmpf ogt＋select** 收尾——融合没有魔法，只是把三个节点的语义写进一个循环体）；避开两个深坑——**golden 的浮点口径**（numpy 的 `@` 用分块/向量序、kernel 用 k 序，顺序不同舍入不同——golden 必须按 k 序手写（bias 先进 acc 逐次 addf），bitwise 判据才成立，D78~D80 的浮点课在 S6 落地）与 **-O0 的连锁反应**（实测：-O0 关掉 QDQ 清理 → quantize 残留 → S2 支持集不含 quantize → E202 拒收——**有的优化开关不只是性能选项，是后续阶段能否工作的前提**，D121"清理创造机会"的端到端版）；独立运行 `./run_all.sh` 复现 **11 项测试**（TP1 端到端全链路、TP2 融合语义——relu 活到 .ll、TP3 bias 融 k=0、TP4 golden 口径、TP5 C 合同四指针、TP6 -O0 连锁、TP7 前五天合同回归）；说清"**首个完整项目可运行版本**"的准确含义（不是每层都用最重的实现，而是每层都有真实实现、层层咬合、端到端可验证）。
 > **预计时间**：学习 35 分钟＋实践 55 分钟
 > **前置准备**：本周前四天的全部零件——D121 的 S1（融合决策）、D122 的 S2~S5 管道与失败诊断、D123 的可观测层、D120 的合同框架；以及 D118 的四条执行路线（今天 S6 用 AOT 路线 1 的自动化版）、D85~D90 的任务单（bias 融 k=0 的语义出处）、D78~D80 的浮点课（golden 口径的理论基础）。工具：python3＋numpy＋本机 LLVM（clang/mlir-opt/mlir-translate/llc）；本文环境：Python 3.9.6＋numpy 1.26.4＋Homebrew LLVM 23.1.5，macOS arm64，2026-11-14。
-> **今日产出**：`code/e2e.py`（**今日核心**：gen_loop_ir_full 点循环完整展开＋golden_numpy k 序参考＋verify_e2e AOT 验证驱动，约 300 行）、`code/run_all.sh`（11 项测试）、`code/outputs/report.txt`（11 PASS / 0 FAIL）、`code/outputs/loop-full.mlir`（S2 完整循环 IR，34 行）、`code/outputs/e2e-run/`（端到端产物：11 个 stage 文件＋verify_driver.c＋verify_e2e 可执行＋逐点对照输出）＋本文 3 张手绘图。
+> **今日产出**：`code/e2e.py`（**今日核心**：gen_loop_ir_full 点循环完整展开＋golden_numpy k 序参考＋verify_e2e AOT 验证驱动，约 300 行）、`code/run_all.sh`（11 项测试）、`code/outputs/report.txt`（11 PASS / 0 FAIL）、`code/outputs/loop-full.mlir`（S2 完整循环 IR，34 行）、`code/outputs/e2e-run/`（端到端产物：11 个 stage 文件＋verify_driver.c＋verify_e2e 可执行＋逐点对照输出）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -72,7 +72,7 @@
 ```text
 tutorials/week-018/day-124/
 ├── README.md                    ← 本文
-├── images/                       ← 3 张手绘图
+├── images/                       ← 4 张手绘图
 └── code/
     ├── e2e.py                    # 今日核心：完整循环生成＋k 序 golden＋AOT 验证
     ├── minic.py / graph_passes.py / loop_lower.py / observability.py   # 本周同款
@@ -114,6 +114,10 @@ def golden_numpy():
 **其二：driver 的 golden 内嵌**——verify_e2e 把 A/B/bias/golden 四组数据**在编译前**替换进 C 模板（`__A_DATA__` 等占位符）——driver 编译后自带裁判，执行结果直接打印 `C[k]=值 (golden 值)` 逐点对照。对照不依赖任何运行时文件（教学分发友好）。
 
 **其三：验证的三层口径**——契约层靠签名 grep（`_mlir_ciface_main_kernel(ptr, ptr, ptr, ptr)` 四指针）、数值层靠 driver 的 bitwise 判决（`!=` 逐点＋计数）、执行层靠 exit code（driver 返回 0/1）——三层各有裁判、互不越权（D116 三层法的自动化版）。
+
+![S6 AOT 验证的数据流：driver 的 desc 喂入、kernel 的 malloc 新缓冲区、dc.alloc 上的逐点判决](images/04-verify-dataflow.svg)
+
+**图 4**：看三块——**① C driver**（verify_driver.c）：A/B/bias/golden 四组 static 数组在编译前嵌入模板，三个输入 desc（da/db/dbias）各装 `{alloc, aligned, off, sh, st}`（rank2＝7 字段 56B、rank1＝5 字段 40B），输出 desc `dc` 的 alloc 先空着；`_mlir_ciface_main_kernel(&dc, &da, &db, &dbias)` 一声调用；**② kernel 侧**（stage-5.ll 的两个 define）：ciface 包装 load 三个 desc 拆成 19 个标量调 `@main_kernel`，kernel 自己 `malloc(48)` 新缓冲区跑 k 循环乘加＋`fcmp ogt`/`select` 收尾，**返回新描述符**——ciface 把它整个 store 回 `*out`，`dc.alloc` 从此指向 malloc 的缓冲区；**③ 判决**（driver 的 main）：先查 `dc.alloc == NULL`，再逐点 `dc.alloc[k] != GOLDEN[k]` 计数，bad==0 → 12/12 bitwise → exit 0；底部红框＝§6 错误 3 的坑（错误版把输出 desc 填成 static C 的地址——kernel 的结果写在自己的 malloc 缓冲区里，C 数组实测全 0；定位：打印 `dc.alloc` 与 C 的地址对比）。
 
 ### 5.3 运行与观察
 
@@ -205,3 +209,5 @@ def golden_numpy():
 今天的闭环：**问题**——第 18 周四天把 minic 长到五阶段真实，但 S2 点循环是注释、S6 验证是骨架；计划验收标准"打通整条链路并与 numpy 比较"待落地。**机制**——e2e.py 三件套：gen_loop_ir_full（点循环真实展开——融合到循环的映射完整答案：bias 进 iter_args、k 序乘加、cmpf/select 收尾）、golden_numpy（k 序参考——bitwise 判据的口径设计）、verify_e2e（AOT 驱动内嵌 golden——D118 路线 1 自动化）。**实践**——一条链 11 节点图→5 节点终图→34 行循环 IR→七 pass→62 行 .ll→机器码→12/12 bitwise；两个深坑现场（golden 口径：24.625 vs 24.25 的序差；-O0 连锁：E202 拒收的完整链条）。**验证**——11 PASS / 0 FAIL：端到端主链＋融合语义＋bias 语义＋口径核对＋C 合同＋-O0 对照＋四天合同回归。明天 D125 优化开关对照实验：四组开关（无优化/仅图优化/图+Tiling/全开）× 正确性 × 性能 × 阶段收益表——今天的 12/12 是正确性基线，明天的四组对照要回答"每层优化各值多少"；kernel 级计时（同进程反复调用、中位数口径）也明天补上——D118 挂账的"教学规模不可计时"到期兑付。
 
 > **本周进度卡**：D120 CLI 骨架（25/25）→ D121 S1 图优化（25/25）→ D122 S2~S5（25/25）→ D123 可观测（12/12）→ **D124 端到端（11/11，12/12 bitwise）** → D125 对照实验 → D126 复盘。
+
+<!-- tutorial-review: v1 -->

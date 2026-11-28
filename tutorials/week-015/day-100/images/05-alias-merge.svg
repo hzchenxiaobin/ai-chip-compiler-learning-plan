@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+  <style>
+    text { fill: #3B3B3B; }
+    .title { font-size: 23px; font-weight: bold; }
+    .sub { font-size: 13px; fill: #6b6257; }
+    .pt { font-size: 14px; font-weight: bold; }
+    .ps { font-size: 12px; fill: #6b6257; }
+    .h { font-size: 12.5px; font-weight: bold; }
+    .nd { font-size: 13.5px; font-weight: bold; }
+    .lab { font-size: 12.5px; font-weight: bold; }
+    .sm { font-size: 11px; font-weight: bold; }
+    .det { font-size: 11px; fill: #5a554d; }
+    .bad { font-size: 11.5px; fill: #D98484; }
+    .good { font-size: 11.5px; fill: #5F8F6B; }
+    .note { font-size: 12.5px; font-weight: bold; fill: #D98484; }
+    .ok { font-size: 12.5px; font-weight: bold; fill: #5F8F6B; }
+    .foot { font-size: 11.5px; fill: #6b6257; }
+    .box { stroke: #3B3B3B; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .arr { stroke: #3B3B3B; stroke-width: 1.9; stroke-linecap: round; fill: none; }
+  </style>
+
+  <rect x="4" y="4" width="1192" height="667" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+  <text x="600" y="32" text-anchor="middle" class="title">别名约束：B 是 A 的视图——先合并成 S{A,B} 再放置</text>
+  <path d="M 350,44 Q 600,40 850,45" class="arr" stroke="#E8A87C" stroke-width="3"/>
+  <text x="600" y="60" text-anchor="middle" class="sub">合成用例：Z 200 B [1,5] · A 100 B [1,2] · B 60 B [3,4]（A 的视图）· C 48 B [2,3] · D 80 B [3,3]｜放置策略 H1，对齐 4 B</text>
+
+  <!-- 左栏：错误示范 -->
+  <path class="box" d="M 30,78 Q 302,73 572,78 Q 576,340 572,598 Q 300,603 34,598 Q 28,340 30,78 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="302" y="100" text-anchor="middle" class="pt">[错误示范] 不合并：A、B 当两个独立缓冲区</text>
+  <text x="302" y="118" text-anchor="middle" class="ps">workspace 408 B——投毒全绿，数据却是错的</text>
+
+  <text x="132.5" y="140" text-anchor="middle" class="h">步骤 0</text>
+  <text x="207.5" y="140" text-anchor="middle" class="h">步骤 1</text>
+  <text x="282.5" y="140" text-anchor="middle" class="h">步骤 2</text>
+  <text x="357.5" y="140" text-anchor="middle" class="h">步骤 3</text>
+  <text x="432.5" y="140" text-anchor="middle" class="h">步骤 4</text>
+  <text x="507.5" y="140" text-anchor="middle" class="h">步骤 5</text>
+
+  <path d="M 170,150 L 170,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 245,150 L 245,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 320,150 L 320,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 395,150 L 395,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 470,150 L 470,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 95,408.6 L 545,408.6" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 95,337.1 L 545,337.1" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 95,265.7 L 545,265.7" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 95,194.3 L 545,194.3" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 95,480 L 545,480" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="88" y="126" text-anchor="end" class="det">地址(B)</text>
+  <text x="88" y="198" text-anchor="end" class="det">400</text>
+  <text x="88" y="270" text-anchor="end" class="det">300</text>
+  <text x="88" y="341" text-anchor="end" class="det">200</text>
+  <text x="88" y="413" text-anchor="end" class="det">100</text>
+  <text x="88" y="484" text-anchor="end" class="det">0</text>
+
+  <!-- 不合并布局：Z@0 A@200 D@200 C@300 B@348 -->
+  <rect x="172" y="337.1" width="371" height="142.9" rx="6" fill="#C9C2B8" fill-opacity="0.75" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="357" y="400" text-anchor="middle" class="nd">Z · 200 B</text>
+  <text x="357" y="418" text-anchor="middle" class="det">[1,5] @0</text>
+  <rect x="172" y="265.7" width="146" height="71.4" rx="6" fill="#7FA8D9" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="245" y="296" text-anchor="middle" class="nd">A · 100 B</text>
+  <text x="245" y="314" text-anchor="middle" class="det">[1,2] @200</text>
+  <rect x="322" y="280.0" width="71" height="57.1" rx="5" fill="#D98484" fill-opacity="0.48" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="357" y="313" text-anchor="middle" class="sm">D 80 B</text>
+  <rect x="247" y="231.4" width="146" height="34.3" rx="5" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="320" y="253" text-anchor="middle" class="sm">C 48 B @300</text>
+  <rect x="322" y="188.6" width="146" height="42.9" rx="5" fill="#E8A87C" fill-opacity="0.65" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="395" y="214" text-anchor="middle" class="sm">B 60 B @348</text>
+
+  <text x="395" y="180" text-anchor="middle" class="note">B 是 A 的视图，却拿到偏移 348！</text>
+
+  <text x="302" y="512" text-anchor="middle" class="foot">偏移：Z@0 · A@200 · D@200 · C@300 · B@348（workspace 408 B）</text>
+  <text x="302" y="532" text-anchor="middle" class="bad">✗ 别名组 {A,B} 偏移不一致：[200, 348]——唯一抓到错的检查</text>
+  <text x="302" y="552" text-anchor="middle" class="good">✓ 投毒模拟反而通过：A、B 字节不相交，谁也没覆盖谁</text>
+  <text x="302" y="572" text-anchor="middle" class="foot">真机后果：步骤 1 写 A@200，步骤 3~4 读 B@348 → 读到未初始化数据</text>
+
+  <!-- 右栏：正确做法 -->
+  <path class="box" d="M 628,78 Q 900,73 1170,78 Q 1174,340 1170,598 Q 898,603 632,598 Q 626,340 628,78 Z" fill="#F5F0E4" fill-opacity="0.55"/>
+  <text x="897" y="100" text-anchor="middle" class="pt">[正确做法] 先合并：S{A,B} 一个存储单元</text>
+  <text x="897" y="118" text-anchor="middle" class="ps">workspace 428 B（比错误示范多 20 B）——检查全过</text>
+
+  <text x="727.5" y="140" text-anchor="middle" class="h">步骤 0</text>
+  <text x="802.5" y="140" text-anchor="middle" class="h">步骤 1</text>
+  <text x="877.5" y="140" text-anchor="middle" class="h">步骤 2</text>
+  <text x="952.5" y="140" text-anchor="middle" class="h">步骤 3</text>
+  <text x="1027.5" y="140" text-anchor="middle" class="h">步骤 4</text>
+  <text x="1102.5" y="140" text-anchor="middle" class="h">步骤 5</text>
+
+  <path d="M 765,150 L 765,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 840,150 L 840,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 915,150 L 915,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 990,150 L 990,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 1065,150 L 1065,480" stroke="#E7DFCE" stroke-width="1.2" stroke-dasharray="4 5"/>
+  <path d="M 690,408.6 L 1140,408.6" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 690,337.1 L 1140,337.1" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 690,265.7 L 1140,265.7" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 690,194.3 L 1140,194.3" stroke="#D8D0C0" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <path d="M 690,480 L 1140,480" stroke="#3B3B3B" stroke-width="2"/>
+  <text x="683" y="126" text-anchor="end" class="det">地址(B)</text>
+  <text x="683" y="198" text-anchor="end" class="det">400</text>
+  <text x="683" y="270" text-anchor="end" class="det">300</text>
+  <text x="683" y="341" text-anchor="end" class="det">200</text>
+  <text x="683" y="413" text-anchor="end" class="det">100</text>
+  <text x="683" y="484" text-anchor="end" class="det">0</text>
+
+  <!-- 合并布局：Z@0 S{A,B}@200 C@300 D@348 -->
+  <rect x="767" y="337.1" width="371" height="142.9" rx="6" fill="#C9C2B8" fill-opacity="0.75" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="942" y="400" text-anchor="middle" class="nd">Z · 200 B</text>
+  <text x="942" y="418" text-anchor="middle" class="det">[1,5] @0</text>
+  <rect x="767" y="265.7" width="296" height="71.4" rx="6" fill="#7FA8D9" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="915" y="296" text-anchor="middle" class="nd">S{A,B} · 100 B</text>
+  <text x="915" y="314" text-anchor="middle" class="det">[1,4] @200 ← A、B 同偏移</text>
+  <rect x="842" y="231.4" width="146" height="34.3" rx="5" fill="#93C6A0" fill-opacity="0.6" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="915" y="253" text-anchor="middle" class="sm">C 48 B @300</text>
+  <rect x="917" y="174.3" width="71" height="57.1" rx="5" fill="#D98484" fill-opacity="0.48" stroke="#3B3B3B" stroke-width="2.2"/>
+  <text x="952" y="207" text-anchor="middle" class="sm">D 80 B</text>
+
+  <text x="800" y="192" text-anchor="middle" class="ok">视图与基存储拿同一个偏移</text>
+  <text x="800" y="210" text-anchor="middle" class="ok">B 读到 A 写的数据 ✓</text>
+
+  <text x="897" y="512" text-anchor="middle" class="foot">偏移：Z@0 · S{A,B}@200 · C@300 · D@348（workspace 428 B）</text>
+  <text x="897" y="532" text-anchor="middle" class="good">✓ 别名组偏移一致 ✓ 静态检查 ✓ 投毒模拟（12 次校验）</text>
+  <text x="897" y="552" text-anchor="middle" class="foot">合并规则：区间 [1,2]∪[3,4] = [1,4]；大小 max(100,60) = 100 B</text>
+  <text x="897" y="572" text-anchor="middle" class="foot">代价 408 → 428 B（+20 B），换来数据正确</text>
+
+  <text x="600" y="628" text-anchor="middle" class="foot">两栏同一用例、同一策略（H1）、同一对齐（4 B），只差「是否先合并别名组」——数据与 outputs/alias-demo.txt 一致</text>
+  <text x="600" y="652" text-anchor="middle" class="foot">投毒抓不到这个错：错在语义（B 该读 A 的数据），不是覆盖——所以「组内偏移一致」必须作为独立检查</text>
+</svg>

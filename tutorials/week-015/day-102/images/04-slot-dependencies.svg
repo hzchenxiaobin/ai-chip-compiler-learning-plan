@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.9,4.6 Q 601.1,5.5 1196.3,3.7 Q 1197.3,339.0 1194.9,671.6 Q 598.4,672.2 3.3,670.4 Q 4.7,338.8 4.1,3.3 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6"/>
+<text x="600" y="34" font-size="21" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">槽位视角看三种依赖：RAW 传数据，WAR／WAW 只是碰了同一块地</text>
+<path d="M 330,46 Q 600,47.5 870,48" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<text x="600" y="66" font-size="12" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">单个输出块内四个 SRAM 槽的读写时序（时刻与 code/outputs/main-tile.txt 一致）</text>
+<path d="M 1010,80 Q 1080.0,80.1 1150,80" stroke="#B8AE9C" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 1150,80 L 1141.6,83.3" stroke="#B8AE9C" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 1150,80 L 1141.6,76.7" stroke="#B8AE9C" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="990" y="84" font-size="11" fill="#6b6257" text-anchor="end" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">时间</text>
+<path d="M 63.8,96.3 Q 146.7,94.8 231.6,96.3 Q 231.1,130.1 231.2,167.7 Q 149.5,169.2 63.5,168.8 Q 63.2,130.9 64.0,96.8 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6"/>
+<text x="148" y="120" font-size="13" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">A 槽 16,384 B</text>
+<text x="148" y="138" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">B 槽同理</text>
+<text x="148" y="154" font-size="10" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">DMA 写 · 计算读</text>
+<path d="M 251.0,92.7 Q 705.5,92.9 1161.3,92.8 Q 1161.2,131.5 1161.0,167.0 Q 705.5,168.7 248.8,168.9 Q 248.5,129.2 249.8,92.1 Z" stroke="#D8CFBB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FAF6ED" fill-opacity="0.55"/>
+<path d="M 267.7,101.6 Q 339.8,100.6 408.9,101.3 Q 408.9,130.4 407.3,162.3 Q 337.5,162.2 269.1,162.3 Q 267.9,131.5 268.6,102.7 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="338.0" y="126.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Load A(k)</text>
+<text x="338.0" y="145.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">DMA 写 · 0.5 µs</text>
+<path d="M 488.1,102.7 Q 559.6,101.9 629.0,100.9 Q 628.6,131.7 627.2,161.8 Q 558.5,162.8 486.9,162.7 Q 488.3,131.1 488.6,101.6 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="558.0" y="126.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Compute(k)</text>
+<text x="558.0" y="145.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">计算读 · 1.0 µs</text>
+<path d="M 708.9,102.4 Q 778.5,100.6 847.0,103.0 Q 849.3,130.6 847.8,160.9 Q 779.4,161.1 707.6,161.6 Q 707.0,133.7 708.6,102.7 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="778.0" y="126.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Load A(k+1)</text>
+<text x="778.0" y="145.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">DMA 写 · 0.5 µs</text>
+<path d="M 928.4,103.1 Q 997.0,102.5 1068.4,101.8 Q 1069.5,130.0 1068.1,161.2 Q 998.0,162.6 928.1,162.5 Q 926.7,130.3 928.1,103.2 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="998.0" y="126.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Compute(k+1)</text>
+<text x="998.0" y="145.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">计算读 · 1.0 µs</text>
+<text x="1116" y="134" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">……（共 8 圈）</text>
+<path d="M 408,130 Q 448.0,130.1 488,130" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 488,130 L 479.6,133.4" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 488,130 L 479.6,126.7" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 628,130 Q 668.0,129.8 708,130" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 708,130 L 699.6,133.3" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 708,130 L 699.7,126.6" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 848,130 Q 888.0,130.1 928,130" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 928,130 L 919.6,133.3" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 928,130 L 919.6,126.7" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="448" y="182" font-size="11.5" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S1·RAW：写完才许读</text>
+<text x="448" y="195" font-size="10" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">等待＝本圈搬运 1.0 µs</text>
+<text x="668" y="182" font-size="11.5" fill="#C97B7B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S2·WAR：读完才许覆盖</text>
+<text x="668" y="195" font-size="10" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">串行下等 0 µs，但删不得</text>
+<text x="888" y="182" font-size="10.5" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">S1·RAW（每圈一次）</text>
+<path d="M 64.2,212.2 Q 149.2,212.0 231.0,211.2 Q 230.9,247.0 231.8,283.9 Q 149.3,284.8 64.5,283.1 Q 63.4,248.4 64.5,211.3 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6"/>
+<text x="148" y="236" font-size="13" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">C 槽 16,384 B</text>
+<text x="148" y="254" font-size="11" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">常驻累加</text>
+<text x="148" y="270" font-size="10" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">只在末圈流出</text>
+<path d="M 249.3,207.5 Q 704.3,206.6 1162.2,207.9 Q 1163.3,245.1 1162.2,283.8 Q 705.3,284.3 250.2,284.6 Q 250.6,244.8 249.4,208.1 Z" stroke="#D8CFBB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FAF6ED" fill-opacity="0.55"/>
+<path d="M 267.5,218.7 Q 338.1,217.4 407.0,218.8 Q 407.1,247.8 408.7,277.2 Q 336.0,278.8 267.4,277.5 Q 267.0,246.5 268.2,218.9 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="338.0" y="242.0" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Compute(k=0)</text>
+<text x="338.0" y="261.0" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">C←0＋读改写＋加 bias</text>
+<path d="M 487.6,218.4 Q 559.6,219.4 627.3,218.1 Q 628.1,247.9 628.2,277.5 Q 556.6,278.0 487.2,278.6 Q 487.2,246.2 487.9,217.9 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="558.0" y="242.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Compute(k)</text>
+<text x="558.0" y="261.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">读-改-写 · 1.0 µs</text>
+<path d="M 707.4,216.8 Q 780.0,217.3 848.4,218.6 Q 848.3,246.4 847.6,278.6 Q 777.9,276.9 707.2,277.3 Q 709.3,246.6 707.3,218.0 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="778.0" y="242.0" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Compute(末圈)</text>
+<text x="778.0" y="261.0" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">读-改-写 · 1.0 µs</text>
+<path d="M 927.6,218.2 Q 994.3,216.5 1057.8,217.2 Q 1059.1,248.1 1057.7,278.0 Q 991.9,278.6 928.2,276.8 Q 928.4,248.9 927.0,217.2 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="993.0" y="242.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Store C</text>
+<text x="993.0" y="261.0" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">DMA 读 C 槽 · 0.5 µs</text>
+<path d="M 1091.1,217.1 Q 1130.0,216.8 1165.2,218.3 Q 1164.1,246.0 1164.7,278.0 Q 1127.5,277.1 1091.0,277.4 Q 1093.0,249.3 1091.8,217.8 Z" stroke="#C97B7B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" stroke-dasharray="5 4"/>
+<text x="1128" y="244" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">C←0</text>
+<text x="1128" y="262" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">（下一块）</text>
+<path d="M 408,246 Q 448.0,245.3 488,246" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 488,246 L 479.6,249.2" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 488,246 L 479.7,242.5" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 628,246 Q 668.0,245.9 708,246" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 708,246 L 699.6,249.3" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 708,246 L 699.6,242.7" stroke="#9CBF8E" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 848,246 Q 888.0,244.6 928,246" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 928,246 L 919.5,249.0" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 928,246 L 919.8,242.4" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 1058,246 Q 1075.0,246.7 1092,246" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 1092,246 L 1083.8,249.7" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 1092,246 L 1083.5,243.0" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="543" y="298" font-size="10.5" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">RAW：部分和逐圈接力</text>
+<text x="543" y="310" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">（同一计算单元，程序顺序保证）</text>
+<text x="858" y="298" font-size="11.5" fill="#5c7a4f" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S3·RAW：算完才许写回</text>
+<text x="1160" y="298" font-size="11.5" fill="#C97B7B" text-anchor="end" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">S4·WAR：写回完才许复用</text>
+<text x="1160" y="310" font-size="10" fill="#6b6257" text-anchor="end" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">C 槽才许交给下一块</text>
+<path d="M 65.1,329.4 Q 149.1,329.4 233.0,329.1 Q 231.9,351.3 232.1,370.1 Q 148.2,369.2 64.4,371.0 Q 62.5,351.1 64.1,330.4 Z" stroke="#3B3B3B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6"/>
+<text x="148" y="348" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">bias 槽 256 B</text>
+<text x="148" y="362" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">只被 k=0 读</text>
+<path d="M 250.9,327.3 Q 706.8,328.6 1160.8,328.4 Q 1160.8,348.5 1161.1,370.9 Q 706.4,371.9 250.0,371.4 Q 248.9,350.4 251.2,326.9 Z" stroke="#D8CFBB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#FAF6ED" fill-opacity="0.55"/>
+<path d="M 269.1,335.0 Q 358.0,336.8 447.8,337.1 Q 449.0,348.7 448.1,362.8 Q 357.4,363.5 267.5,365.0 Q 268.4,350.1 267.5,335.5 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="358" y="354" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">Load bias 256 B · 0.0078 µs</text>
+<path d="M 508.4,336.9 Q 569.5,335.4 627.5,337.0 Q 627.4,351.3 628.8,363.8 Q 569.2,364.9 507.6,363.2 Q 508.0,348.8 508.2,336.0 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.6"/>
+<text x="568" y="354" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">Compute(k=0) 读</text>
+<path d="M 448,350 Q 478.0,348.1 508,350" stroke="#9CBF8E" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 508,350 L 499.4,352.8" stroke="#9CBF8E" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M 508,350 L 499.9,346.2" stroke="#9CBF8E" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="668" y="354" font-size="10.5" fill="#5c7a4f" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">RAW 并入首圈 S1：首圈 S1 多等 0.0078 µs</text>
+<path d="M 61.1,383.4 Q 612.1,382.7 1163.7,385.0 Q 1163.6,445.7 1164.2,509.0 Q 612.3,509.0 59.0,509.1 Q 60.4,445.5 58.8,383.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#FAF6ED" fill-opacity="0.5"/>
+<text x="612" y="410" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">WAW（输出依赖）：两个写碰同一段——不在今天的四个槽上，在 D100 的 HBM workspace 复用里</text>
+<path d="M 150.1,425.6 Q 234.7,425.0 320.5,425.6 Q 318.7,453.2 319.2,477.7 Q 234.9,476.7 150.4,478.4 Q 151.1,453.9 150.5,427.0 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.5"/>
+<text x="235.0" y="446.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">Store X 写</text>
+<text x="235.0" y="465.0" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">同一段 HBM</text>
+<path d="M 429.5,425.7 Q 516.4,425.3 600.3,425.2 Q 599.4,451.3 600.4,478.8 Q 516.8,477.7 430.1,478.3 Q 429.7,451.9 429.2,426.9 Z" stroke="#3B3B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="515.0" y="446.0" font-size="12" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">写 Y（复用）</text>
+<text x="515.0" y="465.0" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">同一段 HBM</text>
+<path d="M 320,452 Q 375.0,452.1 430,452" stroke="#B0632E" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="6 4"/>
+<path d="M 430,452 L 421.6,455.3" stroke="#B0632E" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 430,452 L 421.6,448.7" stroke="#B0632E" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="375" y="440" font-size="11" fill="#B0632E" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">WAW</text>
+<text x="375" y="468" font-size="9.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">写的顺序</text>
+<text x="660" y="446" font-size="11" fill="#3B3B3B" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">兜底：单 DMA 引擎按提交顺序执行——两个写排同一队列，天然有序（3.3 节）</text>
+<text x="660" y="468" font-size="10.5" fill="#6b6257" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">同样不传数据：只因为碰了同一块地</text>
+<text x="612" y="494" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">一旦换成多个 DMA 通道／异步提交，WAW 就需要显式同步（序号／信号量）</text>
+<path d="M 300,540 Q 330.0,542.0 360,540" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 360,540 L 351.9,543.9" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 360,540 L 351.4,537.2" stroke="#9CBF8E" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="372" y="544" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">RAW 真依赖（数据流）</text>
+<path d="M 540,540 Q 570.0,540.1 600,540" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 600,540 L 591.6,543.4" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 600,540 L 591.6,536.7" stroke="#C97B7B" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="612" y="544" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">WAR 反依赖（槽位复用）</text>
+<path d="M 790,540 Q 820.0,538.3 850,540" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" fill="none" stroke-dasharray="6 4"/>
+<path d="M 850,540 L 841.5,542.8" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M 850,540 L 841.8,536.2" stroke="#E8A87C" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<text x="862" y="544" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">WAW 输出依赖（写的顺序）</text>
+<text x="600" y="584" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-weight="bold">RAW 传数据；WAR／WAW 是槽位复用人造的等待——治本是别让两件事碰同一块地（D103 双缓冲）</text>
+<text x="600" y="610" font-size="11" fill="#3B3B3B" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">首块 (0,0)＝17 处：S1×8＋S2×7＋S3×1＋S4×1；全 kernel＝S1×512＋S2×511＋S3×64＋S4×63＝1150</text>
+<text x="600" y="634" font-size="10.5" fill="#6b6257" text-anchor="middle" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">时刻与字节同 code/outputs/main-tile.txt：稳态每圈 Load 1.0 µs＋Compute 1.0 µs＝2.0 µs，零重叠</text>
+</svg>

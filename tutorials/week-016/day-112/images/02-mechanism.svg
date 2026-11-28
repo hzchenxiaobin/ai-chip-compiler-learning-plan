@@ -54,7 +54,7 @@
 <path d="M 361.1,408.9 Q 510.8,407.6 660.5,409.6 Q 661.8,519.3 660.9,625.7 Q 509.1,626.2 358.9,624.4 Q 360.8,516.9 361.1,408.9  Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.24"/>
 <text x="510.0" y="430" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">失效②：系统性偏差</text>
 <text x="374" y="452" font-size="9.4" fill="#3B3B3B" text-anchor="start">同进程预测 +7~16% 高估</text>
-<text x="374" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">j/k 家族偏差不同（+16.4 vs +7.0）</text>
+<text x="374" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">偏差随配置不同（+16.2 vs +6.5）</text>
 <text x="374" y="486" font-size="9.4" fill="#3B3B3B" text-anchor="start">→ 兜底：同窗口决赛定名次</text>
 <path d="M 371.4,505.6 Q 507.9,509.4 648.9,508.5" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
 <text x="374" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">名次用实测，模型只砍数量</text>
@@ -65,7 +65,7 @@
 <text x="694" y="469" font-size="9.4" fill="#3B3B3B" text-anchor="start">ρ 0.985 → 0.945 → 0.883</text>
 <text x="694" y="486" font-size="9.4" fill="#3B3B3B" text-anchor="start">→ 兜底：出域闸门＋整体重校</text>
 <path d="M 693.3,508.2 Q 828.4,506.1 969.4,507.9" stroke="#6b6257" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="4 4"/>
-<text x="694" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">W1（512&gt;256）亮灯：拒绝</text>
+<text x="694" y="523" font-size="9.4" fill="#6b6257" text-anchor="start">W1（512&gt;256）亮灯≠拒绝编译</text>
 <text x="694" y="540" font-size="9.4" fill="#6b6257" text-anchor="start">静默外推 = 拿噪声当偏好</text>
 <text x="500.0" y="678" font-size="10.5" fill="#6b6257" text-anchor="middle">一句话：语义链负责『能不能跑对』，环境链负责『谁更快』——模型选错，永远错在把环境链当语义链用</text>
 </svg>

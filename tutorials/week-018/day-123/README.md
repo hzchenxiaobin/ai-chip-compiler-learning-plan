@@ -3,7 +3,7 @@
 > **今日目标**：完成本教程后，你能做到五件事——设计并实现 **dump 四级粒度**（`--dump-ir=off/stages/passes/full`：off 零文件只留 manifest（CI 常规跑）→ stages 阶段级 2 文件（stage-5.ll/.s，够回答"结果对不对"）→ passes 级 11 文件＋8 条改写记录（D122 行为＋"哪一步出的问题"）→ full 级再加 diff 统计（"为什么长这样"）），并说清**粒度选择的经济学**（文件数不是越多越好——每个文件都要有人读；默认给 stages 是"为最常问的问题配最低代价的答案"）；复现**八条 pass 的改写记录**（每条 pass 前后 IR 的 op 分布 diff 压缩成一句话：`canonicalize+csi: 16→3 op（arith.constant -9, scf.for -4, func.return -1）`、`finalize-memref-to-llvm: 3→21 op（llvm.struct +9, insertvalue +7, ptr +6, constant +5）`——**"这条 pass 到底改了什么"一句话可答**）；解读**「结构无变化」也是信息**（八条 pass 里三条记录无变化——cf/arith/index 转换不是没干活，是前面的 pass 已清光残留；"无变化"＝"这条防线本次没有敌人"，对 D136 二分定位是直接可排除项）；读出**时间线**（11 个计时点：S2 生成 3.7ms、八条 pass 各 ~40ms（进程启动为主——in-process PassManager 的教学取舍）、translate 42ms、llc 30ms、总 ≈394ms——"哪一步最贵"查表可得，D125 对照实验的地基）；独立运行 `./run_all.sh` 复现 **12 项测试**（TP1 四级粒度矩阵、TP2 改写记录逐条、TP3 时间线落盘、TP4 观测点与调试场景对应、TP5 枚举可编程消费）。
 > **预计时间**：学习 35 分钟＋实践 50 分钟
 > **前置准备**：D122 的 11 个 stage 文件（今天可观测性的地基——文件已在，缺的是"改了什么/多贵/要不要留"三层）、D117 的 census 口径（今天 op_distribution 的参照）、D121 的审计日志（S1 的改写记录——今天把它推广到 S4 的八条 pass）。工具：python3＋本机 LLVM；本文环境：Python 3.9.6，Homebrew LLVM 23.1.5，macOS arm64，2026-11-14。
-> **今日产出**：`code/observability.py`（Observability 类＋四级粒度＋op 分布 diff＋计时＋可观测版管道 run_s45_observed，约 260 行）、`code/run_all.sh`（12 项测试）、`code/outputs/report.txt`（12 PASS / 0 FAIL）、`code/outputs/level-matrix.json`（四级粒度×文件数×记录数矩阵）、`code/outputs/timeline.txt`（11 个计时点）、`code/outputs/obs-{off,stages,passes,full}/`（四级各自的实际产物目录）＋本文 3 张手绘图。
+> **今日产出**：`code/observability.py`（Observability 类＋四级粒度＋op 分布 diff＋计时＋可观测版管道 run_s45_observed，约 260 行）、`code/run_all.sh`（12 项测试）、`code/outputs/report.txt`（12 PASS / 0 FAIL）、`code/outputs/level-matrix.json`（四级粒度×文件数×记录数矩阵）、`code/outputs/timeline.txt`（11 个计时点）、`code/outputs/obs-{off,stages,passes,full}/`（四级各自的实际产物目录）＋本文 4 张手绘图。
 
 ## 1. 今天解决什么问题？
 
@@ -78,7 +78,7 @@ D122 结束时 minic 一条命令落盘 11 个 stage 文件——但"有文件"�
 ```text
 tutorials/week-018/day-123/
 ├── README.md                    ← 本文
-├── images/                       ← 3 张手绘图
+├── images/                       ← 4 张手绘图
 └── code/
     ├── observability.py          # 今日核心：Observability 层＋四级粒度＋run_s45_observed
     ├── minic.py                  # minic 0.3.0（D122 同款；观测层外挂）
@@ -126,6 +126,10 @@ def run_s45_observed(loop_ir: str, out_dir: str, llvm_bin: str = "",
 没有改 loop_lower 的任何一行——观测是**横切面**（AOP 教学版）：业务管道保持纯粹、观测层可整体摘除。代价是两份 run_s45 逻辑并存（真 AOP 用装饰器/上下文管理器统一——练习 4）。
 
 **其二：文件策略跟 level 走**——off 全部临时目录（跑完即焚）、stages 只回写阶段文件、passes/full 落盘全部。注意 stage-2 的 dump 在 off/stages 级去 tmpdir——**观测不到的东西不留痕**，与"现场只属于本次"（D122）一脉相承。
+
+![四级文件策略：11 个管道产物在不同粒度下的去向](images/04-file-policy.svg)
+
+**图 4**：看三行——**off 行（红）**：pass 链的 11 个文件全部写进 `tempfile.mkdtemp()` 的临时目录，`out_dir` 只清旧不写新（0 个文件）；**stages 行（橙）**：pass 链仍在临时目录，`obs.dump` 只把 `stage-5.ll`、`stage-5.s` 两个阶段末文件回写（2 个文件）；**passes/full 行（蓝）**：`workdir = out_dir`，11 个文件全部落盘并同步记录改写。底部金框是 level-matrix.json 的实测行（0／2／11＋8／11＋8）——「观测不到的东西不留痕」的文件流版本。
 
 **其三：机器可读与人话双轨**——`Observation.detail` 存结构化数据（delta 列表、毫秒数）进 manifest 的 `rewrites`/`timeline_ms`；`note` 存人话（"canonicalize+csi: 16→3 op（...）"）进 stages 日志——**同一事实两种投影**，脚本查表、人类扫行。
 
@@ -224,3 +228,5 @@ def run_s45_observed(loop_ir: str, out_dir: str, llvm_bin: str = "",
 今天的闭环：**问题**——D122 落盘了 11 个 stage 文件，但"有文件"≠"可观测"：改了什么/多贵/要不要留三个问题答不上来。**机制**——Observability 层外挂管道（AOP 朴素版）：四级粒度（off/stages/passes/full——文件策略跟 level 走，低级别真少给）、改写记录（op 分布 diff 压缩成一句话/条）、时间线（11 计时点进 manifest）。**实践**——run_s45_observed 复用 loop_lower 的 PASSES 表逐条观测：canonicalize 16→3（砍 13 op）、finalize-memref 3→21（描述符展开）、三条"无变化"（按需转换的可见证据）、总 ≈394ms（进程启动主导的教学量级）。**验证**——12 PASS / 0 FAIL：四级矩阵实测（0/2/11/11 文件）、八条记录逐条、时间线落盘、观测点×调试场景对应。明天 D124 端到端 MatMul+Bias+Relu：S6 验证接入（golden 逐点 bitwise）、S2 点循环补全展开（今天注释形式的肉）、打通"输入图→执行→与 numpy 对照"的最后一步——**第 18 周的顶点日**。
 
 > **本周进度卡**：D120 CLI 骨架（25/25）→ D121 S1 图优化（25/25）→ D122 S2~S5（25/25）→ **D123 可观测性（12/12，四级＋记录＋时间线）** → D124 端到端 → D125 对照实验 → D126 复盘。
+
+<!-- tutorial-review: v1 -->

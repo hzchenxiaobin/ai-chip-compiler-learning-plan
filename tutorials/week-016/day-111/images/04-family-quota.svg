@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 4.1,3.8 Q 601.4,5.4 1196.6,5.0 Q 1198.7,337.4 1196.5,671.3 Q 602.3,669.7 3.8,670.2 Q 4.3,338.2 4.1,3.8  Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="600.0" y="34" font-size="18" fill="#3B3B3B" text-anchor="middle" font-weight="bold">名额规则与 top-k 旋钮：并列扎堆时名单怎么取（S2 96³ 真实预测）</text>
+<path d="M 330,44 Q 600,42 870,45" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 27.3,61.1 Q 191.9,63.4 357.4,61.3 Q 355.1,312.3 355.8,559.6 Q 189.2,561.2 26.0,561.4 Q 25.6,313.4 27.3,61.1  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.45"/>
+<text x="191" y="82" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S2 96³：模型排序前 10 名</text>
+<text x="191" y="98" font-size="8.8" fill="#6b6257" text-anchor="middle">count_ops × 校准单价，零内核执行（冻结缓存算出）</text>
+<path d="M 43.8,106.6 Q 189.8,104.6 337.1,105.9" stroke="#E7DFCE" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="66" y="122" font-size="8.8" fill="#6b6257" text-anchor="middle">名次</text>
+<text x="190" y="122" font-size="8.8" fill="#6b6257" text-anchor="middle">配置</text>
+<text x="312" y="122" font-size="8.8" fill="#6b6257" text-anchor="middle">预测 ms</text>
+<path d="M 43.7,129.0 Q 192.0,129.8 339.2,129.2" stroke="#E7DFCE" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<path d="M 48.7,134.5 Q 191.1,133.8 334.9,134.4 Q 334.1,147.0 334.7,158.3 Q 190.8,159.0 49.0,158.1 Q 49.1,148.3 48.7,134.5  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="150" font-size="10" fill="#3B3B3B" text-anchor="middle">1</text>
+<text x="84" y="150" font-size="10" fill="#3B3B3B" text-anchor="start">96³ ikj U=1</text>
+<text x="312" y="150" font-size="10" fill="#3B3B3B" text-anchor="middle">59.014</text>
+<path d="M 49.3,162.1 Q 192.3,160.3 334.3,161.8 Q 332.6,173.1 334.7,186.2 Q 189.0,184.5 47.4,184.8 Q 46.3,172.8 49.3,162.1  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="177" font-size="10" fill="#3B3B3B" text-anchor="middle">2</text>
+<text x="84" y="177" font-size="10" fill="#3B3B3B" text-anchor="start">64×96×96 ikj U=1</text>
+<text x="312" y="177" font-size="10" fill="#3B3B3B" text-anchor="middle">59.015</text>
+<path d="M 48.0,189.5 Q 191.1,190.7 332.6,188.6 Q 335.5,199.3 335.2,214.3 Q 192.7,215.5 46.6,213.6 Q 48.7,199.7 48.0,189.5  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="204" font-size="10" fill="#3B3B3B" text-anchor="middle">3</text>
+<text x="84" y="204" font-size="10" fill="#3B3B3B" text-anchor="start">32×96×96 ikj U=1</text>
+<text x="312" y="204" font-size="10" fill="#3B3B3B" text-anchor="middle">59.016</text>
+<path d="M 49.3,215.7 Q 192.5,216.4 335.6,216.8 Q 335.2,230.3 332.9,240.1 Q 192.2,241.7 48.3,239.8 Q 46.8,226.5 49.3,215.7  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="231" font-size="10" fill="#3B3B3B" text-anchor="middle">4</text>
+<text x="84" y="231" font-size="10" fill="#3B3B3B" text-anchor="start">96×96×64 ikj U=1</text>
+<text x="312" y="231" font-size="10" fill="#3B3B3B" text-anchor="middle">59.034</text>
+<path d="M 47.5,243.8 Q 190.5,243.8 335.5,244.8 Q 334.8,254.6 334.9,267.3 Q 192.6,266.6 48.1,265.4 Q 48.6,252.9 47.5,243.8  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="258" font-size="10" fill="#3B3B3B" text-anchor="middle">5</text>
+<text x="84" y="258" font-size="10" fill="#3B3B3B" text-anchor="start">64×96×64 ikj U=1</text>
+<text x="312" y="258" font-size="10" fill="#3B3B3B" text-anchor="middle">59.036</text>
+<path d="M 49.4,271.5 Q 189.3,271.2 333.0,270.0 Q 334.5,280.3 333.1,293.5 Q 191.0,291.2 46.9,292.8 Q 48.9,281.3 49.4,271.5  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="285" font-size="10" fill="#3B3B3B" text-anchor="middle">6</text>
+<text x="84" y="285" font-size="10" fill="#3B3B3B" text-anchor="start">32×96×64 ikj U=1</text>
+<text x="312" y="285" font-size="10" fill="#3B3B3B" text-anchor="middle">59.038</text>
+<path d="M 49.1,298.4 Q 192.2,296.8 335.1,299.3 Q 336.4,310.7 334.0,321.6 Q 192.1,321.4 49.1,321.7 Q 50.4,309.4 49.1,298.4  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="312" font-size="10" fill="#3B3B3B" text-anchor="middle">7</text>
+<text x="84" y="312" font-size="10" fill="#3B3B3B" text-anchor="start">96×96×32 ikj U=1</text>
+<text x="312" y="312" font-size="10" fill="#3B3B3B" text-anchor="middle">59.054</text>
+<path d="M 49.1,324.2 Q 193.6,324.1 334.4,324.1 Q 333.3,335.6 332.6,347.9 Q 191.0,345.0 49.4,346.5 Q 50.7,335.2 49.1,324.2  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="339" font-size="10" fill="#3B3B3B" text-anchor="middle">8</text>
+<text x="84" y="339" font-size="10" fill="#3B3B3B" text-anchor="start">64×96×32 ikj U=1</text>
+<text x="312" y="339" font-size="10" fill="#3B3B3B" text-anchor="middle">59.057</text>
+<path d="M 47.1,350.6 Q 191.8,350.2 332.7,350.4 Q 331.8,360.6 332.8,373.8 Q 191.2,373.8 46.8,373.4 Q 45.3,361.9 47.1,350.6  Z" stroke="#3B3B3B" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="66" y="366" font-size="10" fill="#3B3B3B" text-anchor="middle">9</text>
+<text x="84" y="366" font-size="10" fill="#3B3B3B" text-anchor="start">32×96×32 ikj U=1</text>
+<text x="312" y="366" font-size="10" fill="#3B3B3B" text-anchor="middle">59.059</text>
+<path d="M 47.3,378.9 Q 189.3,379.4 333.6,379.2 Q 334.5,391.4 332.5,402.0 Q 191.7,401.6 48.4,403.5 Q 48.3,392.6 47.3,378.9  Z" stroke="#3B3B3B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.55"/>
+<text x="66" y="393" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">10</text>
+<text x="84" y="393" font-size="10" fill="#3B3B3B" text-anchor="start" font-weight="bold">96³ kij U=1</text>
+<text x="312" y="393" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">59.077</text>
+<path d="M 338.9,141.1 Q 337.7,254.2 340.1,367.9" stroke="#E8A87C" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+<text x="191" y="418" font-size="9" fill="#8a5a33" text-anchor="middle" font-weight="bold">↑ 近对 kij＝D108 冠军家族，被挤到第 10 名</text>
+<text x="191" y="442" font-size="9.2" fill="#3B3B3B" text-anchor="middle" font-weight="bold">第 1~9 名全是 ikj U=1 的 tile 变体：预测极差只有 0.08%</text>
+<text x="191" y="458" font-size="9.2" fill="#6b6257" text-anchor="middle">——模型分不出的差别，埋在它自己的误差棒里</text>
+<text x="191" y="486" font-size="9.2" fill="#3B3B3B" text-anchor="middle">家族＝(循环顺序, 展开份数)：决定内层语句家族与展开税，</text>
+<text x="191" y="501" font-size="9.2" fill="#3B3B3B" text-anchor="middle">是语句行模型真正分辨得了的对象；同家族 tile 变体挤成一撮</text>
+<text x="191" y="516" font-size="9.2" fill="#6b6257" text-anchor="middle">（486 个候选里 ikj U=1 家族就有 27 个 tile 变体）</text>
+<text x="191" y="542" font-size="8.8" fill="#6b6257" text-anchor="middle">左表＝select_topk 之前的名次；右下两卡＝拧旋钮的两种名单</text>
+<path d="M 381.4,60.9 Q 550.5,60.1 717.3,60.7 Q 716.3,312.4 716.7,560.9 Q 549.5,561.0 381.3,559.9 Q 381.8,310.9 381.4,60.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.35"/>
+<text x="548" y="82" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">取 top-5 名单的两种方式</text>
+<text x="548" y="98" font-size="8.8" fill="#6b6257" text-anchor="middle">（S2 96³，同一张左表的排序）</text>
+<path d="M 396.7,109.3 Q 551.0,111.4 701.2,110.3 Q 702.1,187.9 701.3,262.6 Q 549.6,263.3 394.9,263.5 Q 397.9,187.6 396.7,109.3  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.6"/>
+<text x="548" y="130" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">① 不做名额规则：直接取前 5 名</text>
+<text x="548" y="150" font-size="9.2" fill="#3B3B3B" text-anchor="middle">名额 1~5＝左表第 1~5 名，全是 ikj U=1</text>
+<text x="548" y="165" font-size="9.2" fill="#3B3B3B" text-anchor="middle">的 tile 变体（预测只差 0.04%）</text>
+<path d="M 421.6,175.6 Q 547.7,173.9 675.2,175.8 Q 673.0,191.2 674.5,210.9 Q 545.7,211.4 420.8,210.2 Q 419.6,193.5 421.6,175.6  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="548" y="197" font-size="9.6" fill="#3B3B3B" text-anchor="middle" font-weight="bold">kij（第 10 名）没进名单 ✗</text>
+<text x="548" y="226" font-size="9.2" fill="#6b6257" text-anchor="middle">——近对连被实测的资格都没有；</text>
+<text x="548" y="242" font-size="9.2" fill="#6b6257" text-anchor="middle">并列扎堆把 recall@5 挤成了单家族</text>
+<text x="548" y="276" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">↓ 名额规则补上</text>
+<path d="M 395.7,285.3 Q 549.1,287.1 701.1,285.7 Q 700.2,380.3 700.0,477.6 Q 547.4,476.8 397.3,474.6 Q 398.0,377.8 395.7,285.3  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="548" y="306" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">② 名额规则：每个 (order,U) 家族</text>
+<text x="548" y="321" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">只留预测最优的一个 tile 变体</text>
+<text x="548" y="344" font-size="9.2" fill="#6b6257" text-anchor="middle">5 个家族代表：</text>
+<path d="M 411.2,353.8 Q 548.9,354.2 685.5,354.2 Q 687.2,369.9 687.5,385.2 Q 549.9,382.3 408.7,382.8 Q 410.6,367.2 411.2,353.8  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="548" y="374" font-size="9.6" fill="#3B3B3B" text-anchor="middle" font-weight="bold">ikjU1 × kijU1 × ijkU1 × jikU1 × ikjU2</text>
+<path d="M 420.1,391.1 Q 550.0,391.8 677.3,393.0 Q 676.3,407.3 674.8,422.6 Q 548.6,420.1 420.3,420.8 Q 419.2,407.7 420.1,391.1  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.55"/>
+<text x="548" y="412" font-size="9.6" fill="#3B3B3B" text-anchor="middle" font-weight="bold">kij 回到名单 ✓（自检钉死的断言）</text>
+<text x="548" y="444" font-size="9.2" fill="#3B3B3B" text-anchor="middle">分不出的候选不占名额，把机会让给别的家族</text>
+<text x="548" y="459" font-size="9.2" fill="#6b6257" text-anchor="middle">——「知道自己在多精确的仪器上工作」</text>
+<text x="548" y="502" font-size="8.8" fill="#6b6257" text-anchor="middle">（3.2 节的名额规则＝家族代表制）</text>
+<text x="548" y="534" font-size="9.6" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S2 真实发现：模型前 9 名极差 0.08%</text>
+<path d="M 357.2,301.4 Q 373.2,299.2 392.0,300.0 M 379.0,303.0 L 392.0,300.0 L 379.0,297.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 740.8,60.9 Q 957.6,61.5 1174.0,58.7 Q 1171.8,309.2 1173.3,560.3 Q 955.2,560.7 741.4,559.5 Q 742.8,309.9 740.8,60.9  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#EDE7DA" fill-opacity="0.35"/>
+<text x="957" y="82" font-size="12.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">5.4 节旋钮实验：--top-k（S1 64³）</text>
+<text x="957" y="98" font-size="8.8" fill="#6b6257" text-anchor="middle">只看名单结构怎么塌，不宣布新的毫秒</text>
+<path d="M 755.8,109.3 Q 955.6,108.0 1157.5,110.4 Q 1158.6,189.7 1158.0,267.7 Q 955.3,268.9 755.7,268.3 Q 757.4,188.8 755.8,109.3  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="957" y="130" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">top-k = 5（缺省：模型只砍数量）</text>
+<text x="957" y="150" font-size="9.2" fill="#3B3B3B" text-anchor="middle">5 个家族代表 → screen 5 ＋ 决赛 4＝实测 9 个（编译 9 次）</text>
+<text x="957" y="170" font-size="9.2" fill="#3B3B3B" text-anchor="middle">kij 决赛 17.10 ms vs ikj 15.70 ms（同进程）</text>
+<path d="M 778.9,182.7 Q 955.2,183.3 1135.2,180.5 Q 1133.0,206.8 1133.0,234.2 Q 955.0,235.1 778.5,235.3 Q 778.0,207.4 778.9,182.7  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.5"/>
+<text x="957" y="202" font-size="9.4" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对照行：「D108 冠军也实测了、同进程输了」</text>
+<text x="957" y="222" font-size="9.0" fill="#6b6257" text-anchor="middle">——近对次序随机器状态互换</text>
+<path d="M 757.1,282.8 Q 960.1,281.1 1159.2,281.8 Q 1159.8,377.0 1158.0,473.2 Q 955.8,471.9 755.0,471.8 Q 757.1,376.0 757.1,282.8  Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.5"/>
+<text x="957" y="302" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">top-k = 1（完全相信模型排序）</text>
+<text x="957" y="322" font-size="9.2" fill="#3B3B3B" text-anchor="middle">只剩 64³ ikj U=1 一个家族独占名单</text>
+<text x="957" y="342" font-size="9.2" fill="#3B3B3B" text-anchor="middle">screen 1 ＋ 决赛 2 ＝ 实测 3 个（编译 3 次）</text>
+<path d="M 780.4,355.4 Q 955.2,355.1 1132.6,354.7 Q 1131.9,385.4 1133.4,413.3 Q 956.9,414.3 779.3,414.3 Q 778.8,387.1 780.4,355.4  Z" stroke="#3B3B3B" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.62"/>
+<text x="957" y="374" font-size="9.4" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对照行换台词：「D108 冠军没进模型 top-5 名额</text>
+<text x="957" y="392" font-size="9.4" fill="#3B3B3B" text-anchor="middle" font-weight="bold">（并列扎堆挤掉了近对）——recall@K 的多样性缺口」</text>
+<text x="957" y="430" font-size="9.2" fill="#8a5a33" text-anchor="middle" font-weight="bold">kij 从「输了」变成「根本没上场」</text>
+<text x="957" y="446" font-size="9.2" fill="#3B3B3B" text-anchor="middle">拧回 5 → 名额规则立刻回来：kij 回名单、</text>
+<text x="957" y="461" font-size="9.0" fill="#6b6257" text-anchor="middle">对照行回到「同进程输了」（D110：K=1 三连错 +4.8/6.6/8.1%）</text>
+<text x="957" y="530" font-size="8.8" fill="#6b6257" text-anchor="middle">（5.4 节的实验；新毫秒是 D112 复盘的正式实验）</text>
+<path d="M 724.3,298.6 Q 739.6,301.4 752.0,300.0 M 739.0,303.0 L 752.0,300.0 L 739.0,297.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 27.0,575.0 Q 597.6,574.7 1172.6,574.6 Q 1173.3,612.7 1174.1,649.3 Q 599.9,651.9 25.2,650.6 Q 24.4,614.4 27.0,575.0  Z" stroke="#3B3B3B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.35"/>
+<text x="600" y="600" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">两种失败不是一回事：「输了」是名次问题（被实测过、同进程慢了）；「没上场」是 recall@K 的多样性缺口（名额被并列扎堆占满）</text>
+<text x="600" y="624" font-size="10" fill="#6b6257" text-anchor="middle">模型只砍数量、实测定名次——top-k 就是这条规矩的旋钮（预测极差 0.0~0.2% ≪ 跨进程漂移 ~8.6%）</text>
+</svg>

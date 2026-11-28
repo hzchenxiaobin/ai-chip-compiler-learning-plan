@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="642" viewBox="0 0 1080 642">
+<rect x="4" y="4" width="1072" height="634" rx="14" fill="#FDFBF6" stroke="#E7DFCE" stroke-width="2"/>
+<text x="540.0" y="32" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="16" fill="#3B3B3B" text-anchor="middle" font-weight="bold">零差异从哪来：四组共用同一条 S2→S5 生成路径——唯一产物分叉是组 D 的 opt -O2</text>
+<path d="M 30.8,49.4 Q 151.4,49.1 270.6,49.6 Q 268.9,110.5 270.2,170.2 Q 150.7,170.5 29.3,170.0 Q 29.9,108.9 30.5,49.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.42"/>
+<text x="150" y="74" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">组 A 无优化（--no-fuse）</text>
+<text x="150" y="93" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S1 清理后 7 节点（分立）</text>
+<text x="150" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">arg ─ reshape ─ matmul</text>
+<text x="150" y="127" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">        └ add(bias) ─ relu</text>
+<text x="150" y="144" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">＋2 个 const（B 与 bias）</text>
+<path d="M 290.0,49.3 Q 410.7,49.5 530.9,49.6 Q 530.8,111.0 529.9,170.8 Q 408.3,170.9 289.4,169.3 Q 289.7,109.3 290.2,49.2 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.42"/>
+<text x="410" y="74" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">组 B 仅图优化（融合开）</text>
+<text x="410" y="93" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">S1 终图 5 节点（融合）</text>
+<text x="410" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">arg ─ reshape ─ fused</text>
+<text x="410" y="127" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">（matmul+add+relu 融成 1 节点）</text>
+<text x="410" y="144" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">＋2 个 const</text>
+<path d="M 550.0,50.2 Q 670.9,50.8 790.9,49.7 Q 790.9,110.5 790.7,169.9 Q 670.7,169.4 550.3,170.5 Q 550.8,110.2 550.2,50.0 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.42"/>
+<text x="670" y="74" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">组 C 图+Tiling</text>
+<text x="670" y="93" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">同 B 的 5 节点图（融合）</text>
+<text x="670" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">tile=(2, 3, 6)</text>
+<text x="670" y="127" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">只是 Variant 的配置字段</text>
+<text x="670" y="144" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">gen_loop_ir_full 不读它</text>
+<path d="M 810.1,50.5 Q 928.7,49.9 1049.6,49.7 Q 1048.5,109.5 1049.4,170.2 Q 929.0,170.6 809.8,170.9 Q 811.3,110.9 810.2,50.4 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="930" y="74" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">组 D 完整优化</text>
+<text x="930" y="93" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">管道与 B/C 完全一致</text>
+<text x="930" y="110" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">唯一差异在 S5 之后</text>
+<text x="930" y="127" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">llvm_o2=True</text>
+<text x="930" y="144" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">（opt -O2 后处理，见右下）</text>
+<path d="M 150.0,172.0 Q 150.0,180.5 150.0,189.0 M 154.2,178.0 L 150.0,189.0 L 145.8,178.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 410.0,172.0 Q 410.0,180.5 410.0,189.0 M 414.2,178.0 L 410.0,189.0 L 405.8,178.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 670.0,172.0 Q 670.0,180.5 670.0,189.0 M 674.2,178.0 L 670.0,189.0 L 665.8,178.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 930.0,172.0 Q 930.0,180.5 930.0,189.0 M 934.2,178.0 L 930.0,189.0 L 925.8,178.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 29.0,191.5 Q 540.6,191.9 1049.4,192.5 Q 1050.3,245.3 1050.1,299.5 Q 540.5,300.8 30.3,299.6 Q 29.7,246.3 30.9,192.5 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.28"/>
+<text x="540" y="214" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="11" fill="#3B3B3B" text-anchor="middle" font-weight="bold">同一条 S2 生成路径：gen_loop_ir_full——run_variant 对四组走同一条代码路径（配置差异全在数据里）</text>
+<text x="540" y="235" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">· 按主算子推 M=4、K=6、N=3：A 与 B 的图不同，推出的循环参数相同</text>
+<text x="540" y="252" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">· 无融合时：add(bias)/relu 追随主算子进同一条循环——组 A 语义修复的落点（§1）</text>
+<text x="540" y="269" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">· tile 字段不进 IR：朴素三重循环（步长 1）→ 同一份 stage-2-loop.mlir（scf.for i/j/k＋bias 进 iter_args＋relu=cmpf/select）</text>
+<text x="540" y="288" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#6b6257" text-anchor="middle">→ 同一份循环 IR，四组共用</text>
+<path d="M 395.0,302.0 Q 395.0,309.0 395.0,316.0 M 399.2,305.0 L 395.0,316.0 L 390.8,305.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 29.9,320.1 Q 394.5,320.6 760.6,321.0 Q 760.7,363.5 761.0,408.0 Q 394.2,408.9 29.1,408.2 Q 28.8,365.2 30.6,319.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.28"/>
+<text x="395" y="343" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">S4/S5：mlir-opt 同一串 pass → mlir-translate → 代码生成</text>
+<text x="395" y="362" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">→ 同一份 stage-5.ll：111 行｜fmul=1｜phi=4</text>
+<text x="395" y="381" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9" fill="#6b6257" text-anchor="middle">（A=B=C 逐字相同；D 的 .ll 同款，另加右侧后处理）</text>
+<path d="M 780.0,320.1 Q 914.9,320.8 1049.7,319.8 Q 1050.9,362.5 1049.8,408.1 Q 914.0,407.6 779.3,409.0 Q 778.7,366.1 780.8,320.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.42"/>
+<text x="915" y="343" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">仅组 D：S5 之后过 opt -O2</text>
+<text x="915" y="361" font-family="'Courier New',monospace" font-size="8.5" fill="#6b6257" text-anchor="middle">stage-5.ll → stage-5-O2.ll</text>
+<text x="915" y="381" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">177 行｜fmul=6｜phi=1</text>
+<path d="M 762.0,352.0 Q 768.0,353.0 778.0,356.0 M 768.7,348.8 L 778.0,356.0 L 766.3,356.9" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 395.0,410.0 Q 395.0,417.0 395.0,424.0 M 399.2,413.0 L 395.0,424.0 L 390.8,413.0" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<path d="M 29.9,427.4 Q 540.1,427.8 1050.2,428.5 Q 1048.4,464.6 1049.1,501.9 Q 541.4,502.1 30.9,503.0 Q 30.2,465.0 29.9,428.8 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.25"/>
+<text x="540" y="450" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="10" fill="#3B3B3B" text-anchor="middle" font-weight="bold">证据（冻结产物，diff 可复核）</text>
+<text x="540" y="469" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">· variant-A/B/C 的 stage-2-loop.mlir 逐字相同　· variant-A/B/C 的 stage-5.ll 逐字相同（111 行/fmul=1/phi=4）</text>
+<text x="540" y="489" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">→ §3.2／§3.3 的「零差异」来自共用同一条生成路径，不是两套代码的巧合</text>
+<path d="M 30.0,511.9 Q 539.1,511.3 1050.9,511.8 Q 1050.7,565.4 1050.5,620.5 Q 539.0,618.6 30.3,619.2 Q 30.9,564.7 29.6,512.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.45"/>
+<text x="540" y="540" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">对照的真正变量只有两个</text>
+<text x="540" y="566" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">① S1 的 fuse 开关：改图（7→5 节点）——S2 共用同一路径，.ll 不变（§3.2 融合的收益在图）</text>
+<text x="540" y="586" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="9.5" fill="#3B3B3B" text-anchor="middle">② 组 D 的 opt -O2 后处理：改 .ll（111→177 行、fmul 1→6、phi 4→1）；tile 在这里始终是空变量（§3.3）</text>
+<text x="540" y="606" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive" font-size="8.5" fill="#6b6257" text-anchor="middle">口径：四组的验证驱动/计时驱动也都由同一份模板生成</text>
+</svg>

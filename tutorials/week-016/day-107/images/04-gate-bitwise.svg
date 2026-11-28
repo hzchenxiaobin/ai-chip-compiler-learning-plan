@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" font-family="'Comic Sans MS','Kaiti SC','KaiTi','STKaiti',cursive">
+<path d="M 3.9,3.4 Q 488.6,5.1 976.2,4.2 Q 974.5,318.2 976.6,635.8 Q 490.7,635.6 4.4,637.4 Q 5.6,320.8 3.9,3.4 Z" stroke="#E7DFCE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="1.0"/>
+<text x="490.0" y="36" font-size="21" fill="#3B3B3B" text-anchor="middle" font-weight="bold">门的依据：换顺序、换 tile、换展开，为什么还能逐位相等</text>
+<path d="M 298.9,47.0 Q 488.5,46.3 678.6,48.5" stroke="#E8A87C" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M 56.4,60.9 Q 263.9,62.8 471.4,63.4 Q 471.3,121.9 470.4,178.7 Q 263.8,177.1 53.6,177.8 Q 56.4,120.6 56.4,60.9 Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#A9C4D4" fill-opacity="0.4"/>
+<text x="70" y="86" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">顺序 A：ikj —— j 最内层（全行访问）</text>
+<text x="70" y="108" font-size="9.5" fill="#3B3B3B" text-anchor="start">for i0: for j0: for k0（块，升序）:</text>
+<text x="78" y="124" font-size="9.5" fill="#3B3B3B" text-anchor="start">for i(块内): Ci = C[i]; Ai = A[i]</text>
+<text x="86" y="140" font-size="9.5" fill="#3B3B3B" text-anchor="start">for k(块内，升序): a = Ai[k]; Bv = B[k]</text>
+<text x="94" y="156" font-size="9.5" fill="#3B3B3B" text-anchor="start">for j: Ci[j] += a·Bv[j]</text>
+<text x="70" y="172" font-size="9.5" fill="#6b6257" text-anchor="start">对固定的 C[i][j]：k 一块一块升序到达</text>
+<path d="M 56.6,190.5 Q 261.0,190.1 469.4,190.2 Q 470.4,249.4 468.7,311.5 Q 260.8,312.7 54.7,311.2 Q 55.7,249.7 56.6,190.5 Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.4"/>
+<text x="70" y="214" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">顺序 B：ijk —— k 最内层（标量累加器）</text>
+<text x="70" y="236" font-size="9.5" fill="#3B3B3B" text-anchor="start">for i0: for j0: for k0（块，升序）:</text>
+<text x="78" y="252" font-size="9.5" fill="#3B3B3B" text-anchor="start">for i(块内): Ai = A[i]</text>
+<text x="86" y="268" font-size="9.5" fill="#3B3B3B" text-anchor="start">for j(块内): c = C[i][j]</text>
+<text x="94" y="284" font-size="9.5" fill="#3B3B3B" text-anchor="start">for k(块内，升序): c += Ai[k]·B[k][j]</text>
+<text x="94" y="302" font-size="9.5" fill="#6b6257" text-anchor="start">回写 C[i][j] = c</text>
+<path d="M 262.2,311.8 Q 262.2,322.0 262.0,329.0 M 259.0,316.0 L 262.0,329.0 L 265.0,316.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<text x="285" y="324" font-size="9.5" fill="#6b6257" text-anchor="start">两种顺序 → 同一条累加链</text>
+<path d="M 490.1,62.0 Q 709.4,61.6 926.2,60.5 Q 928.4,186.1 926.4,312.6 Q 710.0,312.4 490.3,310.8 Q 489.0,188.6 490.1,62.0 Z" stroke="#3B3B3B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="#C97B7B" fill-opacity="0.25"/>
+<text x="505" y="86" font-size="11.5" fill="#3B3B3B" text-anchor="start" font-weight="bold">反例：no-tail 内核（门今天真的拦了一个）</text>
+<text x="505" y="110" font-size="10" fill="#3B3B3B" text-anchor="start">32³ ikj U=4 @ shape 13×17×19（门套件的靶子）</text>
+<text x="505" y="128" font-size="10" fill="#3B3B3B" text-anchor="start">n = 17 − 17%4 = 16：主循环只盖住 j = 0…15</text>
+<text x="505" y="146" font-size="10" fill="#3B3B3B" text-anchor="start">尾部循环整段不生成 → j=16 这一列从没被算</text>
+<text x="505" y="164" font-size="10" fill="#3B3B3B" text-anchor="start">C[i][16] 停在 bias → max_abs_err = 3.77</text>
+<text x="505" y="190" font-size="10.5" fill="#C97B7B" text-anchor="start" font-weight="bold">→ REJECTED：stats_ms=null、一毫秒不计时</text>
+<text x="505" y="208" font-size="9.5" fill="#6b6257" text-anchor="start">错误版本往往更快，快也不许进表（D96 教训）</text>
+<path d="M 503.4,225.4 Q 708.2,222.5 911.4,223.6" stroke="#E7DFCE" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<text x="505" y="248" font-size="11" fill="#3B3B3B" text-anchor="start" font-weight="bold">门成绩：54/54 逐位相等</text>
+<text x="505" y="266" font-size="9.5" fill="#6b6257" text-anchor="start">3 个奇数 shape × 6 顺序 × 3 展开 = 54 项全过</text>
+<text x="505" y="288" font-size="9.5" fill="#6b6257" text-anchor="start">小奇数维专门踩尾部与 min 钳制路径</text>
+<path d="M 54.7,329.0 Q 490.0,327.5 924.6,330.2 Q 926.4,395.7 925.2,461.5 Q 491.0,462.7 55.3,460.5 Q 53.8,396.1 54.7,329.0 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#E8A87C" fill-opacity="0.35"/>
+<text x="490" y="354" font-size="12" fill="#3B3B3B" text-anchor="middle" font-weight="bold">盯住同一个 C[i][j]：两种顺序汇成同一条 k 升序累加链</text>
+<path d="M 69.7,365.1 Q 120.9,367.5 175.7,366.0 Q 175.5,381.4 176.6,397.4 Q 125.0,397.1 71.1,395.9 Q 72.0,379.1 69.7,365.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.95"/>
+<text x="122" y="385" font-size="10.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">c = bias[j]</text>
+<path d="M 178.7,380.6 Q 187.9,381.3 196.0,381.0 M 183.0,384.0 L 196.0,381.0 L 183.0,378.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 199.0,365.6 Q 290.4,366.8 378.6,365.5 Q 379.1,381.3 381.3,396.4 Q 293.2,395.5 200.9,396.9 Q 201.9,380.2 199.0,365.6 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.95"/>
+<text x="290" y="385" font-size="10.5" fill="#3B3B3B" text-anchor="middle">+ A[i][0]·B[0][j]</text>
+<path d="M 382.8,382.5 Q 390.7,382.8 401.0,381.0 M 388.0,384.0 L 401.0,381.0 L 388.0,378.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 405.5,365.1 Q 494.1,364.7 586.4,367.0 Q 584.1,381.9 584.9,395.4 Q 495.9,397.6 403.6,395.6 Q 406.1,382.4 405.5,365.1 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.95"/>
+<text x="495" y="385" font-size="10.5" fill="#3B3B3B" text-anchor="middle">+ A[i][1]·B[1][j]</text>
+<text x="608" y="386" font-size="13" fill="#6b6257" text-anchor="middle">……</text>
+<path d="M 626.0,381.1 Q 635.8,381.2 643.0,381.0 M 630.0,384.0 L 643.0,381.0 L 630.0,378.0" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<path d="M 646.1,364.9 Q 775.7,365.3 902.4,366.4 Q 900.6,381.1 900.6,397.2 Q 772.5,395.4 647.2,396.9 Q 644.6,382.0 646.1,364.9 Z" stroke="#3B3B3B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="#FDFBF6" fill-opacity="0.95"/>
+<text x="774" y="385" font-size="10.5" fill="#3B3B3B" text-anchor="middle">+ A[i][K−1]·B[K−1][j]</text>
+<text x="490" y="418" font-size="9.5" fill="#6b6257" text-anchor="middle">k0 块升序＋块内升序；展开只改每圈语句数、tile 的 min 钳制只裁边界</text>
+<text x="490" y="440" font-size="9.5" fill="#6b6257" text-anchor="middle">—— 都不动 k 的先后，累加序列逐项相同</text>
+<path d="M 488.9,461.2 Q 491.8,467.7 490.0,472.0 M 487.0,459.0 L 490.0,472.0 L 493.0,459.0" stroke="#3B3B3B" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+<path d="M 55.8,473.5 Q 491.1,473.1 925.7,473.5 Q 927.6,525.9 925.4,578.6 Q 489.4,581.8 55.5,581.5 Q 56.3,527.8 55.8,473.5 Z" stroke="#3B3B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#9CBF8E" fill-opacity="0.3"/>
+<text x="490" y="496" font-size="11.5" fill="#3B3B3B" text-anchor="middle" font-weight="bold">为什么敢用 ==（精确相等）收门</text>
+<text x="490" y="518" font-size="10" fill="#3B3B3B" text-anchor="middle">CPython 里 c += a*b 是两条独立字节码（BINARY_OP * → BINARY_OP +）——没有 FMA 收缩</text>
+<text x="490" y="538" font-size="10" fill="#3B3B3B" text-anchor="middle">＝ D97 -ffp-contract=off 论据的纯 Python 版：每步单独正确舍入 → 位模式一致 → C == Cref</text>
+<text x="490" y="562" font-size="10.5" fill="#C97B7B" text-anchor="middle" font-weight="bold">54/54 放行；链上缺一整列项的 no-tail（3.77）死在门上、不计时</text>
+<text x="490" y="610" font-size="9" fill="#6b6257" text-anchor="middle">出处：outputs/correctness.txt、gate-records.jsonl（54/54、3.77）；k 到达顺序对 kernel_gen.py 的 6 种排列逐一核对</text>
+</svg>
