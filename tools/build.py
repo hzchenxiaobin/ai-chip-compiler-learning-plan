@@ -231,6 +231,7 @@ def page_template(
     <script src="{root_prefix}js/prism-cpp.min.js"></script>
     <script src="{root_prefix}js/prism-bash.min.js"></script>
     <script src="{root_prefix}js/prism-python.min.js"></script>
+    <script src="{root_prefix}js/prism-cmake.min.js"></script>
 """
         markdown_declaration = "const pageMarkdown = `" + escaped_markdown + "`;"
         render_prerequisite = "typeof marked !== 'undefined' && window.VPPage"
