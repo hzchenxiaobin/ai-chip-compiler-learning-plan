@@ -162,6 +162,19 @@ enable_testing()
 add_subdirectory(tests)
 ```
 
+命令逐项说明：
+
+| 语句 | 作用 |
+|---|---|
+| `cmake_minimum_required(VERSION 3.16)` | 声明要求的最低 CMake 版本：低于 3.16 的 cmake 会直接报错拒绝配置（本机的 3.20.5 满足要求），版本号同时固定 CMake 的行为基线 |
+| `project(compiler-playground LANGUAGES CXX)` | 定义工程名、声明只使用 C++ 一种语言；CMake 在这一步检查 C++ 编译器并把它固定下来——5.3 节第一行输出 `The CXX compiler identification is GNU 9.4.0` 就是它触发的 |
+| `set(CMAKE_CXX_STANDARD 17)` | 本目录及以下所有目标按 C++17 编译，效果等同 3.1 节手敲的 `-std=c++17`，但只需声明一次 |
+| `set(CMAKE_CXX_STANDARD_REQUIRED ON)` | 编译器不支持 C++17 时直接报错，而不是悄悄降级到旧标准“侥幸”通过 |
+| `set(CMAKE_CXX_EXTENSIONS OFF)` | 关掉编译器私有扩展：g++ 会改用 `-std=c++17` 而不是 `-std=gnu++17`，代码不沾 GNU 方言，以后换 Clang/MSVC 不吃亏 |
+| `if(MSVC)/add_compile_options(...)` | 统一警告档位：MSVC 用 `/W4`，其余编译器用 `-Wall -Wextra -Wpedantic`；前两个与 3.1 节相同，`-Wpedantic` 额外对使用了非标准扩展的写法发警告。与 3.1 节一样，警告只提醒、不阻断编译 |
+| `add_subdirectory(src)` | 把 `src/` 纳入构建：CMake 接着读取 `src/CMakeLists.txt`，其中定义的目标成为工程的一部分 |
+| `enable_testing()` | 打开 ctest 支持，且只对当前目录及以下生效；必须放在顶层、且在 `add_subdirectory(tests)` 之前，构建根目录才会生成 `CTestTestfile.cmake`，`ctest --test-dir build` 才收集得到测试——漏掉它就是第 6 节的错误三 |
+
 `src/CMakeLists.txt`——把 `greet.cpp` 做成库，主程序链接它：
 
 ```cmake
@@ -171,6 +184,15 @@ target_include_directories(greet PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(compiler-playground main.cpp)
 target_link_libraries(compiler-playground PRIVATE greet)
 ```
+
+命令逐项说明：
+
+| 语句 | 作用 |
+|---|---|
+| `add_library(greet STATIC greet.cpp)` | 把 `greet.cpp` 编成静态库，Linux 上产物名固定是 `libgreet.a`（5.3 节 `[2/6]` 生成的那件东西）；`STATIC` 表示用 `ar` 把 `.o` 归档打包，对应图 2 的中间步骤 |
+| `target_include_directories(greet PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})` | 把本文件所在目录（`${CMAKE_CURRENT_SOURCE_DIR}`，这里即 `src/`）加入头文件搜索路径；`PUBLIC` 表示“自己和链接我的目标都能用”，所以 `main.cpp`、`test_greet.cpp` 可以直接写 `#include "greet.h"`，不用带 `src/` 前缀，也不用复制头文件 |
+| `add_executable(compiler-playground main.cpp)` | 把 `main.cpp` 编译成可执行文件 `compiler-playground` |
+| `target_link_libraries(compiler-playground PRIVATE greet)` | 链接 `libgreet.a`——第 3.2 节的“符号接线”由这行触发，漏了它就是第 6 节错误一的 `undefined reference`；`PRIVATE` 表示这个依赖只供自己链接、不向下游传播，与上一行的 `PUBLIC` 恰成对照 |
 
 `src/greet.h`、`src/greet.cpp`、`src/main.cpp`：
 
@@ -214,6 +236,14 @@ target_link_libraries(test_greet PRIVATE greet)
 add_test(NAME greet_returns_greeting COMMAND test_greet)
 ```
 
+命令逐项说明：
+
+| 语句 | 作用 |
+|---|---|
+| `add_executable(test_greet test_greet.cpp)` | 测试程序也是一个普通的可执行文件——ctest 不认识任何测试框架，它只会运行程序并检查退出码 |
+| `target_link_libraries(test_greet PRIVATE greet)` | 与主程序链接同一个 `libgreet.a`：测试跑的是真实实现而不是另一份拷贝（图 3 左侧目录树里的“共用”） |
+| `add_test(NAME greet_returns_greeting COMMAND test_greet)` | 向 ctest 注册一条测试：`NAME` 是 5.3 节报告里显示的 `greet_returns_greeting`，`COMMAND` 是要运行的程序；程序以非 0 退出码结束即判失败——5.4 节实验二里 assert 失败正是靠这一点变红的 |
+
 ```cpp
 // tests/test_greet.cpp
 #include "greet.h"
@@ -229,6 +259,8 @@ int main() {
     return 0;
 }
 ```
+
+把三份 CMakeLists 连回 3.1 节的手工命令，“构建系统在替我做什么”就落到了实处：`CMAKE_CXX_STANDARD 17` + `CMAKE_CXX_EXTENSIONS OFF` 对应 `-std=c++17`；`add_compile_options(-Wall -Wextra -Wpedantic)` 对应警告开关；`add_library(greet STATIC ...)` 对应 `g++ -c greet.cpp` 加 `ar` 归档；`add_executable` 加 `target_link_libraries` 对应最后那条链接命令。cmake configure 时把上面每条语句翻译成 `build.ninja` 里的具体命令与依赖关系，ninja 照单执行、只重跑受影响的步骤——这正是 3.3 节“菜谱与厨师”分工的技术内幕。
 
 最后补一个 `README.md`，记录环境版本和四条命令（内容见 5.3 节，此处不重复）。
 
